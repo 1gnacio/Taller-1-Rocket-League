@@ -1,0 +1,39 @@
+/home/ignacio/Downloads/CLion-2022.2.1/clion-2022.2.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/ignacio/Downloads/CLion-2022.2.1/clion-2022.2.1/bin/ninja/linux/ninja -G Ninja -S /home/ignacio/CLionProjects/libSDL2pp-tutorial -B /home/ignacio/CLionProjects/libSDL2pp-tutorial/cmake-build-debug
+-- The C compiler identification is GNU 11.2.0
+-- The CXX compiler identification is GNU 11.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Deprecation Warning at CMakeLists.txt:14 (CMAKE_MINIMUM_REQUIRED):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at SDL2pp/CMakeLists.txt:4 (CMAKE_MINIMUM_REQUIRED):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Error at /home/ignacio/Downloads/CLion-2022.2.1/clion-2022.2.1/bin/cmake/linux/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake:230 (message):
+  Could NOT find SDL2 (missing: SDL2_INCLUDE_DIR SDL2_LIBRARY)
+Call Stack (most recent call first):
+  /home/ignacio/Downloads/CLion-2022.2.1/clion-2022.2.1/bin/cmake/linux/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake:594 (_FPHSA_FAILURE_MESSAGE)
+  SDL2pp/cmake/FindSDL2.cmake:15 (FIND_PACKAGE_HANDLE_STANDARD_ARGS)
+  SDL2pp/CMakeLists.txt:30 (FIND_PACKAGE)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/ignacio/CLionProjects/libSDL2pp-tutorial/cmake-build-debug/CMakeFiles/CMakeOutput.log".

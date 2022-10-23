@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 -rdynamic CMakeFiles/lesson02.dir/lesson02.cc.o -o lesson02  -Wl,-rpath,/usr/local/lib SDL2pp/libSDL2pp.a /usr/local/lib/libSDL2.so /usr/local/lib/libSDL2_image.so /usr/local/lib/libSDL2_ttf.so 
