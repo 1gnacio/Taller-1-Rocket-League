@@ -1,3 +1,0 @@
-ToolSet: 1.0 (local)Options: 
-
-Options:-DCMAKE_MAKE_PROGRAM=/home/ignacio/Downloads/CLion-2022.2.1/clion-2022.2.1/bin/ninja/linux/ninja
