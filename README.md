@@ -8,6 +8,17 @@
 
 Corrector: Martin
 
+## Documentación & Notas
+
+[Link Google Docs](https://docs.google.com/document/d/1HAAGN4PyoHdXEmL62-MtdpeMkoSojueFdWUvSQ4e9Ag/edit?usp=sharing)
+
+[EverNote](https://www.evernote.com/shard/s392/client/snv?noteGuid=1dd9e1ff-3bbe-c34f-33f0-5545271bdf81&noteKey=8f2645c4fdc094c5fc3e4e4d6d404fc8&sn=https%3A%2F%2Fwww.evernote.com%2Fshard%2Fs392%2Fsh%2F1dd9e1ff-3bbe-c34f-33f0-5545271bdf81%2F8f2645c4fdc094c5fc3e4e4d6d404fc8&title=TP1%2B-%2BAPUNTES)
+
+![Diagram_2](https://user-images.githubusercontent.com/23293753/197909510-b1a9e6c4-802a-4d81-be34-bb86e7162652.png)
+
+![Diagrama_1](https://user-images.githubusercontent.com/23293753/197909532-d5b5c027-a6e9-4891-ab14-f975289d62f8.png)
+
+
 ## Lista de requerimientos *TODO*
 
 * Simular trayectoria de pelota, autos y tiros especiales (habria que definir alcances de cada uno) con Box2D
