@@ -1,1 +1,6 @@
 .idea
+testingBox2D/CMakeFiles/
+testingBox2D/cmake_install.cmake
+testingBox2D/CMakeCache.txt
+testingBox2D/Makefile
+testingBox2D/test
