@@ -1,5 +1,20 @@
 # Taller-1-Rocket-League
 
+## Importante: como correr el TP (por ahora)
+
+1 - Build
+
+    git submodule init
+    git submodule update  
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+
+2 - Execute (desde la carpeta build)
+
+    ./testing
+
 ## Grupo 1
 
 * **Ignacio Garcia Segovia** - [1gnacio](https://github.com/1gnacio)
