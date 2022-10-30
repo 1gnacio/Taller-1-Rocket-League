@@ -16,13 +16,17 @@ project(SDL2pp-tutorial LANGUAGES CXX)
 set(SDL2PP_WITH_IMAGE YES)
 set(SDL2PP_WITH_TTF YES)
 add_subdirectory(SDL2pp)
+add_subdirectory(box2d)
 
 # add compilation flags
 set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
 include_directories(${SDL2PP_INCLUDE_DIRS})
 
-# define targets
-add_executable(testing testing.cc)
-target_link_libraries(testing PUBLIC SDL2pp)
-target_link_libraries(testing PUBLIC src)
+# define targets 
+add_executable(SDLExample testSDL.cc)
+target_link_libraries(SDLExample PUBLIC SDL2pp)
+#target_link_libraries(testing PUBLIC src)
+
+add_executable(boxExample testBox.cpp)
+target_link_libraries(boxExample box2d)
