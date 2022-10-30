@@ -94,30 +94,20 @@ std::vector<std::string> Protocolo::receiveCommands(Socket& socket) {
 }
 
 void Protocolo::sendCommands(Socket& socket,
-                             std::vector<std::string> commands) {
+                             std::vector<Command> commands) {
     if (this->connectionClosed) {
         return;
     }
 
     std::vector<char> serializedCommands(commands.size());
-    std::map<std::string, char> commandsMap = {
-            {this->DESERIALIZED_JUMP, this->SERIALIZED_JUMP},
-            {this->DESERIALIZED_UP, this->SERIALIZED_UP},
-            {this->DESERIALIZED_DOWN, this->SERIALIZED_DOWN},
-            {this->DESERIALIZED_LEFT, this->SERIALIZED_LEFT},
-            {this->DESERIALIZED_RIGHT, this->SERIALIZED_RIGHT},
-            {this->DESERIALIZED_TURBO, this->SERIALIZED_TURBO}
-    };
 
     std::transform(commands.begin(),
                    commands.end(),
                    serializedCommands.begin(),
                    [&commandsMap]
-                   (std::string command) {
-                    return commandsMap[command];
+                   (Command command) {
+                    return command.serialize();
     });
-
-    serializedCommands.push_back(this->SERIALIZED_NOP);
 
     socket.sendall(&serializedCommands[0],
                    serializedCommands.size(),
