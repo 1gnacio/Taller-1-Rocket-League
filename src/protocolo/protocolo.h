@@ -16,6 +16,7 @@ class Protocolo {
     int16_t sentCommandsBytes = 1;
 
     bool isEndOfCommands(char serializedCommand);
+    std::vector<char> serializeMovementCommands(std::vector<Command> &commands);
 
  public:
     Protocolo();

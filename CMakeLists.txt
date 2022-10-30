@@ -25,4 +25,3 @@ include_directories(${SDL2PP_INCLUDE_DIRS})
 # define targets
 add_executable(testing testing.cc)
 target_link_libraries(testing PUBLIC SDL2pp)
-target_link_libraries(testing PUBLIC src)

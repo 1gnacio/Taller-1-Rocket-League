@@ -9,11 +9,15 @@
 
 class Command {
 private:
-    char serialized;
-    std::string deserialized;
+    const char serialized;
+    const std::string deserialized;
+    const std::string parameters;
 public:
-    Command(char serialized, std::string& deserialized);
-    std::string serialize();
+    Command(const char serialized, const std::string& deserialized);
+    Command(const char serialized, const std::string& deserialized, const std::string& parameters);
+    char serialize();
+    Command(Command&&);
+    Command& operator=(Command&&);
 };
 
 
