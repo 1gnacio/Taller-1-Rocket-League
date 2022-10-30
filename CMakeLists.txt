@@ -73,3 +73,7 @@ install(TARGETS Lobby
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Lobby)
 endif()
+
+# define targets
+add_executable(testing testing.cc)
+target_link_libraries(testing PUBLIC SDL2pp)
