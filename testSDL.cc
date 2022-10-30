@@ -17,6 +17,11 @@ int main() try {
 			SDL_WINDOW_RESIZABLE);
 
 	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+
+
+
+
 	Texture spriteStadium(renderer, DATA_PATH "/stadium.png");
 	//Texture spritesCar(renderer, Surface(DATA_PATH "/car.png")
 	//		.SetColorKey(true,1200));

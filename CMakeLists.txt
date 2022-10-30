@@ -30,3 +30,6 @@ target_link_libraries(SDLExample PUBLIC SDL2pp)
 
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
+
+add_executable(exampleMerged exampleMerged.cpp)
+target_link_libraries(exampleMerged box2d SDL2pp)
