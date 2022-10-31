@@ -4,6 +4,8 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "box2d/include/box2d/box2d.h"
 
+#include <list>
+
 
 b2World* world;
 
@@ -20,26 +22,15 @@ const float RAD2DEG = 180 / M_PI;
 
 using namespace std;
 using namespace SDL2pp;
-int main()
+
+// EJE X {-4;4}
+// EJE Y {-3;3}
+// box2d trabaja en metros y sdl en pixeles.
+
+int main() try
 {
 
     //Se inicia SDL y se crea una ventada y un render
-    /*
-    SDL_Init(SDL_INIT_EVERYTHING);
-
-    SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
-    auto Width = DM.w;
-    auto Height = DM.h;
-
-    cout << "Width of the Screen: " << Width << endl;
-    cout << "Height of the Screen: " << Height << endl;
-
-    SDL_Window *window = SDL_CreateWindow("FirstGame", SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
-
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    */
     SDL sdl(SDL_INIT_VIDEO);
 
     Window window("Game",
@@ -49,27 +40,14 @@ int main()
 
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);   
 
-    b2Vec2 gravity(0.0f, 10.0f); // new b2World(gravity));
+    b2Vec2 gravity(0.0f, 9.8f); // new b2World(gravity));
     b2World world(gravity);
-
-
-
 
     //CREACION DEL PISO
     
     // cartesian origin
     float ground_x = 0.0f;
     float ground_y = 0.0f;
-
-    // start ground point
-    b2Vec2 startpoint;
-    startpoint.x = -3.0f;
-    startpoint.y = 2.0;
-
-    // end ground point
-    b2Vec2 endpoint;
-    endpoint.x = 3;
-    endpoint.y = 2.0;
 
     // LineGround
     b2BodyDef myGroundDef;
@@ -79,57 +57,31 @@ int main()
 
     b2Body* groundLineBody = world.CreateBody(&myGroundDef);
 
-    //CREACION DE LOS VERTICES
- 
-    b2Vec2 vertices[2];
-
-    vertices[1].Set(-3.0, 2);
-    vertices[0].Set(3,2);
-    int32 count = 4;
-
-    b2PolygonShape polygon;
-
-
-    polygon.Set(vertices, count);
-   
-   /*
-    b2EdgeShape polygon;
-    polygon.SetTwoSided(startpoint, endpoint);
-   */  b2FixtureDef edgeFixtureDef;
-
-
-    //b2PolygonShape polygon;
-    edgeFixtureDef.shape = &polygon;
-
+    //CREACION DE LOS PUNTOS PARA EL PISO
+    b2FixtureDef edgeFixtureDef;
+    b2EdgeShape edge;
+    edge.SetTwoSided(b2Vec2(-2.5,0), b2Vec2(2.5,0));
+    edgeFixtureDef.shape = &edge;
     groundLineBody->CreateFixture(&edgeFixtureDef);
 
 
 // CREACION DE LA TEXTURA DE CAJA
-/*
-    SDL_Surface* tmp_sprites;
-    tmp_sprites = IMG_Load(DATA_PATH "/box.png");
-
-    if(!tmp_sprites)
-        return EXIT_FAILURE;
-
-    SDL_Texture* texture_box = SDL_CreateTextureFromSurface(renderer, tmp_sprites);
-    SDL_FreeSurface(tmp_sprites);
-*/
     Texture texture_box(renderer, DATA_PATH "/box.png");
 
-
+// CREACION DE LA TEXTURA DEL PISO
+    Texture texture_ground(renderer, DATA_PATH "/ground.png");
 
 
 
 //CREACION DE LA CAJA EN BOX2D
 
     // cartesian origin box
-    float x_box = -2.5f;
+    float x_box = 0.0f;
     float y_box = -2.5f;
 
     // size of box
-    float w_box = 0.3;
-    float h_box = 0.3;
+    float w_box = 0.5;
+    float h_box = 0.5;
 
     // angle of the box
     float angle_box = 45.0f; //45.0f;
@@ -140,17 +92,16 @@ int main()
 
     b2BodyDef boxBodyDef;
     boxBodyDef.type = b2_dynamicBody;
-    boxBodyDef.angle = angle_box; // flips the whole thing -> 180 grad drehung
-    //boxBodyDef.angle = 0;
+    boxBodyDef.angle = 45; // flips the whole thing -> 180 grad drehung
     boxBodyDef.position.Set(x_box, y_box);
     b2Vec2 vel;
-    vel.Set(0, 0.2f);
+   // vel.Set(0f, 0.1f);
 
     body = world.CreateBody(&boxBodyDef);
-    body->SetLinearVelocity(vel);
+    //body->SetLinearVelocity(vel);
 
     b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox((w_box / 2.0f) - dynamicBox.m_radius, (h_box / 2.0f) - dynamicBox.m_radius); // will be 0.5 x 0.5
+    dynamicBox.SetAsBox(w_box/2.0f,h_box/2.0f); // toma la mitad del tamaño
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &dynamicBox;
@@ -163,15 +114,22 @@ int main()
     box.w = w_box * MET2PIX;
     box.h = h_box * MET2PIX;
 
+    // point to center of box for angle
+    /*
+    Point center;
+    center.x = box.w*0.5f;
+    center.y = box.h - (box.w * 0.5);
+*/
     // cartesian origin of _0019_PLATF.png 89 x 22
-    float x_plat = -3.6f; // to edge
-    float y_plat = -0.14f;// to edge
+    //float x_plat = -3.6f; // to edge
+    //float y_plat = -0.14f;// to edge
 
     // size of the platform
-    float w_plat = 89.0f / MET2PIX;
-    float h_plat = 22.0f / MET2PIX;
+    //float w_plat = 89.0f / MET2PIX;
+    //float h_plat = 22.0f / MET2PIX;
 
     // define a Rect for this platform and its body def
+    /*
     Rect platform;
     b2Body* Body_platform;
 
@@ -196,18 +154,19 @@ int main()
     platform.x = ((SCALED_WIDTH / 2.0f) + x_plat) * MET2PIX - platform.w / 2;
     platform.y = ((SCALED_HEIGHT / 2.0f) + y_plat) * MET2PIX - platform.h / 2;
 
+    */
+
     bool close_game = false;
     SDL_Event event;
 
     // The game Loop
     while(close_game != true)
     {
-        b2Vec2 pos = body->GetPosition(); // Body = Body from box
-        float angle = body->GetAngle();
+        b2Vec2 pos = body->GetPosition(); // Body from box
+        float angle = body->GetAngle(); // Body from box
 
-        // RAD2Degree
-        angle *= RAD2DEG;
-
+        //RAD2DEG
+        angle = angle*RAD2DEG;
         while(SDL_PollEvent(&event))
         {
             if(event.type == SDL_QUIT)
@@ -220,44 +179,41 @@ int main()
             {
                 body->SetTransform(b2Vec2(x_box, y_box), angle_box);
                 body->SetLinearVelocity(vel);
+                break;
             }
         }
 
         // question box, update x and y destination
-        box.x = ((SCALED_WIDTH / 2.0f) + pos.x) * MET2PIX - box.w / 2;
-        box.y = ((SCALED_HEIGHT / 2.0f) + pos.y) * MET2PIX - box.h / 2;
+        box.x = ((SCALED_WIDTH / 2.0f) + pos.x) * MET2PIX  - box.w / 2;
+        box.y = ((SCALED_HEIGHT / 2.0f) + pos.y) * MET2PIX - box.h / 2 ;
 
-        // cout << "X of box:" << setprecision(20) << box.x << endl;
-        // cout << "Y of box:" << setprecision(20) << box.y << endl;
+        cout << "X of box:" << endl << box.x << endl;
+        cout << "Y of box:" << endl << box.y << endl;
 
         renderer.Clear();
         renderer.SetDrawColor(255, 255, 0); // (255, 255, 0, 0)
 
-        // Draw ground platformedgeShape
-        renderer.DrawLine(((SCALED_WIDTH / 2.0f) + -3) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + 2) * MET2PIX, ((SCALED_WIDTH / 2.0f) + 3) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + 2) * MET2PIX);
+        // Draw ground
+        renderer.DrawLine(((SCALED_WIDTH / 2.0f) + edge.m_vertex1.x) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex1.y) * MET2PIX, ((SCALED_WIDTH / 2.0f) + edge.m_vertex2.x) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex2.y) * MET2PIX);
+        //renderer.DrawLine(65, 200, 400, 200);
+        //renderer.SetDrawColor(0, 255, 0);
+        //renderer.Copy(texture_ground, NullOpt, platform);
 
-        renderer.Copy(texture_box,  NullOpt,box, body->GetAngle() * RAD2DEG, NullOpt, SDL_FLIP_NONE);
-        double num = 33;
-        //renderer.Copy(texture_box, NULL, box, body->GetAngle() * RAD2DEG, NULL, SDL_FLIP_NONE);
+        renderer.Copy(texture_box, NullOpt, box, angle, NullOpt, SDL_FLIP_NONE);
 
-        // Draw ziegl_3
-
-        // Draw box angle 45
-        //Body->SetAngularVelocity(10.0f);
-        //Body->SetFixedRotation(true);
-        //SDL_RenderDrawRect(renderer, &box);
-        //SDL_RenderFillRect(renderer, &box);
-
-        renderer.SetDrawColor(32, 70, 49); // (32, 70, 49, 0);
+        renderer.SetDrawColor(0, 0, 0); // (32, 70, 49, 0);
 
         renderer.Present();
-
         world.Step(1.0f / 60.0f, 6.0f, 2.0f); // update
+        SDL_Delay(10);
 
     }
 
-    // box2D delete whole world and free memory
     SDL_Quit();
     return EXIT_SUCCESS;
+} catch (std::exception& e) {
+    // If case of error, print it and exit with error
+    std::cerr << e.what() << std::endl;
+    return 1;
 }
 
