@@ -23,6 +23,10 @@
 
 Corrector: Martin
 
+## Lobby
+
+![lobby](https://user-images.githubusercontent.com/23293753/198899200-60d1e4ec-2ea4-4f94-aed7-e51e71dd6912.gif)
+
 ## Documentación & Notas
 
 [Link Google Docs](https://docs.google.com/document/d/1HAAGN4PyoHdXEmL62-MtdpeMkoSojueFdWUvSQ4e9Ag/edit?usp=sharing)

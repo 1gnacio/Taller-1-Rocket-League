@@ -58,7 +58,7 @@ std::string Protocolo::receiveMovementResponse(Socket& socket) {
     return responseString;
 }
 
-std::vector<std::string> Protocolo::receiveCommands(Socket& socket) {
+std::vector<Command> Protocolo::receiveCommands(Socket& socket) {
     std::vector<std::string> commands;
 
     if (this->connectionClosed) {
@@ -67,14 +67,6 @@ std::vector<std::string> Protocolo::receiveCommands(Socket& socket) {
 
     char serializedCommand;
     bool isFirstCommand = true;
-    std::map<char, std::string> commandsMap = {
-            {this->SERIALIZED_JUMP, this->DESERIALIZED_JUMP},
-            {this->SERIALIZED_UP, this->DESERIALIZED_UP},
-            {this->SERIALIZED_DOWN, this->DESERIALIZED_DOWN},
-            {this->SERIALIZED_LEFT, this->DESERIALIZED_LEFT},
-            {this->SERIALIZED_RIGHT, this->DESERIALIZED_RIGHT},
-            {this->SERIALIZED_TURBO, this->DESERIALIZED_TURBO}
-    };
 
     while (!this->connectionClosed
             && (isFirstCommand || !this->isEndOfCommands(serializedCommand))) {
@@ -84,7 +76,7 @@ std::vector<std::string> Protocolo::receiveCommands(Socket& socket) {
 
         if (!this->isEndOfCommands(serializedCommand)
             && !this->connectionClosed) {
-            commands.push_back(commandsMap[serializedCommand]);
+            commands.push_back(this->protocolCommands.createMovementCommand(serializedCommand));
         }
 
         isFirstCommand = false;
@@ -93,31 +85,27 @@ std::vector<std::string> Protocolo::receiveCommands(Socket& socket) {
     return commands;
 }
 
-void Protocolo::sendCommands(Socket& socket,
-                             std::vector<std::string> commands) {
-    if (this->connectionClosed) {
-        return;
-    }
-
+std::vector<char> Protocolo::serializeMovementCommands(std::vector <Command> &commands) {
     std::vector<char> serializedCommands(commands.size());
-    std::map<std::string, char> commandsMap = {
-            {this->DESERIALIZED_JUMP, this->SERIALIZED_JUMP},
-            {this->DESERIALIZED_UP, this->SERIALIZED_UP},
-            {this->DESERIALIZED_DOWN, this->SERIALIZED_DOWN},
-            {this->DESERIALIZED_LEFT, this->SERIALIZED_LEFT},
-            {this->DESERIALIZED_RIGHT, this->SERIALIZED_RIGHT},
-            {this->DESERIALIZED_TURBO, this->SERIALIZED_TURBO}
-    };
 
     std::transform(commands.begin(),
                    commands.end(),
                    serializedCommands.begin(),
-                   [&commandsMap]
-                   (std::string command) {
-                    return commandsMap[command];
-    });
+                   [&commands]
+                           (Command& command) {
+                       return command.serialize();
+                   });
 
-    serializedCommands.push_back(this->SERIALIZED_NOP);
+    return serializedCommands;
+}
+
+void Protocolo::sendCommands(Socket& socket,
+                             std::vector<Command> commands) {
+    if (this->connectionClosed) {
+        return;
+    }
+
+    std::vector<char> serializedCommands = this->serializeMovementCommands(commands);
 
     socket.sendall(&serializedCommands[0],
                    serializedCommands.size(),

@@ -1,14 +1,21 @@
 #include <iostream>
 #include <exception>
-
+#include <QApplication>
 #include <SDL2pp/SDL2pp.hh>
+#include "src/lobby/lobby.h"
 
 using namespace SDL2pp;
 
 
-int main() try {
+int main(int argc, char *argv[]) try {
 
-
+    // LOBBY
+    QApplication a(argc, argv);
+    lobby w;
+    w.show();
+    a.exec();
+    
+    
 	SDL sdl(SDL_INIT_VIDEO);
 
 	Window window("SDL2pp demo",
@@ -123,8 +130,15 @@ int main() try {
 
 	return 0;
 
-} catch (std::exception& e) {
-	// If case of error, print it and exit with error
-	std::cerr << e.what() << std::endl;
-	return 1;
+} catch (const std::exception& err) {
+    std::cerr
+            << "Something went wrong and an exception was caught: "
+            << err.what()
+            << "\n";
+    return -1;
+} catch (...) {
+    std::cerr
+            << "Something went wrong and"
+               " an unknown exception was caught.\n";
+    return -1;
 }
