@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.5)
 
 project(Lobby VERSION 0.1 LANGUAGES CXX)
 
+# set up SDL2pp library
+set(SDL2PP_WITH_IMAGE YES)
+set(SDL2PP_WITH_TTF YES)
+add_subdirectory(SDL2pp)
+add_subdirectory(box2d)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -73,6 +79,20 @@ install(TARGETS Lobby
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Lobby)
 endif()
+
+# define targets 
+add_executable(SDLExample testSDL.cc)
+target_link_libraries(SDLExample PUBLIC SDL2pp)
+#target_link_libraries(testing PUBLIC src)
+
+add_executable(boxExample testBox.cpp)
+target_link_libraries(boxExample box2d)
+
+add_executable(exampleMerged exampleMerged.cpp)
+target_link_libraries(exampleMerged box2d SDL2pp)
+
+add_executable(game exampleGame.cpp)
+target_link_libraries(game box2d SDL2pp)
 
 # define targets
 add_executable(testing testing.cc)
