@@ -60,7 +60,7 @@ int main() try
     //CREACION DE LOS PUNTOS PARA EL PISO
     b2FixtureDef edgeFixtureDef;
     b2EdgeShape edge;
-    edge.SetTwoSided(b2Vec2(-2.5,0), b2Vec2(2.5,0));
+    edge.SetTwoSided(b2Vec2(-2.5,0), b2Vec2(2.5,0)); // Tamaño del piso
     edgeFixtureDef.shape = &edge;
     groundLineBody->CreateFixture(&edgeFixtureDef);
 

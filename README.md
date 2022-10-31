@@ -33,6 +33,9 @@ Corrector: Martin
 
 ![Diagrama_1](https://user-images.githubusercontent.com/23293753/197909532-d5b5c027-a6e9-4891-ab14-f975289d62f8.png)
 
+## Juego
+![juego](data/firstGame.gif)
+
 
 ## Lista de requerimientos *TODO*
 
