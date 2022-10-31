@@ -97,44 +97,8 @@ void fill_circle(Renderer &renderer, int cx, int cy, int radius, Uint8 r, Uint8 
 
     }
 }
-/*
-void drawCircle(Renderer& renderer, int32_t centreX, int32_t centreY, int32_t radius) {
-    Texture texture_ball(renderer, DATA_PATH "/grass.png");
-    renderer.SetDrawColor(255,255,255);
-    const int32_t diameter = (radius * 2);
 
-    int32_t x = (radius - 1);
-    int32_t y = 0;
-    int32_t tx = 1;
-    int32_t ty = 1;
-    int32_t error = (tx - diameter);
-
-    while (x >= y) {
-        // Each of the following renders an octant of the circle
-        renderer.DrawPoint(centreX + x, centreY - y);
-        renderer.DrawPoint(centreX + x, centreY + y);
-        renderer.DrawPoint(centreX - x, centreY - y);
-        renderer.DrawPoint(centreX - x, centreY + y);
-        renderer.DrawPoint(centreX + y, centreY - x);
-        renderer.DrawPoint(centreX + y, centreY + x);
-        renderer.DrawPoint(centreX - y, centreY - x);
-        renderer.DrawPoint(centreX - y, centreY + x);
-
-        if (error <= 0) {
-            ++y;
-            error += ty;
-            ty += 2;
-        } else if (error > 0) {
-            --x;
-            tx += 2;
-            error += (tx - diameter);
-        }
-    }
-}
-*/
-int main() try
-{
-
+int main() try {
     //Se inicia SDL y se crea una ventada y un render
     SDL sdl(SDL_INIT_VIDEO);
 
@@ -178,6 +142,8 @@ int main() try
     Texture texture_ground(renderer, DATA_PATH "/grass.png");
 // CREACION DE LA TEXTURA DE PELOTA
     Texture texture_ball(renderer, DATA_PATH "/ball.png");
+// CREACION DE LA TEXTURA DE ARCO
+    Texture texture_goal(renderer, DATA_PATH "/goal.png");
 
 
 
@@ -289,6 +255,8 @@ int main() try
         renderer.Clear();
         renderer.SetDrawColor(255, 255, 0); // (255, 255, 0, 0)
         renderer.Copy(texture_stadium);
+        renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(0,HEIGHT-180,100,140));
+        renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(540,HEIGHT-180,100,140), 0, NullOpt,SDL_FLIP_HORIZONTAL);
 
         // Draw ground
         //renderer.DrawLine(((SCALED_WIDTH / 2.0f) + edge.m_vertex1.x) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex1.y) * MET2PIX, ((SCALED_WIDTH / 2.0f) + edge.m_vertex2.x) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex2.y) * MET2PIX);
