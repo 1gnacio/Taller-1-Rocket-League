@@ -38,6 +38,9 @@ target_link_libraries(exampleMerged box2d SDL2pp)
 add_executable(game exampleGame.cpp)
 target_link_libraries(game box2d SDL2pp)
 
+add_executable(game2 exampleGame2.cpp)
+target_link_libraries(game2 box2d SDL2pp)
+
 add_executable(lobby
         main_lobby.cpp
         src/lobby/lobby.cpp
