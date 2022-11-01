@@ -26,77 +26,6 @@ using namespace SDL2pp;
 // EJE X {-4;4}
 // EJE Y {-3;3} -3 BORDE SUPERIOR / 3 BORDE INFERIOR
 // box2d trabaja en metros y sdl en pixeles.
-void set_pixel(Renderer &renderer, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-    renderer.SetDrawColor(r,g,b,a);
-    renderer.DrawPoint( x, y);
-}
-
-void draw_circle(Renderer &renderer , int n_cx, int n_cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-    // if the first pixel in the screen is represented by (0,0) (which is in sdl)
-    // remember that the beginning of the circle is not in the middle of the pixel
-    // but to the left-top from it:
-
-    double error = (double)-radius;
-    double x = (double)radius - 0.5;
-    double y = (double)0.5;
-    double cx = n_cx - 0.5;
-    double cy = n_cy - 0.5;
-
-    while (x >= y) {
-        set_pixel(renderer, (int)(cx + x), (int)(cy + y), r, g, b, a);
-        set_pixel(renderer, (int)(cx + y), (int)(cy + x), r, g, b, a);
-        if (x != 0) {
-            set_pixel(renderer, (int)(cx - x), (int)(cy + y), r, g, b, a);
-            set_pixel(renderer, (int)(cx + y), (int)(cy - x), r, g, b, a);
-        }
-        if (y != 0) {
-            set_pixel(renderer, (int)(cx + x), (int)(cy - y), r, g, b, a);
-            set_pixel(renderer, (int)(cx - y), (int)(cy + x), r, g, b, a);
-        }
-        if (x != 0 && y != 0) {
-            set_pixel(renderer, (int)(cx - x), (int)(cy - y), r, g, b, a);
-            set_pixel(renderer, (int)(cx - y), (int)(cy - x), r, g, b, a);
-        }
-
-        error += y;
-        ++y;
-        error += y;
-
-        if (error >= 0) {
-            --x;
-            error -= x;
-            error -= x;
-        }
-    }
-}
-void fill_circle(Renderer &renderer, int cx, int cy, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-    // Note that there is more to altering the bitrate of this
-    // method than just changing this value.  See how pixels are
-    // altered at the following web page for tips:
-    //   http://www.libsdl.org/intro.en/usingvideo.html
-    static const int BPP = 4;
-
-    //double ra = (double)radius;
-
-    for (double dy = 1; dy <= radius; dy += 1.0)
-    {
-        // This loop is unrolled a bit, only iterating through half of the
-        // height of the circle.  The result is used to draw a scan line and
-        // its mirror image below it.
-
-        // The following formula has been simplified from our original.  We
-        // are using half of the width of the circle because we are provided
-        // with a center and we need left/right coordinates.
-
-        double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
-        int x = cx - dx;
-        renderer.SetDrawColor(r, g, b, a);
-        renderer.DrawLine(cx - dx, cy + dy - radius, cx + dx, cy + dy - radius);
-        renderer.DrawLine(cx - dx, cy - dy + radius, cx + dx, cy - dy + radius);
-
-    }
-}
 
 int main() try {
     //Se inicia SDL y se crea una ventada y un render
@@ -112,9 +41,6 @@ int main() try {
     b2Vec2 gravity(0.0f, 9.8f); // new b2World(gravity));
     b2World world(gravity);
 
-
-
-    
     // cartesian origin
     float ground_x = 0.0f;
     float ground_y = 0.0f;
@@ -149,15 +75,12 @@ int main() try {
     edge.SetTwoSided(b2Vec2(-4,-3), b2Vec2(4,-3)); // Tamaño del piso
     edgeFixtureDef.shape = &edge;
     groundLine4->CreateFixture(&edgeFixtureDef);
-/*
-*/
-
 
 
 // CREACION DE LA TEXTURA DE FONDO
     Texture texture_stadium(renderer, DATA_PATH "/stadium2.png");
 // CREACION DE LA TEXTURA DE CAJA
-    Texture texture_box(renderer, DATA_PATH "/box.jpg");
+    Texture texture_box(renderer, DATA_PATH "/car.png");
 // CREACION DE LA TEXTURA DEL PISO
     Texture texture_ground(renderer, DATA_PATH "/grass.png");
 // CREACION DE LA TEXTURA DE PELOTA
@@ -170,15 +93,15 @@ int main() try {
 //CREACION DE LA CAJA EN BOX2D
 
     // cartesian origin box
-    float x_box = 0.0f;
+    float x_box = 2.0f;
     float y_box = -2.0f;
 
     // size of box
-    float w_box = 0.5;
+    float w_box = 1.2;
     float h_box = 0.5;
 
     // angle of the box
-    float angle_box = 45.0f; //45.0f;
+    float angle_box = 0.0f; //45.0f;
 
     // Box
     Rect box;
@@ -186,13 +109,13 @@ int main() try {
 
     b2BodyDef boxBodyDef;
     boxBodyDef.type = b2_dynamicBody;
-    boxBodyDef.angle = 45; // flips the whole thing -> 180 grad drehung
+    boxBodyDef.angle = angle_box; // flips the whole thing -> 180 grad drehung
     boxBodyDef.position.Set(x_box, y_box);
-    b2Vec2 vel;
-   // vel.Set(0f, 0.1f);
+    b2Vec2 vel0;
+    vel0.Set(0.0f, 0.0f);
 
     body = world.CreateBody(&boxBodyDef);
-    //body->SetLinearVelocity(vel);
+   // body->SetLinearVelocity(vel0);
 
     b2PolygonShape dynamicBox;
     dynamicBox.SetAsBox(w_box/2.0f,h_box/2.0f); // toma la mitad del tamaño
@@ -200,23 +123,20 @@ int main() try {
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &dynamicBox;
     fixtureDef.density = 1;
-    fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = 0.7f;
+    fixtureDef.friction = 0.2f;
+    fixtureDef.restitution = 0.0f;
     body->CreateFixture(&fixtureDef);
 
     // box: convert Metres back to Pixels for width and height
     box.w = w_box * MET2PIX;
     box.h = h_box * MET2PIX;
 
-//CREACION PELOTA EN BOX2D
+    //CREACION PELOTA EN BOX2D
+
     // Ball
-    // cartesian origin box
     float x_ball = -0.0f;
     float y_ball = -2.8f;
-
-    // size of ball
     float radius = 0.2;
-
 
     b2Body* circle;
     b2BodyDef circleDef;
@@ -225,40 +145,52 @@ int main() try {
     circle = world.CreateBody(&circleDef);
 
     b2CircleShape shapeCircle;
-    //shapeCircle.m_p.Set(x_ball, y_ball);
     shapeCircle.m_radius = radius;
 
     b2FixtureDef fixtureCircle;
     fixtureCircle.shape = &shapeCircle;
-    fixtureCircle.density = 1;
-    fixtureCircle.friction = 0.5f;
-    fixtureCircle.restitution = 0.9f; //  Capacidad de rebote
+    fixtureCircle.density = 0.5;
+    fixtureCircle.friction = 0.3f;
+    fixtureCircle.restitution = 0.6f; //  Capacidad de rebote
     circle->CreateFixture(&fixtureCircle);
     bool close_game = false;
-    SDL_Event event;
-
+    bool is_running_right = false;
+    bool is_running_left = false;
+    bool is_jump = false;
+    bool jumped = false;
+    b2Vec2 velLeft(-2.0f,0.0f);
+    b2Vec2 velRight(2.0f,0.0f);
+    b2Vec2 velJump(0.0f,-3.0f);
+    int src_y = 35;
     // The game Loop
-    while(close_game != true)
-    {
+    while(close_game != true) {
+        SDL_Event event;
         b2Vec2 posBox = body->GetPosition(); // Body from box
         float angle = body->GetAngle(); // Body from box
         b2Vec2 posBall = circle->GetPosition();
-
+        is_jump = false;
         //RAD2DEG
         angle = angle*RAD2DEG;
-        while(SDL_PollEvent(&event))
-        {
+        while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT)
                 close_game = true;
-
             else if(event.key.keysym.sym == SDLK_ESCAPE)
                 close_game = true;
-
-            else if (event.key.keysym.sym == SDLK_r)
-            {
-                body->SetTransform(b2Vec2(x_box, y_box), angle_box);
-                body->SetLinearVelocity(vel);
-                break;
+            else if (event.type == SDL_KEYDOWN) {
+                switch(event.key.keysym.sym) {
+                    case SDLK_RIGHT: is_running_right = true; break;
+                    case SDLK_LEFT: is_running_left = true; break;
+                    case SDLK_SPACE:
+                        if(!jumped ){
+                            is_jump = true;
+                            break;
+                        }
+                }
+            } else if (event.type == SDL_KEYUP) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_RIGHT: is_running_right = false; break;
+                    case SDLK_LEFT: is_running_left = false; break;
+                }
             }
         }
 
@@ -266,22 +198,29 @@ int main() try {
         box.x = ((SCALED_WIDTH / 2.0f) + posBox.x) * MET2PIX  - box.w / 2;
         box.y = ((SCALED_HEIGHT / 2.0f) + posBox.y) * MET2PIX - box.h / 2;
 
-        //cout << "X of box:" << box.x;
-       // cout << "  - Y of box:" <<  box.y << endl;
+        if (is_running_left) {
+            body->ApplyForceToCenter(velLeft,SDL_TRUE);
+            src_y = 35;
+
+        } else if (is_running_right) {
+            body->ApplyForceToCenter(velRight,SDL_TRUE);
+            src_y = 155;
+
+        }
+        if(is_jump && !jumped){
+            body->ApplyLinearImpulse(velJump, posBox, SDL_TRUE);
+            jumped = true;
+        }
+        if(box.y == 398){
+            jumped = false;
+        }
 
         renderer.Clear();
         renderer.SetDrawColor(255, 255, 0); // (255, 255, 0, 0)
         renderer.Copy(texture_stadium);
         renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(0,HEIGHT-180,100,140));
         renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(540,HEIGHT-180,100,140), 0, NullOpt,SDL_FLIP_HORIZONTAL);
-        //cout << groundVertical1.shape.m_vertex1.x << endl;
-        // Draw ground
-        //renderer.DrawLine(((SCALED_WIDTH / 2.0f) + groundVertical1) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex1.y) * MET2PIX, ((SCALED_WIDTH / 2.0f) + edge.m_vertex2.x) * MET2PIX, ((SCALED_HEIGHT / 2.0f) + edge.m_vertex2.y) * MET2PIX);
-        //renderer.DrawLine(65, 200, 400, 200);
-        //renderer.SetDrawColor(0, 255, 0);
-        //renderer.Copy(texture_ground, NullOpt, platform);
-
-        renderer.Copy(texture_box, NullOpt, box, angle, NullOpt, SDL_FLIP_NONE);
+        renderer.Copy(texture_box, Rect(30,src_y,175,50), box, angle, NullOpt, SDL_FLIP_NONE);
         for(int i = 0; i < 9; i++){
             renderer.Copy(texture_ground, Rect(15,59,10,13), Rect(0+(i*(MET2PIX/2+32)), 5.5*MET2PIX, MET2PIX/2+32, MET2PIX/2));
         }
