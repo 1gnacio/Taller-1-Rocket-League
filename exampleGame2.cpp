@@ -80,7 +80,7 @@ int main() try {
 // CREACION DE LA TEXTURA DE FONDO
     Texture texture_stadium(renderer, DATA_PATH "/stadium2.png");
 // CREACION DE LA TEXTURA DE CAJA
-    Texture texture_box(renderer, DATA_PATH "/car.png");
+    Texture texture_box(renderer, Surface(DATA_PATH "/car.png").SetColorKey(true,10701220));
 // CREACION DE LA TEXTURA DEL PISO
     Texture texture_ground(renderer, DATA_PATH "/grass.png");
 // CREACION DE LA TEXTURA DE PELOTA
@@ -200,11 +200,11 @@ int main() try {
 
         if (is_running_left) {
             body->ApplyForceToCenter(velLeft,SDL_TRUE);
-            src_y = 35;
+            src_y = 30;
 
         } else if (is_running_right) {
             body->ApplyForceToCenter(velRight,SDL_TRUE);
-            src_y = 155;
+            src_y = 125;
 
         }
         if(is_jump && !jumped){
@@ -220,7 +220,7 @@ int main() try {
         renderer.Copy(texture_stadium);
         renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(0,HEIGHT-180,100,140));
         renderer.Copy(texture_goal, Rect(15,0,200,400), Rect(540,HEIGHT-180,100,140), 0, NullOpt,SDL_FLIP_HORIZONTAL);
-        renderer.Copy(texture_box, Rect(30,src_y,175,50), box, angle, NullOpt, SDL_FLIP_NONE);
+        renderer.Copy(texture_box, Rect(15,src_y,145,35), box, angle, NullOpt, SDL_FLIP_NONE);
         for(int i = 0; i < 9; i++){
             renderer.Copy(texture_ground, Rect(15,59,10,13), Rect(0+(i*(MET2PIX/2+32)), 5.5*MET2PIX, MET2PIX/2+32, MET2PIX/2));
         }
