@@ -1,5 +1,0 @@
-//
-// Created by ignacio on 30/10/22.
-//
-
-#include "ball_response.h"

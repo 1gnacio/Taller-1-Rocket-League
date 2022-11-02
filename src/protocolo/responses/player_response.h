@@ -6,6 +6,7 @@
 #define TALLER_1_ROCKET_LEAGUE_PLAYERRESPONSE_H
 
 #include <string>
+#include <vector>
 
 class PlayerResponse {
 private:
@@ -19,7 +20,7 @@ private:
     bool isAccelerating;
 
 public:
-    std::string serialize();
+    std::vector<char> serialize();
 };
 
 
