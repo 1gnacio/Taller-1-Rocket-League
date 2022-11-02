@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "protocol_commands.h"
+#include "../protocolo/commands/strategies/create_parameter_strategy.h"
 
 ProtocolCommands::ProtocolCommands() : values(),
         serializedCommands({
@@ -22,9 +23,25 @@ ProtocolCommands::ProtocolCommands() : values(),
             {this->values.SERIALIZED_LEFT_RELEASE, this->values.DESERIALIZED_LEFT_RELEASE},
             {this->values.SERIALIZED_RIGHT_PUSHED, this->values.DESERIALIZED_RIGHT_PUSHED},
             {this->values.SERIALIZED_RIGHT_RELEASE, this->values.DESERIALIZED_RIGHT_RELEASE}
-        }) {}
+        }),
+        parameteredCommands({this->values.DESERIALIZED_JOIN, this->values.DESERIALIZED_CREATE}){
+}
 
-Command ProtocolCommands::createMovementCommand(std::string& value) {
+Command ProtocolCommands::createParameteredCommand(const char serialized,
+                                                   const std::string &deserialized,
+                                                   std::string &arguments) {
+    if (deserialized == this->values.DESERIALIZED_CREATE) {
+        CreateParameterStrategy parameters;
+        return Command(serialized,
+                       deserialized,
+                       parameters.firstParameter(arguments),
+                       parameters.secondParameter(arguments));
+    }
+
+    return Command(serialized, deserialized, arguments);
+}
+
+Command ProtocolCommands::createCommand(std::string &value) {
     auto position = this->serializedCommands.find(value);
 
     if (position == this->serializedCommands.end()) {
@@ -34,31 +51,30 @@ Command ProtocolCommands::createMovementCommand(std::string& value) {
     return Command(position->second, position->first);
 }
 
-Command ProtocolCommands::createMovementCommand(const char value) {
-    auto position = this->deserializedCommands.find(value);
+Command ProtocolCommands::createSimpleCommand(const char serialized, const std::string &deserialized) const {
+    return Command(serialized, deserialized);
+}
+
+Command ProtocolCommands::createCommand(std::vector<char> serializedCommand) {
+    auto position = this->deserializedCommands.find(serializedCommand[0]);
 
     if (position == this->deserializedCommands.end()) {
         throw std::runtime_error("Command not found");
     }
 
-    return Command(position->first, position->second);
-}
+    auto parametered = std::find(this->parameteredCommands.begin(),
+                                                            this->parameteredCommands.end(),
+                                                            position->second);
 
-// en principio las secuencias de comandos solo se reciben mientras el jugador esta en partida
-// manipulando el auto
-std::vector <Command> ProtocolCommands::createCommandSequence(std::vector <std::string>& receivedInput) {
-    std::vector<Command> result;
-
-    if (!receivedInput.empty()) {
-        std::transform(receivedInput.begin(),
-                       receivedInput.end(),
-                       result.begin(),
-                       [this] (std::string& command) {
-                           return this->createMovementCommand(command);
-                       });
+    if (parametered == this->parameteredCommands.end()) {
+        return this->createSimpleCommand(position->first,
+                                         position->second);
     }
 
-    result.emplace_back(this->values.SERIALIZED_NOP, this->values.DESERIALIZED_NOP);
+    std::string arguments(serializedCommand.begin() + 1,
+                          serializedCommand.end());
 
-    return result;
+    return this->createParameteredCommand(position->first,
+                                          position->second,
+                                          arguments);
 }

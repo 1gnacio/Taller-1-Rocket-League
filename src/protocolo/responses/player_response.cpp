@@ -4,7 +4,7 @@
 
 #include "player_response.h"
 
-std::string PlayerResponse::serialize() {
+std::vector<char> PlayerResponse::serialize() {
     // TODO serialize player response
-    return std::string;
+    return std::vector<char>();
 }
