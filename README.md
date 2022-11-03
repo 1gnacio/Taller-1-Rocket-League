@@ -13,7 +13,7 @@
 
 2 - Execute (desde la carpeta build)
 
-    ./testing
+    ./game2
 
 ## Grupo 1
 
