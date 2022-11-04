@@ -10,6 +10,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS "../src/*/*.h" "../src/*/*.cpp")
 add_executable(Google_Tests_run
         test1.cpp
+        test2.cpp
         ${sources}
         )
 target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets)
