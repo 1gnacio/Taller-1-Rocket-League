@@ -14,7 +14,9 @@ void Client::run(const char *hostname, const char *servname) {
     while (!protocolo.isConnectionClosed()
             && std::getline(std::cin, input)
             && input != "fin") {
-        Command sentCommand = protocolo.createCommand(input);
+        ProtocolCommands commands;
+
+        Command sentCommand = commands.createCommand(input);
 
         protocolo.sendCommand(socket, sentCommand);
 
@@ -25,22 +27,22 @@ void Client::run(const char *hostname, const char *servname) {
 }
 
 void Client::resolveResponse(const Command& sentCommand, const Response& response) {
-    AvailableCommands commands;
-    bool statusOk = response.getStatus() == "OK";
-    std::string result;
-
-    if (sentCommand.getValue() == commands.createValue) {
-        result = statusOk ? "Creación exitosa" : "Creación fallida";
-    } else if (sentCommand.getValue() == commands.joinValue) {
-        result = statusOk ? "Unión exitosa" : "Unión fallida";
-    }
-
-    if (!result.empty()) {
-        std::cout << result << std::endl;
-    }
-
-    if (!response.getMessage().empty()) {
-        std::cout << response.getMessage() << std::endl;
-    }
+    ProtocolCommands commands;
+//    bool statusOk = response.getStatus() == "OK";
+//    std::string result;
+//
+//    if (sentCommand.getValue() == commands.createValue) {
+//        result = statusOk ? "Creación exitosa" : "Creación fallida";
+//    } else if (sentCommand.getValue() == commands.joinValue) {
+//        result = statusOk ? "Unión exitosa" : "Unión fallida";
+//    }
+//
+//    if (!result.empty()) {
+//        std::cout << result << std::endl;
+//    }
+//
+//    if (!response.getMessage().empty()) {
+//        std::cout << response.getMessage() << std::endl;
+//    }
 }
 

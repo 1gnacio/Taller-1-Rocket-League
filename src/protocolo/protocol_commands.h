@@ -10,7 +10,6 @@
 #include <vector>
 #include "commands/command.h"
 #include "../constants/command_values.h"
-#include "../protocolo/commands/strategies/base_parameter_strategy.h"
 
 class ProtocolCommands {
 private:

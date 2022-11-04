@@ -2,7 +2,6 @@
 #define ROOM_H
 
 #include <string>
-#include "../common_src/response.h"
 
 class Room {
  private:

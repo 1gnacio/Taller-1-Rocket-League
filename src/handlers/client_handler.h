@@ -7,10 +7,8 @@
 
 #include <thread>
 #include <atomic>
-#include "../common_src/command.h"
-#include "../common_src/response.h"
-#include "../common_src/socket.h"
-#include "game_model_monitor.h"
+#include "../sockets/socket.h"
+#include "../game_model/game_model_monitor.h"
 
 class ClientHandler {
 private:

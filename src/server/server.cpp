@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include "server.h"
 #include "../sockets/liberror.h"
-#include "../sockets/socket_closed_exception.h"
+#include "../exceptions/socket_closed_exception.h"
 
 Server::Server(const char* servname) : monitor(), accepter(servname) {}
 

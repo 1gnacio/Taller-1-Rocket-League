@@ -5,7 +5,6 @@
 #include <set>
 #include <string>
 #include "../game_entities/room.h"
-#include "../common_src/response.h"
 
 class GameModel {
  private:

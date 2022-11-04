@@ -8,16 +8,16 @@
 #include <vector>
 #include <string>
 #include <mutex>
-#include "../common_src/command.h"
-#include "../common_src/response.h"
 #include "game_model.h"
-#include "../common_src/available_commands.h"
+#include "../protocolo/responses/response.h"
+#include "../protocolo/commands/command.h"
+#include "../protocolo/protocol_commands.h"
 
 class GameModelMonitor {
  private:
     std::mutex mutex;
     GameModel model;
-    AvailableCommands commands;
+    CommandValues commands;
 
     std::vector<std::string> serializedRooms();
     Response listRooms();

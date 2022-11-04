@@ -1,8 +1,8 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "../common_src/command.h"
-#include "../common_src/response.h"
+#include "../protocolo/commands/command.h"
+#include "../protocolo/responses/response.h"
 
 class Client {
 private:

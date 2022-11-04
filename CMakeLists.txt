@@ -58,3 +58,5 @@ add_executable(lobby
         )
 
  target_link_libraries(lobby Qt5::Widgets)
+
+add_subdirectory(google_tests)
