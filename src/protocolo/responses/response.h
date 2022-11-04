@@ -9,14 +9,19 @@
 #include <vector>
 #include "ball_response.h"
 #include "player_response.h"
+#include "lobby_response.h"
 
 class Response {
 private:
     // otras posibles respuestas: partida, lobby ...
     BallResponse ballResponse;
     std::vector<PlayerResponse> playerResponse;
+    LobbyResponse lobbyResponse;
+    std::string responseStatus;
+    std::string responseMessage;
 public:
     Response(std::vector<char> serializedResponse);
+    Response(const char* responseStatus, const char* responseMessage);
 
     std::vector<char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta

@@ -6,7 +6,6 @@
 #define TALLER_1_ROCKET_LEAGUE_COMMAND_H
 
 #include <string>
-#include "strategies/base_parameter_strategy.h"
 
 class Command {
 private:
@@ -22,7 +21,7 @@ public:
     // unirse
     Command(const char serialized,
             const std::string& deserialized,
-            const std::string &firstParameter);
+            const std::string& firstParameter);
 
     // crear
     Command(const char serialized,
@@ -31,6 +30,9 @@ public:
             const std::string& secondParameter);
 
     char serialize();
+    std::string getValue() const { return this->deserialized; }
+    std::string getFirstParameter() const { return this->firstParameter; }
+    std::string getSecondParameter() const { return this->secondParameter; }
 
     // hago los comandos movibles
     Command(Command&&);

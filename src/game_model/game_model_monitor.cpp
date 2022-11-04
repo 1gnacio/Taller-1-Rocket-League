@@ -24,34 +24,32 @@ Response GameModelMonitor::listRooms() {
                 { return a + "\n" + b; });
     }
 
-    return std::move(Response(
-            result.c_str(),
-            "OK"));
+    return std::move(Response("OK", result.c_str()));
 }
 
 Response GameModelMonitor::createRoom(const char* name, uint8_t requiredPlayers) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    return std::move(Response(this->model.createRoom(name, requiredPlayers).c_str()));
+    return std::move(Response("OK", this->model.createRoom(name, requiredPlayers).c_str()));
 }
 
 Response GameModelMonitor::joinRoom(const char* name) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    return std::move(Response(this->model.joinRoom(name).c_str()));
+    return std::move(Response("OK", this->model.joinRoom(name).c_str()));
 }
 
 Response GameModelMonitor::applyLogic(const Command& command) {
-    if (command.getValue() == this->commands.listValue) {
+    if (command.getValue() == this->commands.DESERIALIZED_LIST)
         return std::move(this->listRooms());
-    } else if (command.getValue() == this->commands.createValue) {
+
+    if (command.getValue() == this->commands.DESERIALIZED_CREATE)
         return std::move(this->createRoom(
-                command.getSecondArgument().c_str(),
-                std::stoi(command.getFirstArgument())));
-    } else if (command.getValue() == this->commands.joinValue) {
-        return std::move(this->joinRoom(
-                command.getFirstArgument().c_str()));
-    } else {
-        return Response("ERROR");
-    }
+                command.getSecondParameter().c_str(),
+                std::stoi(command.getFirstParameter())));
+
+    if (command.getValue() == this->commands.DESERIALIZED_JOIN)
+        return std::move(this->joinRoom(command.getFirstParameter().c_str()));
+
+    return {"ERROR", ""};
 }

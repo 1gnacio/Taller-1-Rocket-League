@@ -4,12 +4,9 @@
 #include <atomic>
 #include <memory>
 #include <vector>
-#include "../common_src/socket.h"
-#include "../common_src/command.h"
-#include "../common_src/protocolo.h"
-#include "game_model_monitor.h"
-#include "client_handler.h"
-
+#include "../sockets/socket.h"
+#include "../game_model/game_model_monitor.h"
+#include "../handlers/client_handler.h"
 
 class Server {
 private:

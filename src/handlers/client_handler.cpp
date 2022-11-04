@@ -1,8 +1,8 @@
 #include <sys/socket.h>
 #include <utility>
 #include "client_handler.h"
-#include "../common_src/protocolo.h"
-#include "../common_src/socket_closed_exception.h"
+#include "../protocolo/protocolo.h"
+#include "../exceptions/socket_closed_exception.h"
 
 ClientHandler::ClientHandler(Socket& socket, GameModelMonitor& monitor) :
     hasFinished(false),
@@ -24,12 +24,12 @@ void ClientHandler::handle() {
     Protocolo protocolo;
 
     try{
-        while (!this->hasFinished && !protocolo.connectionclosed()) {
-            Command command = protocolo.receiveCommand(this->client);
+        while (!this->hasFinished && !protocolo.isConnectionClosed()) {
+            Command command = protocolo.receiveCommand();
 
             Response response = this->monitor.applyLogic(command);
 
-            protocolo.sendResponse(this->client, response);
+            protocolo.sendResponse(response);
         }
     } catch (SocketClosedException& e) {
         // si se cierra la conexion con el cliente marco el hilo como terminado

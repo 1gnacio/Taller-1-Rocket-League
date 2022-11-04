@@ -34,6 +34,14 @@ Protocolo::Protocolo() {}
 //    }
 //}
 
+void Protocolo::sendResponse(Response &response) {
+    //TODO enviar respuesta a todos los clientes
+}
+
+Command Protocolo::receiveCommand() {
+    //TODO hacer pop de la lista de comandos recibidos
+}
+
 void Protocolo::sendCommand(Socket &socket, Command &command) {
     if (this->connectionClosed) {
         return;
@@ -49,7 +57,7 @@ void Protocolo::sendCommand(Socket &socket, Command &command) {
 Response Protocolo::receiveResponse(Socket &socket) {
     if (this->connectionClosed) {
         // TODO: definir comportamiento cuando se cierra la conexion antes de recibir respuesta
-        return Response();
+        return Response(std::vector<char>());
     }
 
     std::vector<char> serializedResponse;
@@ -66,7 +74,7 @@ Response Protocolo::receiveResponse(Socket &socket) {
                         &this->connectionClosed);
     }
 
-    return Response(serializedResponse)
+    return Response(serializedResponse);
 }
 
 bool Protocolo::isEndOfCommands(char serializedCommand) {
