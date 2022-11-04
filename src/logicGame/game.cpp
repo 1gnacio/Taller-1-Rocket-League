@@ -13,8 +13,8 @@ int Game::startGame() {
 void Game::updateModel() {
     logic.update(inputQueue);
 }
-void Game::addCommand(std::byte command) {
-    inputQueue.push(command);
+void Game::addCommand(Command command) {
+    inputQueue.push(std::move(command));
 }
 void Game::removeLastCommand() {
     inputQueue.pop();

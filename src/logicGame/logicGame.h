@@ -2,13 +2,13 @@
 #define ROCKET_LEAGUE_LOGICGAME_H
 
 #include <queue>
-
+#include "../protocolo/commands/command.h"
 class LogicGame {
 public:
 
     LogicGame();
-    void update(std::queue<std::byte> &queue);
-    void clearQueue(std::queue<std::byte> &queue);
+    void update(std::queue<Command> &queue);
+    void clearQueue(std::queue<Command> &queue);
 };
 #endif //ROCKET_LEAGUE_LOGICGAME_H
 

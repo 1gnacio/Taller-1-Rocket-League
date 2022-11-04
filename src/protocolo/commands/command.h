@@ -13,6 +13,7 @@ private:
     std::string deserialized;
     std::string firstParameter;
     std::string secondParameter;
+    uint id;
 public:
     // movimientos, acciones, listar
     Command(const char serialized,
@@ -26,6 +27,23 @@ public:
     // crear
     Command(const char serialized,
             const std::string& deserialized,
+            const std::string& firstParameter,
+            const std::string& secondParameter);
+
+    Command(const char serialized,
+            const std::string& deserialized,
+            const uint &id);
+
+    // unirse
+    Command(const char serialized,
+            const std::string& deserialized,
+            const uint &id,
+            const std::string& firstParameter);
+
+    // crear
+    Command(const char serialized,
+            const std::string& deserialized,
+            const uint &id,
             const std::string& firstParameter,
             const std::string& secondParameter);
 

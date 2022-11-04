@@ -4,20 +4,21 @@
 #include "logicGame.h"
 #include <queue>
 #include <vector>
+#include "../protocolo/commands/command.h"
 
 
 class Game {
 private:
     LogicGame logic;
-    std::queue<std::byte> inputQueue;
-    std::queue<std::byte> answerQueue;
+    std::queue<Command> inputQueue;
+    std::queue<Command> answerQueue;
 
     void removeLastCommand();
 public:
     Game();
     int startGame();
     void updateModel();
-    void addCommand(std::byte);
+    void addCommand(Command);
     int numberOfCommand();
 };
 

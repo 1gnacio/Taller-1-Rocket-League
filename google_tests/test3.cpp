@@ -3,9 +3,8 @@
 
 TEST(logicaDeJuego, cantidadDeComandosCorrectosLuegoDeAñadirlos){
     Game game;
-    game.addCommand(std::byte(0));
-    game.addCommand(std::byte(1));
-    game.addCommand(std::byte(3));
+    game.addCommand(Command(0x31, "CREAR", 123256,"Partida1", "6"));
+    game.addCommand(Command(0x32, "UNIRSE", 12356,"Partida1"));
 
-    EXPECT_EQ(3,game.numberOfCommand());
+    EXPECT_EQ(2,game.numberOfCommand());
 }

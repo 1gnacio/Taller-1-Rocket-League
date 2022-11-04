@@ -3,9 +3,7 @@
 
 TEST(logicaDeJuego, sinComandosEnColaLuegoDeActualizar){
     Game game;
-    game.addCommand(std::byte(0));
-    game.addCommand(std::byte(1));
-    game.addCommand(std::byte(3));
+    Command(0x32,"UNIRSE","partida1");
 
     game.updateModel();
 
