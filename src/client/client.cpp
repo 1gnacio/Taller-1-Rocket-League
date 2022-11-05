@@ -1,48 +1,37 @@
 #include <iostream>
 #include <string>
 #include "client.h"
-#include "../sockets/socket.h"
-#include "../protocolo/protocolo.h"
 
-void Client::run(const char *hostname, const char *servname) {
-    Socket socket(hostname, servname);
+// hilos:
 
-    Protocolo protocolo;
+//       uno que dibuja (hilo principal), pop respuestas
+//       otro que lee de entrada estandar y arma los comandos, push comandos
+//       otro que envia los comandos, pop comandos
+//       y otro que recibe las respuestas, push respuestas
 
-    std::string input;
+//       hay una cola de comandos y otra de respuestas, ambas compartidas
+Client::Client(const char *hostname, const char *servname) :
+isRunning(true),
+socket(hostname, servname),
+cQueue(),
+rQueue(),
+senderHandler(socket, cQueue, SENDER),
+receiverHandler(socket, rQueue, RECEIVER) {}
 
-    while (!protocolo.isConnectionClosed()
-            && std::getline(std::cin, input)
-            && input != "fin") {
-        ProtocolCommands commands;
+void Client::readStandardInput() {
+    // SDL leer entrada estandar
 
-        Command sentCommand = commands.createCommand(input);
-
-        protocolo.sendCommand(socket, sentCommand);
-
-        Response response = protocolo.receiveResponse(socket);
-
-        this->resolveResponse(sentCommand, response);
-    }
+    // una vez capturada la entrada y creado el comando correspondiente, hacer push a la cola
+    ProtocolCommands makeCommands;
+    Command c = makeCommands.createCommand((std::string &) "LEFT");
+    cQueue.push(c);
 }
 
-void Client::resolveResponse(const Command& sentCommand, const Response& response) {
-    ProtocolCommands commands;
-//    bool statusOk = response.getStatus() == "OK";
-//    std::string result;
-//
-//    if (sentCommand.getValue() == commands.createValue) {
-//        result = statusOk ? "Creación exitosa" : "Creación fallida";
-//    } else if (sentCommand.getValue() == commands.joinValue) {
-//        result = statusOk ? "Unión exitosa" : "Unión fallida";
-//    }
-//
-//    if (!result.empty()) {
-//        std::cout << result << std::endl;
-//    }
-//
-//    if (!response.getMessage().empty()) {
-//        std::cout << response.getMessage() << std::endl;
-//    }
+void Client::run() {
+    std::thread standardInput(&Client::readStandardInput, this);
+    while (this->isRunning) {
+        Response r = this->rQueue.pop();
+        // dibujar
+    }
 }
 

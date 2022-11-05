@@ -6,6 +6,16 @@
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
 
+
+// hilos:
+// uno que se queda esperando la 'q' de entrada estandar (hilo principal)
+// uno que acepte clientes nuevos
+// uno por cliente que reciba comandos y haga push a la cola de comandos recibidos
+// uno por cliente que haga push a cada cola de respuestas enviadas de cada cliente
+//
+// colas:
+// hay 1 cola de comandos compartida por cada hilo que recibe comandos
+// hay 1 cola de respuestas por cada hilo que recibe respuestas
 Server::Server(const char* servname) : monitor(), accepter(servname) {}
 
 Socket Server::acceptClient() {
@@ -39,24 +49,18 @@ void Server::acceptClients() {
 }
 
 void Server::stopHandlers() {
-    for (auto & handler : this->clientHandlers) {
-        handler->stopHandler();
-    }
-}
-
-bool waitIfFinished(std::unique_ptr<ClientHandler>& handler) {
-    return handler->finished();
+    this->sendResponseHandler.stopHandler();
+    this->receiveCommandHandler.stopHandler();
 }
 
 void Server::cleanFinishedHandlers() {
-    this->clientHandlers.erase(std::remove_if(this->clientHandlers.begin(),
-                                              this->clientHandlers.end(),
-                                              waitIfFinished),
-                                              this->clientHandlers.end());
+    this->sendResponseHandler.cleanFinishedHandlers();
+    this->receiveCommandHandler.cleanFinishedHandlers();
 }
 
 void Server::startHandler(Socket &socket) {
-    this->clientHandlers.push_back(std::make_unique<ClientHandler>(socket, this->monitor));
+    this->receiveCommandHandler.addPlayer(socket);
+    this->sendResponseHandler.addPlayer(socket);
 }
 
 void Server::run() {

@@ -12,7 +12,8 @@ enum Mode {
 class CommandHandler {
 private:
     bool hasFinished;
-    CommandQueue queue;
+    std::mutex mutex;
+    CommandQueue& queue;
     Protocolo protocolo;
     Socket socket;
     std::thread handler;
@@ -21,13 +22,15 @@ private:
 
     void handleReceive();
 public:
-    CommandHandler(Socket& socket, Mode mode);
+    CommandHandler(Socket& socket, CommandQueue& queue, Mode mode);
 
     void push(Command& command);
 
     Command pop();
 
     void stopHandler();
+
+    bool isFinished();
 
     ~CommandHandler();
 };

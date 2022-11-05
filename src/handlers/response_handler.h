@@ -17,7 +17,7 @@ enum Mode {
 
 class ResponseHandler {
 private:
-    ResponseQueue queue;
+    ResponseQueue& queue;
     Socket socket;
     bool hasFinished;
     Protocolo protocolo;
@@ -27,13 +27,15 @@ private:
     void handleSend();
 
 public:
-    ResponseHandler(Socket& socket, Mode mode);
+    ResponseHandler(Socket& socket, ResponseQueue& queue, Mode mode);
 
     void push(Response& response);
 
     Response pop();
 
     void stopHandler();
+
+    bool isFinished();
 
     ~ResponseHandler();
 };

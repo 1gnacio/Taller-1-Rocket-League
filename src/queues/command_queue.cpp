@@ -1,12 +1,14 @@
 #include "command_queue.h"
 
-CommandQueue::CommandQueue() : commands(), protocolo() {}
+CommandQueue::CommandQueue() : commands() {}
 
 void CommandQueue::push(Command &command) {
+    std::lock_guard<std::mutex>(this->mutex);
     commands.push(std::move(command));
 }
 
 Command CommandQueue::pop() {
+    std::lock_guard<std::mutex>(this->mutex);
     if (!this->commands.empty()) {
         Command c = std::move(commands.front());
         commands.pop();

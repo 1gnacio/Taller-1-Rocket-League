@@ -6,14 +6,16 @@
 #include <vector>
 #include "../sockets/socket.h"
 #include "../game_model/game_model_monitor.h"
-#include "../handlers/client_handler.h"
+#include "../handlers/send_response_handler.h"
+#include "../handlers/receive_command_handler.h"
 
 class Server {
 private:
     std::atomic<bool> isClosed = false;
     GameModelMonitor monitor;
     Socket accepter;
-    std::vector<std::unique_ptr<ClientHandler>> clientHandlers;
+    SendResponseHandler sendResponseHandler;
+    ReceiveCommandHandler receiveCommandHandler;
 
     Socket acceptClient();
 

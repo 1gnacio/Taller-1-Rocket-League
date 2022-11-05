@@ -1,9 +1,9 @@
 #include <sys/socket.h>
 #include "command_handler.h"
 
-CommandHandler::CommandHandler(Socket &socket, Mode mode) :
+CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
 hasFinished(false),
-queue(),
+queue(queue),
 protocolo(),
 socket(std::move(socket)) {
     if (mode == RECEIVER) {
@@ -45,6 +45,10 @@ void CommandHandler::stopHandler() {
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
     }
+}
+
+bool CommandHandler::isFinished() {
+    return this->hasFinished;
 }
 
 CommandHandler::~CommandHandler() {

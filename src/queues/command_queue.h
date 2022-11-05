@@ -1,16 +1,14 @@
-//
-// Created by ignacio on 04/11/22.
-//
-
-#ifndef ROCKET_LEAGUE_COMMAND_QUEUE_H
-#define ROCKET_LEAGUE_COMMAND_QUEUE_H
+#ifndef COMMAND_QUEUE_H
+#define COMMAND_QUEUE_H
 
 #include <queue>
+#include <mutex>
 #include "../protocolo/commands/command.h"
 #include "../protocolo/protocolo.h"
 
 class CommandQueue {
 private:
+    std::mutex mutex;
     std::queue<Command> commands;
 public:
     CommandQueue();
@@ -20,5 +18,4 @@ public:
     Command pop();
 };
 
-
-#endif //ROCKET_LEAGUE_COMMAND_QUEUE_H
+#endif // COMMAND_QUEUE_H
