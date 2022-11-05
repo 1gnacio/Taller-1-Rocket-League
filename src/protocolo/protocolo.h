@@ -28,11 +28,11 @@ class Protocolo {
 
     bool isConnectionClosed();
 
-    // el servidor recibe comandos de todos los clientes a la vez, no tiene sentido pasarle un socket
-    Command receiveCommand();
+    // una instancia por hilo, recibe los comandos de un cliente
+    Command receiveCommand(Socket& socket);
 
-    // el servidor envia la respuesta a todos los clientes a la vez, no tiene sentido pasarle un socket
-    void sendResponse(Response& response);
+    // una instancia por hilo, envia la respuesta del servidor a un cliente
+    void sendResponse(Socket& socket, Response& response);
 
 };
 #endif  // COMMON_SRC_PROTOCOLO_H_

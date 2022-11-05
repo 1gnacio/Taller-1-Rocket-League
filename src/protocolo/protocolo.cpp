@@ -34,12 +34,14 @@ Protocolo::Protocolo() {}
 //    }
 //}
 
-void Protocolo::sendResponse(Response &response) {
+void Protocolo::sendResponse(Socket& socket, Response &response) {
     //TODO enviar respuesta a todos los clientes
 }
 
-Command Protocolo::receiveCommand() {
-    //TODO hacer pop de la lista de comandos recibidos
+Command Protocolo::receiveCommand(Socket& socket) {
+    if (!this->isConnectionClosed()) {
+        return {"NOP"};
+    }
 }
 
 void Protocolo::sendCommand(Socket &socket, Command &command) {
