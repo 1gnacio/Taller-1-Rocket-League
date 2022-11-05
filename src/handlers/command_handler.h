@@ -12,10 +12,9 @@ enum Mode {
 class CommandHandler {
 private:
     bool hasFinished;
-    std::mutex mutex;
     CommandQueue& queue;
     Protocolo protocolo;
-    Socket socket;
+    Socket& socket;
     std::thread handler;
 
     void handleSend();

@@ -1,9 +1,8 @@
-#include <sys/socket.h>
 #include "response_handler.h"
 
-ResponseHandler::ResponseHandler(Socket& socket, ResponseQueue& queue, Mode mode) :
-queue(queue),
-socket(std::move(socket)),
+ResponseHandler::ResponseHandler(Socket& socket, Mode mode) :
+queue(),
+socket(socket),
 hasFinished(false),
 protocolo()
 {
@@ -46,8 +45,6 @@ Response ResponseHandler::pop() {
 void ResponseHandler::stopHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
     }
 }
 
@@ -58,8 +55,6 @@ bool ResponseHandler::isFinished() {
 ResponseHandler::~ResponseHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
     }
 
     this->handler.join();
