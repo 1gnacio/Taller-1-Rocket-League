@@ -1,7 +1,3 @@
-//
-// Created by ignacio on 04/11/22.
-//
-
 #ifndef LOBBY_RESPONSE_H
 #define LOBBY_RESPONSE_H
 

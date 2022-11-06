@@ -28,7 +28,6 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 # end QT5
 
-#
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
 #
@@ -58,5 +57,86 @@ add_executable(lobby
         )
 
  target_link_libraries(lobby Qt5::Widgets)
+
+file(GLOB_RECURSE sources "../src/*/*.cpp")
+file(GLOB_RECURSE headers "../src/*/*.h")
+
+add_executable(game_client
+        client_main.cpp
+        src/client/client.cpp
+        src/client/client.h
+        src/handlers/server_connection.cpp
+        src/handlers/server_connection.h
+        src/protocolo/protocol_commands.cpp
+        src/protocolo/protocol_commands.h
+        src/sockets/socket.cpp
+        src/sockets/socket.h
+        src/queues/command_queue.cpp
+        src/queues/command_queue.h
+        src/handlers/command_handler.cpp
+        src/handlers/command_handler.h
+        src/handlers/response_handler.cpp
+        src/handlers/response_handler.h
+        src/protocolo/commands/strategies/create_parameter_strategy.cpp
+        src/protocolo/commands/strategies/create_parameter_strategy.h
+        src/protocolo/commands/command.cpp
+        src/protocolo/commands/command.h
+        src/sockets/resolver.cpp
+        src/sockets/resolver.h
+        src/sockets/liberror.cpp
+        src/sockets/liberror.h
+        src/protocolo/protocolo.h
+        src/protocolo/protocolo.cpp
+        src/queues/response_queue.cpp
+        src/queues/response_queue.h
+        src/sockets/resolvererror.cpp
+        src/sockets/resolvererror.h
+        src/protocolo/responses/response.cpp
+        src/protocolo/responses/response.h
+        )
+
+add_executable(game_server
+        server_main.cpp
+        src/server/server.cpp
+        src/server/server.h
+        src/handlers/server_connection.cpp
+        src/handlers/server_connection.h
+        src/protocolo/protocol_commands.cpp
+        src/protocolo/protocol_commands.h
+        src/sockets/socket.cpp
+        src/sockets/socket.h
+        src/queues/command_queue.cpp
+        src/queues/command_queue.h
+        src/handlers/command_handler.cpp
+        src/handlers/command_handler.h
+        src/handlers/response_handler.cpp
+        src/handlers/response_handler.h
+        src/protocolo/commands/strategies/create_parameter_strategy.cpp
+        src/protocolo/commands/strategies/create_parameter_strategy.h
+        src/protocolo/commands/command.cpp
+        src/protocolo/commands/command.h
+        src/sockets/resolver.cpp
+        src/sockets/resolver.h
+        src/sockets/liberror.cpp
+        src/sockets/liberror.h
+        src/protocolo/protocolo.h
+        src/protocolo/protocolo.cpp
+        src/queues/response_queue.cpp
+        src/queues/response_queue.h
+        src/sockets/resolvererror.cpp
+        src/sockets/resolvererror.h
+        src/protocolo/responses/response.cpp
+        src/protocolo/responses/response.h
+        src/game_model/game_model_monitor.cpp
+        src/game_model/game_model_monitor.h
+        src/handlers/server_endpoint.cpp
+        src/handlers/server_endpoint.h
+        src/handlers/client_connection.cpp
+        src/handlers/client_connection.h
+        src/game_model/game_model.cpp
+        src/game_model/game_model.h
+        src/game_entities/room.cpp
+        src/game_entities/room.h
+        )
 
 add_subdirectory(google_tests)

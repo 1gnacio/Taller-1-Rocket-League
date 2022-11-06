@@ -12,15 +12,15 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 Client::Client(const char *hostname, const char *servname) :
 isRunning(true),
-socket(hostname, servname),
-connection(this->socket) {}
+connection(hostname, servname) {}
 
 void Client::readStandardInput() {
     // SDL leer entrada estandar
 
     // una vez capturada la entrada y creado el comando correspondiente, hacer push a la cola
     ProtocolCommands makeCommands;
-    Command c = makeCommands.createCommand((std::string &) "LEFT");
+    std::string example = CommandValues().DESERIALIZED_NOP;
+    Command c = makeCommands.createCommand(example);
     this->connection.push(c);
 }
 
