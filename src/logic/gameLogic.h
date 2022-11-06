@@ -1,13 +1,13 @@
 #ifndef ROCKET_LEAGUE_LOGICGAME_H
 #define ROCKET_LEAGUE_LOGICGAME_H
 
-#include "logicBox.h"
+#include "boxLogic.h"
 #include "../protocolo/commands/command.h"
 #include "../protocolo/responses/response.h"
 
 class GameLogic {
 private:
-    LogicBox gamePhysics;
+    BoxLogic gamePhysics;
 
 public:
     GameLogic();

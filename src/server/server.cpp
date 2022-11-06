@@ -61,16 +61,19 @@ void Server::startHandler(Socket &socket) {
 }
 
 void Server::gameFlow(){
-    while(!this->isClosed) {
-        if(!endpoint.queueEmpty()) {
-            Command command = endpoint.pop();
-            logic.update(command);
-           endpoint.push(logic.getResponse());
-
-        } else {
-            logic.update();
-            endpoint.push(logic.getResponse());
+    try {
+        while(!this->isClosed) {
+            if (!endpoint.queueEmpty()) {
+                Command command = endpoint.pop();
+                logic.update(command);
+                endpoint.push(logic.getResponse());
+            } else {
+                logic.update();
+                endpoint.push(logic.getResponse());
+            }
         }
+    } catch (...) {
+        throw;
     }
 }
 

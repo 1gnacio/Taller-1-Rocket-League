@@ -139,8 +139,9 @@ add_executable(game_server
         src/game_entities/room.h
         src/logic/gameLogic.cpp
         src/logic/gameLogic.h
-        src/logic/logicBox.cpp
-        src/logic/logicBox.h
+        src/logic/boxLogic.cpp
+        src/logic/boxLogic.h
         )
+target_link_libraries(game_server box2d)
 
 add_subdirectory(google_tests)
