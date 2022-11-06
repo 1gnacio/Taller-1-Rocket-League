@@ -11,13 +11,10 @@
 
 class Protocolo {
  private:
-    ProtocolCommands protocolCommands;
     bool connectionClosed = false;
     int16_t responseBytes = 2;
-    int16_t sentCommandsBytes = 1;
 
     bool isEndOfCommands(char serializedCommand);
-    std::vector<char> serializeMovementCommands(std::vector<Command> &commands);
 
  public:
     Protocolo();

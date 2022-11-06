@@ -23,6 +23,7 @@ public:
     Response(std::vector<char> serializedResponse);
     Response(const char* responseStatus, const char* responseMessage);
 
+    std::string getStatus() { return this->responseStatus; }
     std::vector<char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario

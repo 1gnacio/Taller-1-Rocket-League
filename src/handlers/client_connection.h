@@ -2,8 +2,6 @@
 #define CLIENT_CONNECTION_H
 
 #include "../sockets/socket.h"
-#include "../queues/command_queue.h"
-#include "../queues/response_queue.h"
 #include "command_handler.h"
 #include "response_handler.h"
 

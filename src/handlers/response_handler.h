@@ -1,7 +1,3 @@
-//
-// Created by ignacio on 04/11/22.
-//
-
 #ifndef RECEIVE_RESPONSE_HANDLER_H
 #define RECEIVE_RESPONSE_HANDLER_H
 
@@ -9,11 +5,7 @@
 #include "../sockets/socket.h"
 #include "../protocolo/protocolo.h"
 #include "../queues/response_queue.h"
-
-enum Mode {
-    RECEIVER,
-    SENDER
-};
+#include "enums/mode.h"
 
 class ResponseHandler {
 private:
