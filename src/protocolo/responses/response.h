@@ -7,18 +7,14 @@
 
 #include <string>
 #include <vector>
-#include "ball_response.h"
-#include "player_response.h"
 #include "lobby_response.h"
+#include "match_responses.h"
 
 class Response {
 private:
-    // otras posibles respuestas: partida, lobby ...
-    BallResponse ballResponse;
-    std::vector<PlayerResponse> playerResponse;
     LobbyResponse lobbyResponse;
+    MatchResponses matchResponses;
     std::string responseStatus;
-    std::string responseMessage;
 public:
     Response(std::vector<char> serializedResponse);
     Response(const char* responseStatus, const char* responseMessage);

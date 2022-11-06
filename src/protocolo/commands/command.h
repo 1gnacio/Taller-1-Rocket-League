@@ -2,13 +2,16 @@
 #define COMMAND_H
 
 #include <string>
+#include <vector>
 
 class Command {
 private:
-    char serialized;
+    char serialized{};
     std::string deserialized;
     std::string firstParameter;
     std::string secondParameter;
+
+    void insertParameter(std::vector<char> &serialization, std::string& parameter) const;
 public:
     // movimientos, acciones, listar
     Command(char serialized,
@@ -25,7 +28,7 @@ public:
             const std::string& firstParameter,
             const std::string& secondParameter);
 
-    [[nodiscard]] char serialize() const;
+    [[nodiscard]] std::vector<char> serialize() const;
     [[nodiscard]] std::string getValue() const { return this->deserialized; }
     [[nodiscard]] std::string getFirstParameter() const { return this->firstParameter; }
     [[nodiscard]] std::string getSecondParameter() const { return this->secondParameter; }

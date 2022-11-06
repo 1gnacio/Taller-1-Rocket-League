@@ -18,6 +18,8 @@ private:
     bool isTurboActivated;
     bool hasPunchedTheBall;
     bool isAccelerating;
+    bool isLocalTeam;
+    int id;
 
 public:
     std::vector<char> serialize();

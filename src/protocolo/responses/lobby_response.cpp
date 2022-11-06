@@ -1,5 +1,5 @@
-//
-// Created by ignacio on 04/11/22.
-//
-
 #include "lobby_response.h"
+
+std::vector<char> LobbyResponse::serialize() {
+    return std::vector<char>();
+}

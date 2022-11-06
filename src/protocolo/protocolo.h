@@ -14,7 +14,9 @@ class Protocolo {
     bool connectionClosed = false;
     int16_t responseBytes = 2;
 
-    bool isEndOfCommands(char serializedCommand);
+    void sendMessage(Socket& socket, std::vector<char> &message);
+
+    std::vector<char> receiveMessage(Socket& socket);
 
  public:
     Protocolo();

@@ -1,4 +1,5 @@
 #include "command.h"
+#include "../../constants/serialize_delimeter.h"
 
 Command::Command(const char serialized,
                  const std::string &deserialized,
@@ -23,9 +24,29 @@ Command::Command(const char serialized,
                  firstParameter(firstParameter),
                  secondParameter(secondParameter) {}
 
-// por el momento serializar solo aplica a movimientos, donde la serializacion es el propio comando
-char Command::serialize() const {
-    return this->serialized;
+
+
+void Command::insertParameter(std::vector<char> &serialization, std::string &parameter) const {
+    serialization.push_back(SerializerDelimeter().SEPARATOR);
+    std::vector<char> parameterSerialized(this->firstParameter.begin(), this->firstParameter.end());
+    serialization.insert(serialization.end(), parameter.begin(), parameter.end());
+}
+
+std::vector<char> Command::serialize() const {
+    std::vector<char> result;
+    result.push_back(this->serialized);
+
+    if (!this->firstParameter.empty()) {
+        std::string parameter = this->firstParameter;
+        this->insertParameter(result, parameter);
+    }
+
+    if (!this->secondParameter.empty()) {
+        std::string parameter = this->secondParameter;
+        this->insertParameter(result, parameter);
+    }
+
+    return result;
 }
 
 Command::Command(Command &&other) noexcept {
