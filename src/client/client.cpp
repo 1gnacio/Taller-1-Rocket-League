@@ -19,7 +19,8 @@ void Client::readStandardInput() {
 
     // una vez capturada la entrada y creado el comando correspondiente, hacer push a la cola
     ProtocolCommands makeCommands;
-    Command c = makeCommands.createCommand((std::string &) "LEFT");
+    std::string example = CommandValues().DESERIALIZED_NOP;
+    Command c = makeCommands.createCommand(example);
     this->connection.push(c);
 }
 

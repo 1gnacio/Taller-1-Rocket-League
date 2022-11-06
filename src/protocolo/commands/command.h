@@ -1,9 +1,5 @@
-//
-// Created by ignacio on 30/10/22.
-//
-
-#ifndef TALLER_1_ROCKET_LEAGUE_COMMAND_H
-#define TALLER_1_ROCKET_LEAGUE_COMMAND_H
+#ifndef COMMAND_H
+#define COMMAND_H
 
 #include <string>
 
@@ -15,29 +11,29 @@ private:
     std::string secondParameter;
 public:
     // movimientos, acciones, listar
-    Command(const char serialized,
+    Command(char serialized,
             const std::string& deserialized);
 
     // unirse
-    Command(const char serialized,
+    Command(char serialized,
             const std::string& deserialized,
             const std::string& firstParameter);
 
     // crear
-    Command(const char serialized,
+    Command(char serialized,
             const std::string& deserialized,
             const std::string& firstParameter,
             const std::string& secondParameter);
 
-    char serialize();
-    std::string getValue() const { return this->deserialized; }
-    std::string getFirstParameter() const { return this->firstParameter; }
-    std::string getSecondParameter() const { return this->secondParameter; }
+    [[nodiscard]] char serialize() const;
+    [[nodiscard]] std::string getValue() const { return this->deserialized; }
+    [[nodiscard]] std::string getFirstParameter() const { return this->firstParameter; }
+    [[nodiscard]] std::string getSecondParameter() const { return this->secondParameter; }
 
     // hago los comandos movibles
-    Command(Command&&);
-    Command& operator=(Command&&);
+    Command(Command&&) noexcept ;
+    Command& operator=(Command&&) noexcept ;
 };
 
 
-#endif //TALLER_1_ROCKET_LEAGUE_COMMAND_H
+#endif // COMMAND_H

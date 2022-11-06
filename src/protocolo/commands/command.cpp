@@ -24,18 +24,18 @@ Command::Command(const char serialized,
                  secondParameter(secondParameter) {}
 
 // por el momento serializar solo aplica a movimientos, donde la serializacion es el propio comando
-char Command::serialize() {
+char Command::serialize() const {
     return this->serialized;
 }
 
-Command::Command(Command &&other) {
+Command::Command(Command &&other) noexcept {
     this->serialized = other.serialized;
     this->deserialized = other.deserialized;
     this->firstParameter = other.firstParameter;
     this->secondParameter = other.secondParameter;
 }
 
-Command &Command::operator=(Command &&other) {
+Command &Command::operator=(Command &&other) noexcept {
     if (this == &other)
         return *this;
 

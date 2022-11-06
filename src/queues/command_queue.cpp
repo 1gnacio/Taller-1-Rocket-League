@@ -3,12 +3,12 @@
 CommandQueue::CommandQueue() : commands() {}
 
 void CommandQueue::push(Command &command) {
-    std::lock_guard<std::mutex>(this->mutex);
+    std::lock_guard<std::mutex> l(this->mutex);
     commands.push(std::move(command));
 }
 
 Command CommandQueue::pop() {
-    std::lock_guard<std::mutex>(this->mutex);
+    std::lock_guard<std::mutex> l(this->mutex);
     if (!this->commands.empty()) {
         Command c = std::move(commands.front());
         commands.pop();
@@ -16,5 +16,5 @@ Command CommandQueue::pop() {
     }
 
     // TODO que comando deberia devolver la cola si no hay comandos?
-    return Command('0', "NOP");
+    return {0, "NOP"};
 }

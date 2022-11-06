@@ -10,8 +10,8 @@
 
 class PlayerResponse {
 private:
-    std::string posX;
-    std::string posY;
+    float posX;
+    float posY;
     float rotationAngle;
     bool isMoving;
     bool isFlying;

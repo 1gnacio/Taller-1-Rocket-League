@@ -5,6 +5,7 @@
 
 ProtocolCommands::ProtocolCommands() : values(),
         serializedCommands({
+            {this->values.DESERIALIZED_NOP, this->values.SERIALIZED_NOP},
             {this->values.DESERIALIZED_UP_PUSHED, this->values.SERIALIZED_UP_PUSHED},
             {this->values.DESERIALIZED_UP_RELEASE, this->values.SERIALIZED_UP_RELEASE},
             {this->values.DESERIALIZED_DOWN_PUSHED, this->values.SERIALIZED_DOWN_PUSHED},
@@ -15,6 +16,7 @@ ProtocolCommands::ProtocolCommands() : values(),
             {this->values.DESERIALIZED_RIGHT_RELEASE, this->values.SERIALIZED_RIGHT_RELEASE}
         }),
         deserializedCommands({
+            {this->values.SERIALIZED_NOP, this->values.DESERIALIZED_NOP},
             {this->values.SERIALIZED_UP_PUSHED, this->values.DESERIALIZED_UP_PUSHED},
             {this->values.SERIALIZED_UP_RELEASE, this->values.DESERIALIZED_UP_RELEASE},
             {this->values.SERIALIZED_DOWN_PUSHED, this->values.DESERIALIZED_DOWN_PUSHED},
