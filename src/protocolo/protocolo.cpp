@@ -5,43 +5,30 @@
 
 Protocolo::Protocolo() {}
 
-//void Protocolo::sendMovementResponse(Socket& socket,
-//                                     std::vector<std::string>
-//                                             performedMovement) {
-//    if (this->connectionClosed) {
-//        return;
-//    }
-//
-//    std::string response = "";
-//
-//    if (!performedMovement.empty()) {
-//        response = std::accumulate(
-//                std::next(performedMovement.begin()),
-//                performedMovement.end(),
-//                performedMovement.front(),
-//                [] (const std::string& a, const std::string& b)
-//                { return a + ", " + b; });
-//    }
-//
-//    uint16_t responseSize = response.size();
-//
-//    responseSize = htons(responseSize);
-//
-//    socket.sendall(&responseSize, this->responseBytes, &this->connectionClosed);
-//
-//    if (!this->connectionClosed) {
-//        socket.sendall(&response[0], response.size(), &this->connectionClosed);
-//    }
-//}
-
 void Protocolo::sendResponse(Socket& socket, Response &response) {
     //TODO enviar respuesta a todos los clientes
 }
 
 Command Protocolo::receiveCommand(Socket& socket) {
-    if (!this->isConnectionClosed()) {
-        return {"NOP"};
+    if (this->isConnectionClosed()) {
+        return {0, "NOP"};
     }
+
+    uint16_t responseSize;
+
+    socket.recvall(&responseSize, this->responseBytes, &this->connectionClosed);
+
+    if (!this->connectionClosed) {
+        responseSize = ntohs(responseSize);
+
+        std::vector<char> serializedCommand(responseSize);
+
+        socket.recvall(&serializedCommand[0], responseSize, &this->connectionClosed);
+
+        return ProtocolCommands().createCommand(serializedCommand);
+    }
+
+    return {0, "NOP"};
 }
 
 void Protocolo::sendCommand(Socket &socket, Command &command) {
@@ -49,11 +36,19 @@ void Protocolo::sendCommand(Socket &socket, Command &command) {
         return;
     }
 
-    std::vector<char> serializedCommand(command.serialize());
+    std::vector<char> serializedCommand;
 
-    socket.sendall(&serializedCommand[0],
-                   1,
-                   &this->connectionClosed);
+    serializedCommand.push_back(command.serialize());
+
+    uint16_t responseSize = serializedCommand.size();
+
+    responseSize = htons(responseSize);
+
+    socket.sendall(&responseSize, this->responseBytes, &this->connectionClosed);
+
+    if (!this->connectionClosed) {
+        socket.sendall(&serializedCommand[0], serializedCommand.size(), &this->connectionClosed);
+    }
 }
 
 Response Protocolo::receiveResponse(Socket &socket) {
@@ -62,21 +57,19 @@ Response Protocolo::receiveResponse(Socket &socket) {
         return Response(std::vector<char>());
     }
 
-    std::vector<char> serializedResponse;
-
     uint16_t responseSize;
 
-    socket.recvsome(&responseSize,
-                   2,
-                   &this->connectionClosed);
+    socket.recvall(&responseSize, this->responseBytes, &this->connectionClosed);
 
     if (!this->connectionClosed) {
-        socket.recvall(&serializedResponse,
-                        responseSize,
-                        &this->connectionClosed);
+        responseSize = ntohs(responseSize);
+
+        std::vector<char> serializedResponse(responseSize);
+
+        socket.recvall(&serializedResponse[0], responseSize, &this->connectionClosed);
     }
 
-    return Response(serializedResponse);
+    return {"ERROR", "NO IMPLEMENTADO"};
 }
 
 bool Protocolo::isEndOfCommands(char serializedCommand) {

@@ -49,18 +49,15 @@ void Server::acceptClients() {
 }
 
 void Server::stopHandlers() {
-    this->sendResponseHandler.stopHandler();
-    this->receiveCommandHandler.stopHandler();
+    this->endpoint.stopConnections();
 }
 
 void Server::cleanFinishedHandlers() {
-    this->sendResponseHandler.cleanFinishedHandlers();
-    this->receiveCommandHandler.cleanFinishedHandlers();
+    this->endpoint.cleanFinishedConnections();
 }
 
 void Server::startHandler(Socket &socket) {
-    this->receiveCommandHandler.addPlayer(socket);
-    this->sendResponseHandler.addPlayer(socket);
+    this->endpoint.addPlayer(socket);
 }
 
 void Server::run() {

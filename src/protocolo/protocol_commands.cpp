@@ -55,7 +55,7 @@ Command ProtocolCommands::createSimpleCommand(const char serialized, const std::
     return Command(serialized, deserialized);
 }
 
-Command ProtocolCommands::createCommand(std::vector<char> serializedCommand) {
+Command ProtocolCommands::createCommand(std::vector<char> &serializedCommand) {
     auto position = this->deserializedCommands.find(serializedCommand[0]);
 
     if (position == this->deserializedCommands.end()) {

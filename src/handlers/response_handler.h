@@ -1,7 +1,3 @@
-//
-// Created by ignacio on 04/11/22.
-//
-
 #ifndef RECEIVE_RESPONSE_HANDLER_H
 #define RECEIVE_RESPONSE_HANDLER_H
 
@@ -9,16 +5,12 @@
 #include "../sockets/socket.h"
 #include "../protocolo/protocolo.h"
 #include "../queues/response_queue.h"
-
-enum Mode {
-    RECEIVER,
-    SENDER
-};
+#include "enums/mode.h"
 
 class ResponseHandler {
 private:
-    ResponseQueue& queue;
-    Socket socket;
+    ResponseQueue queue;
+    Socket& socket;
     bool hasFinished;
     Protocolo protocolo;
     std::thread handler;
@@ -27,7 +19,7 @@ private:
     void handleSend();
 
 public:
-    ResponseHandler(Socket& socket, ResponseQueue& queue, Mode mode);
+    ResponseHandler(Socket& socket, Mode mode);
 
     void push(Response& response);
 

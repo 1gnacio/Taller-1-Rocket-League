@@ -5,7 +5,7 @@ CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
 hasFinished(false),
 queue(queue),
 protocolo(),
-socket(std::move(socket)) {
+socket(socket) {
     if (mode == RECEIVER) {
         this->handler = std::thread(&CommandHandler::handleReceive, this);
     } else if (mode == SENDER) {
@@ -42,8 +42,6 @@ Command CommandHandler::pop() {
 void CommandHandler::stopHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
     }
 }
 
@@ -54,8 +52,6 @@ bool CommandHandler::isFinished() {
 CommandHandler::~CommandHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
     }
 
     this->handler.join();

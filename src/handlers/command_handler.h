@@ -3,19 +3,15 @@
 
 #include <thread>
 #include "../queues/command_queue.h"
-
-enum Mode {
-    RECEIVER,
-    SENDER
-};
+#include "enums/mode.h"
 
 class CommandHandler {
 private:
     bool hasFinished;
-    std::mutex mutex;
+    int id;
     CommandQueue& queue;
     Protocolo protocolo;
-    Socket socket;
+    Socket& socket;
     std::thread handler;
 
     void handleSend();

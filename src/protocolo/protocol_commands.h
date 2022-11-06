@@ -29,7 +29,7 @@ public:
 
     Command createCommand(std::string& value);
 
-    Command createCommand(std::vector<char> serializedCommand);
+    Command createCommand(std::vector<char> &serializedCommand);
 
 };
 

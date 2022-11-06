@@ -13,10 +13,7 @@
 Client::Client(const char *hostname, const char *servname) :
 isRunning(true),
 socket(hostname, servname),
-cQueue(),
-rQueue(),
-senderHandler(socket, cQueue, SENDER),
-receiverHandler(socket, rQueue, RECEIVER) {}
+connection(this->socket) {}
 
 void Client::readStandardInput() {
     // SDL leer entrada estandar
@@ -24,13 +21,13 @@ void Client::readStandardInput() {
     // una vez capturada la entrada y creado el comando correspondiente, hacer push a la cola
     ProtocolCommands makeCommands;
     Command c = makeCommands.createCommand((std::string &) "LEFT");
-    cQueue.push(c);
+    this->connection.push(c);
 }
 
 void Client::run() {
     std::thread standardInput(&Client::readStandardInput, this);
     while (this->isRunning) {
-        Response r = this->rQueue.pop();
+        Response r = this->connection.pop();
         // dibujar
     }
 }
