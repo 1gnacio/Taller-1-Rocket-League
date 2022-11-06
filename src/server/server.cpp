@@ -16,7 +16,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : monitor(), accepter(servname) {}
+Server::Server(const char* servname) : monitor(), accepter(servname), logic() {}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket
@@ -60,9 +60,24 @@ void Server::startHandler(Socket &socket) {
     this->endpoint.addPlayer(socket);
 }
 
+void Server::gameFlow(){
+    while(!this->isClosed) {
+        if(!endpoint.queueEmpty()) {
+            Command command = endpoint.pop();
+            logic.update(command);
+           endpoint.push(logic.getResponse());
+
+        } else {
+            logic.update();
+            endpoint.push(logic.getResponse());
+        }
+    }
+}
+
 void Server::run() {
     while (!this->isClosed) {
         std::thread accepterThread(&Server::acceptClients, this);
+        std::thread gameLoopThread(&Server::gameFlow, this);
 
         std::string signal;
 
@@ -75,6 +90,7 @@ void Server::run() {
         }
 
         accepterThread.join();
+        gameLoopThread.join();
     }
 }
 

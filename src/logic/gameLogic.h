@@ -5,15 +5,15 @@
 #include "../protocolo/commands/command.h"
 #include "../protocolo/responses/response.h"
 
-class LogicGame {
+class GameLogic {
 private:
     LogicBox gamePhysics;
 
 public:
-    LogicGame();
-    void createResponse(Command command);
-
-
+    GameLogic();
+    void update(Command &command);
+    void update();
+    Response getResponse();
 };
 
 

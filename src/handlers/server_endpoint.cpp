@@ -21,7 +21,7 @@ void ServerEndpoint::addPlayer(Socket &client) {
     this->connections.emplace_back(std::make_unique<ClientConnection>(client, this->receivedCommands));
 }
 
-void ServerEndpoint::push(Response &response) {
+void ServerEndpoint::push(Response response) {
     this->responses.push(response);
 }
 
@@ -52,4 +52,8 @@ ServerEndpoint::~ServerEndpoint() {
     }
     this->isActive = false;
     this->sender.join();
+}
+
+bool ServerEndpoint::queueEmpty() {
+    return receivedCommands.isEmpty();
 }
