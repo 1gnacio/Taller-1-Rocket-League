@@ -12,8 +12,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 Client::Client(const char *hostname, const char *servname) :
 isRunning(true),
-socket(hostname, servname),
-connection(this->socket) {}
+connection(hostname, servname) {}
 
 void Client::readStandardInput() {
     // SDL leer entrada estandar

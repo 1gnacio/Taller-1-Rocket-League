@@ -15,7 +15,7 @@ private:
     CommandHandler sender;
     ResponseHandler receiver;
 public:
-    ServerConnection(Socket& socket);
+    ServerConnection(const char *hostname, const char *servname);
 
     void push(Command& command);
 

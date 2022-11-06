@@ -1,9 +1,9 @@
 #include <sys/socket.h>
 #include "server_connection.h"
 
-ServerConnection::ServerConnection(Socket &socket) :
+ServerConnection::ServerConnection(const char *hostname, const char *servname) :
 isConnected(true),
-socket(std::move(socket)),
+socket(hostname, servname),
 commandQueue(),
 sender(this->socket, this->commandQueue, SENDER),
 receiver(this->socket, RECEIVER)
