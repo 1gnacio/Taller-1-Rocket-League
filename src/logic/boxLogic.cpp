@@ -29,8 +29,10 @@ void BoxLogic::close(){
 void BoxLogic::updateTime(){
     float timeStep = 1.0f / 5.0f;
     while(this->isActive){ // Se hara false con algun comando definido
-       std::lock_guard<std::mutex> lock(mutex);
-       world->Step(timeStep,8,3);
+        {
+            std::lock_guard<std::mutex> lock(mutex);
+            world->Step(timeStep,8,3);
+        }
        sleep(1); // Simulacion paso tiempo
     }
 }
@@ -68,8 +70,7 @@ void BoxLogic::createCar() {
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = 0;
     carBodyDef.position.Set(2.0f,-2.0f);
-    cars.emplace_back(this->world->CreateBody(&carBodyDef));
-
+    cars.push_back(world->CreateBody(&carBodyDef));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f,hCar/2.0f);
 
@@ -142,4 +143,48 @@ float BoxLogic::getData(int key, const b2Body* body) {
 
 float BoxLogic::getBallData(int key) {
     return (this->getData(key, ball));
+}
+
+int BoxLogic::playersAmount() {
+    return this->cars.size();
+}
+
+float BoxLogic::getCarData(int carNumber, int key) {
+    return this->getData(key, getCar(carNumber));
+}
+
+b2Body* BoxLogic::getCar(int carNumber) {
+    int i = 1;
+    for(auto x : cars ){
+        if(i == carNumber){
+            return x;
+        }
+    }
+}
+
+b2Vec2 BoxLogic::getVectorForce(int direction) {
+    if(direction == 0)
+        return b2Vec2(-2.0f, 0.0f);
+    else if(direction == 1)
+        return(b2Vec2(2.0f,0.0f));
+    else if(direction == 2)
+        return (b2Vec2(0.0f,-3.0f));
+}
+
+// Verificar si existe otra manera para no llamar siempre a force ()
+void BoxLogic::startMove(int carNumber, bool direction) {
+    b2Vec2 vel = getVectorForce((int)direction);
+    getCar(carNumber)->SetLinearVelocity(vel);
+}
+
+void BoxLogic::stopMove(int carNumber) {
+    getCar(carNumber)->SetLinearVelocity(b2Vec2(0.0f,0.0f));
+
+}
+
+void BoxLogic::jump(int carNumber) {
+    b2Vec2 vel = getVectorForce((2));
+    if(getCar(carNumber)->GetPosition().y >= 2 ) {
+        getCar(carNumber)->ApplyLinearImpulseToCenter(vel,true);
+    }
 }

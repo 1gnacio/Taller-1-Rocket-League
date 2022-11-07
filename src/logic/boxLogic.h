@@ -23,11 +23,13 @@ private:
    static float getData(int key, const b2Body *body);
 
 
+
+
 public:
     std::unique_ptr<b2World> world;
     BoxLogic();
     void createCar(); // Cuando haya una conexion se creara un auto nuevo
-    void addPlayer();
+    void addPlayer(); // Tendra atributo para saber el equipo
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
@@ -36,10 +38,18 @@ public:
 
     void close();
     int wallsAmount();
+    int playersAmount();
+    void startMove(int carNumber, bool direction);  // Numero de auto | direccion -> 0=Izq | 1=Der
+    void stopMove(int carNumber);
+    void jump(int carNumber);
 
     bool ballIsAwake();
-    float getBallData(int key); // 0 -> Pos X | 1 = posY | 2 = angulo (grados)
+    float getBallData(int key); // 0 -> PosX | 1 = posY | 2 = angulo (grados) | 3 = velocidad en X | 4 = velocidad en Y
+    float getCarData(int carNumber, int key);
 
+    b2Body* getCar(int carNumber);
+
+    static b2Vec2 getVectorForce(int direction);
 };
 
 

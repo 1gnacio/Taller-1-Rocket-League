@@ -40,3 +40,70 @@ TEST(logic, movimientoCorrectoDePelota) {
     EXPECT_TRUE(physics.getBallData(4) != 0);
     physics.close();
 }
+
+TEST(logic, seAgregaJugadorCorrectamente) {
+    BoxLogic physics;
+
+    physics.addPlayer();
+    sleep(1);
+    EXPECT_EQ(physics.playersAmount(), 1);
+    physics.close();
+}
+TEST(logic, seAgreganVariosJugadoresCorrectamente) {
+    BoxLogic physics;
+
+    physics.addPlayer();
+    sleep(1);
+    physics.addPlayer();
+    sleep(1);
+    physics.addPlayer();
+    sleep(1);
+    physics.addPlayer();
+    sleep(1);
+
+    EXPECT_EQ(physics.playersAmount(), 4);
+    physics.close();
+}
+
+TEST(logic, sePosicionaAutoCorrectamente) {
+    BoxLogic physics;
+    physics.addPlayer();
+    sleep(1);
+
+
+    EXPECT_EQ(physics.getCarData(1,0), 2);
+    EXPECT_TRUE(physics.getCarData(1,4) != 0);
+    physics.close();
+}
+
+TEST(logic, aceleracionCorrectaConComando) {
+    BoxLogic physics;
+    physics.addPlayer();
+    sleep(1);
+    physics.startMove(1,0);
+    sleep(1);
+    EXPECT_TRUE(physics.getCarData(1,3) != 0);
+    physics.close();
+}
+
+TEST(logic, FrenoCorrectoConComando) {
+    BoxLogic physics;
+    physics.addPlayer();
+    sleep(1);
+    physics.startMove(1,0);
+    sleep(1);
+    physics.stopMove(1); // Chequear velocidad lineal
+    sleep(1);
+    EXPECT_TRUE(physics.getCarData(1,3) == 0);
+    physics.close();
+}
+
+TEST(logic, SaltoCorrectoConComando) {
+    BoxLogic physics;
+    physics.addPlayer();
+    sleep(5);
+    physics.jump(1);
+    sleep(1);
+    EXPECT_TRUE(physics.getCarData(1,4) < 0);
+    physics.close();
+}
