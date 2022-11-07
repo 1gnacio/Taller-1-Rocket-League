@@ -148,7 +148,12 @@ add_executable(game_server
         src/game_model/game_model.h
         src/game_entities/room.cpp
         src/game_entities/room.h
+        src/logic/gameLogic.cpp
+        src/logic/gameLogic.h
+        src/logic/boxLogic.cpp
+        src/logic/boxLogic.h
         )
-target_link_libraries(game_server box2d ${SDL2PP_LIBRARIES})
+
+target_link_libraries(game_server box2d)
 
 add_subdirectory(google_tests)
