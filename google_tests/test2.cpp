@@ -6,9 +6,9 @@
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
 #include "../src/logic/boxLogic.h"
-#include <iostream>
+#include "../src/constants/logic_values.h"
 
-
+const int FIRST_CAR = 1;
 TEST(logic, SeCreaElMapaConGravedad10) {
     b2Vec2 v(0.0f,9.8f);
     BoxLogic physics;
@@ -36,8 +36,8 @@ TEST(logic, movimientoCorrectoDePelota) {
 
     sleep(1); // Simulo el paso del tiempo
 
-    EXPECT_EQ(physics.getBallData(0), 0);
-    EXPECT_TRUE(physics.getBallData(4) != 0);
+    EXPECT_EQ(physics.getBallData(LogicValues().POS_X), 0);
+    EXPECT_TRUE(physics.getBallData(LogicValues().Y_VELOCITY) != 0);
     physics.close();
 }
 
@@ -71,8 +71,8 @@ TEST(logic, sePosicionaAutoCorrectamente) {
     sleep(1);
 
 
-    EXPECT_EQ(physics.getCarData(1,0), 2);
-    EXPECT_TRUE(physics.getCarData(1,4) != 0);
+    EXPECT_EQ(physics.getCarData(FIRST_CAR,LogicValues().POS_X), 2);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) != 0);
     physics.close();
 }
 
@@ -80,9 +80,9 @@ TEST(logic, aceleracionCorrectaConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(1);
-    physics.startMove(1,0);
+    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
     sleep(1);
-    EXPECT_TRUE(physics.getCarData(1,3) != 0);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) != 0);
     physics.close();
 }
 
@@ -90,11 +90,11 @@ TEST(logic, FrenoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(1);
-    physics.startMove(1,0);
+    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
     sleep(1);
-    physics.stopMove(1); // Chequear velocidad lineal
+    physics.stopMove(FIRST_CAR); // Chequear velocidad lineal
     sleep(1);
-    EXPECT_TRUE(physics.getCarData(1,3) == 0);
+    EXPECT_EQ(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY), 0);
     physics.close();
 }
 
@@ -102,8 +102,8 @@ TEST(logic, SaltoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(5);
-    physics.jump(1);
+    physics.jump(FIRST_CAR);
     sleep(1);
-    EXPECT_TRUE(physics.getCarData(1,4) < 0);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.close();
 }

@@ -31,7 +31,7 @@ void BoxLogic::updateTime(){
     while(this->isActive){ // Se hara false con algun comando definido
         {
             std::lock_guard<std::mutex> lock(mutex);
-            world->Step(timeStep,8,3);
+            world->Step(timeStep,LogicValues().VELOCITY_ITERATIONS,LogicValues().POSITION_ITERATIONS);
         }
        sleep(1); // Simulacion paso tiempo
     }
@@ -49,13 +49,13 @@ void BoxLogic::createBall(){
     this->ball = world->CreateBody(&ballDef);
 
     b2CircleShape shapeCircle;
-    shapeCircle.m_radius = 0.2;
+    shapeCircle.m_radius = LogicValues().RADIUS_BALL;
 
     b2FixtureDef fixtureCircle;
     fixtureCircle.shape = &shapeCircle;
-    fixtureCircle.density = 0.5;
-    fixtureCircle.friction = 0.3f;
-    fixtureCircle.restitution = 0.6f;
+    fixtureCircle.density = LogicValues().DENSITY_BALL;
+    fixtureCircle.friction = LogicValues().FRICTION_BALL;
+    fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
     ball->CreateFixture(&fixtureCircle);
 
 }
@@ -63,12 +63,12 @@ void BoxLogic::createBall(){
 void BoxLogic::createCar() {
     std::lock_guard<std::mutex> lock(mutex);
     //tamaño de auto
-    float wCar = 1.2;
-    float hCar = 0.5;
+    float wCar = LogicValues().W_CAR;
+    float hCar = LogicValues().H_CAR;
 
     b2BodyDef carBodyDef;
     carBodyDef.type = b2_dynamicBody;
-    carBodyDef.angle = 0;
+    carBodyDef.angle = LogicValues().ANGLE_CAR;
     carBodyDef.position.Set(2.0f,-2.0f);
     cars.push_back(world->CreateBody(&carBodyDef));
     b2PolygonShape dynamicCar;
@@ -76,9 +76,9 @@ void BoxLogic::createCar() {
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &dynamicCar;
-    fixtureDef.density = 1;
-    fixtureDef.friction = 0.2f;
-    fixtureDef.restitution = 0.0f;
+    fixtureDef.density = LogicValues().DENSITY_CAR;
+    fixtureDef.friction = LogicValues().FRICTION_CAR;
+    fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
     cars.back()->CreateFixture(&fixtureDef);
 }
 
@@ -90,7 +90,7 @@ void BoxLogic::createWalls() {
     b2BodyDef groundDef;
     groundDef.type = b2_staticBody;
     groundDef.position.Set(ground_x,ground_y);
-    groundDef.angle = 0;
+    groundDef.angle = LogicValues().ANGLE_BALL;
     for(int i = 0; i < 4; i++){
         walls.emplace_back(this->world->CreateBody(&groundDef));
     }
@@ -163,11 +163,11 @@ b2Body* BoxLogic::getCar(int carNumber) {
 }
 
 b2Vec2 BoxLogic::getVectorForce(int direction) {
-    if(direction == 0)
+    if(direction == LogicValues().LEFT_DIRECTION)
         return b2Vec2(-2.0f, 0.0f);
-    else if(direction == 1)
+    else if(direction == LogicValues().RIGHT_DIRECTION)
         return(b2Vec2(2.0f,0.0f));
-    else if(direction == 2)
+    else if(direction == LogicValues().UP_DIRECTION)
         return (b2Vec2(0.0f,-3.0f));
 }
 
@@ -183,8 +183,8 @@ void BoxLogic::stopMove(int carNumber) {
 }
 
 void BoxLogic::jump(int carNumber) {
-    b2Vec2 vel = getVectorForce((2));
-    if(getCar(carNumber)->GetPosition().y >= 2 ) {
+    b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
+    if(getCar(carNumber)->GetPosition().y >= 2 ) { // Deberia ser posicion del suelo
         getCar(carNumber)->ApplyLinearImpulseToCenter(vel,true);
     }
 }

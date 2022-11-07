@@ -6,6 +6,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include "../../src/constants/logic_values.h"
 // Clase de la logica que contiene todos los movimientos de box2d
 
 class BoxLogic {
@@ -21,9 +22,6 @@ private:
    void createWalls();
    void createBall();
    static float getData(int key, const b2Body *body);
-
-
-
 
 public:
     std::unique_ptr<b2World> world;
