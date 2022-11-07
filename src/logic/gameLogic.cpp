@@ -20,10 +20,9 @@ void GameLogic::update() { // Es necesario?
 }
 
 Response GameLogic::getResponse(){
-    /*
-     *
-     *
-     *
+    /* getStatusBall() - Devuelve datos sobre la pelota
+     * getStatusGame() - Devuelve datos sobre el juego
+     * getStatusCars() - Devuleve datos sobre los autos
      */
     std::vector<char> responseVec;
     return responseVec;

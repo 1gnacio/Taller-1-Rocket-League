@@ -8,6 +8,7 @@
 class GameLogic {
 private:
     BoxLogic gamePhysics;
+    //GameInfo info --> Que tenga los goles de cada equipo y el tiempo
 
 public:
     GameLogic();
