@@ -8,8 +8,8 @@ BoxLogic::BoxLogic():
     world(b2Vec2(0.0f,9.8f)),
     isActive(true),
     steps(std::thread(&BoxLogic::updateTime, this)){
-    createWalls();
-    createBall();
+    //createWalls();
+    //createBall();
 }
 
 void BoxLogic::updateTime(){
@@ -93,6 +93,7 @@ void BoxLogic::addPlayer() {
 void BoxLogic::update(Command &command) {
     // Si es comando de unirse llamo a addPlayer()
 }
+
 void BoxLogic::update() {
     // Es necesario?
 }
