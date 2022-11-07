@@ -12,4 +12,4 @@ add_executable(Google_Tests_run
         test1.cpp
         ${sources}
         )
-target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets)
+target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets box2d)

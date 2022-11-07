@@ -16,6 +16,8 @@ public:
     void push(Command& command);
 
     Command pop();
+
+    bool isEmpty();
 };
 
 #endif // COMMAND_QUEUE_H
