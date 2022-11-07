@@ -3,7 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include <list>
-#include "src/protocolo/responses/response.h"
+#include "../src/protocolo/responses/response.h"
 #include "sdl_animation.h"
 #include "sdl_player.h"
 #include "sdl_ball.h"
