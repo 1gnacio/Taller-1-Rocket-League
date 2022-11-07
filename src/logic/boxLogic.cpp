@@ -3,26 +3,48 @@
 //
 //Box2d en una escala de 4 | 3
 #include "boxLogic.h"
+#include <iostream>
+#include <unistd.h>
 
 BoxLogic::BoxLogic():
-    world(b2Vec2(0.0f,9.8f)),
     isActive(true),
     steps(std::thread(&BoxLogic::updateTime, this)){
-    //createWalls();
-    //createBall();
+    world = std::make_unique<b2World>(b2Vec2(0.0f,9.8f));
+    createWalls();
+    createBall();
+
+}
+
+b2Vec2 BoxLogic::getGravity(){
+    return this->world->GetGravity();
+}
+
+int BoxLogic::wallsAmount(){
+    return this->walls.size();
+}
+void BoxLogic::close(){
+    isActive = false;
 }
 
 void BoxLogic::updateTime(){
+    float timeStep = 1.0f / 5.0f;
     while(this->isActive){ // Se hara false con algun comando definido
-        world.Step(1/60,6,2);
+       std::lock_guard<std::mutex> lock(mutex);
+       world->Step(timeStep,8,3);
+       sleep(1); // Simulacion paso tiempo
     }
 }
+
+bool BoxLogic::ballIsAwake() {
+    ball->IsAwake();
+}
 void BoxLogic::createBall(){
+    std::lock_guard<std::mutex> lock(mutex);
 
     b2BodyDef ballDef;
     ballDef.type = b2_dynamicBody;
     ballDef.position.Set(0,-2.8f);
-    this->ball = world.CreateBody(&ballDef);
+    this->ball = world->CreateBody(&ballDef);
 
     b2CircleShape shapeCircle;
     shapeCircle.m_radius = 0.2;
@@ -37,6 +59,7 @@ void BoxLogic::createBall(){
 }
 
 void BoxLogic::createCar() {
+    std::lock_guard<std::mutex> lock(mutex);
     //tamaño de auto
     float wCar = 1.2;
     float hCar = 0.5;
@@ -45,7 +68,7 @@ void BoxLogic::createCar() {
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = 0;
     carBodyDef.position.Set(2.0f,-2.0f);
-    cars.emplace_back(this->world.CreateBody(&carBodyDef));
+    cars.emplace_back(this->world->CreateBody(&carBodyDef));
 
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f,hCar/2.0f);
@@ -59,7 +82,7 @@ void BoxLogic::createCar() {
 }
 
 void BoxLogic::createWalls() {
-
+    std::lock_guard<std::mutex> lock(mutex);
     float ground_x = 0.0f;
     float ground_y = 0.0f;
 
@@ -68,7 +91,7 @@ void BoxLogic::createWalls() {
     groundDef.position.Set(ground_x,ground_y);
     groundDef.angle = 0;
     for(int i = 0; i < 4; i++){
-        walls.emplace_back(this->world.CreateBody(&groundDef));
+        walls.emplace_back(this->world->CreateBody(&groundDef));
     }
     b2FixtureDef edgeFixtureDef;
     b2EdgeShape edge;
@@ -100,4 +123,23 @@ void BoxLogic::update() {
 
 BoxLogic::~BoxLogic(){
  this->steps.join();
+}
+
+float BoxLogic::getData(int key, const b2Body* body) {
+    switch (key) {
+        case 0:
+            return body->GetPosition().x;
+        case 1:
+            return body->GetPosition().y;
+        case 2:
+            return body->GetAngle();
+        case 3:
+            return body->GetLinearVelocity().x;
+        case 4:
+            return body->GetLinearVelocity().y;
+    }
+}
+
+float BoxLogic::getBallData(int key) {
+    return (this->getData(key, ball));
 }
