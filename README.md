@@ -40,7 +40,9 @@ Corrector: Martin
 ## Juego
 ![juego](data/firstGame.gif)
 
+## Ejemplo integrador
 
+![Ejemplo](data/cliente_servidor.gif)
 ## Lista de requerimientos *TODO*
 
 * Simular trayectoria de pelota, autos y tiros especiales (habria que definir alcances de cada uno) con Box2D
