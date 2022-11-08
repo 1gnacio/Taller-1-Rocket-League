@@ -12,6 +12,7 @@ private:
 
 public:
     GameLogic();
+    bool withoutPlayers;
     void update(Command &command);
     void update();
     Response getResponse();
