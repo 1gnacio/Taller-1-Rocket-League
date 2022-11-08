@@ -3,19 +3,32 @@
 //
 
 #include "gameLogic.h"
-
-GameLogic::GameLogic() {
+#include <iostream>
+#include "../src/constants/command_values.h"
+#include "../src/constants/logic_values.h"
+GameLogic::GameLogic(): withoutPlayers(0){
 
 }
 
 void GameLogic::update(Command &command) {
-    /*
-     * Si el comando es unirse boxLogic.addPlayer();
-     * Si el comando es moverse derecha .... boxLogic.moveRightStart(Xjugador)
-     * Si el comando es parar de moverse a la derecha .... boxLogic.moveRightEnd(Xjugador)
-     */
-}
 
+    std::cout << "llega un comando de " << command.getValue() << " y se actualiza box2D" << std::endl;
+    if(this->withoutPlayers){
+        this->gamePhysics.addPlayer();
+        withoutPlayers = 1;
+    }
+    if (command.getValue() == CommandValues().DESERIALIZED_JOIN) {
+        this->gamePhysics.addPlayer();
+    } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED){
+        gamePhysics.startMove(1, LogicValues().LEFT_DIRECTION);
+    } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED ||
+               command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
+        gamePhysics.stopMove(1);
+    } else if (command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
+        gamePhysics.startMove(1,LogicValues().RIGHT_DIRECTION);
+
+    }
+}
 void GameLogic::update() { // Es necesario?
 }
 

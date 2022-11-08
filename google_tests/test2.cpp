@@ -1,15 +1,11 @@
 #include <thread>
 #include "gtest/gtest.h"
-#include "../src/sockets/socket.h"
-#include "../src/constants/command_values.h"
 #include "../src/protocolo/commands/command.h"
-#include "../src/protocolo/protocol_commands.h"
-#include "../src/protocolo/protocolo.h"
 #include "../src/logic/boxLogic.h"
 #include "../src/constants/logic_values.h"
 
 const int FIRST_CAR = 1;
-TEST(logic, SeCreaElMapaConGravedad10) {
+TEST(physics, SeCreaElMapaConGravedad10) {
     b2Vec2 v(0.0f,9.8f);
     BoxLogic physics;
 
@@ -18,20 +14,20 @@ TEST(logic, SeCreaElMapaConGravedad10) {
     physics.close(); // Sino queda el thread del tiempo corriendo
 }
 
-TEST(logic, SeCreanCorrectamenteLasParedes) {
+TEST(physics, SeCreanCorrectamenteLasParedes) {
     BoxLogic physics;
 
     EXPECT_EQ(physics.wallsAmount(), 4);
     physics.close();
 }
 
-TEST(logic, SeCreaCorrectamenteLaPelota) {
+TEST(physics, SeCreaCorrectamenteLaPelota) {
     BoxLogic physics;
     EXPECT_EQ(physics.ballIsAwake(), true);
     physics.close();
 }
 
-TEST(logic, movimientoCorrectoDePelota) {
+TEST(physics, movimientoCorrectoDePelota) {
     BoxLogic physics;
 
     sleep(1); // Simulo el paso del tiempo
@@ -41,7 +37,7 @@ TEST(logic, movimientoCorrectoDePelota) {
     physics.close();
 }
 
-TEST(logic, seAgregaJugadorCorrectamente) {
+TEST(physics, seAgregaJugadorCorrectamente) {
     BoxLogic physics;
 
     physics.addPlayer();
@@ -49,7 +45,7 @@ TEST(logic, seAgregaJugadorCorrectamente) {
     EXPECT_EQ(physics.playersAmount(), 1);
     physics.close();
 }
-TEST(logic, seAgreganVariosJugadoresCorrectamente) {
+TEST(physics, seAgreganVariosJugadoresCorrectamente) {
     BoxLogic physics;
 
     physics.addPlayer();
@@ -65,7 +61,7 @@ TEST(logic, seAgreganVariosJugadoresCorrectamente) {
     physics.close();
 }
 
-TEST(logic, sePosicionaAutoCorrectamente) {
+TEST(physics, sePosicionaAutoCorrectamente) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(1);
@@ -76,7 +72,7 @@ TEST(logic, sePosicionaAutoCorrectamente) {
     physics.close();
 }
 
-TEST(logic, aceleracionCorrectaConComando) {
+TEST(physics, aceleracionCorrectaConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(1);
@@ -86,7 +82,7 @@ TEST(logic, aceleracionCorrectaConComando) {
     physics.close();
 }
 
-TEST(logic, FrenoCorrectoConComando) {
+TEST(physics, FrenoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(1);
@@ -98,7 +94,7 @@ TEST(logic, FrenoCorrectoConComando) {
     physics.close();
 }
 
-TEST(logic, SaltoCorrectoConComando) {
+TEST(physics, SaltoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
     sleep(5);
