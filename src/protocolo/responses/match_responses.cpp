@@ -3,3 +3,7 @@
 //
 
 #include "match_responses.h"
+
+std::vector<char> MatchResponses::serialize() {
+    return std::vector<char>();
+}
