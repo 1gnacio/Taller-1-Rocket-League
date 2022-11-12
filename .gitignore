@@ -2,6 +2,7 @@
 build
 CMakeFiles
 cmake-build-debug
+cmake-build-debug-coverage
 CMakeCache.txt
 cmake_install.cmake
 Makefile

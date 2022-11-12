@@ -79,4 +79,28 @@ TEST(Serialize, seSeteanTodosLosDatos) {
     EXPECT_EQ(responseSerialized.size(), 27 );
 }
 
+TEST(Serializacion, SerializePlayerId) {
+    int test = 10;
+
+    PlayerResponse response(test, 0, 0, 0, false, false, false, false, false, false);
+
+    std::vector<unsigned char> serialized = response.serialize();
+
+    int result = PlayerResponse(serialized).getId();
+
+    EXPECT_EQ(test, result);
+}
+
+TEST(Serializacion, SerializePlayerPositionX) {
+    float test = 10.93f;
+
+    PlayerResponse response(0, test, 0, 0, false, false, false, false, false, false);
+
+    std::vector<unsigned char> serialized = response.serialize();
+
+    PlayerResponse responseDeserialized(serialized);
+
+    EXPECT_EQ(test, responseDeserialized.getPosX());
+}
+
 
