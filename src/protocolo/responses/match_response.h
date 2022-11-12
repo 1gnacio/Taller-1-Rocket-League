@@ -22,7 +22,7 @@ private:
     bool activeReplay;
 public:
 
-    MatchResponse();
+    MatchResponse(BallResponse ball);
     std::vector<char> serialize();
 
     void setGoals(uint8_t goalsLocal, uint8_t goalsVisitor);

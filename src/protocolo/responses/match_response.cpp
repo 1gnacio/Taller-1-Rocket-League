@@ -1,7 +1,7 @@
 #include "match_response.h"
 
 
-MatchResponse::MatchResponse(){
+MatchResponse::MatchResponse(BallResponse ball) : ballResponse(ball) {
 
 }
 

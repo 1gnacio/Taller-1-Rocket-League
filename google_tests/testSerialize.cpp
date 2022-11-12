@@ -32,8 +32,8 @@ void serializeString(){
  */
 
 TEST(Serialize, seSeteanLosGoles) {
-
-MatchResponse response;
+BallResponse ball(0, 0, 0, false, false, false);
+MatchResponse response(ball);
 std::string name = "nombre";
 response.setGoals(2,3);
 response.setName(name);
@@ -44,7 +44,8 @@ EXPECT_EQ(responseSerialized.size(), 16 ); // Cada gol es 1 byte (uint8_t)
 
 TEST(Serialize, seSeteanLosJugadores) {
 
-    MatchResponse response;
+    BallResponse ball(0, 0, 0, false, false, false);
+    MatchResponse response(ball);
     std::string name = "nombre";
     response.setName(name);
     response.setPlayers(4,3);
@@ -55,7 +56,8 @@ TEST(Serialize, seSeteanLosJugadores) {
 
 TEST(Serialize, seSeteanLosEstados) {
 
-    MatchResponse response;
+    BallResponse ball(0, 0, 0, false, false, false);
+    MatchResponse response(ball);
     std::string name = "nombre";
     response.setName(name);
     response.setStates(0,0,0,0,0);
@@ -67,7 +69,8 @@ TEST(Serialize, seSeteanLosEstados) {
 
 TEST(Serialize, seSeteanTodosLosDatos) {
 
-    MatchResponse response;
+    BallResponse ball(0, 0, 0, false, false, false);
+    MatchResponse response(ball);
     std::string name = "nombre de partida";
     response.setName(name);
     response.setStates(0,0,0,0,0);
@@ -101,6 +104,23 @@ TEST(Serializacion, SerializePlayerPositionX) {
     PlayerResponse responseDeserialized(serialized);
 
     EXPECT_EQ(test, responseDeserialized.getPosX());
+}
+
+TEST(Serializacion, SerializeBallResponse) {
+    float test = 10.93f;
+
+    BallResponse response(0, test, 0, false, false, false);
+
+    std::vector<unsigned char> serialized = response.serialize();
+
+    BallResponse responseDeserialized(serialized);
+
+    EXPECT_EQ(test, responseDeserialized.getPosY());
+    EXPECT_EQ(0, responseDeserialized.getPosX());
+    EXPECT_EQ(0, responseDeserialized.getRotationAngle());
+    EXPECT_EQ(false, responseDeserialized.getIsFlying());
+    EXPECT_EQ(false, responseDeserialized.getHasBeenPunched());
+    EXPECT_EQ(false, responseDeserialized.getIsMoving());
 }
 
 
