@@ -29,8 +29,7 @@ TEST(physics, SeCreaCorrectamenteLaPelota) {
 
 TEST(physics, movimientoCorrectoDePelota) {
     BoxLogic physics;
-
-    sleep(1); // Simulo el paso del tiempo
+    physics.updateTime();
 
     EXPECT_EQ(physics.getBallData(LogicValues().POS_X), 0);
     EXPECT_TRUE(physics.getBallData(LogicValues().Y_VELOCITY) != 0);
@@ -39,9 +38,8 @@ TEST(physics, movimientoCorrectoDePelota) {
 
 TEST(physics, seAgregaJugadorCorrectamente) {
     BoxLogic physics;
-
     physics.addPlayer();
-    sleep(1);
+
     EXPECT_EQ(physics.playersAmount(), 1);
     physics.close();
 }
@@ -49,13 +47,9 @@ TEST(physics, seAgreganVariosJugadoresCorrectamente) {
     BoxLogic physics;
 
     physics.addPlayer();
-    sleep(1);
     physics.addPlayer();
-    sleep(1);
     physics.addPlayer();
-    sleep(1);
     physics.addPlayer();
-    sleep(1);
 
     EXPECT_EQ(physics.playersAmount(), 4);
     physics.close();
@@ -64,8 +58,7 @@ TEST(physics, seAgreganVariosJugadoresCorrectamente) {
 TEST(physics, sePosicionaAutoCorrectamente) {
     BoxLogic physics;
     physics.addPlayer();
-    sleep(1);
-
+    physics.updateTime();
 
     EXPECT_EQ(physics.getCarData(FIRST_CAR,LogicValues().POS_X), 2);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) != 0);
@@ -75,9 +68,7 @@ TEST(physics, sePosicionaAutoCorrectamente) {
 TEST(physics, aceleracionCorrectaConComando) {
     BoxLogic physics;
     physics.addPlayer();
-    sleep(1);
     physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
-    sleep(1);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) != 0);
     physics.close();
 }
@@ -85,11 +76,8 @@ TEST(physics, aceleracionCorrectaConComando) {
 TEST(physics, FrenoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
-    sleep(1);
     physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
-    sleep(1);
     physics.stopMove(FIRST_CAR); // Chequear velocidad lineal
-    sleep(1);
     EXPECT_EQ(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY), 0);
     physics.close();
 }
@@ -97,9 +85,13 @@ TEST(physics, FrenoCorrectoConComando) {
 TEST(physics, SaltoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
-    sleep(5);
+    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
+        physics.updateTime();
+    }
     physics.jump(FIRST_CAR);
-    sleep(1);
+    physics.updateTime();
+
+
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.close();
 }

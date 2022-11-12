@@ -180,7 +180,7 @@ void BoxLogic::stopMove(int carNumber) {
 
 void BoxLogic::jump(int carNumber) {
     b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
-    if(getCar(carNumber)->GetPosition().y >= 2 ) { // Deberia ser posicion del suelo
+    if(getCar(carNumber)->GetPosition().y >= (2.23)) { // Deberia ser posicion del suelo
         getCar(carNumber)->ApplyLinearImpulseToCenter(vel,true);
     }
 }
