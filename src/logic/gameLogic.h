@@ -13,8 +13,8 @@ private:
 public:
     GameLogic();
     bool withoutPlayers;
-    void update(Command &command);
-    void update();
+    void updateModel(Command &command);
+    void updateTime();
     Response getResponse();
 };
 

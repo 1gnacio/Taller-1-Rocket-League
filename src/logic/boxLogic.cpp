@@ -5,10 +5,10 @@
 #include "boxLogic.h"
 #include <iostream>
 #include <unistd.h>
+#include <time.h>
 
 BoxLogic::BoxLogic():
-    isActive(true),
-    steps(std::thread(&BoxLogic::updateTime, this)){
+    isActive(true) {
     world = std::make_unique<b2World>(b2Vec2(0.0f,9.8f));
     createWalls();
     createBall();
@@ -27,20 +27,17 @@ void BoxLogic::close(){
 
 void BoxLogic::updateTime(){
     float timeStep = 1.0f / 5.0f;
-    while(this->isActive){ // Se hara false con algun comando definido
-        {
-            std::lock_guard<std::mutex> lock(mutex);
-            world->Step(timeStep,LogicValues().VELOCITY_ITERATIONS,LogicValues().POSITION_ITERATIONS);
-        }
-       sleep(1); // Simulacion paso tiempo
-    }
+    world->Step(timeStep,LogicValues().VELOCITY_ITERATIONS,LogicValues().POSITION_ITERATIONS);
+    usleep(timeStep*1000000); // Simulacion paso tiempo (unsleep utiliza microsegundos 1x10-6)
+
 }
 
+
+
 bool BoxLogic::ballIsAwake() {
-    ball->IsAwake();
+    return ball->IsAwake();
 }
 void BoxLogic::createBall(){
-    std::lock_guard<std::mutex> lock(mutex);
 
     b2BodyDef ballDef;
     ballDef.type = b2_dynamicBody;
@@ -60,7 +57,6 @@ void BoxLogic::createBall(){
 }
 
 void BoxLogic::createCar() {
-    std::lock_guard<std::mutex> lock(mutex);
     //tamaño de auto
     float wCar = LogicValues().W_CAR;
     float hCar = LogicValues().H_CAR;
@@ -82,7 +78,6 @@ void BoxLogic::createCar() {
 }
 
 void BoxLogic::createWalls() {
-    std::lock_guard<std::mutex> lock(mutex);
     float ground_x = 0.0f;
     float ground_y = 0.0f;
 
@@ -122,7 +117,6 @@ void BoxLogic::update() {
 }
 
 BoxLogic::~BoxLogic(){
- this->steps.join();
 }
 
 float BoxLogic::getData(int key, const b2Body* body) {
@@ -138,6 +132,7 @@ float BoxLogic::getData(int key, const b2Body* body) {
         case 4:
             return body->GetLinearVelocity().y;
     }
+    return 0;
 }
 
 float BoxLogic::getBallData(int key) {
@@ -159,6 +154,7 @@ b2Body* BoxLogic::getCar(int carNumber) {
             return x;
         }
     }
+    return nullptr;
 }
 
 b2Vec2 BoxLogic::getVectorForce(int direction) {
@@ -168,6 +164,7 @@ b2Vec2 BoxLogic::getVectorForce(int direction) {
         return(b2Vec2(2.0f,0.0f));
     else if(direction == LogicValues().UP_DIRECTION)
         return (b2Vec2(0.0f,-3.0f));
+    return (b2Vec2(0.0f,-3.0f));
 }
 
 // Verificar si existe otra manera para no llamar siempre a force ()
