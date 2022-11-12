@@ -88,9 +88,9 @@ TEST(physics, SaltoCorrectoConComando) {
     for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
     }
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
     physics.jump(FIRST_CAR);
     physics.updateTime();
-
 
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.close();
