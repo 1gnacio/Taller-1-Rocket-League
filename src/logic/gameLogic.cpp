@@ -10,10 +10,10 @@ GameLogic::GameLogic(): withoutPlayers(0){
 
 }
 
-void GameLogic::update(Command &command) {
+void GameLogic::updateModel(Command &command) {
 
-    std::cout << "llega un comando de " << command.getValue() << " y se actualiza box2D" << std::endl;
-    if(this->withoutPlayers){
+    std::cout << "llega un comando de " << command.getValue() << std::endl;
+    if(this->withoutPlayers == 0){
         this->gamePhysics.addPlayer();
         withoutPlayers = 1;
     }
@@ -29,7 +29,8 @@ void GameLogic::update(Command &command) {
 
     }
 }
-void GameLogic::update() { // Es necesario?
+void GameLogic::updateTime() {
+    gamePhysics.updateTime();
 }
 
 Response GameLogic::getResponse(){

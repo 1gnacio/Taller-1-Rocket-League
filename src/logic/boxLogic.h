@@ -17,7 +17,6 @@ private:
    std::vector<b2Body*> walls;
    std::vector<b2Body*> cars; //Por ahora asi, tendra una clase que contenga, por ej, de qué equipo es.
 
-   std::thread steps;
    std::mutex mutex;
    void createWalls();
    void createBall();

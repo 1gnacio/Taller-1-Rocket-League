@@ -63,14 +63,15 @@ void Server::startHandler(Socket &socket) {
 void Server::gameFlow(){
     try {
         while(!this->isClosed) {
-            if (!endpoint.queueEmpty()) {
+            int limitCommands = 0;
+            while(!endpoint.queueEmpty() && limitCommands <= 50){
                 Command command = endpoint.pop();
-                logic.update(command);
-                endpoint.push(logic.getResponse());
-            } else {
-                logic.update();
-                endpoint.push(logic.getResponse());
+                logic.updateModel(command);
+                limitCommands++;
             }
+            logic.updateTime();
+            std::cout << "Actualizo el tiempo en box2d" << std::endl;
+            endpoint.push(logic.getResponse());
         }
     } catch (...) {
         throw;
