@@ -41,3 +41,19 @@ std::vector<unsigned char> PlayerResponse::serialize() {
 
     return serialization;
 }
+
+int PlayerResponse::size() {
+    return sizeof(PlayerResponse::id)
+    + sizeof(PlayerResponse::posX)
+    + sizeof(PlayerResponse::posY)
+    + sizeof(PlayerResponse::rotationAngle)
+    + 1 // isMoving
+    + 1 // isFlying
+    + 1 // isTurboActivated
+    + 1 // hasPunchedTheBall
+    + 1 // isAccelerating
+    + 1 // isLocalTeam
+    ;
+}
+
+PlayerResponse::PlayerResponse() = default;

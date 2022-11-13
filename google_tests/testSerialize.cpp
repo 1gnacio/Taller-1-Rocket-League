@@ -32,24 +32,25 @@ void serializeString(){
  */
 
 TEST(Serialize, seSeteanLosGoles) {
-BallResponse ball(0, 0, 0, false, false, false);
-MatchResponse response(ball);
-std::string name = "nombre";
-response.setGoals(2,3);
-response.setName(name);
-std::vector<char> responseSerialized = response.serialize();
+    BallResponse ball(0, 0, 0, false, false, false);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
+    std::string name = "nombre";
+    MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
 
-EXPECT_EQ(responseSerialized.size(), 16 ); // Cada gol es 1 byte (uint8_t)
+    EXPECT_EQ(response.size(), 16 ); // Cada gol es 1 byte (uint8_t)
 }
 
 TEST(Serialize, seSeteanLosJugadores) {
 
     BallResponse ball(0, 0, 0, false, false, false);
-    MatchResponse response(ball);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
     std::string name = "nombre";
-    response.setName(name);
-    response.setPlayers(4,3);
-    std::vector<char> responseSerialized = response.serialize();
+    MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
+    std::vector<unsigned char> responseSerialized = response.serialize();
 
     EXPECT_EQ(responseSerialized.size(), 16 ); // Cada gol es 1 byte (uint8_t)
 }
@@ -57,11 +58,12 @@ TEST(Serialize, seSeteanLosJugadores) {
 TEST(Serialize, seSeteanLosEstados) {
 
     BallResponse ball(0, 0, 0, false, false, false);
-    MatchResponse response(ball);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
     std::string name = "nombre";
-    response.setName(name);
-    response.setStates(0,0,0,0,0);
-    std::vector<char> responseSerialized = response.serialize();
+    MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
+    std::vector<unsigned char> responseSerialized = response.serialize();
     serializeString();
 
     EXPECT_EQ(responseSerialized.size(), 16 ); // Cada gol es 1 byte (uint8_t)
@@ -70,14 +72,13 @@ TEST(Serialize, seSeteanLosEstados) {
 TEST(Serialize, seSeteanTodosLosDatos) {
 
     BallResponse ball(0, 0, 0, false, false, false);
-    MatchResponse response(ball);
-    std::string name = "nombre de partida";
-    response.setName(name);
-    response.setStates(0,0,0,0,0);
-    response.setPlayers(4,3);
-    response.setGoals(0,0);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
+    std::string name = "nombre";
+    MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
+    std::vector<unsigned char> responseSerialized = response.serialize();
 
-    std::vector<char> responseSerialized = response.serialize();
     // printBytes(responseSerialized);
     EXPECT_EQ(responseSerialized.size(), 27 );
 }

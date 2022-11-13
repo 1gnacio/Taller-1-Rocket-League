@@ -64,3 +64,25 @@ void Serializer::parse(bool &boolean, std::vector<unsigned char> &serialization,
 void Serializer::merge(std::vector<unsigned char> &firstVector, std::vector<unsigned char> lastVector) {
     firstVector.insert(firstVector.end(), lastVector.begin(), lastVector.end());
 }
+
+void Serializer::parse(std::string &string, int size, std::vector<unsigned char> &serialization, int &beginPosition,
+                       int &endPosition) {
+    bool isFirstPosition = endPosition == 0;
+    beginPosition = (endPosition + (isFirstPosition ? 0 : 1));
+    endPosition += (size - (isFirstPosition ? 1 : 0));
+    std::vector<unsigned char> serializedString(serialization.begin() + beginPosition, serialization.begin() + endPosition + 1);
+    string = std::string(serializedString.begin(), serializedString.end());
+}
+
+std::vector<unsigned char> Serializer::serializeString(std::string &value) {
+    std::vector<unsigned char> serialization;
+
+    this->merge(serialization, this->serializeInt(value.size()));
+    if(value.size() == 0) {
+        return serialization;
+    }
+
+    this->merge(serialization, std::vector<unsigned char>(value.begin(), value.end()));
+
+    return serialization;
+}

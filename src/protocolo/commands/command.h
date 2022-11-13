@@ -11,24 +11,25 @@ private:
     std::string firstParameter;
     std::string secondParameter;
 
-    void insertParameter(std::vector<char> &serialization, std::string& parameter) const;
 public:
     // movimientos, acciones, listar
-    Command(char serialized,
+    Command(unsigned char serialized,
             const std::string& deserialized);
 
     // unirse
-    Command(char serialized,
+    Command(unsigned char serialized,
             const std::string& deserialized,
             const std::string& firstParameter);
 
     // crear
-    Command(char serialized,
+    Command(unsigned char serialized,
             const std::string& deserialized,
             const std::string& firstParameter,
             const std::string& secondParameter);
 
-    [[nodiscard]] std::vector<char> serialize() const;
+    Command(std::vector<unsigned char> serialized);
+
+    [[nodiscard]] std::vector<unsigned char> serialize();
     [[nodiscard]] std::string getValue() const { return this->deserialized; }
     [[nodiscard]] std::string getFirstParameter() const { return this->firstParameter; }
     [[nodiscard]] std::string getSecondParameter() const { return this->secondParameter; }

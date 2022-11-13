@@ -12,15 +12,18 @@
 
 class Response {
 private:
+    Serializer serializer;
     LobbyResponse lobbyResponse;
     MatchResponses matchResponses;
     std::string responseStatus;
 public:
-    Response(std::vector<char> serializedResponse);
+    Response();
+    Response(std::vector<unsigned char> &serializedResponse);
+    Response(MatchResponses &matchResponses);
     Response(const char* responseStatus, const char* responseMessage);
 
     std::string getStatus() { return this->responseStatus; }
-    std::vector<char> serialize();
+    std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario
 };

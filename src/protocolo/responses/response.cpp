@@ -1,46 +1,37 @@
 #include <strstream>
+#include <utility>
 #include "response.h"
-#include "../../constants/serialize_delimeter.h"
-#include "../../constants/response_values.h"
 
-Response::Response(std::vector<char> serializedResponse) {
-    std::string currentLine;
-    std::vector<std::string> responseParts;
-    std::istrstream stream(reinterpret_cast<const char*>(serializedResponse.data()), serializedResponse.size());
-    SerializerDelimeter delimeter;
+Response::Response(std::vector<unsigned char> &serializedResponse) : serializer() {
+    std::vector<unsigned char> serializedCount(serializedResponse.begin(), serializedResponse.begin() + 3);
+    int count = this->serializer.deserializeInt(serializedCount);
 
-    while (std::getline(stream, currentLine, delimeter.LOBBYDELIMETER)) {
-        responseParts.push_back(currentLine);
+    if (count == 0) {
+        return;
     }
 
-    if (responseParts.empty()) {
-        this->responseStatus = ResponseValues().ERROR;
-    } else {
-        this->responseStatus = responseParts[0];
-        // continuar deserializacion
+    std::vector<unsigned char> serializedResponses(serializedResponse.begin() + 4, serializedResponse.end());
+
+    this->matchResponses = std::move(MatchResponses(serializedResponses));
+}
+
+Response::Response(MatchResponses &matchResponses) : serializer(), matchResponses(std::move(matchResponses)) {}
+
+std::vector<unsigned char> Response::serialize() {
+    std::vector<unsigned char> serialization;
+    int count = this->matchResponses.count();
+
+    this->serializer.merge(serialization, this->serializer.serializeInt(count));
+
+    if (count == 0) {
+        return serialization;
     }
+
+    this->serializer.merge(serialization, this->matchResponses.serialize());
+
+    return serialization;
 }
 
-Response::Response(const char* responseStatus, const char* responseMessage)
-: responseStatus(responseStatus) {}
+Response::Response() : lobbyResponse(), matchResponses(), responseStatus() {}
 
-std::vector<char> Response::serialize() {
-    std::vector<char> result;
-    SerializerDelimeter delimeter;
-
-    result.insert(result.end(), this->responseStatus.begin(), this->responseStatus.end());
-
-    result.insert(result.end(), delimeter.LOBBYDELIMETER);
-
-    std::vector<char> serializedLobby = this->lobbyResponse.serialize();
-
-    result.insert(result.end(), serializedLobby.begin(), serializedLobby.end());
-
-    result.insert(result.end(), delimeter.LOBBYDELIMETER);
-
-    std::vector<char> serializedMatches = this->matchResponses.serialize();
-
-    result.insert(result.end(), serializedMatches.begin(), serializedMatches.end());
-
-    return {result.begin(), result.end()};
-}
+Response::Response(const char *responseStatus, const char *responseMessage) : responseStatus(responseStatus) {}

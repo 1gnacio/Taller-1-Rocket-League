@@ -5,7 +5,7 @@
 
 Protocolo::Protocolo() {}
 
-void Protocolo::sendMessage(Socket& socket, std::vector<char> &message) {
+void Protocolo::sendMessage(Socket& socket, std::vector<unsigned char> &message) {
     uint16_t responseSize = message.size();
 
     responseSize = htons(responseSize);
@@ -17,7 +17,7 @@ void Protocolo::sendMessage(Socket& socket, std::vector<char> &message) {
     }
 }
 
-std::vector<char> Protocolo::receiveMessage(Socket &socket) {
+std::vector<unsigned char> Protocolo::receiveMessage(Socket &socket) {
     uint16_t responseSize;
 
     socket.recvall(&responseSize, this->responseBytes, &this->connectionClosed);
@@ -25,7 +25,7 @@ std::vector<char> Protocolo::receiveMessage(Socket &socket) {
     if (!this->connectionClosed) {
         responseSize = ntohs(responseSize);
 
-        std::vector<char> serializedResponse(responseSize);
+        std::vector<unsigned char> serializedResponse(responseSize);
 
         socket.recvall(&serializedResponse[0], responseSize, &this->connectionClosed);
 
@@ -40,7 +40,7 @@ void Protocolo::sendResponse(Socket& socket, Response &response) {
         return;
     }
 
-    std::vector<char> serialized = response.serialize();
+    std::vector<unsigned char> serialized = response.serialize();
 
     this->sendMessage(socket, serialized);
 }
@@ -51,7 +51,7 @@ Command Protocolo::receiveCommand(Socket& socket) {
         return {cv.SERIALIZED_NOP, cv.DESERIALIZED_NOP};
     }
 
-    std::vector<char> message = this->receiveMessage(socket);
+    std::vector<unsigned char> message = this->receiveMessage(socket);
 
     Command receivedCommand = ProtocolCommands().createCommand(message);
 
@@ -65,7 +65,7 @@ void Protocolo::sendCommand(Socket &socket, Command &command) {
         return;
     }
 
-    std::vector<char> serializedCommand = command.serialize();
+    std::vector<unsigned char> serializedCommand = command.serialize();
 
     this->sendMessage(socket, serializedCommand);
 }
@@ -75,7 +75,7 @@ Response Protocolo::receiveResponse(Socket &socket) {
         return {"ERROR", "CONEXION CERRADA"};
     }
 
-    std::vector<char> message = this->receiveMessage(socket);
+    std::vector<unsigned char> message = this->receiveMessage(socket);
 
     return {message};
 }

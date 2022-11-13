@@ -2,18 +2,20 @@
 #define MATCH_RESPONSE_H
 
 #include <vector>
-#include "player_response.h"
-#include "ball_response.h"
+#include "../serializer/entity_serializer.h"
+#include "../serializer/serializer.h"
 
 class MatchResponse {
 private:
-    uint8_t goalsLocal;
-    uint8_t goalsVisitor;
-    int time; // MMSS, ejemplo: 05:00 se envia como 500
+    Serializer serializer;
+    EntitySerializer entitySerializer;
+    int goalsLocal;
+    int goalsVisitor;
+    int time_insec;
     BallResponse ballResponse;
-    std::vector<PlayerResponse> players;
-    uint8_t requiredPlayers;
-    uint8_t currentPlayers;
+    PlayerResponses players;
+    int requiredPlayers;
+    int currentPlayers;
     std::string name;
     bool isWaitingForPlayers;
     bool hasFinished;
@@ -22,14 +24,31 @@ private:
     bool activeReplay;
 public:
 
-    MatchResponse(BallResponse ball);
-    std::vector<char> serialize();
+    MatchResponse(int goalsLocal,
+                  int goalsVisitor,
+                  int time_insec,
+                  BallResponse &ball,
+                  PlayerResponses &players,
+                  int requiredPlayers,
+                  int currentPlayers,
+                  std::string &name,
+                  bool isWaitingForPlayers,
+                  bool hasFinished,
+                  bool isGoalLocal,
+                  bool isGoalVisitor,
+                  bool activeReplay);
+
+    explicit MatchResponse(std::vector<unsigned char>& serialized);
+    std::vector<unsigned char> serialize();
 
     void setGoals(uint8_t goalsLocal, uint8_t goalsVisitor);
     void setPlayers(uint8_t requiredPlayers, uint8_t currentPlayers);
     void setStates(bool isWaitingForPlayers, bool hasFinished, bool isGoalLocal, bool isGoalVisitor, bool activeReplay);
     void setName(std::string &gameName);
     char getSizeGameName();
+
+    static int size(int playerCount, int roomNameSize);
+    int size();
 };
 
 

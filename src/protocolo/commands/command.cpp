@@ -1,21 +1,21 @@
 #include "command.h"
-#include "../../constants/serialize_delimeter.h"
+#include "../serializer/serializer.h"
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized,
                  const std::string &firstParameter) :
         serialized(serialized),
         deserialized(deserialized),
         firstParameter(firstParameter) {}
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized) :
                  serialized(serialized),
                  deserialized(deserialized),
                  firstParameter(),
                  secondParameter() {}
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized,
                  const std::string &firstParameter,
                  const std::string &secondParameter) :
@@ -24,27 +24,31 @@ Command::Command(const char serialized,
                  firstParameter(firstParameter),
                  secondParameter(secondParameter) {}
 
+std::vector<unsigned char> Command::serialize() {
+    Serializer serializer;
+    std::vector<unsigned char> result;
+    std::vector<unsigned char> serializedCommand;
+    std::vector<unsigned char> serializedFirstParameter;
+    std::vector<unsigned char> serializedSecondParameter;
+    int size = 0;
 
-
-void Command::insertParameter(std::vector<char> &serialization, std::string &parameter) const {
-    serialization.push_back(SerializerDelimeter().SEPARATOR);
-    std::vector<char> parameterSerialized(this->firstParameter.begin(), this->firstParameter.end());
-    serialization.insert(serialization.end(), parameter.begin(), parameter.end());
-}
-
-std::vector<char> Command::serialize() const {
-    std::vector<char> result;
-    result.push_back(this->serialized);
+    serializedCommand.push_back(this->serialized);
+    size += serializedCommand.size();
 
     if (!this->firstParameter.empty()) {
-        std::string parameter = this->firstParameter;
-        this->insertParameter(result, parameter);
+        serializer.merge(serializedFirstParameter, serializer.serializeString(this->firstParameter));
+        size += serializedFirstParameter.size();
+        serializer.merge(serializedCommand, serializedFirstParameter);
     }
 
     if (!this->secondParameter.empty()) {
-        std::string parameter = this->secondParameter;
-        this->insertParameter(result, parameter);
+        serializer.merge(serializedSecondParameter, serializer.serializeString(this->secondParameter));
+        size += serializedSecondParameter.size();
+        serializer.merge(serializedCommand, serializedSecondParameter);
     }
+
+    serializer.merge(result, serializer.serializeInt(size));
+    serializer.merge(result, serializedCommand);
 
     return result;
 }
@@ -66,4 +70,8 @@ Command &Command::operator=(Command &&other) noexcept {
     this->secondParameter = other.secondParameter;
 
     return *this;
+}
+
+Command::Command(std::vector<unsigned char> serialized) {
+    // TODO
 }

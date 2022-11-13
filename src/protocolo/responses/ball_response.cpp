@@ -28,3 +28,22 @@ BallResponse::BallResponse(std::vector<unsigned char> serialized) : serializer()
 BallResponse::BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying,
                            bool hasBeenPunched) : serializer(), posX(posX), posY(posY), rotationAngle(rotationAngle),
                            isMoving(isMoving), isFlying(isFlying), hasBeenPunched(hasBeenPunched) {}
+
+int BallResponse::size() {
+    return sizeof(BallResponse::posX)
+    + sizeof(BallResponse::posY)
+    + sizeof(BallResponse::rotationAngle)
+    + 1 // isMoving
+    + 1 // isFlying
+    + 1 // hasBeenPunched
+    ;
+}
+
+BallResponse::BallResponse() = default;
+
+float posX;
+float posY;
+float rotationAngle;
+bool isMoving;
+bool isFlying;
+bool hasBeenPunched;

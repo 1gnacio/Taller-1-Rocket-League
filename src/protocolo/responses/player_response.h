@@ -27,10 +27,14 @@ public:
 
     explicit PlayerResponse(std::vector<unsigned char> &serialized);
 
+    PlayerResponse();
+
     std::vector<unsigned char> serialize();
 
     [[nodiscard]] int getId() const { return this->id; }
     [[nodiscard]] float getPosX() const { return this->posX; }
+
+    static int size();
 };
 
 

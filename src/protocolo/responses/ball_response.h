@@ -17,6 +17,7 @@ private:
 public:
     BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying, bool hasBeenPunched);
     BallResponse(std::vector<unsigned char > serialized);
+    BallResponse();
     std::vector<unsigned char> serialize();
 
     [[nodiscard]] float getPosX() const { return this->posX; }
@@ -25,6 +26,8 @@ public:
     [[nodiscard]] bool getIsMoving() const { return this->isMoving; }
     [[nodiscard]] bool getIsFlying() const { return this->isFlying; }
     [[nodiscard]] bool getHasBeenPunched() const { return this->hasBeenPunched; }
+
+    static int size();
 };
 
 

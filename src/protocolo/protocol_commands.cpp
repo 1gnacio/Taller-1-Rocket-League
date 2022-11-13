@@ -29,7 +29,7 @@ ProtocolCommands::ProtocolCommands() : values(),
         parameteredCommands({this->values.DESERIALIZED_JOIN, this->values.DESERIALIZED_CREATE}){
 }
 
-Command ProtocolCommands::createParameteredCommand(const char serialized,
+Command ProtocolCommands::createParameteredCommand(const unsigned char serialized,
                                                    const std::string &deserialized,
                                                    std::string &arguments) {
     if (deserialized == this->values.DESERIALIZED_CREATE) {
@@ -53,11 +53,11 @@ Command ProtocolCommands::createCommand(std::string &value) {
     return Command(position->second, position->first);
 }
 
-Command ProtocolCommands::createSimpleCommand(const char serialized, const std::string &deserialized) const {
+Command ProtocolCommands::createSimpleCommand(const unsigned char serialized, const std::string &deserialized) const {
     return Command(serialized, deserialized);
 }
 
-Command ProtocolCommands::createCommand(std::vector<char> &serializedCommand) {
+Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCommand) {
     auto position = this->deserializedCommands.find(serializedCommand[0]);
 
     if (position == this->deserializedCommands.end()) {

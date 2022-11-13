@@ -6,9 +6,16 @@
 
 class MatchResponses {
 private:
+    Serializer serializer;
     std::vector<MatchResponse> matches;
 public:
-    std::vector<char> serialize();
+    MatchResponses();
+    explicit MatchResponses(std::vector<MatchResponse> &responses);
+    explicit MatchResponses(std::vector<unsigned char> &serializedMatchResponse);
+    std::vector<unsigned char> serialize();
+
+    int count() { return this->matches.size(); };
+
 };
 
 

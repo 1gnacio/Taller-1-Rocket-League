@@ -14,9 +14,9 @@ class Protocolo {
     bool connectionClosed = false;
     int16_t responseBytes = 2;
 
-    void sendMessage(Socket& socket, std::vector<char> &message);
+    void sendMessage(Socket& socket, std::vector<unsigned char> &message);
 
-    std::vector<char> receiveMessage(Socket& socket);
+    std::vector<unsigned char> receiveMessage(Socket& socket);
 
  public:
     Protocolo();
