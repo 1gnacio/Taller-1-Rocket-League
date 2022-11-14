@@ -38,7 +38,7 @@ Response GameLogic::getResponse(){
      * getStatusGame() - Devuelve datos sobre el juego
      * getStatusCars() - Devuleve datos sobre los autos
      */
-    std::vector<char> responseVec;
-    return responseVec;
+    Response responseVec;
+    return std::move(responseVec);
 
 }
