@@ -32,6 +32,13 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 
 # end QT5
+add_executable(sdlTesting
+        sdl_testing.cpp
+        src/client/sdl_player.h
+        src/client/sdl_player.cpp
+        src/client/sdl_animation.h
+        src/client/sdl_animation.cpp)
+target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
 
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
