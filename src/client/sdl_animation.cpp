@@ -1,20 +1,15 @@
 #include "sdl_animation.h"
-#include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <string>
 
 sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames, const std::string& path) :
         currentFrame(0), numFrames(numFrames), elapsed(0.0f) {
     assert(this->numFrames > 0);
-
     for (int i = 1; i <= numFrames; ++i) {
         std::string surface = path + std::to_string(i) + ".png";
-        textures.emplace_back(renderer,
+        this->textures.emplace_back(renderer,
                               SDL2pp::Surface(surface).SetColorKey(true, 0));
     }
-
-    size=textures[0].GetWidth();
 }
 
 sdl_animation::~sdl_animation() {
@@ -23,6 +18,7 @@ sdl_animation::~sdl_animation() {
 
 void sdl_animation::update(float dt) {
     this->elapsed += dt;
+    
     //TODO: ver capaz no hace falta.
     while (this->elapsed > FRAME_RATE) {
         this->advanceFrame();
@@ -32,6 +28,9 @@ void sdl_animation::update(float dt) {
 
 void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, double angle, SDL_RendererFlip &flipType) {
     //std::cout << currentFrame << std::endl;
+    if (textures.empty())
+        throw std::runtime_error("Vector de texturas empty");
+
     renderer.Copy(
             textures[currentFrame],
             SDL2pp::NullOpt,

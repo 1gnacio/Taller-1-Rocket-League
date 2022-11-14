@@ -34,12 +34,22 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 # end QT5
 add_executable(sdlTesting
         sdl_testing.cpp
+        src/client/sdl_main.h
+        src/client/sdl_main.cpp
+        src/client/sdl_animation.h
+        src/client/sdl_animation.cpp
+        src/client/sdl_ball.h
+        src/client/sdl_ball.cpp
+        src/client/sdl_scoreboard.h
+        src/client/sdl_scoreboard.cpp
+        src/client/sdl_arena.h
+        src/client/sdl_arena.cpp
         src/client/sdl_player.h
         src/client/sdl_player.cpp
         src/client/sdl_animation.h
         src/client/sdl_animation.cpp)
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
-target_compile_definitions(sdlTesting PRIVATE SDL_TESTING=1)
+target_compile_definitions(sdlTesting PRIVATE SDL_TESTING)
 
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
@@ -76,45 +86,30 @@ file(GLOB_RECURSE headers "../src/*/*.h")
 
 add_executable(game_client
         client_main.cpp
-        src/client/client.cpp
-        src/client/client.h
-        src/handlers/server_connection.cpp
-        src/handlers/server_connection.h
-        src/protocolo/protocol_commands.cpp
-        src/protocolo/protocol_commands.h
-        src/sockets/socket.cpp
-        src/sockets/socket.h
-        src/queues/command_queue.cpp
-        src/queues/command_queue.h
-        src/handlers/command_handler.cpp
-        src/handlers/command_handler.h
-        src/handlers/response_handler.cpp
-        src/handlers/response_handler.h
-        src/protocolo/commands/strategies/create_parameter_strategy.cpp
-        src/protocolo/commands/strategies/create_parameter_strategy.h
-        src/protocolo/commands/command.cpp
-        src/protocolo/commands/command.h
-        src/sockets/resolver.cpp
-        src/sockets/resolver.h
-        src/sockets/liberror.cpp
-        src/sockets/liberror.h
-        src/protocolo/protocolo.h
-        src/protocolo/protocolo.cpp
-        src/queues/response_queue.cpp
-        src/queues/response_queue.h
-        src/sockets/resolvererror.cpp
-        src/sockets/resolvererror.h
-        src/protocolo/responses/response.cpp
-        src/protocolo/responses/response.h
-        src/client/sdl_animation.cpp
-        src/client/sdl_animation.h
-        src/client/sdl_player.cpp
-        src/client/sdl_main.cpp
-        src/protocolo/responses/response.h
-        src/protocolo/responses/response.cpp
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h)
+        src/client/client.cpp src/client/client.h
+        src/handlers/server_connection.cpp src/handlers/server_connection.h
+        src/protocolo/protocol_commands.cpp src/protocolo/protocol_commands.h
+        src/sockets/socket.cpp src/sockets/socket.h
+        src/queues/command_queue.cpp src/queues/command_queue.h
+        src/handlers/command_handler.cpp src/handlers/command_handler.h
+        src/handlers/response_handler.cpp src/handlers/response_handler.h
+        src/protocolo/commands/strategies/create_parameter_strategy.cpp src/protocolo/commands/strategies/create_parameter_strategy.h
+        src/protocolo/commands/command.cpp src/protocolo/commands/command.h
+        src/sockets/resolver.cpp src/sockets/resolver.h
+        src/sockets/liberror.cpp src/sockets/liberror.h
+        src/protocolo/protocolo.h src/protocolo/protocolo.cpp
+        src/queues/response_queue.cpp src/queues/response_queue.h
+        src/sockets/resolvererror.cpp src/sockets/resolvererror.h
+        src/protocolo/responses/response.cpp src/protocolo/responses/response.h
+        src/client/sdl_main.cpp src/client/sdl_main.h
+        src/client/sdl_player.h src/client/sdl_player.cpp
+        src/client/sdl_animation.cpp src/client/sdl_animation.h
+        src/client/sdl_ball.cpp src/client/sdl_ball.h
+        src/client/sdl_arena.cpp src/client/sdl_arena.h
+        src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h)
 
-target_link_libraries(game_client box2d ${SDL2PP_LIBRARIES})
+target_link_libraries(game_client ${SDL2PP_LIBRARIES})
+
 
 add_executable(game_server
         server_main.cpp

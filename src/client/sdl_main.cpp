@@ -1,20 +1,19 @@
 #include "sdl_main.h"
+#include <chrono>
 
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                       window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    800, 600, SDL_WINDOW_RESIZABLE),
                       renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
-                      arena(renderer), scoreboard(renderer), ball(renderer), time(0){
-
-    //TODO eliminar.
+                      arena(renderer), scoreboard(renderer), ball(renderer), time(0)
+#ifdef SDL_TESTING
+                      , my_object(renderer)
+#endif
+{
+#ifndef SDL_TESTING
     players.emplace_back(renderer);
-    angle_test =0;
-    x_test =0;
-    y_test=400;
-    dt_test=UPDATE_TIME;
+#endif
 }
-
-
 
 std::string format_duration( std::chrono::milliseconds ms ) {
     using namespace std::chrono;
@@ -28,33 +27,39 @@ std::string format_duration( std::chrono::milliseconds ms ) {
     return time;
 }
 
-
+#ifndef SDL_TESTING
 void sdl_main::updateScreen(const Response& response) {
     //TODO
     scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
-    ball.update(x_test, y_test, angle_test);
-    players.back().update(x_test,500, 0, FRAME_RATE);
-    angle_test += 5;
-    x_test += 30;
-    y_test -= 10;
     time += UPDATE_TIME;
-    if(time == 3){
-        players.back().toogleTurbo();
-    }
-    if(time == 8){
-        players.back().toogleTurbo();
-    }
 }
-
+#endif
 void sdl_main::renderScreen() {
     renderer.Clear();
     arena.render(renderer);
     scoreboard.render(renderer);
     ball.render(renderer);
-    players.back().render(renderer);
+#ifndef SDL_TESTING
+    for (auto &player:players) {
+        player.render(renderer);
+    }
+#else
+    my_object.render(renderer);
+#endif
     renderer.Present();
 }
 
 sdl_main::~sdl_main() {
     //TODO
 }
+
+#ifdef SDL_TESTING
+void sdl_main::updateScreen() {
+    scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
+    my_object.update(0,500, 0, FRAME_RATE);
+
+
+
+    time += UPDATE_TIME;
+}
+#endif

@@ -6,7 +6,6 @@
 #define SDL_SDL_ANIMATION_H
 
 #include <SDL2pp/SDL2pp.hh>
-#include <list>
 #include <vector>
 
 #define FRAME_RATE (1000000.0f/25.0f)
@@ -28,7 +27,6 @@ private:
     std::vector<SDL2pp::Texture> textures;
     int currentFrame;
     int numFrames;
-    int size;
     float elapsed;
 };
 

@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "src/client/sdl_player.h"
+#include "src/client/sdl_main.h"
 
 static bool handleEvents(sdl_player &player);
 static void render(SDL2pp::Renderer &renderer, sdl_player &player);
@@ -14,6 +15,7 @@ static void update(sdl_player &player, float dt);
 
 int main(int argc, char** argv){
     try {
+        /*
         // Inicializo biblioteca de SDL
         SDL2pp::SDL sdl(SDL_INIT_VIDEO);
         // Creo una ventana dinamica con título "Hello world"
@@ -24,14 +26,15 @@ int main(int argc, char** argv){
         SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
         sdl_player py(renderer);
-
+*/
+        sdl_main py;
         bool running = true;
         // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
         // del update del modelo.
         while (running) {
-            running = handleEvents(py);
-            update(py, FRAME_RATE);
-            render(renderer, py);
+            running = handleEvents(py.my_object);
+            py.updateScreen();
+            py.renderScreen();
 
             // la cantidad de segundos que debo dormir se debe ajustar en función
             // de la cantidad de tiempo que demoró el handleEvents y el render
@@ -91,14 +94,4 @@ static bool handleEvents(sdl_player &player) {
         } // fin switch(event)
     } // fin while(SDL_PollEvents)
     return true;
-}
-
-static void render(SDL2pp::Renderer &renderer, sdl_player &player) {
-    renderer.Clear();
-    player.render(renderer);
-    renderer.Present();
-}
-
-static void update(sdl_player &player, float dt) {
-    player.update(100, 400, 0, dt);
 }

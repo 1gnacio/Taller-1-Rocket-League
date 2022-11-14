@@ -15,9 +15,10 @@ sdl_player::~sdl_player() {
 void sdl_player::update(int _x, int _y, double _angle, float _dt) {
 #ifndef SDL_TESTING
         this->x = _x;
-        this->y = _y;
-        this->angle = _angle;
 #endif
+
+    this->y = _y;
+    this->angle = _angle;
 
     if (moving) {
         car.update(_dt);
