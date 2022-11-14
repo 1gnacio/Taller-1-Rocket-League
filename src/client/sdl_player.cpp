@@ -45,7 +45,7 @@ void sdl_player::update(int _x, int _y, double _angle, float _dt) {
 
 void sdl_player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    int size_h= 11 * renderer.GetOutputHeight() /100;
+    int size_h= 8 * renderer.GetOutputHeight() /100;
     int size_w= size_h*3;
     car.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle,flip);
 
