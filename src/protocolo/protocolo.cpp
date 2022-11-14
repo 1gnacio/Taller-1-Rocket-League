@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <numeric>
 #include "protocolo.h"
+#include <csignal>
 
 Protocolo::Protocolo() {}
 

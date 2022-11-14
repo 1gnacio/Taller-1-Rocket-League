@@ -16,7 +16,9 @@ socket(socket) {
 void CommandHandler::handleSend() {
     while (!this->hasFinished) {
         Command c = this->queue.pop();
-        protocolo.sendCommand(this->socket, c);
+        if(c.getValue() != "NOP") {
+            protocolo.sendCommand(this->socket, c);
+        }
         this->hasFinished = this->protocolo.isConnectionClosed();
     }
 }

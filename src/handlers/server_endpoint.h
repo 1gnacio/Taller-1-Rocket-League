@@ -18,7 +18,7 @@ public:
 
     void addPlayer(Socket& client);
 
-    void push(Response& response);
+    void push(Response response);
 
     Command pop();
 
@@ -27,6 +27,8 @@ public:
     void stopConnections();
 
     ~ServerEndpoint();
+
+    bool queueEmpty();
 };
 
 
