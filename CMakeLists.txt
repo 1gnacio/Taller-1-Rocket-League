@@ -154,6 +154,8 @@ add_executable(game_server
         src/logic/gameLogic.h
         src/logic/boxLogic.cpp
         src/logic/boxLogic.h
+        src/logic/car.cpp
+        src/logic/car.h
         )
 
 target_link_libraries(game_server box2d)

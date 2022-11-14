@@ -7,6 +7,8 @@
 #include <thread>
 #include <mutex>
 #include "../../src/constants/logic_values.h"
+#include "car.h"
+
 // Clase de la logica que contiene todos los movimientos de box2d
 
 class BoxLogic {
@@ -15,12 +17,12 @@ private:
    b2Body* ball;
 
    std::vector<b2Body*> walls;
-   std::vector<b2Body*> cars; //Por ahora asi, tendra una clase que contenga, por ej, de qué equipo es.
+   std::vector<Car> cars; //Por ahora asi, tendra una clase que contenga, por ej, de qué equipo es.
 
    std::mutex mutex;
    void createWalls();
    void createBall();
-   static float getData(int key, const b2Body *body);
+   static float getData(int key, const b2Body* body);
 
 public:
     std::unique_ptr<b2World> world;
@@ -44,7 +46,7 @@ public:
     float getBallData(int key); // 0 -> PosX | 1 = posY | 2 = angulo (grados) | 3 = velocidad en X | 4 = velocidad en Y
     float getCarData(int carNumber, int key);
 
-    b2Body* getCar(int carNumber);
+    Car getCar(int carNumber);
 
     static b2Vec2 getVectorForce(int direction);
 };
