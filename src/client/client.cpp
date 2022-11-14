@@ -11,12 +11,16 @@
 //       y otro que recibe las respuestas, push respuestas
 
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
+
+
+
 Client::Client(const char *hostname, const char *servname) :
-isRunning(true),
-connection(hostname, servname),
-sdl_handler(){}
+        isRunning(true), connection(hostname, servname){
+
+}
 
 void Client::readStandardInput() {
+    //TODO: opción para que el usurario pueda elegir las teclas.
     SDL_Event event;
     bool quit = false;
     while (!quit){
@@ -84,12 +88,14 @@ void Client::readStandardInput() {
 
 void Client::run() {
     std::thread standardInput(&Client::readStandardInput, this);
+
     while (this->isRunning) {
-        sleep(1);   //TODO: sacarlo (esta para poder ir probando)
         Response response = this->connection.pop();
         sdl_handler.updateScreen(response);
         sdl_handler.renderScreen();
+        SDL_Delay(UPDATE_TIME);   //TODO: sacarlo (esta para poder ir probando)
     }
+
     standardInput.join();
 }
 
