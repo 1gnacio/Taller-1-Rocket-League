@@ -65,7 +65,7 @@ static bool handleEvents(sdl_player &player) {
                         player.moveRight();
                         break;
                     case SDLK_SPACE:
-                        player.toogleTurbo();
+                        player.toggleTurbo();
                         break;
                 }
             } // Fin KEY_DOWN
@@ -80,7 +80,7 @@ static bool handleEvents(sdl_player &player) {
                         player.stopMoving();
                         break;
 //                    case SDLK_SPACE:
-//                        player.toogleTurbo();
+//                        player.toggleTurbo();
 //                        break;
                 }
             }// Fin KEY_UP
@@ -100,5 +100,5 @@ static void render(SDL2pp::Renderer &renderer, sdl_player &player) {
 }
 
 static void update(sdl_player &player, float dt) {
-    player.update(100, 100, 0, dt);
+    player.update(100, 400, 0, dt);
 }

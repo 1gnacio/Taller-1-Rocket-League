@@ -39,6 +39,7 @@ add_executable(sdlTesting
         src/client/sdl_animation.h
         src/client/sdl_animation.cpp)
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
+target_compile_definitions(sdlTesting PRIVATE SDL_TESTING=1)
 
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
