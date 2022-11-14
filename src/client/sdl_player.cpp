@@ -1,10 +1,10 @@
 #include "sdl_player.h"
 
-sdl_player::sdl_player(SDL2pp::Renderer &renderer): car(renderer, 4, DATA_PATH "/car/car"),
+sdl_player::sdl_player(SDL2pp::Renderer &renderer): car(renderer, 4, DATA_PATH "/car2/car"),
                                                     turbo(renderer, 10, DATA_PATH "/fire/fire"),
                                                     facingLeft(false), moving(false), onTurbo(false),
                                                     x(300), y(300), angle(0){
-    car.setColorMod(255,255,255);
+    //car.setColorMod(255,255,255);
 }
 
 

@@ -8,7 +8,8 @@ sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames, const st
     for (int i = 1; i <= numFrames; ++i) {
         std::string surface = path + std::to_string(i) + ".png";
         this->textures.emplace_back(renderer,
-                              SDL2pp::Surface(surface).SetColorKey(true, 0));
+                              //SDL2pp::Surface(surface).SetColorKey(true, 0));
+                              SDL2pp::Surface(surface));
     }
 }
 
