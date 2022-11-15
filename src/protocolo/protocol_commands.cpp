@@ -65,8 +65,8 @@ Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCo
     }
 
     auto parametered = std::find(this->parameteredCommands.begin(),
-                                                            this->parameteredCommands.end(),
-                                                            position->second);
+                                 this->parameteredCommands.end(),
+                                 position->second);
 
     if (parametered == this->parameteredCommands.end()) {
         return this->createSimpleCommand(position->first,
@@ -79,4 +79,14 @@ Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCo
     return this->createParameteredCommand(position->first,
                                           position->second,
                                           arguments);
+}
+
+std::string ProtocolCommands::getDeserializedCommandValue(unsigned char commandValue) {
+    auto position = this->deserializedCommands.find(commandValue);
+
+    if (position == this->deserializedCommands.end()) {
+        throw std::runtime_error("Command not found");
+    }
+
+    return position->second;
 }

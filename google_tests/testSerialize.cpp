@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "../src/protocolo/responses/match_response.h"
+#include "../src/protocolo/responses/response.h"
 #include <iostream>
 
 void printBytes(std::vector<char> &responseSerialized){
@@ -124,4 +125,64 @@ TEST(Serializacion, SerializeBallResponse) {
     EXPECT_EQ(false, responseDeserialized.getIsMoving());
 }
 
+TEST(Serializacion, SerializarString) {
+    std::string prueba = "nombre de prueba";
+
+    Serializer serializer;
+
+    std::vector<unsigned char> serializado = serializer.serializeString(prueba);
+
+    std::string deserializado = serializer.deserializeString(serializado);
+
+    EXPECT_EQ(prueba, deserializado);
+}
+
+TEST(Serializacion, SerializarStringConParse) {
+    std::string prueba = "nombre de prueba";
+    std::string resultado;
+    int inicio = 0;
+    int fin = 0;
+
+    Serializer serializer;
+
+    std::vector<unsigned char> serializado = serializer.serializeString(prueba);
+
+    serializer.parse(resultado, serializado, inicio, fin);
+
+    EXPECT_EQ(prueba, resultado);
+}
+
+TEST(Serializacion, SerializarPartida) {
+    BallResponse ball(1, 0, 1, false, false, false);
+    PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false);
+    PlayerResponses players;
+    players.addPlayer(player);
+    std::string prueba = "nombre de prueba";
+    MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
+    MatchResponses partidas;
+    MatchResponses partidas2;
+    partidas.addResponse(partida);
+    partidas2.addResponse(partida);
+    Response r(partidas);
+
+    EXPECT_EQ(r.getSize(), partidas2.size());
+}
+
+TEST(Serializacion, SerializarYDeserializarPartida) {
+    BallResponse ball(1, 0, 1, false, false, false);
+    PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false);
+    PlayerResponses players;
+    players.addPlayer(player);
+    std::string prueba = "nombre de prueba";
+    MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
+    MatchResponses partidas;
+    partidas.addResponse(partida);
+    Response r(partidas);
+
+    std::vector<unsigned char> serializacion = r.serialize();
+
+    Response deserializada(serializacion);
+
+    EXPECT_EQ(r.getSize(), deserializada.getSize());
+}
 

@@ -2,6 +2,7 @@
 #define MATCH_RESPONSES_H
 
 #include <vector>
+#include "../serializer/serializer.h"
 #include "match_response.h"
 
 class MatchResponses {
@@ -15,7 +16,9 @@ public:
     std::vector<unsigned char> serialize();
 
     int count() { return this->matches.size(); };
+    int size();
 
+    void addResponse(MatchResponse &response);
 };
 
 

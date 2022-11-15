@@ -2,11 +2,9 @@
 #include "match_response.h"
 
 std::vector<unsigned char> MatchResponse::serialize() {
-    std::vector<unsigned char> serialization;
     std::vector<unsigned char> result;
+    std::vector<unsigned char> serialization;
 
-    this->serializer.merge(serialization, this->serializer.serializeInt(this->players.getSize()));
-    this->serializer.merge(serialization, this->serializer.serializeInt(this->name.size()));
     this->serializer.merge(serialization, this->serializer.serializeInt(goalsLocal));
     this->serializer.merge(serialization, this->serializer.serializeInt(goalsVisitor));
     this->serializer.merge(serialization, this->serializer.serializeInt(time_insec));
@@ -26,7 +24,7 @@ std::vector<unsigned char> MatchResponse::serialize() {
     this->serializer.merge(result, this->serializer.serializeInt(size));
     this->serializer.merge(result, serialization);
 
-    return result;
+    return std::move(result);
 
 }
 
@@ -83,10 +81,10 @@ int MatchResponse::size() {
            + sizeof(MatchResponse::goalsVisitor)
            + sizeof(MatchResponse::time_insec)
            + BallResponse::size()
-           + this->players.getCount() * PlayerResponse::size()
+           + this->players.getSize() + sizeof(int)
            + sizeof(MatchResponse::requiredPlayers)
            + sizeof(MatchResponse::currentPlayers)
-           + this->name.size()
+           + this->name.size() + sizeof(int)
            + 1 // isWaitingForPlayers
            + 1 // hasFinished
            + 1 // isGoalLocal
@@ -100,20 +98,23 @@ MatchResponse::MatchResponse(std::vector<unsigned char>& serialized) :
     int firstPosition = 0;
     int lastPosition = 0;
 
-    int playerResponsesSize = 0;
-    int roomNameSize = 0;
-
-    this->serializer.parse(playerResponsesSize, serialized, firstPosition, lastPosition);
-    this->serializer.parse(roomNameSize, serialized, firstPosition, lastPosition);
-    this->serializer.parse(this->goalsLocal, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->goalsLocal, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->goalsVisitor, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->time_insec, serialized, firstPosition, lastPosition);
-    this->entitySerializer.parse(this->ballResponse, BallResponse::size(), serialized, firstPosition, lastPosition);
-    this->entitySerializer.parse(this->players, playerResponsesSize, serialized, firstPosition, lastPosition);
+    this->entitySerializer.parse(this->ballResponse, serialized, firstPosition, lastPosition);
+
+    int countPlayers = 0;
+    this->serializer.parse(countPlayers, serialized, firstPosition, lastPosition);
+
+    for(int i = 0; i < countPlayers; i++) {
+        PlayerResponse p;
+        this->entitySerializer.parse(p, serialized, firstPosition, lastPosition);
+        this->players.addPlayer(p);
+    }
+
     this->serializer.parse(this->requiredPlayers, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->currentPlayers, serialized, firstPosition, lastPosition);
-    this->serializer.parse(this->name, roomNameSize, serialized, firstPosition, lastPosition);
+    this->serializer.parse(this->name, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->isWaitingForPlayers, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->hasFinished, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->isGoalLocal, serialized, firstPosition, lastPosition);

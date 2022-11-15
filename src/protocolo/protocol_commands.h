@@ -15,7 +15,7 @@ class ProtocolCommands {
 private:
     CommandValues values;
     std::map<const unsigned char, const std::string> deserializedCommands;
-    std::map<const std::string, const char> serializedCommands;
+    std::map<const std::string, const unsigned char> serializedCommands;
     std::vector<std::string> parameteredCommands;
 
     [[nodiscard]] Command createSimpleCommand(unsigned char serialized,
@@ -28,6 +28,8 @@ public:
     ProtocolCommands();
 
     Command createCommand(std::string& value);
+
+    std::string getDeserializedCommandValue(unsigned char serializedCommandValue);
 
     Command createCommand(std::vector<unsigned char> &serializedCommand);
 
