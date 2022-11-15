@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 #include "../src/protocolo/commands/command.h"
 #include "../src/logic/boxLogic.h"
+#include "../src/logic/gameLogic.h"
 #include "../src/constants/logic_values.h"
 
 const int FIRST_CAR = 1;
@@ -68,6 +69,9 @@ TEST(physics, sePosicionaAutoCorrectamente) {
 TEST(physics, aceleracionCorrectaConComando) {
     BoxLogic physics;
     physics.addPlayer();
+    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
+        physics.updateTime();
+    }
     physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) != 0);
     physics.close();
@@ -94,4 +98,53 @@ TEST(physics, SaltoCorrectoConComando) {
 
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.close();
+}
+
+TEST(physics, MueveAnguloEnElAire) {
+    BoxLogic physics;
+    physics.addPlayer();
+    physics.updateTime();
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().ANGLE) == 0);
+    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
+    physics.updateTime();
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().ANGLE) != 0);
+
+}
+
+TEST(physics, DobleSaltoCorrecto) {
+    BoxLogic physics;
+    physics.addPlayer();
+    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
+        physics.updateTime();
+        physics.updateStatus();
+    }
+
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
+
+    physics.jump(FIRST_CAR);
+    physics.updateTime();
+    physics.updateStatus();
+
+    float vel1 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
+    physics.jump(FIRST_CAR);
+    physics.updateTime();
+    physics.updateStatus();
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < vel1);
+    float vel2 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
+    physics.jump(FIRST_CAR);
+    physics.updateTime();
+    physics.updateStatus();
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) > vel2);
+
+}
+
+
+
+
+TEST(response, RespuestaCorrecta) {
+    GameLogic logic;
+    logic.updateTime();
+    Response response = logic.getResponse();
+    EXPECT_TRUE(response.getBallPositionY() > -2.8); // PosY inicial pelota
 }

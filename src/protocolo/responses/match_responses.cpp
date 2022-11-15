@@ -78,3 +78,10 @@ int MatchResponses::size() {
 void MatchResponses::addResponse(MatchResponse& response) {
     this->matches.push_back(response);
 }
+
+float MatchResponses::getBallPositionY() {
+    if(!matches.empty()) {
+        return matches[0].getBallPositionY();
+    }
+    return 0;
+}

@@ -33,7 +33,8 @@ public:
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
-    void updateTime(); // Su propio thread para actualizar box2d
+    void updateTime();
+    void updateStatus();
     ~BoxLogic();
 
     void close();
@@ -49,8 +50,10 @@ public:
     PlayerResponses getPlayersData();
 
     Car getCar(int carNumber);
-
     static b2Vec2 getVectorForce(int direction);
+
+    void verifyDoubleJump();
+    void verifyTurbo();
 };
 
 
