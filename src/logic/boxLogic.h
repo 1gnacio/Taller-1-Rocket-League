@@ -7,6 +7,7 @@
 #include <thread>
 #include <mutex>
 #include "../../src/constants/logic_values.h"
+#include "../protocolo/responses/player_responses.h"
 #include "car.h"
 
 // Clase de la logica que contiene todos los movimientos de box2d
@@ -45,6 +46,7 @@ public:
     bool ballIsAwake();
     float getBallData(int key); // 0 -> PosX | 1 = posY | 2 = angulo (grados) | 3 = velocidad en X | 4 = velocidad en Y
     float getCarData(int carNumber, int key);
+    PlayerResponses getPlayersData();
 
     Car getCar(int carNumber);
 
