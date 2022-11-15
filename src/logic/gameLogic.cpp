@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../src/constants/command_values.h"
 #include "../src/constants/logic_values.h"
+
 GameLogic::GameLogic(): withoutPlayers(0){
 
 }
@@ -36,11 +37,19 @@ void GameLogic::updateTime() {
 }
 
 Response GameLogic::getResponse(){
-    /* getStatusBall() - Devuelve datos sobre la pelota
-     * getStatusGame() - Devuelve datos sobre el juego
-     * getStatusCars() - Devuleve datos sobre los autos
-     */
-    std::vector<unsigned char> responseVec;
-    return responseVec;
+
+    BallResponse ball(this->gamePhysics.getBallData(LogicValues().POS_X),
+                 this->gamePhysics.getBallData(LogicValues().POS_Y),
+                 this->gamePhysics.getBallData(LogicValues().ANGLE),false,false,false);
+
+    PlayerResponses players = gamePhysics.getPlayersData();
+
+    std::vector<MatchResponse> matchs;
+    matchs.emplace_back(MatchResponse(this->game.response(ball, players)));
+
+    MatchResponses matches(matchs);
+
+    Response response(matches);
+    return std::move(response);
 
 }

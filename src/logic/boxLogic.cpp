@@ -188,3 +188,20 @@ void BoxLogic::jump(int carNumber) {
 
 
 }
+
+PlayerResponses BoxLogic::getPlayersData() {
+    std::vector<PlayerResponse> vector;
+    for(auto x: cars){
+        vector.emplace_back(1,x.getData(LogicValues().POS_X),
+                            x.getData(LogicValues().POS_Y),
+                            x.getData(LogicValues().ANGLE),
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false
+                            );
+    }
+    return PlayerResponses(vector);
+}
