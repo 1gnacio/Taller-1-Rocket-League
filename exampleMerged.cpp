@@ -3,7 +3,6 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include "box2d/include/box2d/box2d.h"
-
 #include <list>
 
 
