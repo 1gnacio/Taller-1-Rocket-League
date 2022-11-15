@@ -1,20 +1,21 @@
 #include "command.h"
+#include "../protocol_commands.h"
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized,
                  const std::string &firstParameter) :
         serialized(serialized),
         deserialized(deserialized),
         firstParameter(firstParameter) {}
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized) :
                  serialized(serialized),
                  deserialized(deserialized),
                  firstParameter(),
                  secondParameter() {}
 
-Command::Command(const char serialized,
+Command::Command(const unsigned char serialized,
                  const std::string &deserialized,
                  const std::string &firstParameter,
                  const std::string &secondParameter) :
@@ -23,9 +24,15 @@ Command::Command(const char serialized,
                  firstParameter(firstParameter),
                  secondParameter(secondParameter) {}
 
-// por el momento serializar solo aplica a movimientos, donde la serializacion es el propio comando
-char Command::serialize() const {
-    return this->serialized;
+std::vector<unsigned char> Command::serialize() {
+    std::vector<unsigned char> serialized;
+
+    serialized.push_back(this->serialized);
+
+    this->serializer.merge(serialized, this->serializer.serializeString(this->firstParameter));
+    this->serializer.merge(serialized, this->serializer.serializeString(this->secondParameter));
+
+    return serialized;
 }
 
 Command::Command(Command &&other) noexcept {
@@ -45,4 +52,19 @@ Command &Command::operator=(Command &&other) noexcept {
     this->secondParameter = other.secondParameter;
 
     return *this;
+}
+
+Command::Command(std::vector<unsigned char> &serialized) : serializer() {
+
+    this->serialized = serialized.front();
+    this->deserialized = ProtocolCommands().getDeserializedCommandValue(this->serialized);
+
+    std::vector<unsigned char> serializedParameters(serialized.begin() + 1, serialized.end());
+
+    int begin = 0;
+    int end = 0;
+
+    this->serializer.parse(this->firstParameter, serializedParameters, begin, end);
+    this->serializer.parse(this->secondParameter, serializedParameters, begin, end);
+
 }

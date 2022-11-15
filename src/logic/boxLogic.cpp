@@ -6,6 +6,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <time.h>
+#include "car.h"
 
 BoxLogic::BoxLogic():
     isActive(true) {
@@ -65,7 +66,7 @@ void BoxLogic::createCar() {
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = LogicValues().ANGLE_CAR;
     carBodyDef.position.Set(2.0f,-2.0f);
-    cars.push_back(world->CreateBody(&carBodyDef));
+    cars.emplace_back(Car(world->CreateBody(&carBodyDef)));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f,hCar/2.0f);
 
@@ -74,7 +75,7 @@ void BoxLogic::createCar() {
     fixtureDef.density = LogicValues().DENSITY_CAR;
     fixtureDef.friction = LogicValues().FRICTION_CAR;
     fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
-    cars.back()->CreateFixture(&fixtureDef);
+    cars.back().createFixture(fixtureDef);
 }
 
 void BoxLogic::createWalls() {
@@ -135,6 +136,8 @@ float BoxLogic::getData(int key, const b2Body* body) {
     return 0;
 }
 
+
+
 float BoxLogic::getBallData(int key) {
     return (this->getData(key, ball));
 }
@@ -144,10 +147,11 @@ int BoxLogic::playersAmount() {
 }
 
 float BoxLogic::getCarData(int carNumber, int key) {
-    return this->getData(key, getCar(carNumber));
+    return getCar(carNumber).getData(key);
+
 }
 
-b2Body* BoxLogic::getCar(int carNumber) {
+Car BoxLogic::getCar(int carNumber) { // Siempre retorna el primer auto por ahora
     int i = 1;
     for(auto x : cars ){
         if(i == carNumber){
@@ -170,17 +174,34 @@ b2Vec2 BoxLogic::getVectorForce(int direction) {
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     b2Vec2 vel = getVectorForce((int)direction);
-    getCar(carNumber)->SetLinearVelocity(vel);
+    getCar(carNumber).startMove(vel);
 }
 
 void BoxLogic::stopMove(int carNumber) {
-    getCar(carNumber)->SetLinearVelocity(b2Vec2(0.0f,0.0f));
+    getCar(carNumber).stopMove();
 
 }
 
 void BoxLogic::jump(int carNumber) {
     b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
-    if(getCar(carNumber)->GetPosition().y >= 2 ) { // Deberia ser posicion del suelo
-        getCar(carNumber)->ApplyLinearImpulseToCenter(vel,true);
+    getCar(carNumber).jump(vel);
+
+
+}
+
+PlayerResponses BoxLogic::getPlayersData() {
+    std::vector<PlayerResponse> vector;
+    for(auto x: cars){
+        vector.emplace_back(1,x.getData(LogicValues().POS_X),
+                            x.getData(LogicValues().POS_Y),
+                            x.getData(LogicValues().ANGLE),
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false
+                            );
     }
+    return PlayerResponses(vector);
 }

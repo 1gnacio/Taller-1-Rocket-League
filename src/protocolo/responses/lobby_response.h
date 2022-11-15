@@ -3,10 +3,13 @@
 
 #include <vector>
 #include <string>
+#include "room_response.h"
 
 class LobbyResponse {
 private:
-    std::vector<std::string> rooms;
+    std::vector<RoomResponse> rooms;
+public:
+    std::vector<char> serialize();
 };
 
 

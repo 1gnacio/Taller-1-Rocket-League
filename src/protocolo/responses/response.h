@@ -7,26 +7,27 @@
 
 #include <string>
 #include <vector>
-#include "ball_response.h"
-#include "player_response.h"
 #include "lobby_response.h"
+#include "../serializer/serializer.h"
+#include "match_responses.h"
 
 class Response {
 private:
-    // otras posibles respuestas: partida, lobby ...
-    BallResponse ballResponse;
-    std::vector<PlayerResponse> playerResponse;
+    Serializer serializer;
     LobbyResponse lobbyResponse;
+    MatchResponses matchResponses;
     std::string responseStatus;
-    std::string responseMessage;
 public:
-    Response(std::vector<char> serializedResponse);
+    Response();
+    Response(std::vector<unsigned char> &serializedResponse);
+    Response(MatchResponses &matchResponses);
     Response(const char* responseStatus, const char* responseMessage);
 
     std::string getStatus() { return this->responseStatus; }
-    std::vector<char> serialize();
+    std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario
+    int getSize() { return this->matchResponses.size(); };
 };
 
 

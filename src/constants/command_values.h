@@ -5,25 +5,25 @@
 
 class CommandValues {
 public:
-    const char SERIALIZED_NOP = 0x00;
+    const unsigned char SERIALIZED_NOP = 0x00;
 
-    const char SERIALIZED_RIGHT_PUSHED = 0x10;
-    const char SERIALIZED_RIGHT_RELEASE = 0x11;
-    const char SERIALIZED_LEFT_PUSHED = 0x12;
-    const char SERIALIZED_LEFT_RELEASE = 0x13;
-    const char SERIALIZED_UP_PUSHED = 0x14;
-    const char SERIALIZED_UP_RELEASE = 0x15;
-    const char SERIALIZED_DOWN_PUSHED = 0x16;
-    const char SERIALIZED_DOWN_RELEASE = 0x17;
+    const unsigned char SERIALIZED_RIGHT_PUSHED = 0x10;
+    const unsigned char SERIALIZED_RIGHT_RELEASE = 0x11;
+    const unsigned char SERIALIZED_LEFT_PUSHED = 0x12;
+    const unsigned char SERIALIZED_LEFT_RELEASE = 0x13;
+    const unsigned char SERIALIZED_UP_PUSHED = 0x14;
+    const unsigned char SERIALIZED_UP_RELEASE = 0x15;
+    const unsigned char SERIALIZED_DOWN_PUSHED = 0x16;
+    const unsigned char SERIALIZED_DOWN_RELEASE = 0x17;
 
-    const char SERIALIZED_JUMP_PUSHED = 0x20;
-    const char SERIALIZED_JUMP_RELEASE = 0x21;
-    const char SERIALIZED_TURBO_PUSHED = 0x22;
-    const char SERIALIZED_TURBO_RELEASE = 0x23;
+    const unsigned char SERIALIZED_JUMP_PUSHED = 0x20;
+    const unsigned char SERIALIZED_JUMP_RELEASE = 0x21;
+    const unsigned char SERIALIZED_TURBO_PUSHED = 0x22;
+    const unsigned char SERIALIZED_TURBO_RELEASE = 0x23;
 
-    const char SERIALIZED_LIST = 0x30;
-    const char SERIALIZED_CREATE = 0x31;
-    const char SERIALIZED_JOIN = 0x32;
+    const unsigned char SERIALIZED_LIST = 0x30;
+    const unsigned char SERIALIZED_CREATE = 0x31;
+    const unsigned char SERIALIZED_JOIN = 0x32;
 
     const std::string DESERIALIZED_NOP = "NOP";
 

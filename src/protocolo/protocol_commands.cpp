@@ -29,7 +29,7 @@ ProtocolCommands::ProtocolCommands() : values(),
         parameteredCommands({this->values.DESERIALIZED_JOIN, this->values.DESERIALIZED_CREATE}){
 }
 
-Command ProtocolCommands::createParameteredCommand(const char serialized,
+Command ProtocolCommands::createParameteredCommand(const unsigned char serialized,
                                                    const std::string &deserialized,
                                                    std::string &arguments) {
     if (deserialized == this->values.DESERIALIZED_CREATE) {
@@ -53,11 +53,11 @@ Command ProtocolCommands::createCommand(std::string &value) {
     return Command(position->second, position->first);
 }
 
-Command ProtocolCommands::createSimpleCommand(const char serialized, const std::string &deserialized) const {
+Command ProtocolCommands::createSimpleCommand(const unsigned char serialized, const std::string &deserialized) const {
     return Command(serialized, deserialized);
 }
 
-Command ProtocolCommands::createCommand(std::vector<char> &serializedCommand) {
+Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCommand) {
     auto position = this->deserializedCommands.find(serializedCommand[0]);
 
     if (position == this->deserializedCommands.end()) {
@@ -65,8 +65,8 @@ Command ProtocolCommands::createCommand(std::vector<char> &serializedCommand) {
     }
 
     auto parametered = std::find(this->parameteredCommands.begin(),
-                                                            this->parameteredCommands.end(),
-                                                            position->second);
+                                 this->parameteredCommands.end(),
+                                 position->second);
 
     if (parametered == this->parameteredCommands.end()) {
         return this->createSimpleCommand(position->first,
@@ -79,4 +79,14 @@ Command ProtocolCommands::createCommand(std::vector<char> &serializedCommand) {
     return this->createParameteredCommand(position->first,
                                           position->second,
                                           arguments);
+}
+
+std::string ProtocolCommands::getDeserializedCommandValue(unsigned char commandValue) {
+    auto position = this->deserializedCommands.find(commandValue);
+
+    if (position == this->deserializedCommands.end()) {
+        throw std::runtime_error("Command not found");
+    }
+
+    return position->second;
 }

@@ -86,6 +86,39 @@ file(GLOB_RECURSE headers "../src/*/*.h")
 
 add_executable(game_client
         client_main.cpp
+
+        src/client/client.cpp
+        src/client/client.h
+        src/handlers/server_connection.cpp
+        src/handlers/server_connection.h
+        src/protocolo/protocol_commands.cpp
+        src/protocolo/protocol_commands.h
+        src/sockets/socket.cpp
+        src/sockets/socket.h
+        src/queues/command_queue.cpp
+        src/queues/command_queue.h
+        src/handlers/command_handler.cpp
+        src/handlers/command_handler.h
+        src/handlers/response_handler.cpp
+        src/handlers/response_handler.h
+        src/protocolo/commands/strategies/create_parameter_strategy.cpp
+        src/protocolo/commands/strategies/create_parameter_strategy.h
+        src/protocolo/commands/command.cpp
+        src/protocolo/commands/command.h
+        src/sockets/resolver.cpp
+        src/sockets/resolver.h
+        src/sockets/liberror.cpp
+        src/sockets/liberror.h
+        src/protocolo/protocolo.h
+        src/protocolo/protocolo.cpp
+        src/queues/response_queue.cpp
+        src/queues/response_queue.h
+        src/sockets/resolvererror.cpp
+        src/sockets/resolvererror.h
+        src/protocolo/responses/response.cpp
+        src/protocolo/responses/response.h
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
         src/client/client.cpp src/client/client.h
         src/handlers/server_connection.cpp src/handlers/server_connection.h
         src/protocolo/protocol_commands.cpp src/protocolo/protocol_commands.h
@@ -106,7 +139,27 @@ add_executable(game_client
         src/client/sdl_animation.cpp src/client/sdl_animation.h
         src/client/sdl_ball.cpp src/client/sdl_ball.h
         src/client/sdl_arena.cpp src/client/sdl_arena.h
-        src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h)
+        src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h
+        src/protocolo/serializer/serializer.cpp
+        src/protocolo/serializer/serializer.h
+        src/protocolo/responses/match_response.cpp
+        src/protocolo/responses/match_response.h
+        src/protocolo/responses/match_responses.cpp
+        src/protocolo/responses/match_responses.h
+        src/protocolo/responses/ball_response.cpp
+        src/protocolo/responses/ball_response.h
+        src/protocolo/responses/player_responses.cpp
+        src/protocolo/responses/player_responses.h
+        src/protocolo/responses/player_response.cpp
+        src/protocolo/responses/player_response.h
+        src/client/sdl_animation.cpp
+        src/client/sdl_animation.h
+        src/client/sdl_player.cpp
+        src/client/sdl_main.cpp
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
+        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h)
+        
 
 target_link_libraries(game_client ${SDL2PP_LIBRARIES})
 
@@ -143,6 +196,20 @@ add_executable(game_server
         src/sockets/resolvererror.h
         src/protocolo/responses/response.cpp
         src/protocolo/responses/response.h
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
+        src/protocolo/serializer/serializer.cpp
+        src/protocolo/serializer/serializer.h
+        src/protocolo/responses/match_response.cpp
+        src/protocolo/responses/match_response.h
+        src/protocolo/responses/match_responses.cpp
+        src/protocolo/responses/match_responses.h
+        src/protocolo/responses/ball_response.cpp
+        src/protocolo/responses/ball_response.h
+        src/protocolo/responses/player_responses.cpp
+        src/protocolo/responses/player_responses.h
+        src/protocolo/responses/player_response.cpp
+        src/protocolo/responses/player_response.h
         src/game_model/game_model_monitor.cpp
         src/game_model/game_model_monitor.h
         src/handlers/server_endpoint.cpp
@@ -157,6 +224,24 @@ add_executable(game_server
         src/logic/gameLogic.h
         src/logic/boxLogic.cpp
         src/logic/boxLogic.h
+        src/logic/car.cpp
+        src/logic/car.h
+        src/logic/game.cpp
+        src/logic/game.h
+        src/protocolo/serializer/serializer.cpp
+        src/protocolo/serializer/serializer.h
+        src/protocolo/responses/match_response.cpp
+        src/protocolo/responses/match_response.h
+        src/protocolo/responses/match_responses.cpp
+        src/protocolo/responses/match_responses.h
+        src/protocolo/responses/player_response.h
+        src/protocolo/responses/player_response.cpp
+        src/protocolo/responses/player_responses.cpp
+        src/protocolo/responses/player_responses.h
+        src/protocolo/responses/ball_response.cpp
+        src/protocolo/responses/ball_response.h
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
         )
 
 target_link_libraries(game_server box2d)
