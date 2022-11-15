@@ -28,6 +28,7 @@ public:
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario
     int getSize() { return this->matchResponses.size(); };
+    float getBallPositionY();
 };
 
 

@@ -132,3 +132,8 @@ MatchResponse::MatchResponse(int goalsLocal, int goalsVisitor, int time_insec, B
                              hasFinished(hasFinished), isGoalLocal(isGoalLocal), isGoalVisitor(isGoalVisitor),
                              activeReplay(activeReplay) {
 }
+
+float MatchResponse::getBallPositionY() {
+    return ballResponse.getPosY();
+}
+

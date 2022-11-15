@@ -18,7 +18,6 @@ void GameLogic::updateModel(Command &command) {
         this->gamePhysics.addPlayer();
         withoutPlayers = 1;
     }
-    /*
     if (command.getValue() == CommandValues().DESERIALIZED_JOIN) {
         this->gamePhysics.addPlayer();
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED){
@@ -30,7 +29,6 @@ void GameLogic::updateModel(Command &command) {
         gamePhysics.startMove(1,LogicValues().RIGHT_DIRECTION);
 
     }
-    */
 }
 void GameLogic::updateTime() {
     gamePhysics.updateTime();

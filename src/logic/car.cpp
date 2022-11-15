@@ -4,8 +4,7 @@
 
 #include "car.h"
 
-
-Car::Car(b2Body *body):carBody(body) {
+Car::Car(b2Body *body):carBody(body), jumpedTwoTimes(false) {
 
 }
 
@@ -34,7 +33,13 @@ float Car::getData(int key) {
 }
 
 void Car::startMove(b2Vec2 vel) {
-    carBody->SetLinearVelocity(vel);
+    if( !isJumping() )
+        carBody->SetLinearVelocity(vel);
+    else {
+        float torque = (vel.x<0 ? 1.0f : -1.0f);
+        carBody->ApplyTorque(torque, true);
+    }
+
 }
 
 void Car::stopMove() {
@@ -42,15 +47,26 @@ void Car::stopMove() {
 }
 
 bool Car::canJump(){
-    return (carBody->GetPosition().y >= (2.23));
+    return (!isJumping() || (isJumping() && !jumpedTwoTimes));
+}
+
+void Car::modifyJumpedTwoTimes() {
+
+    if( isJumping() )
+        this->jumpedTwoTimes = true;
+    else
+        this->jumpedTwoTimes = false;
+
 }
 
 void Car::jump(b2Vec2 vel) {
-    if(this->canJump()) { // Deberia ser posicion del suelo
+    if(this->canJump()) {
+
+        this->modifyJumpedTwoTimes();
         carBody->ApplyLinearImpulseToCenter(vel,true);
     }
 }
 
 bool Car::isJumping() {
-    return (carBody->GetPosition().y < (2.23));
+    return (carBody->GetPosition().y < (2.23)); // posicion del suelo
 }

@@ -16,6 +16,7 @@ private:
     b2Body* carBody;
     bool canJump();
     bool isJumping();
+    bool jumpedTwoTimes;
 
 public:
 
@@ -50,7 +51,7 @@ public:
     void createFixture(b2FixtureDef &fixture);
 
 
-
+    void modifyJumpedTwoTimes();
 };
 
 

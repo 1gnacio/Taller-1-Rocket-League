@@ -156,7 +156,7 @@ add_executable(game_client
         src/client/sdl_animation.h
         src/client/sdl_player.cpp
         src/client/sdl_main.cpp
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h)
+        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h
         src/protocolo/responses/player_response.h
         src/protocolo/responses/player_response.cpp
         src/protocolo/responses/player_responses.cpp

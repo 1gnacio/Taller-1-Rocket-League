@@ -55,3 +55,7 @@ std::vector<unsigned char> Response::serialize() {
 Response::Response() : lobbyResponse(), matchResponses(), responseStatus() {}
 
 Response::Response(const char *responseStatus, const char *responseMessage) : responseStatus(responseStatus) {}
+
+float Response::getBallPositionY() {
+    return matchResponses.getBallPositionY();
+}
