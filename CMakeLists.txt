@@ -104,7 +104,28 @@ add_executable(game_client
         src/client/sdl_main.cpp
         src/protocolo/responses/response.h
         src/protocolo/responses/response.cpp
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h)
+        src/client/sdl_main.h
+        src/client/sdl_ball.cpp
+        src/client/sdl_ball.h
+        src/client/sdl_scoreboard.cpp
+        src/client/sdl_scoreboard.h
+        src/client/sdl_arena.cpp
+        src/client/sdl_arena.h
+        src/protocolo/serializer/serializer.cpp
+        src/protocolo/serializer/serializer.h
+        src/protocolo/responses/match_response.cpp
+        src/protocolo/responses/match_response.h
+        src/protocolo/responses/match_responses.cpp
+        src/protocolo/responses/match_responses.h
+        src/protocolo/responses/player_response.h
+        src/protocolo/responses/player_response.cpp
+        src/protocolo/responses/player_responses.cpp
+        src/protocolo/responses/player_responses.h
+        src/protocolo/responses/ball_response.cpp
+        src/protocolo/responses/ball_response.h
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
+        )
 
 target_link_libraries(game_client box2d ${SDL2PP_LIBRARIES})
 
@@ -156,6 +177,20 @@ add_executable(game_server
         src/logic/boxLogic.h
         src/logic/car.cpp
         src/logic/car.h
+        src/protocolo/serializer/serializer.cpp
+        src/protocolo/serializer/serializer.h
+        src/protocolo/responses/match_response.cpp
+        src/protocolo/responses/match_response.h
+        src/protocolo/responses/match_responses.cpp
+        src/protocolo/responses/match_responses.h
+        src/protocolo/responses/player_response.h
+        src/protocolo/responses/player_response.cpp
+        src/protocolo/responses/player_responses.cpp
+        src/protocolo/responses/player_responses.h
+        src/protocolo/responses/ball_response.cpp
+        src/protocolo/responses/ball_response.h
+        src/protocolo/serializer/entity_serializer.cpp
+        src/protocolo/serializer/entity_serializer.h
         )
 
 target_link_libraries(game_server box2d)
