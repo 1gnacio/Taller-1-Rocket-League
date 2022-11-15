@@ -2,8 +2,10 @@
 #define MATCH_RESPONSE_H
 
 #include <vector>
-#include "../serializer/entity_serializer.h"
+#include <string>
 #include "../serializer/serializer.h"
+#include "ball_response.h"
+#include "player_responses.h"
 
 class MatchResponse {
 private:

@@ -2,22 +2,24 @@
 #define PLAYERRESPONSES_H
 
 #include <vector>
-#include "player_response.h"
-#include "../serializer/serializer.h"
+#include "../serializer/entity_serializer.h"
 
 class PlayerResponses {
 private:
     Serializer serializer;
+    EntitySerializer entitySerializer;
     std::vector<PlayerResponse> players;
-    int count;
 public:
     explicit PlayerResponses(std::vector<PlayerResponse> &players);
     explicit PlayerResponses(std::vector<unsigned char> serialized);
     PlayerResponses();
 
+    void addPlayer(PlayerResponse &player);
+
+
     std::vector<unsigned char> serialize();
-    [[nodiscard]] int getCount() const { return this->count; };
-    [[nodiscard]] int getSize() const { return this->count * PlayerResponse::size() + this->count; };
+    [[nodiscard]] int getCount() const { return this->players.size(); };
+    [[nodiscard]] int getSize() const { return this->players.size() * PlayerResponse::size(); };
 };
 
 

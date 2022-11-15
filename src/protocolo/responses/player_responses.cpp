@@ -1,31 +1,30 @@
 #include "player_responses.h"
 
 PlayerResponses::PlayerResponses(std::vector<PlayerResponse> &players) :
-serializer(), players(players), count(players.size()) {}
+serializer(), entitySerializer(), players(players) {}
 
-PlayerResponses::PlayerResponses(std::vector<unsigned char> serialized) : serializer() {
-    std::vector<unsigned char> serializedCount(serialized.begin(), serialized.begin() + 3);
-    this->count = this->serializer.deserializeInt(serializedCount);
+PlayerResponses::PlayerResponses(std::vector<unsigned char> serialized) : serializer(), entitySerializer() {
+    int count = 0;
+    int begin = 0;
+    int end = 0;
 
-    if (this->count == 0) {
+    this->serializer.parse(count, serialized, begin, end);
+
+    if (count == 0) {
         return;
     }
 
-    std::vector<unsigned char> serializedPlayers(serialized.begin() + 4, serialized.end());
-    int playerSize = PlayerResponse::size();
-
-    for (int i = 0; i < this->count; i++) {
-        std::vector<unsigned char> serializedPlayer(serialized.begin() + i * playerSize,
-                                                    serialized.begin() + (i + 1) * playerSize);
-
-        this->players.emplace_back(serializedPlayer);
+    for (int i = 0; i < count; i++) {
+        PlayerResponse p;
+        this->entitySerializer.parse(p, serialized, begin, end);
+        this->players.push_back(std::move(p));
     }
 }
 
 std::vector<unsigned char> PlayerResponses::serialize() {
     std::vector<unsigned char> serialization;
 
-    this->serializer.merge(serialization, this->serializer.serializeInt(this->count));
+    this->serializer.merge(serialization, this->serializer.serializeInt(this->players.size()));
 
     for(auto& player : players) {
         this->serializer.merge(serialization, player.serialize());
@@ -34,4 +33,8 @@ std::vector<unsigned char> PlayerResponses::serialize() {
     return serialization;
 }
 
-PlayerResponses::PlayerResponses() : serializer(), players(), count(0) {}
+PlayerResponses::PlayerResponses() : serializer(), players() {}
+
+void PlayerResponses::addPlayer(PlayerResponse &player) {
+    this->players.push_back(std::move(player));
+}

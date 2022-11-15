@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "lobby_response.h"
+#include "../serializer/serializer.h"
 #include "match_responses.h"
 
 class Response {
@@ -26,6 +27,7 @@ public:
     std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario
+    int getSize() { return this->matchResponses.size(); };
 };
 
 

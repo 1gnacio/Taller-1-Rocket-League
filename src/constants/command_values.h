@@ -5,7 +5,7 @@
 
 class CommandValues {
 public:
-    const char SERIALIZED_NOP = 0x00;
+    const unsigned char SERIALIZED_NOP = 0x00;
 
     const unsigned char SERIALIZED_RIGHT_PUSHED = 0x10;
     const unsigned char SERIALIZED_RIGHT_RELEASE = 0x11;

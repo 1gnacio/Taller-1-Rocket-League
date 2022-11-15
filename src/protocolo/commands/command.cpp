@@ -1,5 +1,5 @@
 #include "command.h"
-#include "../serializer/serializer.h"
+#include "../protocol_commands.h"
 
 Command::Command(const unsigned char serialized,
                  const std::string &deserialized,
@@ -25,32 +25,14 @@ Command::Command(const unsigned char serialized,
                  secondParameter(secondParameter) {}
 
 std::vector<unsigned char> Command::serialize() {
-    Serializer serializer;
-    std::vector<unsigned char> result;
-    std::vector<unsigned char> serializedCommand;
-    std::vector<unsigned char> serializedFirstParameter;
-    std::vector<unsigned char> serializedSecondParameter;
-    int size = 0;
+    std::vector<unsigned char> serialized;
 
-    serializedCommand.push_back(this->serialized);
-    size += serializedCommand.size();
+    serialized.push_back(this->serialized);
 
-    if (!this->firstParameter.empty()) {
-        serializer.merge(serializedFirstParameter, serializer.serializeString(this->firstParameter));
-        size += serializedFirstParameter.size();
-        serializer.merge(serializedCommand, serializedFirstParameter);
-    }
+    this->serializer.merge(serialized, this->serializer.serializeString(this->firstParameter));
+    this->serializer.merge(serialized, this->serializer.serializeString(this->secondParameter));
 
-    if (!this->secondParameter.empty()) {
-        serializer.merge(serializedSecondParameter, serializer.serializeString(this->secondParameter));
-        size += serializedSecondParameter.size();
-        serializer.merge(serializedCommand, serializedSecondParameter);
-    }
-
-    serializer.merge(result, serializer.serializeInt(size));
-    serializer.merge(result, serializedCommand);
-
-    return result;
+    return serialized;
 }
 
 Command::Command(Command &&other) noexcept {
@@ -72,6 +54,17 @@ Command &Command::operator=(Command &&other) noexcept {
     return *this;
 }
 
-Command::Command(std::vector<unsigned char> serialized) {
-    // TODO
+Command::Command(std::vector<unsigned char> &serialized) : serializer() {
+
+    this->serialized = serialized.front();
+    this->deserialized = ProtocolCommands().getDeserializedCommandValue(this->serialized);
+
+    std::vector<unsigned char> serializedParameters(serialized.begin() + 1, serialized.end());
+
+    int begin = 0;
+    int end = 0;
+
+    this->serializer.parse(this->firstParameter, serializedParameters, begin, end);
+    this->serializer.parse(this->secondParameter, serializedParameters, begin, end);
+
 }

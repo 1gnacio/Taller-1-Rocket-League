@@ -6,8 +6,10 @@
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
 
+const char* serv = "8088";
+
 void sendCommand(std::string& command) {
-    Socket client("localhost", "8080");
+    Socket client("localhost", serv);
 
     Command c = ProtocolCommands().createCommand(command);
 
@@ -15,7 +17,7 @@ void sendCommand(std::string& command) {
 }
 
 void sendResponse(Response& response) {
-    Socket server("8080");
+    Socket server(serv);
 
     Socket connectedClient = server.accept();
 
@@ -23,7 +25,7 @@ void sendResponse(Response& response) {
 }
 
 TEST(Protocolo, ClienteEnviaIzquierdaPresionada) {
-    Socket server("8080");
+    Socket server(serv);
 
     std::string value = CommandValues().DESERIALIZED_LEFT_PUSHED;
 
@@ -39,7 +41,7 @@ TEST(Protocolo, ClienteEnviaIzquierdaPresionada) {
 }
 
 TEST(Protocolo, ClienteEnviaNoOperation) {
-    Socket server("8080");
+    Socket server(serv);
 
     std::string value = CommandValues().DESERIALIZED_NOP;
 
@@ -67,11 +69,11 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadores) {
 
     std::thread serverHandler(&sendResponse, std::ref(response));
 
-    Socket client("localhost", "8080");
+    Socket client("localhost", serv);
 
     Response r = Protocolo().receiveResponse(client);
 
     serverHandler.join();
 
-    EXPECT_EQ(r.getStatus(), "");
+    EXPECT_EQ(r.getSize(), response.getSize());
 }

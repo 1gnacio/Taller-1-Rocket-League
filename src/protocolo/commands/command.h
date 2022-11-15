@@ -3,10 +3,12 @@
 
 #include <string>
 #include <vector>
+#include "../serializer/serializer.h"
 
 class Command {
 private:
-    char serialized{};
+    Serializer serializer;
+    unsigned char serialized;
     std::string deserialized;
     std::string firstParameter;
     std::string secondParameter;
@@ -27,7 +29,7 @@ public:
             const std::string& firstParameter,
             const std::string& secondParameter);
 
-    Command(std::vector<unsigned char> serialized);
+    explicit Command(std::vector<unsigned char> &serialized);
 
     [[nodiscard]] std::vector<unsigned char> serialize();
     [[nodiscard]] std::string getValue() const { return this->deserialized; }

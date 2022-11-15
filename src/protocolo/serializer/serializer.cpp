@@ -65,11 +65,14 @@ void Serializer::merge(std::vector<unsigned char> &firstVector, std::vector<unsi
     firstVector.insert(firstVector.end(), lastVector.begin(), lastVector.end());
 }
 
-void Serializer::parse(std::string &string, int size, std::vector<unsigned char> &serialization, int &beginPosition,
+void Serializer::parse(std::string &string, std::vector<unsigned char> &serialization, int &beginPosition,
                        int &endPosition) {
     bool isFirstPosition = endPosition == 0;
     beginPosition = (endPosition + (isFirstPosition ? 0 : 1));
-    endPosition += (size - (isFirstPosition ? 1 : 0));
+    std::vector<unsigned char> serializedSize(serialization.begin() + beginPosition, serialization.begin() + beginPosition + 4);
+    int size = this->deserializeInt(serializedSize);
+    beginPosition += 4;
+    endPosition += (4 + size - (isFirstPosition ? 1 : 0));
     std::vector<unsigned char> serializedString(serialization.begin() + beginPosition, serialization.begin() + endPosition + 1);
     string = std::string(serializedString.begin(), serializedString.end());
 }
@@ -85,4 +88,15 @@ std::vector<unsigned char> Serializer::serializeString(std::string &value) {
     this->merge(serialization, std::vector<unsigned char>(value.begin(), value.end()));
 
     return serialization;
+}
+
+std::string Serializer::deserializeString(const std::vector<unsigned char> &serializedString) const {
+    std::vector<unsigned char> serializedSize(serializedString.begin(), serializedString.begin() + 4);
+    int size = this->deserializeInt(serializedSize);
+
+    if(size == 0) {
+        return std::string();
+    }
+
+    return std::string(serializedString.begin() + 4, serializedString.begin() + 4 + size);
 }

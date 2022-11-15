@@ -54,7 +54,7 @@ Command Protocolo::receiveCommand(Socket& socket) {
 
     std::vector<unsigned char> message = this->receiveMessage(socket);
 
-    Command receivedCommand = ProtocolCommands().createCommand(message);
+    Command receivedCommand(message);
 
     return receivedCommand;
 }
