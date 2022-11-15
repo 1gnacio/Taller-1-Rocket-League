@@ -13,7 +13,7 @@ private:
     CommandHandler receiver;
     ResponseHandler sender;
 public:
-    ClientConnection(Socket& socket, CommandQueue& queue);
+    ClientConnection(Socket& socket, ResponseQueue &responseQueue, CommandQueue& queue);
 
     void push(Response& response);
 

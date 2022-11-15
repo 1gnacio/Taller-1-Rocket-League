@@ -6,7 +6,7 @@ isConnected(true),
 socket(hostname, servname),
 commandQueue(),
 sender(this->socket, this->commandQueue, SENDER),
-receiver(this->socket, RECEIVER)
+receiver(this->socket, this->responseQueue, RECEIVER)
 {}
 
 void ServerConnection::push(Command &command) {

@@ -158,7 +158,18 @@ add_executable(game_client
         src/client/sdl_main.cpp
         src/protocolo/serializer/entity_serializer.cpp
         src/protocolo/serializer/entity_serializer.h
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h)
+        src/client/sdl_main.h
+        src/client/sdl_ball.cpp
+        src/client/sdl_ball.h
+        src/client/sdl_scoreboard.cpp
+        src/client/sdl_scoreboard.h
+        src/client/sdl_arena.cpp
+        src/client/sdl_arena.h
+        src/queues/block_queues/command_blocking_queue.cpp
+        src/queues/block_queues/command_blocking_queue.h
+        src/queues/block_queues/response_blocking_queue.cpp
+        src/queues/block_queues/response_blocking_queue.h
+        )
         
 
 target_link_libraries(game_client ${SDL2PP_LIBRARIES})
@@ -242,6 +253,10 @@ add_executable(game_server
         src/protocolo/responses/ball_response.h
         src/protocolo/serializer/entity_serializer.cpp
         src/protocolo/serializer/entity_serializer.h
+        src/queues/block_queues/command_blocking_queue.cpp
+        src/queues/block_queues/command_blocking_queue.h
+        src/queues/block_queues/response_blocking_queue.cpp
+        src/queues/block_queues/response_blocking_queue.h
         )
 
 target_link_libraries(game_server box2d)
