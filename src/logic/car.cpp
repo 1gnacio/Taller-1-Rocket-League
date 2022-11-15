@@ -3,9 +3,9 @@
 //
 
 #include "car.h"
+#include <iostream>
 
-Car::Car(b2Body *body):carBody(body), jumpedTwoTimes(false) {
-
+Car::Car(b2Body *body):carBody(body), secondJump(true) {
 }
 
 void Car::createFixture(b2FixtureDef & fixture) {
@@ -47,26 +47,41 @@ void Car::stopMove() {
 }
 
 bool Car::canJump(){
-    return (!isJumping() || (isJumping() && !jumpedTwoTimes));
+    return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
+}
+bool Car::jumpedTwoTimes() const{
+    return this->secondJump;
 }
 
 void Car::modifyJumpedTwoTimes() {
 
-    if( isJumping() )
-        this->jumpedTwoTimes = true;
-    else
-        this->jumpedTwoTimes = false;
+    this->secondJump = 1;
 
 }
 
 void Car::jump(b2Vec2 vel) {
+    std::cout << secondJump << std::endl;
     if(this->canJump()) {
-
-        this->modifyJumpedTwoTimes();
+        if(isJumping()) {
+            modifyJumpedTwoTimes();
+        }
         carBody->ApplyLinearImpulseToCenter(vel,true);
     }
 }
 
 bool Car::isJumping() {
     return (carBody->GetPosition().y < (2.23)); // posicion del suelo
+}
+
+void Car::verifyDoubleJump() {
+    std::cout << secondJump << std::endl;
+    if(!isJumping()) {
+        secondJump = false;
+
+    }
+}
+
+void Car::verifyTurbo() {
+
+
 }

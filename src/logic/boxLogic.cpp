@@ -205,3 +205,23 @@ PlayerResponses BoxLogic::getPlayersData() {
     }
     return PlayerResponses(vector);
 }
+
+
+void BoxLogic::updateStatus() {
+    verifyDoubleJump();
+    verifyTurbo();
+}
+
+void BoxLogic::verifyDoubleJump() {
+    for(auto x: cars) {
+        x.verifyDoubleJump();
+    }
+
+}
+
+void BoxLogic::verifyTurbo() {
+    for(auto x: cars) {
+        x.verifyTurbo();
+    }
+
+}

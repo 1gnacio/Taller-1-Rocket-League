@@ -32,6 +32,7 @@ void GameLogic::updateModel(Command &command) {
 }
 void GameLogic::updateTime() {
     gamePhysics.updateTime();
+    gamePhysics.updateStatus();
 }
 
 Response GameLogic::getResponse(){

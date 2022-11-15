@@ -116,17 +116,26 @@ TEST(physics, DobleSaltoCorrecto) {
     physics.addPlayer();
     for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
+        physics.updateStatus();
     }
 
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
 
     physics.jump(FIRST_CAR);
     physics.updateTime();
+    physics.updateStatus();
+
     float vel1 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.jump(FIRST_CAR);
     physics.updateTime();
+    physics.updateStatus();
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < vel1);
+    float vel2 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
+    physics.jump(FIRST_CAR);
+    physics.updateTime();
+    physics.updateStatus();
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) > vel2);
 
 }
 
