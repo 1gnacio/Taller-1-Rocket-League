@@ -36,11 +36,17 @@ void GameLogic::updateTime() {
 }
 
 Response GameLogic::getResponse(){
-    /* getStatusBall() - Devuelve datos sobre la pelota
-     * getStatusGame() - Devuelve datos sobre el juego
-     * getStatusCars() - Devuleve datos sobre los autos
-     */
-    std::vector<unsigned char> responseVec;
-    return responseVec;
+
+    //Se debe cambiar, se utiliza para no romper la conexión
+    BallResponse ball(0, 0, 0, false, false, false);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
+    std::string name = "nombre";
+    MatchResponse matchResponse(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
+    std::vector<MatchResponse> responses{matchResponse};
+    MatchResponses matchResponses(responses);
+    Response response(matchResponses);
+    return response;
 
 }
