@@ -13,9 +13,9 @@ private:
 public:
     ResponseQueue();
 
-    void push(Response& response);
+    virtual void push(Response& response);
 
-    Response pop();
+    virtual Response pop();
 };
 
 

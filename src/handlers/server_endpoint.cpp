@@ -18,7 +18,7 @@ void ServerEndpoint::sendResponsesHandler() {
 }
 
 void ServerEndpoint::addPlayer(Socket &client) {
-    this->connections.emplace_back(std::make_unique<ClientConnection>(client, this->receivedCommands));
+    this->connections.emplace_back(std::make_unique<ClientConnection>(client, this->responses, this->receivedCommands));
 }
 
 void ServerEndpoint::push(Response response) {

@@ -3,12 +3,13 @@
 
 #include <vector>
 #include "client_connection.h"
+#include "../src/queues/block_queues/response_blocking_queue.h"
 
 class ServerEndpoint {
 private:
     bool isActive;
     CommandQueue receivedCommands;
-    ResponseQueue responses;
+    ResponseBlockingQueue responses;
     std::vector<std::unique_ptr<ClientConnection>> connections;
     std::thread sender;
 

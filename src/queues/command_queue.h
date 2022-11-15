@@ -13,9 +13,9 @@ private:
 public:
     CommandQueue();
 
-    void push(Command& command);
+    virtual void push(Command& command);
 
-    Command pop();
+    virtual Command pop();
 
     bool isEmpty();
 };
