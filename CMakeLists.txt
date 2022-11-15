@@ -4,9 +4,15 @@ project(rocket-league VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
-# start SDL
 
+# Flags TODO: activarlo
+#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -Werror -Wno-reorder -pedantic -pedantic-errors")
+# debugging flags
+#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
+
+add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
+#####################################################################################################################
+# start SDL
 # set up SDL2pp library
 set(SDL2PP_WITH_IMAGE YES)
 set(SDL2PP_WITH_TTF YES)
@@ -14,9 +20,8 @@ add_subdirectory(libs/libSDL2pp)
 add_subdirectory(box2d)
 include_directories(${PROJECT_SOURCE_DIR}/libs)
 include_directories(${SDL2PP_INCLUDE_DIRS})
-
 # end SDL
-
+######################################################################################################################
 # start QT5
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -26,12 +31,10 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-
 set(CMAKE_PREFIX_PATH $ENV{HOME}/Documents/Qt/5.15.2/gcc_64)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
-
 # end QT5
+######################################################################################################################
 add_executable(sdlTesting
         sdl_testing.cpp
         src/client/sdl_main.h
@@ -51,15 +54,19 @@ add_executable(sdlTesting
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
 target_compile_definitions(sdlTesting PRIVATE SDL_TESTING)
 
+######################################################################################################################
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
-#
+
+######################################################################################################################
 add_executable(exampleMerged exampleMerged.cpp)
 target_link_libraries(exampleMerged box2d ${SDL2PP_LIBRARIES})
 
+######################################################################################################################
 add_executable(game exampleGame.cpp)
 target_link_libraries(game box2d ${SDL2PP_LIBRARIES})
 
+######################################################################################################################
 add_executable(lobby
         main_lobby.cpp
         src/lobby/lobby.cpp
@@ -81,12 +88,15 @@ add_executable(lobby
 
  target_link_libraries(lobby Qt5::Widgets)
 
+######################################################################################################################
 file(GLOB_RECURSE sources "../src/*/*.cpp")
 file(GLOB_RECURSE headers "../src/*/*.h")
 
 add_executable(game_client
         client_main.cpp
-
+        src/lobby/lobby.cpp
+        src/lobby/lobby.h
+        src/lobby/lobby.ui
         src/client/client.cpp
         src/client/client.h
         src/handlers/server_connection.cpp
@@ -172,8 +182,9 @@ add_executable(game_client
         )
         
 
-target_link_libraries(game_client ${SDL2PP_LIBRARIES})
+target_link_libraries(game_client ${SDL2PP_LIBRARIES} Qt5::Widgets)
 
+######################################################################################################################
 
 add_executable(game_server
         server_main.cpp
@@ -261,4 +272,5 @@ add_executable(game_server
 
 target_link_libraries(game_server box2d)
 
+######################################################################################################################
 add_subdirectory(google_tests)

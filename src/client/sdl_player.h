@@ -6,11 +6,13 @@
 
 class sdl_player {
 private:
-    sdl_animation car;
-    sdl_animation turbo;
+    sdl_animation car_an;
+    sdl_animation turbo_an;
+    sdl_animation jump_an;
     bool facingLeft;
     bool moving;
     bool onTurbo;
+    bool jumping;
     int x;
     int y;
     double angle;
@@ -25,6 +27,8 @@ public:
     void moveLeft();
     void stopMoving();
     void toggleTurbo();
+    void jump();
+    void stopJump();
 #endif
 };
 

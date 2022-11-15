@@ -3,7 +3,7 @@
 #include <string>
 
 sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames, const std::string& path) :
-        currentFrame(0), numFrames(numFrames), elapsed(0.0f) {
+        currentFrame(0), numFrames(numFrames), elapsed(0.0f), loop(true) {
     assert(this->numFrames > 0);
     for (int i = 1; i <= numFrames; ++i) {
         std::string surface = path + std::to_string(i) + ".png";
@@ -55,4 +55,8 @@ void sdl_animation::setColorMod(Uint8 r, Uint8 g, Uint8 b) {
     for (auto & texture : textures) {
         texture.SetColorMod(r, g, b);
     }
+}
+
+void sdl_animation::disableLoop() {
+    loop = false;
 }

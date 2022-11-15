@@ -12,10 +12,8 @@
 
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
-
-
 Client::Client(const char *hostname, const char *servname) :
-        isRunning(true), connection(hostname, servname){
+        isRunning(true), connection(hostname, servname)/*, my_lobby()*/{
 
 }
 
@@ -81,7 +79,7 @@ void Client::readStandardInput() {
                 this->isRunning = false;
                 break;
         }
-
+        SDL_Delay(UPDATE_TIME);   //TODO: ver
     }
 
 }
@@ -93,7 +91,7 @@ void Client::run() {
         Response response = this->connection.pop();
         sdl_handler.updateScreen(response);
         sdl_handler.renderScreen();
-        SDL_Delay(UPDATE_TIME);   //TODO: sacarlo (esta para poder ir probando)
+        SDL_Delay(UPDATE_TIME);   //TODO: ver
     }
 
     standardInput.join();
@@ -105,4 +103,12 @@ void Client::addInputCommand(std::string deserialized_key) {
     Command c = makeCommands.createCommand(deserialized_key);
     this->connection.push(c);
 }
+//
+//int Client::runLobby() {
+//    int argc;
+//    char **argv;
+//    QApplication app(argc, argv);
+//    my_lobby.show();
+//    return app.exec();
+//}
 

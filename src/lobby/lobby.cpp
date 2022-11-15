@@ -6,7 +6,6 @@
 lobby::lobby(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::lobby)
-    , protocolo("localhost", "8080")
 {
     ui->setupUi(this);
     maxPlayers = 2;
@@ -36,11 +35,12 @@ void lobby::on_pushButton_connect_clicked()
 }
 
 void lobby::on_pushButton_join_clicked()
-{
+{   //UNIR
     if (currSelectedGame.size()) {
-        protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
 
-        std::cout << protocolo.receiveResponse() << std::endl;
+        //protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
+
+        //std::cout << protocolo.receiveResponse() << std::endl;
 
         on_pushButton_refresh_clicked();
         currSelectedGame.clear();
@@ -50,10 +50,11 @@ void lobby::on_pushButton_join_clicked()
 
 void lobby::on_pushButton_refresh_clicked()
 {
-    protocolo.sendActions("LISTAR");
+    //LISTAR
+    //protocolo.sendActions("LISTAR");
     std::string name_str, players_str;
-    std::istringstream input_stream(protocolo.receiveResponse());
-    int i = 1;
+    std::istringstream input_stream(/*protocolo.receiveResponse()*/"");
+    //int i = 1;
     model.removeRows(0, model.rowCount());
     //FIXME: hay que usar el protocolo nuevo
     while (input_stream >> name_str) {
@@ -77,8 +78,9 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    protocolo.sendActions("CREAR " + std::to_string(maxPlayers) + " " + create_gameName.toStdString());
-    std::cout << protocolo.receiveResponse() << std::endl;
+    //CREAR
+    //protocolo.sendActions("CREAR " + std::to_string(maxPlayers) + " " + create_gameName.toStdString());
+    //std::cout << protocolo.receiveResponse() << std::endl;
     on_pushButton_refresh_clicked();
 }
 

@@ -3,7 +3,7 @@
 
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                       window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   900, 500, SDL_WINDOW_RESIZABLE),
+                                   900, 500, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
                       renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
                       arena(renderer), scoreboard(renderer), ball(renderer), time(0)
 #ifdef SDL_TESTING
@@ -13,6 +13,8 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 #ifndef SDL_TESTING
     players.emplace_back(renderer);
 #endif
+    //window.SetIcon();
+    window.Show();
 }
 
 std::string format_duration( std::chrono::milliseconds ms ) {
@@ -30,6 +32,7 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(const Response& response) {
     //TODO
+
     scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
     time += UPDATE_TIME;
 }
@@ -57,7 +60,7 @@ sdl_main::~sdl_main() {
 void sdl_main::updateScreen() {
     scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
     ball.update(renderer.GetOutputWidth()/2, renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6),0);
-    my_object.update(0,renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6), 0, FRAME_RATE);
+    my_object.update(0,0, 0, FRAME_RATE);
     time += UPDATE_TIME;
 }
 #endif
