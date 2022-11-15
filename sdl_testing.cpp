@@ -10,8 +10,6 @@
 #include "src/client/sdl_main.h"
 
 static bool handleEvents(sdl_player &player);
-static void render(SDL2pp::Renderer &renderer, sdl_player &player);
-static void update(sdl_player &player, float dt);
 
 int main(int argc, char** argv){
     try {
@@ -56,6 +54,9 @@ static bool handleEvents(sdl_player &player) {
                     case SDLK_SPACE:
                         player.toggleTurbo();
                         break;
+                    case SDLK_UP:
+                        player.jump();
+                        break;
                 }
             } // Fin KEY_DOWN
                 break;
@@ -68,9 +69,12 @@ static bool handleEvents(sdl_player &player) {
                     case SDLK_RIGHT:
                         player.stopMoving();
                         break;
-//                    case SDLK_SPACE:
+                    case SDLK_SPACE:
 //                        player.toggleTurbo();
-//                        break;
+                        break;
+                    case SDLK_UP:
+                        player.stopJump();
+                        break;
                 }
             }// Fin KEY_UP
                 break;
