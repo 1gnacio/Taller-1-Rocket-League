@@ -1,17 +1,18 @@
 #ifndef SERVER_CONNECTION_H
 #define SERVER_CONNECTION_H
 
-#include "../queues/command_queue.h"
-#include "../queues/response_queue.h"
 #include "../sockets/socket.h"
 #include "../handlers/command_handler.h"
 #include "../handlers/response_handler.h"
+#include "../queues/block_queues/response_blocking_queue.h"
+#include "../queues/block_queues/command_blocking_queue.h"
 
 class ServerConnection {
 private:
     bool isConnected;
     Socket socket;
-    CommandQueue commandQueue;
+    CommandBlockingQueue commandQueue;
+    ResponseBlockingQueue responseQueue;
     CommandHandler sender;
     ResponseHandler receiver;
 public:

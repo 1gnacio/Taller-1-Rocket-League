@@ -3,13 +3,14 @@
 
 #include <QMainWindow>
 #include <QMap>
-#include "../protocolo/protocolo-tp2.h"
 #include "qtablewidget.h"
 #include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class lobby; }
 QT_END_NAMESPACE
+
+//TODO: cambiarle el nombre
 
 class lobby : public QMainWindow
 {
@@ -37,7 +38,6 @@ private slots:
 private:
     Ui::lobby *ui;
     QList<QTableWidgetItem> gamesList;
-    ClientProtocolo protocolo;
     QStandardItemModel model;
     QStringList horizontalHeader;
     QString currSelectedGame;

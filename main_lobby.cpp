@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) try {
     lobby w;
     w.show();
     return a.exec();
+
 } catch (const std::exception& err) {
     std::cerr
             << "Something went wrong and an exception was caught: "

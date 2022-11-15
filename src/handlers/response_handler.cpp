@@ -1,10 +1,10 @@
 #include "response_handler.h"
 
-ResponseHandler::ResponseHandler(Socket& socket, Mode mode) :
-queue(),
-socket(socket),
-hasFinished(false),
-protocolo()
+ResponseHandler::ResponseHandler(Socket &socket, ResponseQueue &queue, Mode mode) :
+        queue(queue),
+        socket(socket),
+        hasFinished(false),
+        protocolo()
 {
     if(mode == RECEIVER) {
         this->handler = std::thread(&ResponseHandler::handleReceive, this);

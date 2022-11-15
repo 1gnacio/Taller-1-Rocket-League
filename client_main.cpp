@@ -1,5 +1,6 @@
 #include <iostream>
 #include "src/client/client.h"
+#include <QApplication>
 
 int main(int argc, char* argv[]) try {
     if (argc != 3) {
@@ -8,8 +9,9 @@ int main(int argc, char* argv[]) try {
 
     // ej "localhost" "8080"
     Client client(argv[1], argv[2]);
-
+    //if (client.runLobby());
     client.run();
+
     return 0;
     } catch (const std::exception& err) {
         std::cerr

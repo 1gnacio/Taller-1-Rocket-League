@@ -10,27 +10,11 @@
 #include "src/client/sdl_main.h"
 
 static bool handleEvents(sdl_player &player);
-static void render(SDL2pp::Renderer &renderer, sdl_player &player);
-static void update(sdl_player &player, float dt);
 
 int main(int argc, char** argv){
     try {
-        /*
-        // Inicializo biblioteca de SDL
-        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-        // Creo una ventana dinamica con título "Hello world"
-        SDL2pp::Window window("Hello world", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              800, 600, SDL_WINDOW_RESIZABLE);
-
-        // Creo renderer
-        SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-        sdl_player py(renderer);
-*/
         sdl_main py;
         bool running = true;
-        // Gameloop, notar como tenemos desacoplado el procesamiento de los inputs (handleEvents)
-        // del update del modelo.
         while (running) {
             running = handleEvents(py.my_object);
             py.updateScreen();
@@ -70,6 +54,9 @@ static bool handleEvents(sdl_player &player) {
                     case SDLK_SPACE:
                         player.toggleTurbo();
                         break;
+                    case SDLK_UP:
+                        player.jump();
+                        break;
                 }
             } // Fin KEY_DOWN
                 break;
@@ -82,9 +69,12 @@ static bool handleEvents(sdl_player &player) {
                     case SDLK_RIGHT:
                         player.stopMoving();
                         break;
-//                    case SDLK_SPACE:
+                    case SDLK_SPACE:
 //                        player.toggleTurbo();
-//                        break;
+                        break;
+                    case SDLK_UP:
+                        player.stopJump();
+                        break;
                 }
             }// Fin KEY_UP
                 break;

@@ -1,4 +1,3 @@
-#include <sys/socket.h>
 #include "command_handler.h"
 
 CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
@@ -16,9 +15,7 @@ socket(socket) {
 void CommandHandler::handleSend() {
     while (!this->hasFinished) {
         Command c = this->queue.pop();
-        if(c.getValue() != "NOP") {
-            protocolo.sendCommand(this->socket, c);
-        }
+        protocolo.sendCommand(this->socket, c);
         this->hasFinished = this->protocolo.isConnectionClosed();
     }
 }

@@ -21,13 +21,14 @@ public:
      * Para cambiar el color de la textura.
      * */
     void setColorMod(Uint8 r, Uint8 g, Uint8 b);
-
+    void disableLoop();
 private:
     void advanceFrame();
     std::vector<SDL2pp::Texture> textures;
     int currentFrame;
     int numFrames;
     float elapsed;
+    bool loop;
 };
 
 
