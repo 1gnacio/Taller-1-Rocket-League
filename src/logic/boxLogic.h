@@ -49,7 +49,7 @@ public:
     float getCarData(int carNumber, int key);
     PlayerResponses getPlayersData();
 
-    Car getCar(int carNumber);
+    Car* getCar(int carNumber);
     static b2Vec2 getVectorForce(int direction);
 
     void verifyDoubleJump();

@@ -27,7 +27,7 @@ void BoxLogic::close(){
 }
 
 void BoxLogic::updateTime(){
-    float timeStep = 1.0f / 5.0f;
+    float timeStep = 1.0f / 23.0f;
     world->Step(timeStep,LogicValues().VELOCITY_ITERATIONS,LogicValues().POSITION_ITERATIONS);
     usleep(timeStep*1000000); // Simulacion paso tiempo (unsleep utiliza microsegundos 1x10-6)
 
@@ -97,7 +97,7 @@ void BoxLogic::createWalls() {
     float edgesYEnd[] = {2.5f,3.0f,3.0f, -3.0f};
 
     int i = 0;
-    for(auto x: walls){
+    for(auto &x: walls){
         edge.SetTwoSided(b2Vec2(edgesXStart[i],edgesYStart[i]), b2Vec2(edgesXEnd[i],edgesYEnd[i]));
         edgeFixtureDef.shape = &edge;
         x->CreateFixture(&edgeFixtureDef);
@@ -147,15 +147,15 @@ int BoxLogic::playersAmount() {
 }
 
 float BoxLogic::getCarData(int carNumber, int key) {
-    return getCar(carNumber).getData(key);
+    return getCar(carNumber)->getData(key);
 
 }
 
-Car BoxLogic::getCar(int carNumber) { // Siempre retorna el primer auto por ahora
+Car* BoxLogic::getCar(int carNumber) { // Siempre retorna el primer auto por ahora
     int i = 1;
-    for(auto x : cars ){
+    for(auto &x : cars ){
         if(i == carNumber){
-            return x;
+            return &x;
         }
     }
     return nullptr;
@@ -174,24 +174,24 @@ b2Vec2 BoxLogic::getVectorForce(int direction) {
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     b2Vec2 vel = getVectorForce((int)direction);
-    getCar(carNumber).startMove(vel);
+    getCar(carNumber)->startMove(vel);
 }
 
 void BoxLogic::stopMove(int carNumber) {
-    getCar(carNumber).stopMove();
+    getCar(carNumber)->stopMove();
 
 }
 
 void BoxLogic::jump(int carNumber) {
     b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
-    getCar(carNumber).jump(vel);
+    getCar(carNumber)->jump(vel);
 
 
 }
 
 PlayerResponses BoxLogic::getPlayersData() {
     std::vector<PlayerResponse> vector;
-    for(auto x: cars){
+    for(auto &x: cars){
         vector.emplace_back(1,x.getData(LogicValues().POS_X),
                             x.getData(LogicValues().POS_Y),
                             x.getData(LogicValues().ANGLE),
@@ -213,14 +213,14 @@ void BoxLogic::updateStatus() {
 }
 
 void BoxLogic::verifyDoubleJump() {
-    for(auto x: cars) {
+    for(auto &x: cars) {
         x.verifyDoubleJump();
     }
 
 }
 
 void BoxLogic::verifyTurbo() {
-    for(auto x: cars) {
+    for(auto &x: cars) {
         x.verifyTurbo();
     }
 

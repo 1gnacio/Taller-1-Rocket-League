@@ -5,7 +5,7 @@
 #include "car.h"
 #include <iostream>
 
-Car::Car(b2Body *body):carBody(body), secondJump(true) {
+Car::Car(b2Body *body):carBody(body), secondJump(0) {
 }
 
 void Car::createFixture(b2FixtureDef & fixture) {
@@ -49,7 +49,7 @@ void Car::stopMove() {
 bool Car::canJump(){
     return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
 }
-bool Car::jumpedTwoTimes() const{
+bool Car::jumpedTwoTimes(){
     return this->secondJump;
 }
 
@@ -60,11 +60,10 @@ void Car::modifyJumpedTwoTimes() {
 }
 
 void Car::jump(b2Vec2 vel) {
-    //std::cout << secondJump << std::endl;
-    if(this->canJump()) {
-        if(isJumping()) {
-            modifyJumpedTwoTimes();
-        }
+    if(!secondJump) {
+       if(isJumping()) {
+           this->modifyJumpedTwoTimes();
+       }
         carBody->ApplyLinearImpulseToCenter(vel,true);
     }
 }
@@ -74,10 +73,8 @@ bool Car::isJumping() {
 }
 
 void Car::verifyDoubleJump() {
-    //std::cout << secondJump << std::endl;
     if(!isJumping()) {
-        secondJump = false;
-
+        this->secondJump = 0;
     }
 }
 

@@ -16,7 +16,7 @@ private:
     b2Body* carBody;
     bool canJump();
     bool isJumping();
-    bool secondJump;
+    int secondJump;
 
 public:
 
@@ -55,7 +55,7 @@ public:
     void verifyTurbo();
 
     void modifyJumpedTwoTimes();
-    bool jumpedTwoTimes() const;
+    bool jumpedTwoTimes();
 };
 
 
