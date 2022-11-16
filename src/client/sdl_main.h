@@ -38,7 +38,7 @@ public:
     ~sdl_main();
 
 #ifndef SDL_TESTING
-    void updateScreen(const Response& response);
+    void updateScreen(Response& response);
 #else
     void updateScreen();
     sdl_player my_object;

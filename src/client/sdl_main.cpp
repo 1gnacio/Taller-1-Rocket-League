@@ -30,9 +30,15 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 }
 
 #ifndef SDL_TESTING
-void sdl_main::updateScreen(const Response& response) {
+void sdl_main::updateScreen(Response& response) {
     //TODO
+    if (time > 600){
+        float x = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosX();
+        float y = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosY();
+        float angle = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getRotationAngle();
 
+        players.back().update(x, y, angle*(180/3.14), UPDATE_TIME);
+    }
     scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
     time += UPDATE_TIME;
 }

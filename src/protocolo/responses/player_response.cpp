@@ -56,4 +56,12 @@ int PlayerResponse::size() {
     ;
 }
 
+float PlayerResponse::getPosX() {
+    return posX;
+}
+
+float PlayerResponse::getPosY() {
+    return posY;
+}
+
 PlayerResponse::PlayerResponse() = default;

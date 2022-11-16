@@ -14,7 +14,7 @@ sdl_player::~sdl_player() {
     //TODO
 }
 
-void sdl_player::update(int _x, int _y, double _angle, float _dt) {
+void sdl_player::update(float _x, float _y, float _angle, float _dt) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;
@@ -57,7 +57,16 @@ void sdl_player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
     int size_h= 8 * renderer.GetOutputHeight() /100;
     int size_w= size_h*3;
+
+
+    int SCALED_WIDTH = renderer.GetOutputWidth()/80;
+    int SCALED_HEIGHT = renderer.GetOutputHeight()/80;
+    x = ((SCALED_WIDTH / 2.0f) + x) * 80 - (96.0 / 2);
+    y = ((SCALED_HEIGHT / 2.0f) + y) * 80 - (40.0 / 2);
+
     car_an.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle, flip);
+
+
 
     if (onTurbo){
         if(facingLeft){

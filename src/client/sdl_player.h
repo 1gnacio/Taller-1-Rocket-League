@@ -18,7 +18,7 @@ private:
     double angle;
 public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
-    void update(int x, int y, double angle, float dt);
+    void update(float x, float y, float angle, float dt);
     void render(SDL2pp::Renderer &renderer);
     ~sdl_player();
 

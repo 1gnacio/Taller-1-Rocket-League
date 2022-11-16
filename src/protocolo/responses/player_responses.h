@@ -20,6 +20,8 @@ public:
     std::vector<unsigned char> serialize();
     [[nodiscard]] int getCount() const { return this->players.size(); };
     [[nodiscard]] int getSize() const { return this->players.size() * PlayerResponse::size(); };
+    PlayerResponse getPlayer();
+
 };
 
 

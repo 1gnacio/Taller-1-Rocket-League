@@ -70,7 +70,7 @@ void Server::gameFlow(){
                 limitCommands++;
             }
             logic.updateTime();
-            std::cout << "Actualizo el tiempo en box2d" << std::endl;
+            //std::cout << "Actualizo el tiempo en box2d" << std::endl;
             endpoint.push(logic.getResponse());
         }
     } catch (...) {

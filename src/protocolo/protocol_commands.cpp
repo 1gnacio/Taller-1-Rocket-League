@@ -13,7 +13,11 @@ ProtocolCommands::ProtocolCommands() : values(),
             {this->values.DESERIALIZED_LEFT_PUSHED, this->values.SERIALIZED_LEFT_PUSHED},
             {this->values.DESERIALIZED_LEFT_RELEASE, this->values.SERIALIZED_LEFT_RELEASE},
             {this->values.DESERIALIZED_RIGHT_PUSHED, this->values.SERIALIZED_RIGHT_PUSHED},
-            {this->values.DESERIALIZED_RIGHT_RELEASE, this->values.SERIALIZED_RIGHT_RELEASE}
+            {this->values.DESERIALIZED_RIGHT_RELEASE, this->values.SERIALIZED_RIGHT_RELEASE},
+            {this->values.DESERIALIZED_TURBO_RELEASE, this->values.SERIALIZED_TURBO_RELEASE},
+            {this->values.DESERIALIZED_TURBO_PUSHED, this->values.SERIALIZED_TURBO_PUSHED},
+            {this->values.DESERIALIZED_JUMP_RELEASE, this->values.SERIALIZED_JUMP_RELEASE},
+            {this->values.DESERIALIZED_JUMP_PUSHED, this->values.SERIALIZED_JUMP_PUSHED}
         }),
         deserializedCommands({
             {this->values.SERIALIZED_NOP, this->values.DESERIALIZED_NOP},
@@ -24,7 +28,11 @@ ProtocolCommands::ProtocolCommands() : values(),
             {this->values.SERIALIZED_LEFT_PUSHED, this->values.DESERIALIZED_LEFT_PUSHED},
             {this->values.SERIALIZED_LEFT_RELEASE, this->values.DESERIALIZED_LEFT_RELEASE},
             {this->values.SERIALIZED_RIGHT_PUSHED, this->values.DESERIALIZED_RIGHT_PUSHED},
-            {this->values.SERIALIZED_RIGHT_RELEASE, this->values.DESERIALIZED_RIGHT_RELEASE}
+            {this->values.SERIALIZED_RIGHT_RELEASE, this->values.DESERIALIZED_RIGHT_RELEASE},
+            {this->values.SERIALIZED_TURBO_RELEASE, this->values.DESERIALIZED_TURBO_RELEASE},
+            {this->values.SERIALIZED_TURBO_PUSHED, this->values.DESERIALIZED_TURBO_PUSHED},
+            {this->values.SERIALIZED_JUMP_RELEASE, this->values.DESERIALIZED_JUMP_RELEASE},
+            {this->values.SERIALIZED_JUMP_PUSHED, this->values.DESERIALIZED_JUMP_PUSHED}
         }),
         parameteredCommands({this->values.DESERIALIZED_JOIN, this->values.DESERIALIZED_CREATE}){
 }

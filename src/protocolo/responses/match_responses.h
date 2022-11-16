@@ -20,6 +20,7 @@ public:
 
     void addResponse(MatchResponse &response);
     float getBallPositionY();
+    MatchResponse getMatchResponse();
 };
 
 

@@ -13,6 +13,8 @@ private:
     float posX;
     float posY;
     float rotationAngle;
+
+private:
     bool isMoving;
     bool isFlying;
     bool isTurboActivated;
@@ -35,6 +37,11 @@ public:
     [[nodiscard]] float getPosX() const { return this->posX; }
 
     static int size();
+    float getPosX();
+    float getPosY();
+    float getRotationAngle() const { return rotationAngle; }
+
+
 };
 
 

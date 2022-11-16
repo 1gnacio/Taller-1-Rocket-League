@@ -60,7 +60,7 @@ void Car::modifyJumpedTwoTimes() {
 }
 
 void Car::jump(b2Vec2 vel) {
-    std::cout << secondJump << std::endl;
+    //std::cout << secondJump << std::endl;
     if(this->canJump()) {
         if(isJumping()) {
             modifyJumpedTwoTimes();
@@ -74,7 +74,7 @@ bool Car::isJumping() {
 }
 
 void Car::verifyDoubleJump() {
-    std::cout << secondJump << std::endl;
+    //std::cout << secondJump << std::endl;
     if(!isJumping()) {
         secondJump = false;
 

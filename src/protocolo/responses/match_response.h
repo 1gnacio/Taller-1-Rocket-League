@@ -52,6 +52,7 @@ public:
     static int size(int playerCount, int roomNameSize);
     float getBallPositionY();
     int size();
+    PlayerResponses getPlayers();
 };
 
 

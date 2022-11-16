@@ -38,3 +38,8 @@ PlayerResponses::PlayerResponses() : serializer(), players() {}
 void PlayerResponses::addPlayer(PlayerResponse &player) {
     this->players.push_back(std::move(player));
 }
+
+PlayerResponse PlayerResponses::getPlayer() {
+    //TODO
+    return players.front();
+}

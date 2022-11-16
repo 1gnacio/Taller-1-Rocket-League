@@ -14,7 +14,7 @@
 
 Client::Client(const char *hostname, const char *servname) :
         isRunning(true), connection(hostname, servname)/*, my_lobby()*/{
-
+    addInputCommand(CommandValues().DESERIALIZED_LEFT_PUSHED);
 }
 
 void Client::readStandardInput() {
@@ -79,7 +79,7 @@ void Client::readStandardInput() {
                 this->isRunning = false;
                 break;
         }
-        SDL_Delay(UPDATE_TIME);   //TODO: ver
+        //SDL_Delay(UPDATE_TIME);   //TODO: ver
     }
 
 }
