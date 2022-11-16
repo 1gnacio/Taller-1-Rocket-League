@@ -5,7 +5,48 @@
 ```
 sudo apt install libyaml-cpp-dev
 ```
-1 - Build
+
+# Instalación Librerías
+
+## SDL2
+
+Descargar cada release y luego instalarlo.
+
+```shell
+./configure
+make
+sudo make install
+```
+
+- [SDL2](https://github.com/libsdl-org/SDL)
+- [SDL_image](https://github.com/libsdl-org/SDL_image)
+- [SDL_ttf](https://github.com/libsdl-org/SDL_ttf)
+- [SDL_mixer](https://github.com/libsdl-org/SDL_mixer)
+
+## [libSDL2pp](https://github.com/libSDL2pp/libSDL2pp)
+
+Descargar el release y luego ejecutar:
+
+```shell
+cmake .
+cmake --build .
+sudo cmake --install .
+```
+
+sudo apt-get install xorg-dev
+libsdl2-dev
+
+## Box2D
+
+```
+sudo apt install libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev
+```
+
+## QT
+
+### Version QT5 (última)
+
+## 1 - Build
 ```
     git submodule init
     git submodule update  
@@ -14,7 +55,7 @@ sudo apt install libyaml-cpp-dev
     cmake ..
     make -j4
 ```
-2 - Execute (desde la carpeta build)
+## 2 - Execute (desde la carpeta build)
 ```
     ./testing
 ```
