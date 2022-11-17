@@ -1,7 +1,7 @@
 #ifndef ROCKET_LEAGUE_SDL_MAIN_H
 #define ROCKET_LEAGUE_SDL_MAIN_H
 
-#define UPDATE_TIME 200
+#define UPDATE_TIME 10
 
 
 #include <SDL2pp/SDL2pp.hh>

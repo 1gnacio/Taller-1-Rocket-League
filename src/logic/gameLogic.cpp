@@ -22,14 +22,25 @@ void GameLogic::updateModel(Command &command) {
         this->gamePhysics.addPlayer();
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED){
         gamePhysics.startMove(1, LogicValues().LEFT_DIRECTION);
-    } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED ||
-               command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
+    } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_RELEASE ||
+               command.getValue() == CommandValues().DESERIALIZED_RIGHT_RELEASE) {
         gamePhysics.stopMove(1);
     } else if (command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
         gamePhysics.startMove(1,LogicValues().RIGHT_DIRECTION);
-
+    } else if (command.getValue() == CommandValues().DESERIALIZED_TURBO_PUSHED) {
+        gamePhysics.applyTurbo(1);
+    } else if (command.getValue() == CommandValues().DESERIALIZED_JUMP_PUSHED) {
+        gamePhysics.jump(1);
     }
 }
+
+float GameLogic::getCarData(int carNumber, int key) {
+    return gamePhysics.getCarData(carNumber,key);
+}
+float GameLogic::playersAmount() {
+    return gamePhysics.playersAmount();
+}
+
 void GameLogic::updateTime() {
     gamePhysics.updateTime();
     gamePhysics.updateStatus();

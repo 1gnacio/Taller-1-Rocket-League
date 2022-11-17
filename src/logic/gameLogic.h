@@ -18,6 +18,10 @@ public:
     void updateModel(Command &command);
     void updateTime();
     Response getResponse();
+
+    float getCarData(int carNumber, int key);
+
+    float playersAmount();
 };
 
 

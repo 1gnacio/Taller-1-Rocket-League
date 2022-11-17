@@ -43,6 +43,7 @@ public:
     void startMove(int carNumber, bool direction);  // Numero de auto | direccion -> 0=Izq | 1=Der
     void stopMove(int carNumber);
     void jump(int carNumber);
+    void applyTurbo(int carNumber);
 
     bool ballIsAwake();
     float getBallData(int key); // 0 -> PosX | 1 = posY | 2 = angulo (grados) | 3 = velocidad en X | 4 = velocidad en Y

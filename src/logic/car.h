@@ -42,6 +42,9 @@ public:
      */
     void jump(b2Vec2 vel);
 
+
+    void applyTurbo();
+
     /*
      * Retorna un dato pedido según una key:
      * POS_X = 0; POS_Y = 1; ANGLE = 2; X_VELOCITY = 3; Y_VELOCITY = 4;
@@ -56,6 +59,8 @@ public:
 
     void modifyJumpedTwoTimes();
     bool jumpedTwoTimes();
+
+    b2Vec2 getVelocity();
 };
 
 

@@ -34,7 +34,7 @@ float Car::getData(int key) {
 
 void Car::startMove(b2Vec2 vel) {
     if( !isJumping() )
-        carBody->SetLinearVelocity(vel);
+        carBody->ApplyForceToCenter(vel,true);
     else {
         float torque = (vel.x<0 ? 1.0f : -1.0f);
         carBody->ApplyTorque(torque, true);
@@ -80,5 +80,15 @@ void Car::verifyDoubleJump() {
 
 void Car::verifyTurbo() {
 
+
+}
+
+b2Vec2 Car::getVelocity() {
+    carBody->GetLinearVelocity();
+}
+
+void Car::applyTurbo() {
+    b2Vec2 vel(carBody->GetLinearVelocity().x*1.1, carBody->GetLinearVelocity().y*1.1);
+    carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
 
 }
