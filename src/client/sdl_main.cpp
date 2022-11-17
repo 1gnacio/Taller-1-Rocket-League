@@ -32,7 +32,7 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
     //TODO
-    if (time > 600){
+    if (time > 30){
         float x = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosX();
         float y = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosY();
         float angle = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getRotationAngle();

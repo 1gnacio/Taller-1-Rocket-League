@@ -6,6 +6,14 @@
 #include "../src/constants/logic_values.h"
 
 const int FIRST_CAR = 1;
+
+
+void update(BoxLogic & physics, int frames) {
+    for (int i = 0; i < frames; i ++) {
+        physics.updateTime();
+        physics.updateStatus();
+    }
+}
 TEST(physics, SeCreaElMapaConGravedad10) {
     b2Vec2 v(0.0f,9.8f);
     BoxLogic physics;
@@ -69,10 +77,12 @@ TEST(physics, sePosicionaAutoCorrectamente) {
 TEST(physics, aceleracionCorrectaConComando) {
     BoxLogic physics;
     physics.addPlayer();
-    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
+    for(int i = 0; i < 100; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
     }
-    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR, LogicValues().X_VELOCITY) == 0);
+    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION); // Le aplica una fuerza, no le setea una velocidad.
+    physics.updateTime();
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) != 0);
     physics.close();
 }
@@ -81,7 +91,7 @@ TEST(physics, FrenoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
     physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
-    physics.stopMove(FIRST_CAR); // Chequear velocidad lineal
+    physics.stopMove(FIRST_CAR);
     EXPECT_EQ(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY), 0);
     physics.close();
 }
@@ -89,7 +99,7 @@ TEST(physics, FrenoCorrectoConComando) {
 TEST(physics, SaltoCorrectoConComando) {
     BoxLogic physics;
     physics.addPlayer();
-    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
+    for(int i = 0; i < 100; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
     }
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
@@ -103,10 +113,10 @@ TEST(physics, SaltoCorrectoConComando) {
 TEST(physics, MueveAnguloEnElAire) {
     BoxLogic physics;
     physics.addPlayer();
-    physics.updateTime();
+    update(physics, 1);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().ANGLE) == 0);
     physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
-    physics.updateTime();
+    update(physics, 1);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().ANGLE) != 0);
 
 }
@@ -114,30 +124,57 @@ TEST(physics, MueveAnguloEnElAire) {
 TEST(physics, DobleSaltoCorrecto) {
     BoxLogic physics;
     physics.addPlayer();
-    for(int i = 0; i < 20; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
-        physics.updateTime();
-        physics.updateStatus();
-    }
+    update(physics, 100);
 
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
 
     physics.jump(FIRST_CAR);
-    physics.updateTime();
-    physics.updateStatus();
+    update(physics, 1);
 
     float vel1 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
     physics.jump(FIRST_CAR);
-    physics.updateTime();
-    physics.updateStatus();
+    update(physics, 1);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < vel1);
+}
+
+TEST(physics, RealizaTresSaltosYELUltimoNoCuenta) {
+    BoxLogic physics;
+    physics.addPlayer();
+    update(physics,100);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) == 0);
+    physics.jump(FIRST_CAR);
+    update(physics, 5);
+
+    float vel1 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < 0);
+    physics.jump(FIRST_CAR);
+    update(physics,5);
+
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) < vel1);
     float vel2 = physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY);
     physics.jump(FIRST_CAR);
-    physics.updateTime();
-    physics.updateStatus();
+    update(physics,5);
     EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().Y_VELOCITY) > vel2);
+}
+
+TEST(physics, RealizaUnTurbo) {
+    BoxLogic physics;
+    physics.addPlayer();
+    update(physics,100);
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) == 0);
+
+    physics.startMove(FIRST_CAR,LogicValues().LEFT_DIRECTION);
+    update(physics,1);
+    float vel1 = physics.getCarData(FIRST_CAR, LogicValues().X_VELOCITY);
+    physics.applyTurbo(FIRST_CAR);
+
+    EXPECT_TRUE(physics.getCarData(FIRST_CAR,LogicValues().X_VELOCITY) < vel1);
 
 }
+
+
+
 
 
 

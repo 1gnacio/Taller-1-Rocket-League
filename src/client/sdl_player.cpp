@@ -58,11 +58,11 @@ void sdl_player::render(SDL2pp::Renderer &renderer) {
     int size_h= 8 * renderer.GetOutputHeight() /100;
     int size_w= size_h*3;
 
-
-    int SCALED_WIDTH = renderer.GetOutputWidth()/80;
-    int SCALED_HEIGHT = renderer.GetOutputHeight()/80;
-    x = ((SCALED_WIDTH / 2.0f) + x) * 80 - (96.0 / 2);
-    y = ((SCALED_HEIGHT / 2.0f) + y) * 80 - (40.0 / 2);
+    int MET2PIX = renderer.GetOutputWidth()/8;
+    int SCALED_WIDTH = renderer.GetOutputWidth()/MET2PIX;
+    int SCALED_HEIGHT = renderer.GetOutputHeight()/MET2PIX;
+    x = ((SCALED_WIDTH / 2.0f) + x) * MET2PIX - (96.0 / 2);
+    y = ((SCALED_HEIGHT / 2.0f) + y) * MET2PIX - (40.0 / 2);
 
     car_an.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle, flip);
 

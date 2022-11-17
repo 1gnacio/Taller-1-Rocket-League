@@ -12,6 +12,7 @@ add_executable(Google_Tests_run
         test1.cpp
         testSerialize.cpp
         test2.cpp
+        testGameLogic.cpp
         ${sources}
         )
 target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets box2d  ${SDL2PP_LIBRARIES})

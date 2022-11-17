@@ -5,7 +5,7 @@
 #include "car.h"
 #include <iostream>
 
-Car::Car(b2Body *body):carBody(body), secondJump(true) {
+Car::Car(b2Body *body):carBody(body), secondJump(0) {
 }
 
 void Car::createFixture(b2FixtureDef & fixture) {
@@ -34,7 +34,7 @@ float Car::getData(int key) {
 
 void Car::startMove(b2Vec2 vel) {
     if( !isJumping() )
-        carBody->SetLinearVelocity(vel);
+        carBody->ApplyForceToCenter(vel,true);
     else {
         float torque = (vel.x<0 ? 1.0f : -1.0f);
         carBody->ApplyTorque(torque, true);
@@ -49,7 +49,7 @@ void Car::stopMove() {
 bool Car::canJump(){
     return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
 }
-bool Car::jumpedTwoTimes() const{
+bool Car::jumpedTwoTimes(){
     return this->secondJump;
 }
 
@@ -60,11 +60,10 @@ void Car::modifyJumpedTwoTimes() {
 }
 
 void Car::jump(b2Vec2 vel) {
-    //std::cout << secondJump << std::endl;
-    if(this->canJump()) {
-        if(isJumping()) {
-            modifyJumpedTwoTimes();
-        }
+    if(!secondJump) {
+       if(isJumping()) {
+           this->modifyJumpedTwoTimes();
+       }
         carBody->ApplyLinearImpulseToCenter(vel,true);
     }
 }
@@ -74,14 +73,22 @@ bool Car::isJumping() {
 }
 
 void Car::verifyDoubleJump() {
-    //std::cout << secondJump << std::endl;
     if(!isJumping()) {
-        secondJump = false;
-
+        this->secondJump = 0;
     }
 }
 
 void Car::verifyTurbo() {
 
+
+}
+
+b2Vec2 Car::getVelocity() {
+    carBody->GetLinearVelocity();
+}
+
+void Car::applyTurbo() {
+    b2Vec2 vel(carBody->GetLinearVelocity().x*1.1, carBody->GetLinearVelocity().y*1.1);
+    carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
 
 }
