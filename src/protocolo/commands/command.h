@@ -7,6 +7,7 @@
 
 class Command {
 private:
+    int id;
     Serializer serializer;
     unsigned char serialized;
     std::string deserialized;
@@ -15,16 +16,16 @@ private:
 
 public:
     // movimientos, acciones, listar
-    Command(unsigned char serialized,
+    Command(int id, unsigned char serialized,
             const std::string& deserialized);
 
     // unirse
-    Command(unsigned char serialized,
+    Command(int id, unsigned char serialized,
             const std::string& deserialized,
             const std::string& firstParameter);
 
     // crear
-    Command(unsigned char serialized,
+    Command(int id, unsigned char serialized,
             const std::string& deserialized,
             const std::string& firstParameter,
             const std::string& secondParameter);

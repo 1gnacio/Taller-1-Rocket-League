@@ -6,11 +6,13 @@
 #include "../handlers/response_handler.h"
 #include "../queues/block_queues/response_blocking_queue.h"
 #include "../queues/block_queues/command_blocking_queue.h"
+#include "../protocolo/connection_helper.h"
 
 class ServerConnection {
 private:
     bool isConnected;
     Socket socket;
+    ConnectionHelper helper;
     CommandBlockingQueue commandQueue;
     ResponseBlockingQueue responseQueue;
     CommandHandler sender;
@@ -25,6 +27,8 @@ public:
     bool connectionClosed();
 
     void closeConnection();
+
+    [[nodiscard]] int getId() const { return this->helper.getId(); }
 
     ~ServerConnection();
 };

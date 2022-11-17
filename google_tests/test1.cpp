@@ -11,9 +11,15 @@ const char* serv = "8088";
 void sendCommand(std::string& command) {
     Socket client("localhost", serv);
 
-    Command c = ProtocolCommands().createCommand(command);
+    Command c = ProtocolCommands().createCommand(1, command);
 
     Protocolo().sendCommand(client, c);
+}
+
+void receiveId(int &receivedId) {
+    Socket client("localhost", serv);
+
+    receivedId = Protocolo().receiveId(client);
 }
 
 void sendResponse(Response& response) {
@@ -76,4 +82,22 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadores) {
     serverHandler.join();
 
     EXPECT_EQ(r.getSize(), response.getSize());
+}
+
+TEST(Protocolo, ClienteSeConectaYRecibeId) {
+    Socket server(serv);
+
+    int receivedId = 0;
+
+    std::thread clientHandler(&receiveId, std::ref(receivedId));
+
+    Socket connectedClient = server.accept();
+
+    int id = 3;
+
+    Protocolo().sendId(connectedClient, id);
+
+    clientHandler.join();
+
+    EXPECT_EQ(receivedId, id);
 }

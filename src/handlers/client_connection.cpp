@@ -1,9 +1,10 @@
 #include <sys/socket.h>
 #include "client_connection.h"
 
-ClientConnection::ClientConnection(Socket &socket, ResponseQueue &responseQueue, CommandQueue& commandQueue) :
+ClientConnection::ClientConnection(int id, Socket &socket, ResponseQueue &responseQueue, CommandQueue& commandQueue) :
 isClosed(false),
 socket(std::move(socket)),
+helper(this->socket, id),
 sender(this->socket, responseQueue, SENDER),
 receiver(this->socket, commandQueue, RECEIVER)
 {}

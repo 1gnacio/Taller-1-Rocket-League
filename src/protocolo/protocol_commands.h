@@ -18,16 +18,16 @@ private:
     std::map<const std::string, const unsigned char> serializedCommands;
     std::vector<std::string> parameteredCommands;
 
-    [[nodiscard]] Command createSimpleCommand(unsigned char serialized,
+    [[nodiscard]] Command createSimpleCommand(int id, unsigned char serialized,
                                 const std::string& deserialized) const;
 
-    Command createParameteredCommand(unsigned char serialized,
+    Command createParameteredCommand(int id, unsigned char serialized,
                                      const std::string& deserialized,
                                      std::string &arguments);
 public:
     ProtocolCommands();
 
-    Command createCommand(std::string& value);
+    Command createCommand(int id, std::string& value);
 
     std::string getDeserializedCommandValue(unsigned char serializedCommandValue);
 
