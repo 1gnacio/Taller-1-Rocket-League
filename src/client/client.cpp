@@ -100,7 +100,7 @@ void Client::run() {
 void Client::addInputCommand(std::string deserialized_key) {
     ProtocolCommands makeCommands;
     std::cout << deserialized_key << std::endl;
-    Command c = makeCommands.createCommand(deserialized_key);
+    Command c = makeCommands.createCommand(this->connection.getId(), deserialized_key);
     this->connection.push(c);
 }
 //

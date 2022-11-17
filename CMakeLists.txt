@@ -177,6 +177,8 @@ add_executable(game_client
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
+        src/protocolo/connection_helper.cpp
+        src/protocolo/connection_helper.h
         )
         
 
@@ -266,6 +268,8 @@ add_executable(game_server
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
+        src/protocolo/connection_helper.cpp
+        src/protocolo/connection_helper.h
         )
 
 target_link_libraries(game_server box2d)

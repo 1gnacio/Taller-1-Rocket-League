@@ -33,5 +33,9 @@ class Protocolo {
     // una instancia por hilo, envia la respuesta del servidor a un cliente
     void sendResponse(Socket& socket, Response& response);
 
+    void sendId(Socket &socket, int id);
+
+    int receiveId(Socket &socket);
+
 };
 #endif  // COMMON_SRC_PROTOCOLO_H_

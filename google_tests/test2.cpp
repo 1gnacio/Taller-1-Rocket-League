@@ -3,7 +3,6 @@
 #include "../src/protocolo/commands/command.h"
 #include "../src/logic/boxLogic.h"
 #include "../src/logic/gameLogic.h"
-#include "../src/constants/logic_values.h"
 
 const int FIRST_CAR = 1;
 

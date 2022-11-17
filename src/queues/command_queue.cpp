@@ -16,7 +16,7 @@ Command CommandQueue::pop() {
     }
 
     // TODO que comando deberia devolver la cola si no hay comandos?
-    return {0, "NOP"};
+    return {0, 0, "NOP"};
 }
 
 bool CommandQueue::isEmpty() {

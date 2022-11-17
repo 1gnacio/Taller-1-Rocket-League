@@ -4,6 +4,7 @@
 ServerConnection::ServerConnection(const char *hostname, const char *servname) :
 isConnected(true),
 socket(hostname, servname),
+helper(socket),
 commandQueue(),
 sender(this->socket, this->commandQueue, SENDER),
 receiver(this->socket, this->responseQueue, RECEIVER)

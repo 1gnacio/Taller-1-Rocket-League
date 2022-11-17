@@ -37,36 +37,39 @@ ProtocolCommands::ProtocolCommands() : values(),
         parameteredCommands({this->values.DESERIALIZED_JOIN, this->values.DESERIALIZED_CREATE}){
 }
 
-Command ProtocolCommands::createParameteredCommand(const unsigned char serialized,
+Command ProtocolCommands::createParameteredCommand(int id, const unsigned char serialized,
                                                    const std::string &deserialized,
                                                    std::string &arguments) {
     if (deserialized == this->values.DESERIALIZED_CREATE) {
         CreateParameterStrategy parameters;
-        return Command(serialized,
+        return Command(id,
+                       serialized,
                        deserialized,
                        parameters.firstParameter(arguments),
                        parameters.secondParameter(arguments));
     }
 
-    return Command(serialized, deserialized, arguments);
+    return Command(id, serialized, deserialized, arguments);
 }
 
-Command ProtocolCommands::createCommand(std::string &value) {
+Command ProtocolCommands::createCommand(int id, std::string &value) {
     auto position = this->serializedCommands.find(value);
 
     if (position == this->serializedCommands.end()) {
         throw std::runtime_error("Command not found");
     }
 
-    return Command(position->second, position->first);
+    return Command(id, position->second, position->first);
 }
 
-Command ProtocolCommands::createSimpleCommand(const unsigned char serialized, const std::string &deserialized) const {
-    return Command(serialized, deserialized);
+Command ProtocolCommands::createSimpleCommand(int id, const unsigned char serialized, const std::string &deserialized) const {
+    return Command(id, serialized, deserialized);
 }
 
 Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCommand) {
     auto position = this->deserializedCommands.find(serializedCommand[0]);
+    std::vector<unsigned char> serializedInt(serializedCommand.begin() + 1, serializedCommand.begin() + 5);
+    int id = Serializer().deserializeInt(serializedInt);
 
     if (position == this->deserializedCommands.end()) {
         throw std::runtime_error("Command not found");
@@ -77,14 +80,15 @@ Command ProtocolCommands::createCommand(std::vector<unsigned char> &serializedCo
                                  position->second);
 
     if (parametered == this->parameteredCommands.end()) {
-        return this->createSimpleCommand(position->first,
+        return this->createSimpleCommand(id, position->first,
                                          position->second);
     }
 
-    std::string arguments(serializedCommand.begin() + 1,
+    std::string arguments(serializedCommand.begin() + 5,
                           serializedCommand.end());
 
-    return this->createParameteredCommand(position->first,
+    return this->createParameteredCommand(id,
+                                          position->first,
                                           position->second,
                                           arguments);
 }

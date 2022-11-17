@@ -3,6 +3,7 @@
 
 ServerEndpoint::ServerEndpoint() :
 isActive(true),
+nextClientId(1),
 receivedCommands(),
 responses(),
 connections(),
@@ -18,7 +19,8 @@ void ServerEndpoint::sendResponsesHandler() {
 }
 
 void ServerEndpoint::addPlayer(Socket &client) {
-    this->connections.emplace_back(std::make_unique<ClientConnection>(client, this->responses, this->receivedCommands));
+    this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, client, this->responses, this->receivedCommands));
+    this->nextClientId++;
 }
 
 void ServerEndpoint::push(Response response) {

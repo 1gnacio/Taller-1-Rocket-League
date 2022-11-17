@@ -49,7 +49,7 @@ void Protocolo::sendResponse(Socket& socket, Response &response) {
 Command Protocolo::receiveCommand(Socket& socket) {
     if (this->isConnectionClosed()) {
         CommandValues cv;
-        return {cv.SERIALIZED_NOP, cv.DESERIALIZED_NOP};
+        return {0, cv.SERIALIZED_NOP, cv.DESERIALIZED_NOP};
     }
 
     std::vector<unsigned char> message = this->receiveMessage(socket);
@@ -83,4 +83,20 @@ Response Protocolo::receiveResponse(Socket &socket) {
 
 bool Protocolo::isConnectionClosed() {
     return this->connectionClosed;
+}
+
+void Protocolo::sendId(Socket &socket, int id) {
+    if (this->connectionClosed) {
+        return;
+    }
+
+    std::vector<unsigned char> serializedId = Serializer().serializeInt(id);
+
+    this->sendMessage(socket, serializedId);
+}
+
+int Protocolo::receiveId(Socket &socket) {
+    std::vector<unsigned char> serializedInt = this->receiveMessage(socket);
+
+    return Serializer().deserializeInt(serializedInt);
 }
