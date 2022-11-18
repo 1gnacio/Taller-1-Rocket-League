@@ -13,6 +13,7 @@
 
 class Car {
 private:
+    int id;
     b2Body* carBody;
     bool canJump();
     bool isJumping();
@@ -23,7 +24,7 @@ public:
     /*
      * Se crea el objeto a partir de un b2Body de la librera de box2D
      */
-    Car(b2Body* carBody);
+    Car(b2Body* carBody, int id);
 
     /*
      * Comienza el movimiento del auto en la dirección
@@ -61,6 +62,8 @@ public:
     bool jumpedTwoTimes();
 
     b2Vec2 getVelocity();
+
+    int getId();
 };
 
 

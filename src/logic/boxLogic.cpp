@@ -55,7 +55,7 @@ void BoxLogic::createBall(){
 
 }
 
-void BoxLogic::createCar() {
+void BoxLogic::createCar(int id) {
     //tamaño de auto
     float wCar = LogicValues().W_CAR;
     float hCar = LogicValues().H_CAR;
@@ -64,7 +64,7 @@ void BoxLogic::createCar() {
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = LogicValues().ANGLE_CAR;
     carBodyDef.position.Set(2.0f,-2.0f);
-    cars.emplace_back(Car(world->CreateBody(&carBodyDef)));
+    cars.emplace_back(Car(world->CreateBody(&carBodyDef),id));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f,hCar/2.0f);
 
@@ -103,8 +103,8 @@ void BoxLogic::createWalls() {
     }
 }
 
-void BoxLogic::addPlayer() {
-    this->createCar();
+void BoxLogic::addPlayer(int id) {
+    this->createCar(id);
 }
 
 void BoxLogic::update(Command &command) {
@@ -149,10 +149,9 @@ float BoxLogic::getCarData(int carNumber, int key) {
 
 }
 
-Car* BoxLogic::getCar(int carNumber) { // Siempre retorna el primer auto por ahora
-    int i = 1;
-    for(auto &x : cars ){
-        if(i == carNumber){
+Car* BoxLogic::getCar(int carID) {
+    for (auto &x : cars ) {
+        if (x.getId() == carID) {
             return &x;
         }
     }

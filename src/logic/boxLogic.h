@@ -28,8 +28,8 @@ private:
 public:
     std::unique_ptr<b2World> world;
     BoxLogic();
-    void createCar(); // Cuando haya una conexion se creara un auto nuevo
-    void addPlayer(); // Tendra atributo para saber el equipo
+    void createCar(int id); // Cuando haya una conexion se creara un auto nuevo
+    void addPlayer(int id); // Tendra atributo para saber el equipo
     void update(Command &command);
     void update();
     b2Vec2 getGravity();

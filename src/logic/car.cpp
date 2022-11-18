@@ -5,7 +5,11 @@
 #include "car.h"
 #include <iostream>
 
-Car::Car(b2Body *body):carBody(body), secondJump(0) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID) {
+}
+
+int Car::getId() {
+    return this->id;
 }
 
 void Car::createFixture(b2FixtureDef & fixture) {
