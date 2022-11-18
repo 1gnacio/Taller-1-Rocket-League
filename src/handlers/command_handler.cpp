@@ -4,7 +4,8 @@ CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
 hasFinished(false),
 queue(queue),
 protocolo(),
-socket(socket) {
+socket(socket)
+{
     if (mode == RECEIVER) {
         this->handler = std::thread(&CommandHandler::handleReceive, this);
     } else if (mode == SENDER) {
