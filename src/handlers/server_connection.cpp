@@ -7,7 +7,7 @@ socket(hostname, servname),
 helper(socket),
 commandQueue(),
 sender(this->socket, this->commandQueue, SENDER),
-receiver(this->socket, this->responseQueue, RECEIVER)
+receiver(this->socket, helper, this->responseQueue, RECEIVER)
 {}
 
 void ServerConnection::push(Command &command) {

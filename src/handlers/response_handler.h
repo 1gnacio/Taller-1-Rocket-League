@@ -6,11 +6,13 @@
 #include "../protocolo/protocolo.h"
 #include "../queues/response_queue.h"
 #include "enums/mode.h"
+#include "../src/protocolo/connection_helper.h"
 
 class ResponseHandler {
 private:
     ResponseQueue& queue;
     Socket& socket;
+    ConnectionHelper& helper;
     bool hasFinished;
     Protocolo protocolo;
     std::thread handler;
@@ -19,7 +21,7 @@ private:
     void handleSend();
 
 public:
-    ResponseHandler(Socket& socket, ResponseQueue &queue, Mode mode);
+    ResponseHandler(Socket& socket, ConnectionHelper &helper,  ResponseQueue &queue, Mode mode);
 
     void push(Response& response);
 

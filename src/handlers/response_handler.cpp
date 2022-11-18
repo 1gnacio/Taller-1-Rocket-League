@@ -1,8 +1,9 @@
 #include "response_handler.h"
 
-ResponseHandler::ResponseHandler(Socket &socket, ResponseQueue &queue, Mode mode) :
+ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, ResponseQueue &queue, Mode mode) :
         queue(queue),
         socket(socket),
+        helper(helper),
         hasFinished(false),
         protocolo()
 {
@@ -15,6 +16,8 @@ ResponseHandler::ResponseHandler(Socket &socket, ResponseQueue &queue, Mode mode
 
 // hilo que recibe las respuestas del servidor
 void ResponseHandler::handleReceive() {
+    this->helper.awaitHelper();
+
     while (!this->hasFinished) {
         Response r = protocolo.receiveResponse(this->socket);
         this->queue.push(r);
@@ -24,6 +27,8 @@ void ResponseHandler::handleReceive() {
 
 // hilo que envia las respuestas del servidor
 void ResponseHandler::handleSend() {
+    this->helper.awaitHelper();
+
     while (!this->hasFinished) {
         Response r = this->queue.pop();
         //TODO que deberia hacer el hilo si no recibe nada del servidor?

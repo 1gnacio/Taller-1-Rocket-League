@@ -5,7 +5,7 @@ ClientConnection::ClientConnection(int id, Socket &socket, ResponseQueue &respon
 isClosed(false),
 socket(std::move(socket)),
 helper(this->socket, id),
-sender(this->socket, responseQueue, SENDER),
+sender(this->socket, helper, responseQueue, SENDER),
 receiver(this->socket, commandQueue, RECEIVER)
 {}
 
