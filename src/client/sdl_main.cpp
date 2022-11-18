@@ -14,7 +14,8 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 #ifndef SDL_TESTING
     players.emplace_back(renderer);
 #endif
-    //TODO window.SetIcon();
+    //TODO
+    window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
 }
 
 std::string format_duration( std::chrono::milliseconds ms ) {
