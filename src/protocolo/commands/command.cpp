@@ -43,6 +43,7 @@ Command::Command(Command &&other) noexcept {
     this->deserialized = other.deserialized;
     this->firstParameter = other.firstParameter;
     this->secondParameter = other.secondParameter;
+    this->id = other.id;
 }
 
 Command &Command::operator=(Command &&other) noexcept {
@@ -53,6 +54,7 @@ Command &Command::operator=(Command &&other) noexcept {
     this->deserialized = other.deserialized;
     this->firstParameter = other.firstParameter;
     this->secondParameter = other.secondParameter;
+    this->id = other.id;
 
     return *this;
 }

@@ -9,7 +9,7 @@ BoxLogic::BoxLogic():
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
     createWalls();
     createBall();
-    //createSoccerGoals();
+    createSoccerGoals();
 }
 
 void BoxLogic::createSoccerGoals() {
@@ -22,15 +22,15 @@ void BoxLogic::createSoccerGoals() {
     roof.position.Set(roof_x, roof_y);
     roof.angle = 0;
 
-        soccerGoals.emplace_back(this->world->CreateBody(&roof), this->world->CreateBody(&roof));
-        soccerGoals.emplace_back(this->world->CreateBody(&roof), this->world->CreateBody(&roof));
+        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
+        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
 
     b2FixtureDef edgeFixtureDef;
     b2EdgeShape edge;
     float roofXStart[] = {-4.0f, 4.0f};
     float roofXEnd[] = {-3.3f, 3.3f};
     float roofYStart[] = {0.0f, 0.0f};
-    float roofYEnd[] = {0.5f, 0.5f};
+    float roofYEnd[] = {0.0f, 0.0f};
 
     int i = 0;
     for (auto &x : soccerGoals) {
@@ -40,17 +40,17 @@ void BoxLogic::createSoccerGoals() {
         x.createFixtureRoof(edgeFixtureDef);
         i++;
     }
-
+    b2FixtureDef edgeFixtureDef2;
     float wallXStart[] = {-4.0f, 4.0f};
-    float wallXEnd[] = {-3.3f, 3.3f};
-    float wallYStart[] = {-2.5f, -2.5f};
-    float wallYEnd[] = {0.5f, 0.5f};
+    float wallXEnd[] = {-3.6f, 3.6f};
+    float wallYStart[] = {2.5f, 2.5f};
+    float wallYEnd[] = {0.0f, 0.0f};
     i = 0;
     for (auto &x : soccerGoals) {
-        edge.SetTwoSided(b2Vec2(wallXStart[i], wallXEnd[i]),
-                         b2Vec2(wallYStart[i], wallYEnd[i]));
-        edgeFixtureDef.shape = &edge;
-        x.createFixtureWall(edgeFixtureDef);
+        edge.SetTwoSided(b2Vec2(wallXStart[i], wallYStart[i]),
+                         b2Vec2(wallXEnd[i], wallYEnd[i]));
+        edgeFixtureDef2.shape = &edge;
+        x.createFixtureWall(edgeFixtureDef2);
         i++;
     }
 }
@@ -142,6 +142,7 @@ void BoxLogic::createWalls() {
 }
 
 void BoxLogic::addPlayer(int id) {
+
     this->createCar(id);
 }
 

@@ -10,25 +10,26 @@ GameLogic::GameLogic(): withoutPlayers(0) {
 
 void GameLogic::updateModel(Command &command) {
     std::cout << "llega un comando de " << command.getValue() << std::endl;
-    if (this->withoutPlayers == 0) {
+    /*if (this->withoutPlayers == 0) {
         this->gamePhysics.addPlayer(command.getID());
         withoutPlayers = 1;
-    }
-    if (command.getValue() == CommandValues().DESERIALIZED_JOIN) {
-        this->gamePhysics.addPlayer(command.getID());
+    }*/
+    if (command.getValue() == CommandValues().DESERIALIZED_UP_PUSHED) {
+        this->gamePhysics.addPlayer(command.getID()); // this->gamePhysics.addPlayer(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_RELEASE ||
                command.getValue() == CommandValues().DESERIALIZED_RIGHT_RELEASE) {
-        gamePhysics.stopMove(command.getID());
+        gamePhysics.stopMove(command.getID());  // gamePhysics.stopMove(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
         gamePhysics.startMove(command.getID(),
-                              LogicValues().RIGHT_DIRECTION);
+                              LogicValues().RIGHT_DIRECTION);  // gamePhysics.startMove(command.getID(), LogicValues().RIGHT_DIRECTION);
+
     } else if (command.getValue() == CommandValues().DESERIALIZED_TURBO_PUSHED) {
-        gamePhysics.applyTurbo(command.getID());
+        gamePhysics.applyTurbo(command.getID());  // gamePhysics.applyTurbo(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_JUMP_PUSHED) {
-        gamePhysics.jump(command.getID());
+        gamePhysics.jump(command.getID());  // gamePhysics.jump(command.getID());
     }
 }
 
