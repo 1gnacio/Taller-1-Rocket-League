@@ -172,9 +172,24 @@ TEST(physics, RealizaUnTurbo) {
     physics.applyTurbo(PLAYER_ID);
 
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) < vel1);
-
 }
 
+TEST(physics, RealizaUnTurboPorVariosSegundos) {
+    BoxLogic physics;
+    physics.addPlayer(PLAYER_ID);
+    update(physics,100);
+
+    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
+    for(int i = 0; i < 30; i++) {
+        physics.startMove(PLAYER_ID,LogicValues().LEFT_DIRECTION);
+        update(physics,1);
+    }
+    for(int i = 0; i < 40; i++) {
+        physics.applyTurbo(PLAYER_ID);
+        update(physics,1);
+    }
+    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().TURBO_TANK) < 1);
+}
 
 
 

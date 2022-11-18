@@ -14,7 +14,7 @@
 
 Client::Client(const char *hostname, const char *servname) :
         isRunning(true), connection(hostname, servname)/*, my_lobby()*/{
-    addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
+    addInputCommand(CommandValues().DESERIALIZED_UP_PUSHED);
 }
 
 void Client::readStandardInput() {

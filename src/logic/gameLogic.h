@@ -1,5 +1,5 @@
-#ifndef ROCKET_LEAGUE_LOGICGAME_H
-#define ROCKET_LEAGUE_LOGICGAME_H
+#ifndef SRC_LOGIC_GAMELOGIC_H_
+#define SRC_LOGIC_GAMELOGIC_H_
 
 #include "boxLogic.h"
 #include "../protocolo/commands/command.h"
@@ -7,22 +7,18 @@
 #include "game.h"
 
 class GameLogic {
-private:
+ private:
     BoxLogic gamePhysics;
-    //GameInfo info --> Que tenga los goles de cada equipo y el tiempo
     Game game;
 
-public:
+ public:
     GameLogic();
     bool withoutPlayers;
     void updateModel(Command &command);
     void updateTime();
     Response getResponse();
-
     float getCarData(int carNumber, int key);
-
     float playersAmount();
 };
 
-
-#endif //ROCKET_LEAGUE_LOGICGAME_H
+#endif  // SRC_LOGIC_GAMELOGIC_H_

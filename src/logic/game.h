@@ -1,5 +1,5 @@
-#ifndef ROCKET_LEAGUE_GAME_H
-#define ROCKET_LEAGUE_GAME_H
+#ifndef SRC_LOGIC_GAME_H_
+#define SRC_LOGIC_GAME_H_
 
 #include <string>
 #include "../protocolo/responses/match_response.h"
@@ -8,8 +8,7 @@
 
 
 class Game {
-private:
-
+ private:
     std::string name;
     int time_inSec;
     int goalsLocal;
@@ -21,13 +20,9 @@ private:
     bool isGoalLocal;
     bool isGoalVisitor;
     bool activeReplay;
-public:
+ public:
     Game();
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
-
 };
 
-
-
-
-#endif //ROCKET_LEAGUE_GAME_H
+#endif  // SRC_LOGIC_GAME_H_

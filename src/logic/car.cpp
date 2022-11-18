@@ -5,7 +5,7 @@
 #include "car.h"
 #include <iostream>
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1) {
 }
 
 int Car::getId() {
@@ -14,11 +14,9 @@ int Car::getId() {
 
 void Car::createFixture(b2FixtureDef & fixture) {
     carBody->CreateFixture(&fixture);
-
 }
 
 float Car::getData(int key) {
-
     switch (key) {
         case 0:
             return carBody->GetPosition().x;
@@ -30,69 +28,84 @@ float Car::getData(int key) {
             return carBody->GetLinearVelocity().x;
         case 4:
             return carBody->GetLinearVelocity().y;
+        case 5:
+            return turboTank;
+        case 6:
+            return usingTurbo;
     }
     return 0;
-
-
 }
 
 void Car::startMove(b2Vec2 vel) {
-    if( !isJumping() )
-        carBody->ApplyForceToCenter(vel,true);
-    else {
-        float torque = (vel.x<0 ? 1.0f : -1.0f);
+    if (!isJumping()) {
+        carBody->ApplyForceToCenter(vel, true);
+    } else {
+        float torque = (vel.x < 0 ? -2.0f : 2.0f);
         carBody->ApplyTorque(torque, true);
+    }
+}
+
+void Car::stopMove() {
+    //carBody->SetLinearVelocity(b2Vec2(0, 0));
+
+    if (isJumping()) {
+        carBody->SetAngularVelocity(0);
     }
 
 }
 
-void Car::stopMove() {
-    carBody->SetLinearVelocity(b2Vec2(0,0));
-}
-
-bool Car::canJump(){
+bool Car::canJump() {
     return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
 }
-bool Car::jumpedTwoTimes(){
+bool Car::jumpedTwoTimes() {
     return this->secondJump;
 }
 
 void Car::modifyJumpedTwoTimes() {
-
     this->secondJump = 1;
-
 }
 
 void Car::jump(b2Vec2 vel) {
-    if(!secondJump) {
-       if(isJumping()) {
+    if (!secondJump) {
+       if (isJumping()) {
            this->modifyJumpedTwoTimes();
        }
-        carBody->ApplyLinearImpulseToCenter(vel,true);
+        carBody->ApplyLinearImpulseToCenter(vel, true);
     }
 }
 
 bool Car::isJumping() {
-    return (carBody->GetPosition().y < (2.23)); // posicion del suelo
+    return (carBody->GetPosition().y < (2.23));  // posicion del suelo
 }
 
 void Car::verifyDoubleJump() {
-    if(!isJumping()) {
+    if (!isJumping()) {
         this->secondJump = 0;
     }
 }
 
 void Car::verifyTurbo() {
-
-
-}
-
-b2Vec2 Car::getVelocity() {
-    carBody->GetLinearVelocity();
+    if(usingTurbo) {
+        if(turboTank > 0.01f) {
+            turboTank -=0.01f;
+        } else {
+            turboTank = 0;
+        }
+    } else {
+        if(!isJumping() && !usingTurbo && turboTank< 1) {
+            turboTank += 0.001f;
+        }
+    }
+    if(usingTurbo >=1)
+        usingTurbo-=1;
 }
 
 void Car::applyTurbo() {
-    b2Vec2 vel(carBody->GetLinearVelocity().x*1.1, carBody->GetLinearVelocity().y*1.1);
-    carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
+    usingTurbo = 2;
+   if(turboTank > 0) {
+        b2Vec2 vel(carBody->GetLinearVelocity().x*1.1,
+                   carBody->GetLinearVelocity().y*1.1);
+        carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
+   }
 
 }
