@@ -1,10 +1,7 @@
-//
-// Created by Nahuel on 14/11/22.
-//
 #include "../../box2d/include/box2d/box2d.h"
 
-#ifndef ROCKET_LEAGUE_CARS_H
-#define ROCKET_LEAGUE_CARS_H
+#ifndef SRC_LOGIC_CAR_H_
+#define SRC_LOGIC_CAR_H_
 
 /*
  * Objeto que simula auto en el juego,
@@ -12,18 +9,20 @@
  */
 
 class Car {
-private:
+ private:
+    float turboTank;
+    int id;
     b2Body* carBody;
     bool canJump();
     bool isJumping();
     int secondJump;
+    int usingTurbo;
 
-public:
-
+ public:
     /*
      * Se crea el objeto a partir de un b2Body de la librera de box2D
      */
-    Car(b2Body* carBody);
+    Car(b2Body* carBody, int id);
 
     /*
      * Comienza el movimiento del auto en la dirección
@@ -61,7 +60,9 @@ public:
     bool jumpedTwoTimes();
 
     b2Vec2 getVelocity();
+
+    int getId();
 };
 
 
-#endif //ROCKET_LEAGUE_CARS_H
+#endif  // SRC_LOGIC_CAR_H_

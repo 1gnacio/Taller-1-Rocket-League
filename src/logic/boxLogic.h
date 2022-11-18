@@ -1,35 +1,33 @@
-#ifndef ROCKET_LEAGUE_BOXLOGIC_H
-#define ROCKET_LEAGUE_BOXLOGIC_H
+#ifndef SRC_LOGIC_BOXLOGIC_H_
+#define SRC_LOGIC_BOXLOGIC_H_
 
 #include "../../box2d/include/box2d/box2d.h"
 #include "../protocolo/commands/command.h"
 #include <vector>
-#include <thread>
-#include <mutex>
 #include "../../src/constants/logic_values.h"
 #include "../protocolo/responses/player_responses.h"
 #include "car.h"
+#include "SoccerGoal.h"
+#include <memory>
 
 // Clase de la logica que contiene todos los movimientos de box2d
 
 class BoxLogic {
-private:
-   bool isActive;
-   b2Body* ball;
-
-   std::vector<b2Body*> walls;
-   std::vector<Car> cars; //Por ahora asi, tendra una clase que contenga, por ej, de qué equipo es.
-
-   std::mutex mutex;
-   void createWalls();
-   void createBall();
-   static float getData(int key, const b2Body* body);
-
-public:
+ private:
+    bool isActive;
+    b2Body* ball;
     std::unique_ptr<b2World> world;
+    std::vector<b2Body*> walls;
+    std::vector<Car> cars;
+    std::vector<SoccerGoal> soccerGoals;
+    void createWalls();
+    void createBall();
+    static float getData(int key, const b2Body* body);
+
+ public:
     BoxLogic();
-    void createCar(); // Cuando haya una conexion se creara un auto nuevo
-    void addPlayer(); // Tendra atributo para saber el equipo
+    void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
+    void addPlayer(int id);  // Tendra atributo para saber el equipo
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
@@ -40,13 +38,13 @@ public:
     void close();
     int wallsAmount();
     int playersAmount();
-    void startMove(int carNumber, bool direction);  // Numero de auto | direccion -> 0=Izq | 1=Der
+    void startMove(int carNumber, bool direction);  // direc: 0=Izq | 1=Der
     void stopMove(int carNumber);
     void jump(int carNumber);
     void applyTurbo(int carNumber);
 
     bool ballIsAwake();
-    float getBallData(int key); // 0 -> PosX | 1 = posY | 2 = angulo (grados) | 3 = velocidad en X | 4 = velocidad en Y
+    float getBallData(int key);
     float getCarData(int carNumber, int key);
     PlayerResponses getPlayersData();
 
@@ -55,7 +53,10 @@ public:
 
     void verifyDoubleJump();
     void verifyTurbo();
+
+    void SoccerGoals();
+
+    void createSoccerGoals();
 };
 
-
-#endif //ROCKET_LEAGUE_BOXLOGIC_H
+#endif  //  SRC_LOGIC_BOXLOGIC_H_

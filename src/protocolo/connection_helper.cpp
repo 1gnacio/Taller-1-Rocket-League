@@ -5,16 +5,14 @@ ConnectionHelper::ConnectionHelper(Socket &socket)
 : hasFinished(false), idManager(&ConnectionHelper::receiveId, this, std::ref(socket)) {}
 
 ConnectionHelper::ConnectionHelper(Socket &socket, int id)
-: hasFinished(false), id(id), idManager(&ConnectionHelper::sendId, this, std::ref(socket)) {}
+: hasFinished(false), id(id), idManager(&ConnectionHelper::sendId, this, std::ref(socket), std::ref(id)) {}
 
-void ConnectionHelper::sendId(Socket &socket) {
-    Protocolo().sendId(socket, this->id);
-    this->hasFinished = true;
+void ConnectionHelper::sendId(Socket &socket, int clientId) {
+    Protocolo().sendId(socket, clientId);
 }
 
 void ConnectionHelper::receiveId(Socket &socket) {
     this->id = Protocolo().receiveId(socket);
-    this->hasFinished = true;
 }
 
 void ConnectionHelper::awaitHelper() {

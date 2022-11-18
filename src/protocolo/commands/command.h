@@ -36,6 +36,7 @@ public:
     [[nodiscard]] std::string getValue() const { return this->deserialized; }
     [[nodiscard]] std::string getFirstParameter() const { return this->firstParameter; }
     [[nodiscard]] std::string getSecondParameter() const { return this->secondParameter; }
+    [[nodiscard]] int getID() const { return this->id; }
 
     // hago los comandos movibles
     Command(Command&&) noexcept ;

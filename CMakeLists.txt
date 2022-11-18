@@ -247,6 +247,8 @@ add_executable(game_server
         src/logic/boxLogic.h
         src/logic/car.cpp
         src/logic/car.h
+        src/logic/SoccerGoal.cpp
+        src/logic/SoccerGoal.h
         src/logic/game.cpp
         src/logic/game.h
         src/protocolo/serializer/serializer.cpp

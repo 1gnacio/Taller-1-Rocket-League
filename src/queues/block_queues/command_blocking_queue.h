@@ -6,8 +6,6 @@
 
 class CommandBlockingQueue : public CommandQueue {
 private:
-    std::queue<Command> commands;
-    std::mutex mutex;
     std::condition_variable cv; // tiene elementos?
 public:
     void push(Command &element);

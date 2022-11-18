@@ -2,7 +2,7 @@
 
 void ResponseBlockingQueue::push(Response &response) {
     std::unique_lock<std::mutex> lock(mutex);
-    this->responses.push(std::move(response));
+    this->responses.push(response);
     cv.notify_all();
 }
 
@@ -11,7 +11,7 @@ Response ResponseBlockingQueue::pop() {
     while(this->responses.empty()) {
         cv.wait(lock);
     }
-    Response element = std::move(this->responses.front());
+    Response element = this->responses.front();
     this->responses.pop();
-    return std::move(element);
+    return element;
 }
