@@ -98,6 +98,12 @@ void Car::verifyTurbo() {
     }
     if(usingTurbo >=1)
         usingTurbo-=1;
+
+
+}
+
+b2Vec2 Car::getVelocity() {
+    return carBody->GetLinearVelocity();
 }
 
 void Car::applyTurbo() {

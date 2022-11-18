@@ -5,6 +5,8 @@
 #include <QMap>
 #include "qtablewidget.h"
 #include <QStandardItemModel>
+#include "src/handlers/server_connection.h"
+#include "src/client/client.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class lobby; }
@@ -43,5 +45,7 @@ private:
     QString currSelectedGame;
     int maxPlayers;
     QString create_gameName;
+    ServerConnection connection;
+    Client _client;
 };
 #endif // LOBBY_H

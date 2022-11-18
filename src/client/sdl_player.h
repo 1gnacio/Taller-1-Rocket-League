@@ -13,12 +13,14 @@ private:
     bool moving;
     bool onTurbo;
     bool jumping;
-    float x;
-    float y;
-    double angle;
+    int x;
+    int y;
+    int angle;
+    int size_w;
+    int size_h;
 public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
-    void update(float x, float y, float angle, float dt);
+    void update(int x, int y, int angle, int dt);
     void render(SDL2pp::Renderer &renderer);
     ~sdl_player();
 
