@@ -21,7 +21,7 @@ public:
     [[nodiscard]] int getCount() const { return this->players.size(); };
     [[nodiscard]] int getSize() const { return this->players.size() * PlayerResponse::size(); };
     PlayerResponse getPlayer();
-
+    bool isEmpty() {return this->players.empty();};
 };
 
 

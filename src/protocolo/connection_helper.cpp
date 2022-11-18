@@ -9,12 +9,10 @@ ConnectionHelper::ConnectionHelper(Socket &socket, int id)
 
 void ConnectionHelper::sendId(Socket &socket) {
     Protocolo().sendId(socket, this->id);
-    this->hasFinished = true;
 }
 
 void ConnectionHelper::receiveId(Socket &socket) {
     this->id = Protocolo().receiveId(socket);
-    this->hasFinished = true;
 }
 
 void ConnectionHelper::awaitHelper() {

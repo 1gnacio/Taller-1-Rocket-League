@@ -12,7 +12,7 @@ Command CommandQueue::pop() {
     if (!this->commands.empty()) {
         Command c = std::move(commands.front());
         commands.pop();
-        return c;
+        return std::move(c);
     }
 
     // TODO que comando deberia devolver la cola si no hay comandos?

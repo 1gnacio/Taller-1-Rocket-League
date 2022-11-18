@@ -14,19 +14,28 @@ socket(socket)
 }
 
 void CommandHandler::handleSend() {
-    while (!this->hasFinished) {
-        Command c = this->queue.pop();
-        protocolo.sendCommand(this->socket, c);
-        this->hasFinished = this->protocolo.isConnectionClosed();
+    try{
+        while (!this->hasFinished) {
+            Command c = this->queue.pop();
+            protocolo.sendCommand(this->socket, c);
+            this->hasFinished = this->protocolo.isConnectionClosed();
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
 }
 
 void CommandHandler::handleReceive() {
-    while (!this->hasFinished) {
-        Command c = protocolo.receiveCommand(this->socket);
-        this->hasFinished = this->protocolo.isConnectionClosed();
-        this->queue.push(c);
+    try{
+        while (!this->hasFinished) {
+            Command c = protocolo.receiveCommand(this->socket);
+            this->hasFinished = this->protocolo.isConnectionClosed();
+            this->queue.push(c);
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
+
 }
 
 void CommandHandler::push(Command &command) {

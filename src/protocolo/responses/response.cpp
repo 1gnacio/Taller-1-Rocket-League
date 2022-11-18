@@ -8,7 +8,7 @@ Response::Response(std::vector<unsigned char> &serializedResponse) : serializer(
 
     int count = this->serializer.deserializeInt(serializedCount);
 
-    if (count == 0) {
+    if (count == 0 || count > serializedResponse.size()) {
         return;
     }
 

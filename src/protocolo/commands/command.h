@@ -8,7 +8,6 @@
 class Command {
 private:
     int id;
-    Serializer serializer;
     unsigned char serialized;
     std::string deserialized;
     std::string firstParameter;

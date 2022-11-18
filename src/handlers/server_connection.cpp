@@ -6,12 +6,19 @@ isConnected(true),
 socket(hostname, servname),
 helper(socket),
 commandQueue(),
+responseQueue(),
 sender(this->socket, this->commandQueue, SENDER),
 receiver(this->socket, helper, this->responseQueue, RECEIVER)
 {}
 
 void ServerConnection::push(Command &command) {
     this->isConnected = !this->sender.isFinished() && !this->receiver.isFinished();
+
+    // si no tengo id no envio nada
+    if (!this->helper.isFinished()) {
+        this->helper.awaitHelper();
+        return;
+    }
 
     if(this->isConnected) {
         this->commandQueue.push(command);

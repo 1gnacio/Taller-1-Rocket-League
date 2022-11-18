@@ -5,6 +5,8 @@
 #include "../src/protocolo/commands/command.h"
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
+#include "../src/handlers/server_connection.h"
+#include "../src/server/server.h"
 
 const char* serv = "8088";
 
@@ -100,4 +102,13 @@ TEST(Protocolo, ClienteSeConectaYRecibeId) {
     clientHandler.join();
 
     EXPECT_EQ(receivedId, id);
+}
+
+TEST(Protocolo, ClienteYServidorConexiones) {
+    Server server(serv);
+    ServerConnection serverConnection("localhost", serv);
+
+    int receivedId = serverConnection.getId();
+
+    EXPECT_EQ(1, receivedId);
 }

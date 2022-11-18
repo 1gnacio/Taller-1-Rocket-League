@@ -5,14 +5,12 @@ Command::Command(int id, const unsigned char serialized,
                  const std::string &deserialized,
                  const std::string &firstParameter) :
                  id(id),
-        serialized(serialized),
         deserialized(deserialized),
         firstParameter(firstParameter) {}
 
 Command::Command(int id, const unsigned char serialized,
                  const std::string &deserialized) :
                  id(id),
-                 serialized(serialized),
                  deserialized(deserialized),
                  firstParameter(),
                  secondParameter() {}
@@ -22,23 +20,24 @@ Command::Command(int id, const unsigned char serialized,
                  const std::string &firstParameter,
                  const std::string &secondParameter) :
                  id(id),
-                 serialized(serialized),
                  deserialized(deserialized),
                  firstParameter(firstParameter),
                  secondParameter(secondParameter) {}
 
 std::vector<unsigned char> Command::serialize() {
+    Serializer serializer;
     std::vector<unsigned char> serialized;
     serialized.push_back(this->serialized);
 
-    this->serializer.merge(serialized, this->serializer.serializeInt(this->id));
-    this->serializer.merge(serialized, this->serializer.serializeString(this->firstParameter));
-    this->serializer.merge(serialized, this->serializer.serializeString(this->secondParameter));
+    serializer.merge(serialized, serializer.serializeInt(this->id));
+    serializer.merge(serialized, serializer.serializeString(this->firstParameter));
+    serializer.merge(serialized, serializer.serializeString(this->secondParameter));
 
     return serialized;
 }
 
 Command::Command(Command &&other) noexcept {
+    this->id = other.id;
     this->serialized = other.serialized;
     this->deserialized = other.deserialized;
     this->firstParameter = other.firstParameter;
@@ -49,6 +48,7 @@ Command &Command::operator=(Command &&other) noexcept {
     if (this == &other)
         return *this;
 
+    this->id = other.id;
     this->serialized = other.serialized;
     this->deserialized = other.deserialized;
     this->firstParameter = other.firstParameter;
@@ -57,7 +57,8 @@ Command &Command::operator=(Command &&other) noexcept {
     return *this;
 }
 
-Command::Command(std::vector<unsigned char> &serialized) : serializer() {
+Command::Command(std::vector<unsigned char> &serialized) {
+    Serializer serializer;
     this->serialized = serialized.front();
     this->deserialized = ProtocolCommands().getDeserializedCommandValue(this->serialized);
 
@@ -66,8 +67,8 @@ Command::Command(std::vector<unsigned char> &serialized) : serializer() {
     int begin = 0;
     int end = 0;
 
-    this->serializer.parse(this->id, serializedParameters, begin, end);
-    this->serializer.parse(this->firstParameter, serializedParameters, begin, end);
-    this->serializer.parse(this->secondParameter, serializedParameters, begin, end);
+    serializer.parse(this->id, serializedParameters, begin, end);
+    serializer.parse(this->firstParameter, serializedParameters, begin, end);
+    serializer.parse(this->secondParameter, serializedParameters, begin, end);
 
 }

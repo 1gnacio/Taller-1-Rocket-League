@@ -29,7 +29,7 @@ void BoxLogic::close(){
 void BoxLogic::updateTime(){
     float timeStep = 1.0f / 25.0f;
     world->Step(timeStep,LogicValues().VELOCITY_ITERATIONS,LogicValues().POSITION_ITERATIONS);
-    usleep(timeStep*1000000); // Simulacion paso tiempo (unsleep utiliza microsegundos 1x10-6)
+    usleep(timeStep*100); // Simulacion paso tiempo (unsleep utiliza microsegundos 1x10-6)
 
 }
 
