@@ -12,8 +12,8 @@
 
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
-Client::Client(const char *hostname, const char *servname) :
-        isRunning(true), connection(hostname, servname)/*, my_lobby()*/{
+Client::Client(ServerConnection& connection) :
+        isRunning(true), connection(connection)/*, my_lobby()*/{
     addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
 }
 
@@ -85,6 +85,7 @@ void Client::readStandardInput() {
 }
 
 void Client::run() {
+    sdl_handler.showWindow();
     std::thread standardInput(&Client::readStandardInput, this);
 
     while (this->isRunning) {
@@ -95,6 +96,7 @@ void Client::run() {
     }
 
     standardInput.join();
+    sdl_handler.hideWindow();
 }
 
 void Client::addInputCommand(std::string deserialized_key) {
@@ -103,12 +105,3 @@ void Client::addInputCommand(std::string deserialized_key) {
     Command c = makeCommands.createCommand(this->connection.getId(), deserialized_key);
     this->connection.push(c);
 }
-//
-//int Client::runLobby() {
-//    int argc;
-//    char **argv;
-//    QApplication app(argc, argv);
-//    my_lobby.show();
-//    return app.exec();
-//}
-

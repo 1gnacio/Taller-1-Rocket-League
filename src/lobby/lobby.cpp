@@ -6,6 +6,8 @@
 lobby::lobby(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::lobby)
+    , connection("localhost", "8080")
+    , _client(connection)
 {
     ui->setupUi(this);
     maxPlayers = 2;
@@ -21,6 +23,9 @@ lobby::lobby(QWidget *parent)
     ui->gamesListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     currSelectedGame.clear();
 
+    //TODO, solo para testing
+    ui->pushButton_join->setEnabled(true);
+
 }
 
 lobby::~lobby()
@@ -35,22 +40,22 @@ void lobby::on_pushButton_connect_clicked()
 }
 
 void lobby::on_pushButton_join_clicked()
-{   //UNIR
+{   //TODO UNIR
+    hide();
     if (currSelectedGame.size()) {
-
         //protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
-
         //std::cout << protocolo.receiveResponse() << std::endl;
-
         on_pushButton_refresh_clicked();
         currSelectedGame.clear();
     }
+
+    _client.run();
+    show();
 }
 
 
 void lobby::on_pushButton_refresh_clicked()
-{
-    //LISTAR
+{   //TODO LISTAR
     //protocolo.sendActions("LISTAR");
     std::string name_str, players_str;
     std::istringstream input_stream(/*protocolo.receiveResponse()*/"");
@@ -59,7 +64,6 @@ void lobby::on_pushButton_refresh_clicked()
     //FIXME: hay que usar el protocolo nuevo
     while (input_stream >> name_str) {
         input_stream >> players_str;
-
         // Fijarse si se puede sacar lo de new.
         QStandardItem *name = new QStandardItem(QString::fromStdString(name_str));
         QStandardItem *players = new QStandardItem(QString::fromStdString(players_str));
@@ -78,10 +82,11 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    //CREAR
-    //protocolo.sendActions("CREAR " + std::to_string(maxPlayers) + " " + create_gameName.toStdString());
-    //std::cout << protocolo.receiveResponse() << std::endl;
+    hide();
+    //TODO CREAR
     on_pushButton_refresh_clicked();
+    _client.run();
+    show();
 }
 
 

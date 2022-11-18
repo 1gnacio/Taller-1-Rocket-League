@@ -82,8 +82,6 @@ add_executable(lobby
         src/sockets/resolver.h
         src/sockets/socket.cpp
         src/sockets/socket.h
-        src/protocolo/protocolo-tp2.h
-        src/protocolo/protocolo-tp2.cpp
         )
 
  target_link_libraries(lobby Qt5::Widgets)
@@ -179,6 +177,7 @@ add_executable(game_client
         src/queues/block_queues/response_blocking_queue.h
         src/protocolo/connection_helper.cpp
         src/protocolo/connection_helper.h
+        src/client/unit_conversion.cpp src/client/unit_conversion.h
         )
         
 

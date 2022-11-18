@@ -35,6 +35,8 @@ private:
 public:
     sdl_main();
     void renderScreen();
+    void showWindow();
+    void hideWindow();
     ~sdl_main();
 
 #ifndef SDL_TESTING

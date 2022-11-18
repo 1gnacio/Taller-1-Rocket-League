@@ -14,7 +14,7 @@ sdl_player::~sdl_player() {
     //TODO
 }
 
-void sdl_player::update(float _x, float _y, float _angle, float _dt) {
+void sdl_player::update(int _x, int _y, int _angle, int _dt) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;
@@ -65,7 +65,6 @@ void sdl_player::render(SDL2pp::Renderer &renderer) {
     y = ((SCALED_HEIGHT / 2.0f) + y) * MET2PIX - (40.0 / 2);
 
     car_an.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle, flip);
-
 
 
     if (onTurbo){

@@ -84,7 +84,7 @@ void Car::verifyTurbo() {
 }
 
 b2Vec2 Car::getVelocity() {
-    carBody->GetLinearVelocity();
+    return carBody->GetLinearVelocity();
 }
 
 void Car::applyTurbo() {

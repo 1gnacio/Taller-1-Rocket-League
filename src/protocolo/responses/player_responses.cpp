@@ -41,5 +41,9 @@ void PlayerResponses::addPlayer(PlayerResponse &player) {
 
 PlayerResponse PlayerResponses::getPlayer() {
     //TODO
-    return players.front();
+    if (!players.empty()){
+        return players.front();
+    }
+    PlayerResponse playerDummy(1,0,0,0,0,0,0,0,0,0);
+    return playerDummy;
 }

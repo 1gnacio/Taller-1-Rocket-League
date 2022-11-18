@@ -1,18 +1,18 @@
 #include <iostream>
 #include "src/client/client.h"
 #include <QApplication>
-
+#include "src/lobby/lobby.h"
+#include "src/handlers/server_connection.h"
 int main(int argc, char* argv[]) try {
     if (argc != 3) {
         return -1;
     }
 
-    // ej "localhost" "8080"
-    Client client(argv[1], argv[2]);
-    //if (client.runLobby());
-    client.run();
+    QApplication app(argc, argv);
+    lobby window;
+    window.show();
 
-    return 0;
+    return  app.exec();
     } catch (const std::exception& err) {
         std::cerr
                 << "Something went wrong and an exception was caught: "
