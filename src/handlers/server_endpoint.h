@@ -8,7 +8,7 @@
 class ServerEndpoint {
 private:
     bool isActive;
-    int nextClientId;
+    int nextClientId = 1;
     CommandQueue receivedCommands;
     ResponseBlockingQueue responses;
     std::vector<std::unique_ptr<ClientConnection>> connections;

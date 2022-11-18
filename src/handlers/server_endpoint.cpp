@@ -3,7 +3,6 @@
 
 ServerEndpoint::ServerEndpoint() :
 isActive(true),
-nextClientId(1),
 receivedCommands(),
 responses(),
 connections(),

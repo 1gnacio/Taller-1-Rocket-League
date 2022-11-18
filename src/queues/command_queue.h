@@ -7,7 +7,7 @@
 #include "../protocolo/protocolo.h"
 
 class CommandQueue {
-private:
+protected:
     std::mutex mutex;
     std::queue<Command> commands;
 public:

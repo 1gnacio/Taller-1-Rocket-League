@@ -7,7 +7,7 @@
 #include "../protocolo/protocolo.h"
 
 class ResponseQueue {
-private:
+protected:
     std::mutex mutex;
     std::queue<Response> responses;
 public:

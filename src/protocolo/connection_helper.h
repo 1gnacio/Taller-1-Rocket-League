@@ -11,7 +11,7 @@ private:
     std::thread idManager;
     std::atomic<int> id;
     void receiveId(Socket &socket);
-    void sendId(Socket &socket);
+    void sendId(Socket &socket, int id);
 
 public:
     ConnectionHelper(Socket &socket, int id);
