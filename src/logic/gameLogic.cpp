@@ -14,7 +14,7 @@ void GameLogic::updateModel(Command &command) {
         this->gamePhysics.addPlayer(command.getID());
         withoutPlayers = 1;
     }*/
-    if (command.getValue() == CommandValues().DESERIALIZED_UP_PUSHED) {
+    if (command.getValue() == CommandValues().DESERIALIZED_TURBO_RELEASE) {
         this->gamePhysics.addPlayer(command.getID()); // this->gamePhysics.addPlayer(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),

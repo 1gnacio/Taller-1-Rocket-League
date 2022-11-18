@@ -5,8 +5,8 @@
 #include <QMap>
 #include "qtablewidget.h"
 #include <QStandardItemModel>
-#include "src/handlers/server_connection.h"
-#include "src/client/client.h"
+#include "../src/handlers/server_connection.h"
+#include "../src/client/client.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class lobby; }
