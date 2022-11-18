@@ -56,10 +56,6 @@ Response::Response() : lobbyResponse(), matchResponses(), responseStatus() {}
 
 Response::Response(const char *responseStatus, const char *responseMessage) : responseStatus(responseStatus) {}
 
-MatchResponses Response::getMatchResponse() {
+MatchResponses Response::getMatchResponses() {
     return matchResponses;
-}
-
-float Response::getBallPositionY() {
-    return matchResponses.getBallPositionY();
 }

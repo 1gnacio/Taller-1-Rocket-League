@@ -39,11 +39,6 @@ void PlayerResponses::addPlayer(PlayerResponse &player) {
     this->players.push_back(std::move(player));
 }
 
-PlayerResponse PlayerResponses::getPlayer() {
-    //TODO
-    if (!players.empty()){
-        return players.front();
-    }
-    PlayerResponse playerDummy(1,0,0,0,0,0,0,0,0,0);
-    return playerDummy;
+std::vector<PlayerResponse> PlayerResponses::getPlayers() {
+    return players;
 }

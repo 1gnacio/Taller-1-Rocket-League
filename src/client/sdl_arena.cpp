@@ -11,7 +11,7 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
     //Fondo
     renderer.Copy(texture_stadium);
     //Arcos
-    //TODO: hacerlo escalable.
+    //TODO: usar tamaño del server.
     renderer.Copy(texture_goal, SDL2pp::NullOpt,
                   SDL2pp::Rect(0, t_height-size_h, size_w,size_h));
     renderer.Copy(texture_goal, SDL2pp::NullOpt,

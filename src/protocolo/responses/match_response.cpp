@@ -133,11 +133,22 @@ MatchResponse::MatchResponse(int goalsLocal, int goalsVisitor, int time_insec, B
                              activeReplay(activeReplay) {
 }
 
-PlayerResponses MatchResponse::getPlayers() {
+PlayerResponses MatchResponse::getPlayersResponse() {
     return players;
 }
 
-float MatchResponse::getBallPositionY() {
-    return ballResponse.getPosY();
+BallResponse MatchResponse::getBall() {
+    return ballResponse;
 }
 
+int MatchResponse::getLocalGoals() {
+    return goalsLocal;
+}
+
+int MatchResponse::getVisitorsGoals() {
+    return goalsVisitor;
+}
+
+int MatchResponse::getTime() {
+    return time_insec;
+}

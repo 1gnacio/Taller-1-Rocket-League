@@ -5,7 +5,8 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                       window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    900, 500, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
                       renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
-                      arena(renderer), scoreboard(renderer), ball(renderer), time(0)
+                      arena(renderer), scoreboard(renderer), ball(renderer),
+                      convert(MAX_WIDTH, MAX_HEIGHT)
 #ifdef SDL_TESTING
                       , my_object(renderer)
 #endif
@@ -30,16 +31,25 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
-    //TODO
-    if (time > 30){
-        float x = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosX();
-        float y = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getPosY();
-        float angle = response.getMatchResponse().getMatchResponse().getPlayers().getPlayer().getRotationAngle();
+    //TODO falta obtener el resto de la info.
 
-        players.back().update(x, y, angle*(180/3.14), UPDATE_TIME);
+    for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
+        int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
+        int car_y = convert.toPixels(player.getPosY(), renderer.GetOutputHeight());
+        int car_angle = convert.toDegrees(player.getRotationAngle());
+        //TODO ver como crear mas jugadores
+        players.back().update(car_x, car_y, car_angle, UPDATE_TIME, player.moving(), player.flying(), player.onTurbo());
     }
-    scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
-    time += UPDATE_TIME;
+
+    int ball_x = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosX(), renderer.GetOutputWidth());
+    int ball_y = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosY(), renderer.GetOutputHeight());
+    int ball_angle = convert.toDegrees(response.getMatchResponses().getMatchResponse().getBall().getRotationAngle());
+    //int ball_radius = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().g)
+    ball.update(ball_x, ball_y, ball_angle, 40);
+    int local_goals= response.getMatchResponses().getMatchResponse().getLocalGoals();
+    int visitors_goals=response.getMatchResponses().getMatchResponse().getVisitorsGoals();
+    int time = response.getMatchResponses().getMatchResponse().getTime();
+    scoreboard.update(format_duration((std::chrono::milliseconds)time *1000),local_goals,visitors_goals);
 }
 #endif
 void sdl_main::renderScreen() {

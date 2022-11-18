@@ -50,9 +50,12 @@ public:
     char getSizeGameName();
 
     static int size(int playerCount, int roomNameSize);
-    float getBallPositionY();
     int size();
-    PlayerResponses getPlayers();
+    int getLocalGoals();
+    int getVisitorsGoals();
+    int getTime();
+    PlayerResponses getPlayersResponse();
+    BallResponse getBall();
 };
 
 

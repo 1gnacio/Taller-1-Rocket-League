@@ -13,7 +13,7 @@
 #include "sdl_scoreboard.h"
 #include "sdl_arena.h"
 #include <ctime>
-
+#include "unit_conversion.h"
 
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
@@ -28,7 +28,7 @@ private:
     sdl_arena arena;
     sdl_ball ball;
     sdl_scoreboard scoreboard;
-    long time;
+    unit_conversion convert;
 #ifndef SDL_TESTING
     std::list<sdl_player> players;
 #endif
