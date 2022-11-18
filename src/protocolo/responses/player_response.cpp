@@ -23,7 +23,7 @@ PlayerResponse::PlayerResponse(std::vector<unsigned char> &serialized) : seriali
     this->serializer.parse(hasPunchedTheBall, serialized, firstPosition, lastPosition);
     this->serializer.parse(isAccelerating, serialized, firstPosition, lastPosition);
     this->serializer.parse(isLocalTeam, serialized, firstPosition, lastPosition);
-}
+}//TODO tamaño auto.
 
 std::vector<unsigned char> PlayerResponse::serialize() {
     std::vector<unsigned char> serialization;
@@ -40,7 +40,7 @@ std::vector<unsigned char> PlayerResponse::serialize() {
     this->serializer.merge(serialization, this->serializer.serializeBool(isLocalTeam));
 
     return serialization;
-}
+}//TODO tamaño auto.
 
 int PlayerResponse::size() {
     return sizeof(PlayerResponse::id)
@@ -53,7 +53,7 @@ int PlayerResponse::size() {
     + 1 // hasPunchedTheBall
     + 1 // isAccelerating
     + 1 // isLocalTeam
-    ;
+    ; //TODO tamaño auto.
 }
 
 float PlayerResponse::getPosX() {

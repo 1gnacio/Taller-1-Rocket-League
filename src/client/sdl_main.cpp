@@ -13,8 +13,7 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 #ifndef SDL_TESTING
     players.emplace_back(renderer);
 #endif
-    //window.SetIcon();
-    window.Show();
+    //TODO window.SetIcon();
 }
 
 std::string format_duration( std::chrono::milliseconds ms ) {
@@ -60,6 +59,14 @@ void sdl_main::renderScreen() {
 
 sdl_main::~sdl_main() {
     //TODO
+}
+
+void sdl_main::showWindow() {
+    window.Show();
+}
+
+void sdl_main::hideWindow() {
+    window.Hide();
 }
 
 #ifdef SDL_TESTING

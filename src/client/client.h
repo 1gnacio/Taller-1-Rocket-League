@@ -1,23 +1,20 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef __CLIENT_CLIENT_H
+#define __CLIENT_CLIENT_H
 
 #include "../handlers/server_connection.h"
 #include "sdl_main.h"
-#include "../lobby/lobby.h"
-#include <QApplication>
+
 class Client {
 private:
     bool isRunning;
-    ServerConnection connection;
+    ServerConnection& connection;
     sdl_main sdl_handler;
-    //lobby my_lobby;
     void readStandardInput();
     void addInputCommand(std::string deserialized_key);
 public:
-    Client(const char *hostname, const char *servname);
+    explicit Client(ServerConnection& connection);
     ~Client() = default;
     void run();
-    //int runLobby();
 };
 
-#endif  // CLIENT_H
+#endif  // __CLIENT_CLIENT_H

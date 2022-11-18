@@ -13,8 +13,7 @@ private:
     float posX;
     float posY;
     float rotationAngle;
-
-private:
+    //TODO tamaño auto
     bool isMoving;
     bool isFlying;
     bool isTurboActivated;
@@ -40,7 +39,11 @@ public:
     float getPosX();
     float getPosY();
     float getRotationAngle() const { return rotationAngle; }
-
+    bool moving() const { return isMoving; }
+    bool flying() const { return isFlying; }
+    bool accelerating() const { return isAccelerating; }
+    bool onTurbo() const { return isTurboActivated; }
+    bool localTeam() const { return isLocalTeam; }
 
 };
 

@@ -6,8 +6,6 @@
 
 class ResponseBlockingQueue : public ResponseQueue {
 private:
-    std::queue<Response> responses;
-    std::mutex mutex;
     std::condition_variable cv; // tiene elementos?
 public:
     void push(Response &element);
