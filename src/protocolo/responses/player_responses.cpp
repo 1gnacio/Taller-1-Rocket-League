@@ -10,21 +10,22 @@ PlayerResponses::PlayerResponses(std::vector<unsigned char> serialized) : serial
 
     this->serializer.parse(count, serialized, begin, end);
 
-    if (count == 0) {
-        return;
-    }
-
     for (int i = 0; i < count; i++) {
-        PlayerResponse p;
-        this->entitySerializer.parse(p, serialized, begin, end);
-        this->players.push_back(std::move(p));
+        int size = PlayerResponse::size();
+        std::vector<unsigned char> player(serialized.begin() + end + 1,
+                                          serialized.begin() + end + size + 1);
+        this->players.emplace_back(player);
+        begin += size;
+        end += size;
     }
 }
 
 std::vector<unsigned char> PlayerResponses::serialize() {
     std::vector<unsigned char> serialization;
 
-    this->serializer.merge(serialization, this->serializer.serializeInt(this->players.size()));
+    int count = this->players.size();
+
+    this->serializer.merge(serialization, this->serializer.serializeInt(count));
 
     for(auto& player : players) {
         this->serializer.merge(serialization, player.serialize());

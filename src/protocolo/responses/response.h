@@ -29,6 +29,8 @@ public:
     // o toda la respuesta de ser necesario
     int getSize() { return this->matchResponses.size(); };
     MatchResponses getMatchResponses();
+    void addLobbyResponse(LobbyResponse &response);
+    float getBallPositionY();
 };
 
 
