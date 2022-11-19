@@ -19,12 +19,13 @@ sdl_animation::~sdl_animation() {
 
 void sdl_animation::update(float dt) {
     this->elapsed += dt;
-    
+
+    this->advanceFrame();
     //TODO: ver capaz no hace falta.
-    while (this->elapsed > FRAME_RATE) {
-        this->advanceFrame();
-        this->elapsed -= FRAME_RATE;
-    }
+//    while (this->elapsed > FRAME_RATE) {
+//        this->advanceFrame();
+//        this->elapsed -= FRAME_RATE;
+//    }
 }
 
 void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, double angle, SDL_RendererFlip &flipType) {
@@ -48,7 +49,6 @@ void sdl_animation::advanceFrame() {
     {
         currentFrame =0;
     }
-    //this->currentFrame = this->currentFrame % this->numFrames;
 }
 
 void sdl_animation::setColorMod(Uint8 r, Uint8 g, Uint8 b) {

@@ -1,6 +1,6 @@
 #include "sdl_player.h"
 
-sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PATH "/car2/car"),
+sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PATH "/car/car"),
                                                     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
                                                     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
                                                     facingLeft(false), moving(false), onTurbo(false), jumping(false),
@@ -17,7 +17,7 @@ sdl_player::~sdl_player() {
     //TODO
 }
 
-void sdl_player::update(int _x, int _y, int _angle, int dt, bool isMoving, bool isJumping, bool _onTurbo) {
+void sdl_player::update(int _x, int _y, double _angle, float dt, bool isMoving, bool isJumping, bool _onTurbo) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;

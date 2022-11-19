@@ -30,6 +30,7 @@ lobby::lobby(QWidget *parent)
 
 lobby::~lobby()
 {
+    this->connection.closeConnection();
     delete ui;
 }
 
@@ -106,3 +107,8 @@ void lobby::on_lineEdit_gameName_textChanged(const QString &arg1)
     }
 }
 
+//void lobby::closeEvent(QCloseEvent *bar) {
+//    this->connection.closeConnection();
+//    QWidget::closeEvent(bar);
+//}
+//

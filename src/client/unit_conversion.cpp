@@ -11,6 +11,7 @@ unit_conversion::unit_conversion(double maxWidthMeters, double maxHeightMeters) 
 }
 
 double unit_conversion::toPixels(double meter, int maxPixels) {
+    //TODO chequear bien
     int MET2PIX = maxPixels/8;
     double pixel = (maxPixels / 2.0) + (meter * MET2PIX);
     return pixel;

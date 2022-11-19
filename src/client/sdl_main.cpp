@@ -13,8 +13,9 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 {
 #ifndef SDL_TESTING
     players.emplace_back(renderer);
+#else
+    window.Show();
 #endif
-    //TODO
     window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
 }
 
@@ -37,16 +38,16 @@ void sdl_main::updateScreen(Response& response) {
     for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
         int car_y = convert.toPixels(player.getPosY(), renderer.GetOutputHeight());
-        int car_angle = convert.toDegrees(player.getRotationAngle());
+        double car_angle = convert.toDegrees(player.getRotationAngle());
         //TODO ver como crear mas jugadores
-        players.back().update(car_x, car_y, car_angle, UPDATE_TIME, player.moving(), player.flying(), player.onTurbo());
+        players.back().update(car_x, car_y, car_angle, FRAME_RATE, player.accelerating(), player.flying(), player.onTurbo());
     }
 
     int ball_x = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosX(), renderer.GetOutputWidth());
     int ball_y = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosY(), renderer.GetOutputHeight());
-    int ball_angle = convert.toDegrees(response.getMatchResponses().getMatchResponse().getBall().getRotationAngle());
+    double ball_angle = convert.toDegrees(response.getMatchResponses().getMatchResponse().getBall().getRotationAngle());
     //int ball_radius = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().g)
-    ball.update(ball_x, ball_y, ball_angle, 40);
+    ball.update(ball_x, ball_y, ball_angle, 20);
     int local_goals= response.getMatchResponses().getMatchResponse().getLocalGoals();
     int visitors_goals=response.getMatchResponses().getMatchResponse().getVisitorsGoals();
     int time = response.getMatchResponses().getMatchResponse().getTime();
@@ -82,9 +83,8 @@ void sdl_main::hideWindow() {
 
 #ifdef SDL_TESTING
 void sdl_main::updateScreen() {
-    scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
-    ball.update(renderer.GetOutputWidth()/2, renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6),0);
-    my_object.update(0,0, 0, FRAME_RATE);
-    time += UPDATE_TIME;
+    //scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
+    ball.update(renderer.GetOutputWidth()/2, renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6),0, 20);
+    my_object.update(0,0, 0, FRAME_RATE,true,true,true);
 }
 #endif

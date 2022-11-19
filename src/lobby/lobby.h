@@ -23,6 +23,8 @@ public:
     ~lobby();
 
 private slots:
+    //void closeEvent(QCloseEvent *event);
+
     void on_pushButton_connect_clicked();
 
     void on_pushButton_join_clicked();

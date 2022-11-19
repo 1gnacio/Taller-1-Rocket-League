@@ -5,14 +5,14 @@
 class sdl_ball {
 private:
     SDL2pp::Texture texture_ball;
-    int radius{};
+    int radius;
     int x;
     int y;
-    int angle;
+    double angle;
 public:
     explicit sdl_ball(SDL2pp::Renderer &renderer);
     void render(SDL2pp::Renderer &renderer);
-    void update(int _x, int _y, int _angle, int radius);
+    void update(int _x, int _y, double _angle, int radius);
     ~sdl_ball() = default;
 
 };
