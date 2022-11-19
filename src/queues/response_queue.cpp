@@ -15,5 +15,5 @@ Response ResponseQueue::pop() {
         return r;
     }
 
-    return {"OK", ""};
+    return {};
 }

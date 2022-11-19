@@ -5,8 +5,8 @@ sdl_scoreboard::sdl_scoreboard(SDL2pp::Renderer &renderer): font(DATA_PATH "/Ver
 }
 //TODO: hacerlo más lindo.
 
-void sdl_scoreboard::update(const std::string& time, int local_goals, int away_goals) {
-    text = "LOCAL: " + std::to_string(local_goals) + "   " + time + "   AWAY: " + std::to_string(away_goals);
+void sdl_scoreboard::update(const std::string& time, int local_goals, int visitors_goals) {
+    text = "LOCAL: " + std::to_string(local_goals) + "   " + time + "   VISITORS: " + std::to_string(visitors_goals);
 }
 
 void sdl_scoreboard::render(SDL2pp::Renderer &renderer) {

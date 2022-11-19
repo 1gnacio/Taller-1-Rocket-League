@@ -19,7 +19,6 @@ public:
     int size();
 
     void addResponse(MatchResponse &response);
-    float getBallPositionY();
     MatchResponse getMatchResponse();
 };
 

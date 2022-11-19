@@ -5,16 +5,16 @@
 #include "unit_conversion.h"
 #include <cmath>
 
-unit_conversion::unit_conversion(double maxWidthMeters, double maxHeightMeters, double minWidthMeters,
-                                 double minHeightMeters) {
+unit_conversion::unit_conversion(double maxWidthMeters, double maxHeightMeters) {
     this->maxWidthMeters = maxWidthMeters;
     this->maxHeightMeters = maxHeightMeters;
-    this->minHeightMeters = minHeightMeters;
-    this->minWidthMeters = minWidthMeters;
 }
 
-double unit_conversion::toPixels(double meter) {
-    return 0;
+double unit_conversion::toPixels(double meter, int maxPixels) {
+    //TODO chequear bien
+    int MET2PIX = maxPixels/8;
+    double pixel = (maxPixels / 2.0) + (meter * MET2PIX);
+    return pixel;
 }
 
 double unit_conversion::toDegrees(double radian) {

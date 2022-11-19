@@ -2,54 +2,62 @@
 #include <utility>
 #include <numeric>
 #include "game_model_monitor.h"
+#include "../src/constants/response_values.h"
 
 GameModelMonitor::GameModelMonitor() : model(), commands() {}
 
-std::vector<std::string> GameModelMonitor::serializedRooms() {
+LobbyResponse GameModelMonitor::listRooms(int id) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    return this->model.listRooms();
+    RoomResponses rooms = this->model.listRooms();
+    ActionResultResponse actionResponse(id, ResponseValues().OK);
+
+    return std::move(LobbyResponse(rooms, actionResponse));
 }
 
-Response GameModelMonitor::listRooms() {
-    std::vector<std::string> rooms = this->serializedRooms();
-    std::string result;
-
-    if (!rooms.empty()) {
-        result = std::accumulate(
-                std::next(rooms.begin()),
-                rooms.end(),
-                rooms.front(),
-                [] (const std::string& a, const std::string& b)
-                { return a + "\n" + b; });
-    }
-
-    return std::move(Response("OK", result.c_str()));
-}
-
-Response GameModelMonitor::createRoom(const char* name, uint8_t requiredPlayers) {
+LobbyResponse GameModelMonitor::createRoom(int id, const char* name, int requiredPlayers) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    return std::move(Response("OK", this->model.createRoom(name, requiredPlayers).c_str()));
+    ActionResultResponse actionResponse = this->model.createRoom(id, name, requiredPlayers);
+    RoomResponses rooms = this->model.listRooms();
+
+    return std::move(LobbyResponse(rooms, actionResponse));
 }
 
-Response GameModelMonitor::joinRoom(const char* name) {
+LobbyResponse GameModelMonitor::joinRoom(int id, const char* name) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    return std::move(Response("OK", this->model.joinRoom(name).c_str()));
+    ActionResultResponse actionResponse = this->model.joinRoom(id, name);
+    RoomResponses rooms = this->model.listRooms();
+
+    return std::move(LobbyResponse(rooms, actionResponse));
 }
 
-Response GameModelMonitor::applyLogic(const Command& command) {
+LobbyResponse GameModelMonitor::leaveRoom(int id, const char *name) {
+    std::lock_guard<std::mutex> lock(mutex);
+
+    ActionResultResponse actionResponse = this->model.leaveRoom(id, name);
+    RoomResponses rooms = this->model.listRooms();
+
+    return std::move(LobbyResponse(rooms, actionResponse));
+}
+
+LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
     if (command.getValue() == this->commands.DESERIALIZED_LIST)
-        return std::move(this->listRooms());
+        return std::move(this->listRooms(command.getID()));
 
     if (command.getValue() == this->commands.DESERIALIZED_CREATE)
-        return std::move(this->createRoom(
-                command.getSecondParameter().c_str(),
-                std::stoi(command.getFirstParameter())));
+        return std::move(this->createRoom(command.getID(),
+                                          command.getSecondParameter().c_str(),
+                                          std::stoi(command.getFirstParameter())));
 
     if (command.getValue() == this->commands.DESERIALIZED_JOIN)
-        return std::move(this->joinRoom(command.getFirstParameter().c_str()));
+        return std::move(this->joinRoom(command.getID(),
+                                        command.getFirstParameter().c_str()));
 
-    return {"ERROR", ""};
+    if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH)
+        return std::move(this->leaveRoom(command.getID(),
+                                         command.getFirstParameter().c_str()));
+
+    return {};
 }

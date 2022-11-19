@@ -3,9 +3,11 @@
 
 #include <string>
 #include <vector>
+#include "connected_clients.h"
 
 class RoomResponse {
 private:
+    ConnectedClients clients;
     std::string name;
     int requiredPlayers;
     int currentPlayers;
@@ -14,7 +16,16 @@ private:
     bool isFinished;
 
 public:
-    std::vector<char> serialize();
+    RoomResponse(std::string &name,
+                 int requiredPlayers,
+                 int currentPlayers,
+                 bool waitingPlayers,
+                 bool isStarted,
+                 bool isFinished);
+
+    explicit RoomResponse(std::vector<unsigned char> &serialized);
+    std::vector<unsigned char> serialize();
+    void addClient(int id);
 };
 
 

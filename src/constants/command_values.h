@@ -24,6 +24,8 @@ public:
     const unsigned char SERIALIZED_LIST = 0x30;
     const unsigned char SERIALIZED_CREATE = 0x31;
     const unsigned char SERIALIZED_JOIN = 0x32;
+    const unsigned char SERIALIZED_QUIT_MATCH = 0x33;
+    const unsigned char SERIALIZED_QUIT_GAME = 0x34;
 
     const std::string DESERIALIZED_NOP = "NOP";
 
@@ -44,6 +46,8 @@ public:
     const std::string DESERIALIZED_LIST = "LIST";
     const std::string DESERIALIZED_CREATE = "CREATE";
     const std::string DESERIALIZED_JOIN = "JOIN";
+    const std::string DESERIALIZED_QUIT_MATCH = "QUIT_MATCH";
+    const std::string DESERIALIZED_QUIT_GAME = "QUIT_GAME";
 };
 
 #endif // COMMAND_VALUES_H

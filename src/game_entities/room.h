@@ -2,23 +2,28 @@
 #define ROOM_H
 
 #include <string>
+#include <vector>
+#include "../src/protocolo/responses/room_response.h"
+#include "../src/protocolo/responses/action_result_response.h"
 
 class Room {
  private:
-    mutable uint8_t currentPlayers;
-    uint8_t requiredPlayers;
+    std::vector<int> players;
+    int requiredPlayers;
+    bool isWaiting;
+    bool isStarted;
+    bool isFinished;
     std::string name;
  public:
-    Room(uint8_t requiredPlayers, const char *name);
-    std::string joinPlayer() const;
-    std::string serialize() const;
+    Room(int ownerId, int requiredPlayers, const char *name);
+    ActionResultResponse joinPlayer(int id);
+    RoomResponse list();
+    ActionResultResponse leaveRoom(int playerId);
 
     bool operator<(const Room &room) const;
-    bool operator()(const Room& room) const;
+    bool operator()(Room& room);
 
-    // hago las salas de las partidas no copiables
-    Room(const Room&) = delete;
-    Room& operator=(const Room&) = delete;
+    std::string getName() const { return this->name; };
 };
 
 

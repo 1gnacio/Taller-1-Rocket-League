@@ -19,13 +19,13 @@ class GameModelMonitor {
     GameModel model;
     CommandValues commands;
 
-    std::vector<std::string> serializedRooms();
-    Response listRooms();
-    Response joinRoom(const char* name);
-    Response createRoom(const char* name, uint8_t requiredPlayers);
+    LobbyResponse listRooms(int id);
+    LobbyResponse joinRoom(int id, const char* name);
+    LobbyResponse createRoom(int id, const char* name, int requiredPlayers);
+    LobbyResponse leaveRoom(int id, const char* name);
  public:
     GameModelMonitor();
-    Response applyLogic(const Command& command);
+    LobbyResponse applyLogic(const Command& command);
 
     // hago el monitor del modelo de juego no copiable
     GameModelMonitor(const GameModelMonitor&) = delete;

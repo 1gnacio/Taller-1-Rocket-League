@@ -37,6 +37,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 ######################################################################################################################
 add_executable(sdlTesting
         sdl_testing.cpp
+        src/client/unit_conversion.cpp
+        src/client/unit_conversion.h
         src/client/sdl_main.h
         src/client/sdl_main.cpp
         src/client/sdl_animation.h
@@ -218,7 +220,14 @@ add_executable(lobby
         src/protocolo/connection_helper.cpp
         src/protocolo/connection_helper.h
         src/client/unit_conversion.cpp src/client/unit_conversion.h
-        
+        src/protocolo/responses/lobby_response.cpp
+        src/protocolo/responses/lobby_response.h
+        src/protocolo/responses/room_responses.cpp
+        src/protocolo/responses/room_responses.h
+        src/protocolo/responses/room_response.cpp
+        src/protocolo/responses/room_response.h
+        src/protocolo/responses/connected_clients.cpp
+        src/protocolo/responses/connected_clients.h
         )
 
 target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d)
@@ -315,6 +324,16 @@ add_executable(game_client
         src/protocolo/connection_helper.cpp
         src/protocolo/connection_helper.h
         src/client/unit_conversion.cpp src/client/unit_conversion.h
+        src/protocolo/responses/lobby_response.cpp
+        src/protocolo/responses/lobby_response.h
+        src/protocolo/responses/room_responses.cpp
+        src/protocolo/responses/room_responses.h
+        src/protocolo/responses/room_response.cpp
+        src/protocolo/responses/room_response.h
+        src/protocolo/responses/connected_clients.cpp
+        src/protocolo/responses/connected_clients.h
+        src/protocolo/responses/action_result_response.cpp
+        src/protocolo/responses/action_result_response.h
         )
         
 
@@ -408,6 +427,16 @@ add_executable(game_server
         src/queues/block_queues/response_blocking_queue.h
         src/protocolo/connection_helper.cpp
         src/protocolo/connection_helper.h
+        src/protocolo/responses/lobby_response.cpp
+        src/protocolo/responses/lobby_response.h
+        src/protocolo/responses/room_responses.cpp
+        src/protocolo/responses/room_responses.h
+        src/protocolo/responses/room_response.cpp
+        src/protocolo/responses/room_response.h
+        src/protocolo/responses/connected_clients.cpp
+        src/protocolo/responses/connected_clients.h
+        src/protocolo/responses/action_result_response.cpp
+        src/protocolo/responses/action_result_response.h
         )
 
 target_link_libraries(game_server box2d)

@@ -76,6 +76,7 @@ void Client::readStandardInput() {
             case SDL_QUIT:
                 std::cout << "Quit" << std::endl;
                 quit = true;
+                addInputCommand(CommandValues().DESERIALIZED_QUIT_MATCH);
                 this->isRunning = false;
                 break;
         }
@@ -92,7 +93,7 @@ void Client::run() {
         Response response = this->connection.pop();
         sdl_handler.updateScreen(response);
         sdl_handler.renderScreen();
-        SDL_Delay(UPDATE_TIME);   //TODO: ver
+        SDL_Delay(5);   //TODO: ver
     }
 
     standardInput.join();

@@ -105,11 +105,20 @@ MatchResponse::MatchResponse(std::vector<unsigned char>& serialized) :
 
     int countPlayers = 0;
     this->serializer.parse(countPlayers, serialized, firstPosition, lastPosition);
+    if (countPlayers != 0) {
+        std::vector<unsigned char> playerResponses(serialized.begin() +
+                                                   firstPosition,
+                                                   serialized.begin() +
+                                                   firstPosition +
+                                                   PlayerResponses::getSize(countPlayers) + 1);
 
-    for(int i = 0; i < countPlayers; i++) {
-        PlayerResponse p;
-        this->entitySerializer.parse(p, serialized, firstPosition, lastPosition);
-        this->players.addPlayer(p);
+        this->players = PlayerResponses(playerResponses);
+
+        firstPosition += PlayerResponses::getSize(countPlayers);
+        lastPosition += PlayerResponses::getSize(countPlayers);
+    }
+    else{
+        this->players = PlayerResponses();
     }
 
     this->serializer.parse(this->requiredPlayers, serialized, firstPosition, lastPosition);
@@ -133,11 +142,22 @@ MatchResponse::MatchResponse(int goalsLocal, int goalsVisitor, int time_insec, B
                              activeReplay(activeReplay) {
 }
 
-PlayerResponses MatchResponse::getPlayers() {
+PlayerResponses MatchResponse::getPlayersResponse() {
     return players;
 }
 
-float MatchResponse::getBallPositionY() {
-    return ballResponse.getPosY();
+BallResponse MatchResponse::getBall() {
+    return ballResponse;
 }
 
+int MatchResponse::getLocalGoals() {
+    return goalsLocal;
+}
+
+int MatchResponse::getVisitorsGoals() {
+    return goalsVisitor;
+}
+
+int MatchResponse::getTime() {
+    return time_insec;
+}

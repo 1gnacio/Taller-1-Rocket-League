@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) try {
     }
 
     QApplication app(argc, argv);
+    app.setWindowIcon(QIcon(DATA_PATH "/icon.ico"));
     lobby window;
     window.show();
 

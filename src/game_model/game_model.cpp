@@ -1,38 +1,58 @@
 #include <algorithm>
 #include "game_model.h"
+#include "../constants/response_values.h"
 
-std::vector<std::string> GameModel::listRooms() {
-    std::vector<std::string> roomsSerialized;
+RoomResponses GameModel::listRooms() {
+    RoomResponses responses;
 
-    std::transform(
-            this->rooms.begin(),
-            this->rooms.end(),
-            std::back_inserter(roomsSerialized),
-            [](const Room& room){ return room.serialize(); });
+    for (auto& room : this->rooms) {
+        RoomResponse r = room.list();
+        responses.addRoom(r);
+    }
 
-    return roomsSerialized;
+    return responses;
 }
 
-std::string GameModel::createRoom(const char* name, uint8_t requiredPlayers) {
-    bool roomExists =
-            this->rooms.find(Room(0, name)) != this->rooms.end();
+ActionResultResponse GameModel::createRoom(int ownerId, const char* name, int requiredPlayers) {
+    std::string roomName = name;
+    bool roomExists = std::find_if(this->rooms.begin(),
+                                   this->rooms.end(),
+                                   [&roomName](const Room& room)
+                                   {return room.getName() == roomName;}) != this->rooms.end();
 
     if (!roomExists) {
-        this->rooms.emplace(requiredPlayers, name);
+        this->rooms.emplace_back(ownerId, requiredPlayers, name);
 
-        return "OK";
+        return {ownerId, ResponseValues().OK};
     }
 
-    return "ERROR";
+    return {ownerId, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_EXISTS};
 }
 
-std::string GameModel::joinRoom(const char* name) {
-    auto room =
-            this->rooms.find(Room(0, name));
+ActionResultResponse GameModel::joinRoom(int playerId, const char* name) {
+    std::string roomName = name;
+    auto room = std::find_if(this->rooms.begin(),
+                                   this->rooms.end(),
+                                   [&roomName](const Room& room)
+                                   {return room.getName() == roomName;});
 
     if (room != this->rooms.end()) {
-        return room->joinPlayer();
+        return room->joinPlayer(playerId);
     }
 
-    return "ERROR";
+    return {playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND};
+}
+
+ActionResultResponse GameModel::leaveRoom(int playerId, const char *name) {
+    std::string roomName = name;
+    auto room = std::find_if(this->rooms.begin(),
+                             this->rooms.end(),
+                             [&roomName](const Room& room)
+                             {return room.getName() == roomName;});
+
+    if (room != this->rooms.end()) {
+        return room->leaveRoom(playerId);
+    }
+
+    return {playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND};
 }
