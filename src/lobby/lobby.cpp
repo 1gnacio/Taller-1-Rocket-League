@@ -15,7 +15,6 @@ lobby::lobby(QWidget *parent)
     horizontalHeader.append("Status");
     horizontalHeader.append("Players");
 
-
     model.setHorizontalHeaderLabels(horizontalHeader);
 
     ui->gamesListTable->setModel(&model);
