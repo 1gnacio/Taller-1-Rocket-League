@@ -27,7 +27,7 @@ bool ServerConnection::connectionClosed() {
 }
 
 void ServerConnection::closeConnection() {
-    if(!this->isConnected) {
+    if(this->isConnected) {
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
         this->sender.stopHandler();

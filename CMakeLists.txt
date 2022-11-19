@@ -37,6 +37,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 ######################################################################################################################
 add_executable(sdlTesting
         sdl_testing.cpp
+        src/client/unit_conversion.cpp
+        src/client/unit_conversion.h
         src/client/sdl_main.h
         src/client/sdl_main.cpp
         src/client/sdl_animation.h
