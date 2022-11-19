@@ -183,6 +183,32 @@ TEST(Serializacion, SerializarYDeserializarPartida) {
 
     Response deserializada(serializacion);
 
-    EXPECT_EQ(r.getSize(), deserializada.getSize());
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
+}
+
+TEST(Serializacion, SerializacionYDeserializacionConLobby) {
+    LobbyResponse lobbyResponse;
+    std::string nombre = "nombre";
+    RoomResponse room(nombre, 3, 2, false, false, true);
+    room.addClient(1);
+    room.addClient(2);
+    lobbyResponse.addRoom(room);
+    BallResponse ball(1, 0, 1, false, false, false);
+    PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false);
+    PlayerResponse player1(3, 0, 1, 0, false, false, false, true, false, false);
+    PlayerResponses players;
+    players.addPlayer(player);
+    players.addPlayer(player1);
+    std::string prueba = "nombre de prueba";
+    MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
+    MatchResponses partidas;
+    partidas.addResponse(partida);
+    Response r(partidas);
+    r.addLobbyResponse(lobbyResponse);
+    std::vector<unsigned char> serializacion = r.serialize();
+
+    Response deserializada(serializacion);
+
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
 }
 

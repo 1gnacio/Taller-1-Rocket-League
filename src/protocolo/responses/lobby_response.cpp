@@ -1,5 +1,16 @@
 #include "lobby_response.h"
+#include "../serializer/serializer.h"
 
-std::vector<char> LobbyResponse::serialize() {
-    return std::vector<char>();
+LobbyResponse::LobbyResponse(std::vector<unsigned char> &serialized) : rooms(serialized) {
+
+}
+
+std::vector<unsigned char> LobbyResponse::serialize() {
+    return this->rooms.serialize();
+}
+
+LobbyResponse::LobbyResponse() : rooms() {}
+
+void LobbyResponse::addRoom(RoomResponse &room) {
+    this->rooms.addRoom(room);
 }

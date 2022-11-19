@@ -105,12 +105,16 @@ MatchResponse::MatchResponse(std::vector<unsigned char>& serialized) :
 
     int countPlayers = 0;
     this->serializer.parse(countPlayers, serialized, firstPosition, lastPosition);
+    std::vector<unsigned char> playerResponses(serialized.begin() +
+                                               firstPosition,
+                                               serialized.begin() +
+                                               firstPosition +
+                                               PlayerResponses::getSize(countPlayers) + 1);
 
-    for(int i = 0; i < countPlayers; i++) {
-        PlayerResponse p;
-        this->entitySerializer.parse(p, serialized, firstPosition, lastPosition);
-        this->players.addPlayer(p);
-    }
+    this->players = PlayerResponses(playerResponses);
+
+    firstPosition += PlayerResponses::getSize(countPlayers);
+    lastPosition += PlayerResponses::getSize(countPlayers);
 
     this->serializer.parse(this->requiredPlayers, serialized, firstPosition, lastPosition);
     this->serializer.parse(this->currentPlayers, serialized, firstPosition, lastPosition);

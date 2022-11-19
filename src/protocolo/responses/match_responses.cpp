@@ -14,49 +14,41 @@ MatchResponses::MatchResponses(std::vector<MatchResponse> &responses) : matches(
 //   ...
 // }
 
-MatchResponses::MatchResponses(std::vector<unsigned char> &serializedMatchResponses) {
-    std::vector<unsigned char> serializedMatchCount(serializedMatchResponses.begin(), serializedMatchResponses.begin() + 4);
-    int count = this->serializer.deserializeInt(serializedMatchCount);
-    if (count == 0) {
-        return;
-    }
+MatchResponses::MatchResponses(std::vector<unsigned char> &serializedMatchResponses) : serializer() {
+    int begin = 0;
+    int end = 0;
+    int count = 0;
 
-    std::vector<unsigned char> serializedMatches(serializedMatchResponses.begin() + 4, serializedMatchResponses.end());
-
-    int accumulatedSizes = 0;
+    this->serializer.parse(count, serializedMatchResponses, begin, end);
 
     for(int i = 0; i < count; i++) {
-        std::vector<unsigned char> serializedMatchSize(serializedMatches.begin() + accumulatedSizes, serializedMatches.begin() + 4 + accumulatedSizes);
-        int size = this->serializer.deserializeInt(serializedMatchSize);
-        accumulatedSizes += size;
-
-        if (size == 0) {
-            continue;
-        }
-
-        std::vector<unsigned char> serializedMatch(serializedMatches.begin() + accumulatedSizes + 4, serializedMatches.begin() + size);
-        this->matches.emplace_back(serializedMatch);
+        int size = 0;
+        this->serializer.parse(size, serializedMatchResponses, begin, end);
+        std::vector<unsigned char> match(serializedMatchResponses.begin() + end + 1,
+                                         serializedMatchResponses.begin() + end + size + 1);
+        this->matches.emplace_back(match);
+        begin += size;
+        end += size;
     }
 }
 
 std::vector<unsigned char> MatchResponses::serialize() {
     std::vector<unsigned char> serialization;
+    std::vector<unsigned char> result;
 
     int count = this->matches.size();
 
     this->serializer.merge(serialization, this->serializer.serializeInt(count));
-    this->serializer.merge(serialization, this->serializer.serializeInt(this->size()));
-
-    if(count == 0) {
-        return serialization;
-    }
 
     for(auto& response : this->matches) {
         std::vector<unsigned char> serialized = response.serialize();
         this->serializer.merge(serialization, serialized);
     }
 
-    return serialization;
+    this->serializer.merge(result, this->serializer.serializeInt(serialization.size()));
+    this->serializer.merge(result, serialization);
+
+    return result;
 }
 
 MatchResponses::MatchResponses() : matches() {}

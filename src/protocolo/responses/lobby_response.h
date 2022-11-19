@@ -4,12 +4,16 @@
 #include <vector>
 #include <string>
 #include "room_response.h"
+#include "room_responses.h"
 
 class LobbyResponse {
 private:
-    std::vector<RoomResponse> rooms;
+    RoomResponses rooms;
 public:
-    std::vector<char> serialize();
+    LobbyResponse();
+    void addRoom(RoomResponse &room);
+    explicit LobbyResponse(std::vector<unsigned char> &serialized);
+    std::vector<unsigned char> serialize();
 };
 
 

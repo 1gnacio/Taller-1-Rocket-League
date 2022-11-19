@@ -40,10 +40,3 @@ int BallResponse::size() {
 }
 
 BallResponse::BallResponse() = default;
-
-float posX;
-float posY;
-float rotationAngle;
-bool isMoving;
-bool isFlying;
-bool hasBeenPunched;
