@@ -30,7 +30,6 @@ public:
     int getSize() { return this->matchResponses.size(); };
     MatchResponses getMatchResponse();
     void addLobbyResponse(LobbyResponse &response);
-    float getBallPositionY();
 };
 
 

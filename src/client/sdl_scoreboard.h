@@ -10,7 +10,7 @@ private:
 public:
     explicit sdl_scoreboard(SDL2pp::Renderer &renderer);
     void render(SDL2pp::Renderer &renderer);
-    void update(const std::string& time, int local_goals, int away_goals);
+    void update(const std::string& time, int local_goals, int visitors_goals);
     ~sdl_scoreboard() = default;
 };
 

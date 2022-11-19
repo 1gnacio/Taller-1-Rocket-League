@@ -7,6 +7,9 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PAT
                                                     x(300), y(400), angle(0){
     //car_an.setColorMod(255,255,255);
     jump_an.disableLoop();
+    //TODO tamaño del auto
+    size_h= 8 * renderer.GetOutputHeight() /100;
+    size_w= size_h*3;
 }
 
 
@@ -14,17 +17,20 @@ sdl_player::~sdl_player() {
     //TODO
 }
 
-void sdl_player::update(int _x, int _y, int _angle, int _dt) {
+void sdl_player::update(int _x, int _y, int _angle, int dt, bool isMoving, bool isJumping, bool _onTurbo) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;
+        this->jumping = isJumping;
+        this->onTurbo = _onTurbo;
+        this->moving = isMoving;
 #endif
 
 
     this->angle = _angle;
 
     if (moving) {
-        car_an.update(_dt);
+        car_an.update(dt);
 #ifdef SDL_TESTING
             if (facingLeft)
                 x -= 5;
@@ -33,11 +39,11 @@ void sdl_player::update(int _x, int _y, int _angle, int _dt) {
 #endif
     }
     if (onTurbo) {
-        turbo_an.update(_dt);
+        turbo_an.update(dt);
     }
 
     if(jumping){
-        jump_an.update(_dt);
+        jump_an.update(dt);
 #ifdef SDL_TESTING
         y-=5;
 #endif
@@ -55,15 +61,6 @@ void sdl_player::update(int _x, int _y, int _angle, int _dt) {
 
 void sdl_player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    int size_h= 8 * renderer.GetOutputHeight() /100;
-    int size_w= size_h*3;
-
-    int MET2PIX = renderer.GetOutputWidth()/8;
-    int SCALED_WIDTH = renderer.GetOutputWidth()/MET2PIX;
-    int SCALED_HEIGHT = renderer.GetOutputHeight()/MET2PIX;
-    x = ((SCALED_WIDTH / 2.0f) + x) * MET2PIX - (96.0 / 2);
-    y = ((SCALED_HEIGHT / 2.0f) + y) * MET2PIX - (40.0 / 2);
-
     car_an.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle, flip);
 
 

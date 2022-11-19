@@ -20,7 +20,7 @@ private:
     int size_h;
 public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
-    void update(int x, int y, int angle, int dt);
+    void update(int x, int y, int angle, int dt, bool isMoving, bool isJumping, bool onTurbo);
     void render(SDL2pp::Renderer &renderer);
     ~sdl_player();
 

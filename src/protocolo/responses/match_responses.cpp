@@ -74,10 +74,3 @@ void MatchResponses::addResponse(MatchResponse& response) {
 MatchResponse MatchResponses::getMatchResponse() {
     return matches.back();
 }
-
-float MatchResponses::getBallPositionY() {
-    if(!matches.empty()) {
-        return matches[0].getBallPositionY();
-    }
-    return 0;
-}
