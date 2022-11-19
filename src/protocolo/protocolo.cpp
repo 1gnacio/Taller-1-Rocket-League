@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <numeric>
 #include "protocolo.h"
+#include "../constants/response_values.h"
 #include <csignal>
 
 Protocolo::Protocolo() {}
@@ -47,7 +48,7 @@ void Protocolo::sendResponse(Socket& socket, Response &response) {
 }
 
 Command Protocolo::receiveCommand(Socket& socket) {
-    if (this->isConnectionClosed()) {
+    if (this->connectionClosed) {
         CommandValues cv;
         return {0, cv.SERIALIZED_NOP, cv.DESERIALIZED_NOP};
     }
@@ -73,7 +74,9 @@ void Protocolo::sendCommand(Socket &socket, Command &command) {
 
 Response Protocolo::receiveResponse(Socket &socket) {
     if (this->connectionClosed) {
-        return {"ERROR", "CONEXION CERRADA"};
+        ActionResultResponse actionResponse(ResponseValues().ERROR, ResponseValues().CONNECTION_CLOSED);
+        LobbyResponse lobby(actionResponse);
+        return {lobby};
     }
 
     std::vector<unsigned char> message = this->receiveMessage(socket);

@@ -76,6 +76,7 @@ void Client::readStandardInput() {
             case SDL_QUIT:
                 std::cout << "Quit" << std::endl;
                 quit = true;
+                addInputCommand(CommandValues().DESERIALIZED_QUIT_MATCH);
                 this->isRunning = false;
                 break;
         }
