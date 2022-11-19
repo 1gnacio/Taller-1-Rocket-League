@@ -8,6 +8,7 @@ private:
     std::vector<RoomResponse> rooms;
 public:
     RoomResponses();
+    RoomResponses(std::vector<RoomResponse> &rooms);
     void addRoom(RoomResponse &room);
     explicit RoomResponses(std::vector<unsigned char> &serialized);
     std::vector<unsigned char> serialize();

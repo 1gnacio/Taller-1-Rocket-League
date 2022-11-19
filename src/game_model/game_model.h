@@ -5,16 +5,20 @@
 #include <set>
 #include <string>
 #include "../game_entities/room.h"
+#include "../src/protocolo/responses/room_responses.h"
+#include "../src/protocolo/responses/action_result_response.h"
 
 class GameModel {
  private:
-    std::set<Room> rooms;
+    std::vector<Room> rooms;
  public:
-    std::vector<std::string> listRooms();
+    RoomResponses listRooms();
 
-    std::string joinRoom(const char* name);
+    ActionResultResponse joinRoom(int playerId, const char* name);
 
-    std::string createRoom(const char* name, uint8_t requiredPlayers);
+    ActionResultResponse leaveRoom(int playerId, const char* name);
+
+    ActionResultResponse createRoom(int ownerId, const char* name, int requiredPlayers);
 };
 
 

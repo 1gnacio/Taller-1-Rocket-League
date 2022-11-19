@@ -16,14 +16,13 @@ private:
     Serializer serializer;
     LobbyResponse lobbyResponse;
     MatchResponses matchResponses;
-    std::string responseStatus;
 public:
     Response();
     Response(std::vector<unsigned char> &serializedResponse);
     Response(MatchResponses &matchResponses);
-    Response(const char* responseStatus, const char* responseMessage);
+    Response(LobbyResponse &lobby);
 
-    std::string getStatus() { return this->responseStatus; }
+    std::string getStatus() { return this->lobbyResponse.getStatus(); };
     std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario

@@ -332,6 +332,8 @@ add_executable(game_client
         src/protocolo/responses/room_response.h
         src/protocolo/responses/connected_clients.cpp
         src/protocolo/responses/connected_clients.h
+        src/protocolo/responses/action_result_response.cpp
+        src/protocolo/responses/action_result_response.h
         )
         
 
@@ -433,6 +435,8 @@ add_executable(game_server
         src/protocolo/responses/room_response.h
         src/protocolo/responses/connected_clients.cpp
         src/protocolo/responses/connected_clients.h
+        src/protocolo/responses/action_result_response.cpp
+        src/protocolo/responses/action_result_response.h
         )
 
 target_link_libraries(game_server box2d)

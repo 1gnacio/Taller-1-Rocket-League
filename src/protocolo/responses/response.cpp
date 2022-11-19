@@ -38,9 +38,7 @@ std::vector<unsigned char> Response::serialize() {
     return serialization;
 }
 
-Response::Response() : lobbyResponse(), matchResponses(), responseStatus() {}
-
-Response::Response(const char *responseStatus, const char *responseMessage) : responseStatus(responseStatus) {}
+Response::Response() : lobbyResponse(), matchResponses() {}
 
 MatchResponses Response::getMatchResponses() {
     return matchResponses;
@@ -53,3 +51,5 @@ void Response::addLobbyResponse(LobbyResponse &response) {
 float Response::getBallPositionY() {
     return this->matchResponses.getMatchResponse().getBall().getPosY();
 }
+
+Response::Response(LobbyResponse &lobby) : matchResponses(), lobbyResponse(lobby) {}

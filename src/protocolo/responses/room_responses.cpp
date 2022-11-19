@@ -45,3 +45,5 @@ RoomResponses::RoomResponses() : rooms() {}
 void RoomResponses::addRoom(RoomResponse &room) {
     this->rooms.push_back(room);
 }
+
+RoomResponses::RoomResponses(std::vector<RoomResponse> &rooms) : rooms(std::move(rooms)) {}
