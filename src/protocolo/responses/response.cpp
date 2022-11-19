@@ -42,10 +42,14 @@ Response::Response() : lobbyResponse(), matchResponses(), responseStatus() {}
 
 Response::Response(const char *responseStatus, const char *responseMessage) : responseStatus(responseStatus) {}
 
-MatchResponses Response::getMatchResponse() {
+MatchResponses Response::getMatchResponses() {
     return matchResponses;
 }
 
 void Response::addLobbyResponse(LobbyResponse &response) {
     this->lobbyResponse = response;
+}
+
+float Response::getBallPositionY() {
+    return this->matchResponses.getMatchResponse().getBall().getPosY();
 }
