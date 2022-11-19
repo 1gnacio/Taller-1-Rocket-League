@@ -46,10 +46,6 @@ MatchResponses Response::getMatchResponse() {
     return matchResponses;
 }
 
-float Response::getBallPositionY() {
-    return matchResponses.getBallPositionY();
-}
-
 void Response::addLobbyResponse(LobbyResponse &response) {
     this->lobbyResponse = response;
 }
