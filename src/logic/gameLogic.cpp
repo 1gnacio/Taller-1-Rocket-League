@@ -1,14 +1,22 @@
 #include "gameLogic.h"
 #include <iostream>
-#include "../src/constants/command_values.h"
-#include "../src/constants/logic_values.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 #include <vector>
 #include <utility>
 
-GameLogic::GameLogic(): withoutPlayers(0) {
+GameLogic::GameLogic(int ownerId, const char *name) :
+commandCount(0),
+gamePhysics(),
+game(name),
+commandQueue(),
+withoutPlayers(0),
+updateModelHandler(std::thread(&GameLogic::updateModel, this)) {
+    this->gamePhysics.addPlayer(ownerId);
 }
 
-void GameLogic::updateModel(Command &command) {
+void GameLogic::updateModel() {
+    Command command = this->commandQueue.pop();
+
     std::cout << "llega un comando de " << command.getValue() << std::endl;
     /*if (this->withoutPlayers == 0) {
         this->gamePhysics.addPlayer(command.getID());
@@ -31,6 +39,14 @@ void GameLogic::updateModel(Command &command) {
     } else if (command.getValue() == CommandValues().DESERIALIZED_JUMP_PUSHED) {
         gamePhysics.jump(command.getID());  // gamePhysics.jump(command.getID());
     }
+
+    this->commandCount++;
+
+    if (this->commandCount > 50) {
+        gamePhysics.updateTime();
+        gamePhysics.updateStatus();
+        this->commandCount = 0;
+    }
 }
 
 float GameLogic::getCarData(int carNumber, int key) {
@@ -38,11 +54,6 @@ float GameLogic::getCarData(int carNumber, int key) {
 }
 float GameLogic::playersAmount() {
     return gamePhysics.playersAmount();
-}
-
-void GameLogic::updateTime() {
-    gamePhysics.updateTime();
-    gamePhysics.updateStatus();
 }
 
 Response GameLogic::getResponse() {
@@ -60,4 +71,12 @@ Response GameLogic::getResponse() {
 
     Response response(matches);
     return std::move(response);
+}
+
+bool GameLogic::hasPlayer(int id) {
+    return this->gamePhysics.hasPlayer(id);
+}
+
+GameLogic::~GameLogic() {
+    this->updateModelHandler.join();
 }

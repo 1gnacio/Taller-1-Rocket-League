@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "boxLogic.h"
 #include <unistd.h>
 #include <time.h>
@@ -257,4 +258,11 @@ void BoxLogic::verifyTurbo() {
 
 void BoxLogic::applyTurbo(int carNumber) {
     getCar(carNumber)->applyTurbo();
+}
+
+bool BoxLogic::hasPlayer(int id) {
+    return std::find_if(this->cars.begin(),
+                        this->cars.end(),
+                        [&id] (Car &car)
+                        { return car.getId() == id; }) != this->cars.end();
 }

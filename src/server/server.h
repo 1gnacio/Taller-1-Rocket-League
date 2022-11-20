@@ -8,13 +8,14 @@
 #include "../game_model/game_model_monitor.h"
 #include "../handlers/server_endpoint.h"
 #include "../logic/gameLogic.h"
+#include "../src/logic/game_model_logic.h"
 
 class Server {
 private:
     std::atomic<bool> isClosed = false;
     GameModelMonitor monitor;
 
-    GameLogic logic;
+    GameModelLogic logic;
     Socket accepter;
     ServerEndpoint endpoint;
 

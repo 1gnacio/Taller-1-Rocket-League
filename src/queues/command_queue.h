@@ -16,8 +16,6 @@ public:
     virtual void push(Command& command);
 
     virtual Command pop();
-
-    bool isEmpty();
 };
 
 #endif // COMMAND_QUEUE_H

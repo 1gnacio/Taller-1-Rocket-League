@@ -8,7 +8,7 @@
 Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1) {
 }
 
-int Car::getId() {
+int Car::getId() const {
     return this->id;
 }
 

@@ -1,24 +1,38 @@
 #ifndef SRC_LOGIC_GAMELOGIC_H_
 #define SRC_LOGIC_GAMELOGIC_H_
 
+#include <thread>
+#include <atomic>
 #include "boxLogic.h"
 #include "../protocolo/commands/command.h"
 #include "../protocolo/responses/response.h"
 #include "game.h"
+#include "../src/queues/block_queues/command_blocking_queue.h"
 
 class GameLogic {
  private:
+    int commandCount;
     BoxLogic gamePhysics;
     Game game;
+    CommandQueue commandQueue;
+    std::thread updateModelHandler;
 
- public:
-    GameLogic();
+private:
+    void updateModel();
+
+public:
+    explicit GameLogic(int ownerId, const char* name);
     bool withoutPlayers;
-    void updateModel(Command &command);
-    void updateTime();
     Response getResponse();
     float getCarData(int carNumber, int key);
     float playersAmount();
+    bool hasPlayer(int id);
+    std::string getName() { return this->game.getName(); };
+    void addPlayer(int id) { this->gamePhysics.addPlayer(id); };
+    void removePlayer(int id) { this->gamePhysics.removePlayer(id); };
+    void push(Command &command) { this->commandQueue.push(command); };
+
+    ~GameLogic();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

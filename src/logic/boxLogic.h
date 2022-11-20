@@ -28,6 +28,8 @@ class BoxLogic {
     BoxLogic();
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void addPlayer(int id);  // Tendra atributo para saber el equipo
+    bool hasPlayer(int id);
+    void removePlayer(int id) { /*TODO*/ }
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
