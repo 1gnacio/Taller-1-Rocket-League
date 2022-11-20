@@ -53,6 +53,5 @@ LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
     if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH)
         return std::move(this->leaveRoom(command.getID(),
                                          command.getFirstParameter().c_str()));
-
     return std::move(this->listRooms(command.getID()));
 }

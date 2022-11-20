@@ -12,23 +12,22 @@ updateModelHandler(std::thread(&GameLogic::updateModel, this)) {
     this->gamePhysics.addPlayer(ownerId);
 }
 
+void GameLogic::updateTime() {
+    gamePhysics.updateTime();
+}
+
 void GameLogic::updateModel() {
+    this->commandCount = 0;
     while (this->isStarted) {
-        Command command = this->commandQueue.pop();
-
-        //std::cout << "llega un comando de " << command.getValue() << std::endl;
-        /*if (this->withoutPlayers == 0) {
-            this->gamePhysics.addPlayer(command.getID());
-            withoutPlayers = 1;
-        }*/
-        this->gamePhysics.applyLogic(command);
-
-        this->commandCount++;
-
-        if (this->commandCount > 50) {
-            this->gamePhysics.updateTime();
-            this->commandCount = 0;
+        commandCount = 0;
+        while(!commandQueue.empty() && commandCount < 50) {
+            Command command = this->commandQueue.pop();
+            std::cout << "llega un comando de " << command.getValue() << std::endl;
+            this->gamePhysics.applyLogic(command);
+            commandCount++;
         }
+        //this->gamePhysics.updateTime();
+
     }
 }
 

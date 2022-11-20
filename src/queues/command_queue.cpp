@@ -14,7 +14,11 @@ Command CommandQueue::pop() {
         commands.pop();
         return c;
     }
-
     // TODO que comando deberia devolver la cola si no hay comandos?
-    return {0, 0, "NOP"};
+    //return {0, 0, "NOP"};
+}
+
+bool CommandQueue::empty() {
+    std::lock_guard<std::mutex> l(this->mutex);
+    return (commands.empty());
 }

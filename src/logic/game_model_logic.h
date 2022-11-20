@@ -18,6 +18,7 @@ public:
     void updateModel(Command &command, bool lobbyStatus);
     MatchResponses getResponses();
 
+    void updateTime();
 };
 
 

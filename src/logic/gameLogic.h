@@ -15,7 +15,7 @@ class GameLogic {
     int commandCount;
     BoxLogicMonitor gamePhysics;
     Game game;
-    CommandBlockingQueue commandQueue;
+    CommandQueue commandQueue;
     std::thread updateModelHandler;
 
 private:
@@ -34,6 +34,8 @@ public:
     void push(Command &command) { this->commandQueue.push(command); };
 
     ~GameLogic();
+
+    void updateTime();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "game_model_logic.h"
+#include <iostream>
 
 GameModelLogic::GameModelLogic() :
 gamesLogic(),
@@ -23,7 +24,10 @@ actionCommands({
         this->commands.DESERIALIZED_TURBO_PUSHED,
         this->commands.DESERIALIZED_TURBO_RELEASE,
     }){}
-
+/*
+ * Busca la partida a partir de los ID.
+ * Si la encuentra, pushea a la cola de comandos de la partida el comando recibido.
+ */
 void GameModelLogic::updateModel(Command &command, bool lobbyStatusOk) {
     if (std::find(this->movementCommands.begin(),
                   this->movementCommands.end(),
@@ -36,7 +40,6 @@ void GameModelLogic::updateModel(Command &command, bool lobbyStatusOk) {
         if (match == this->gamesLogic.end()) {
             return;
         }
-
         (*match)->push(command);
     }
 
@@ -81,4 +84,11 @@ MatchResponses GameModelLogic::getResponses() {
     }
 
     return std::move(responses);
+}
+
+void GameModelLogic::updateTime() {
+    for (auto &logic : this->gamesLogic) {
+        logic->updateTime();
+    }
+
 }
