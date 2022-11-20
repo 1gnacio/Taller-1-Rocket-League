@@ -437,6 +437,10 @@ add_executable(game_server
         src/protocolo/responses/connected_clients.h
         src/protocolo/responses/action_result_response.cpp
         src/protocolo/responses/action_result_response.h
+        src/logic/game_model_logic.h
+        src/logic/game_model_logic.cpp
+        src/logic/box_logic_monitor.cpp
+        src/logic/box_logic_monitor.h
         )
 
 target_link_libraries(game_server box2d)

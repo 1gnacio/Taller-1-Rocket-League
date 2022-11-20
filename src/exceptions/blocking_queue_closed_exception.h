@@ -5,7 +5,7 @@
 
 class BlockingQueueClosedException : public std::exception {
 public:
-    explicit BlockingQueueClosedException() : {}
+    explicit BlockingQueueClosedException() = default;
 
     const char * what() {
         return "Queue has closed";

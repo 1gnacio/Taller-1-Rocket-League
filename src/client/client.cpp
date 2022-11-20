@@ -13,9 +13,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection)/*, my_lobby()*/{
-    addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
-}
+        isRunning(true), connection(connection) {}
 
 void Client::readStandardInput() {
     //TODO: opción para que el usurario pueda elegir las teclas.

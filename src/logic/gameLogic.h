@@ -3,16 +3,16 @@
 
 #include <thread>
 #include <atomic>
-#include "boxLogic.h"
 #include "../protocolo/commands/command.h"
 #include "../protocolo/responses/response.h"
 #include "game.h"
 #include "../src/queues/block_queues/command_blocking_queue.h"
+#include "box_logic_monitor.h"
 
 class GameLogic {
  private:
     int commandCount;
-    BoxLogic gamePhysics;
+    BoxLogicMonitor gamePhysics;
     Game game;
     CommandQueue commandQueue;
     std::thread updateModelHandler;
@@ -23,7 +23,7 @@ private:
 public:
     explicit GameLogic(int ownerId, const char* name);
     bool withoutPlayers;
-    Response getResponse();
+    MatchResponse getResponse();
     float getCarData(int carNumber, int key);
     float playersAmount();
     bool hasPlayer(int id);

@@ -266,3 +266,10 @@ bool BoxLogic::hasPlayer(int id) {
                         [&id] (Car &car)
                         { return car.getId() == id; }) != this->cars.end();
 }
+
+BallResponse BoxLogic::getBallResponse() {
+    return {this->getBallData(LogicValues().POS_X),
+            this->getBallData(LogicValues().POS_Y),
+            this->getBallData(LogicValues().ANGLE),
+            false, false, false};
+}

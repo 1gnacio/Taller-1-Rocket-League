@@ -12,6 +12,7 @@ public:
     void addRoom(RoomResponse &room);
     explicit RoomResponses(std::vector<unsigned char> &serialized);
     std::vector<unsigned char> serialize();
+    std::vector<RoomResponse> getRoomResponses();
 };
 
 

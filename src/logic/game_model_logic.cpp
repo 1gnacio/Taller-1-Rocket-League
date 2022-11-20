@@ -24,7 +24,7 @@ actionCommands({
         this->commands.DESERIALIZED_TURBO_RELEASE,
     }){}
 
-void GameModelLogic::updateModel(Command &command) {
+void GameModelLogic::updateModel(Command &command, bool lobbyStatusOk) {
     if (std::find(this->movementCommands.begin(),
                   this->movementCommands.end(),
                   command.getValue()) != this->movementCommands.end()) {
@@ -42,31 +42,43 @@ void GameModelLogic::updateModel(Command &command) {
 
     if (std::find(this->actionCommands.begin(),
                   this->actionCommands.end(),
-                  command.getValue()) != this->movementCommands.end()) {
-        this->applyMatchLogic(command);
+                  command.getValue()) != this->movementCommands.end()
+                  && lobbyStatusOk) {
+        this->applyMatchAction(command);
     }
 }
 
-void GameModelLogic::applyMatchLogic(Command &command) {
+void GameModelLogic::applyMatchAction(Command &command) {
     if (command.getValue() == this->commands.DESERIALIZED_CREATE) {
         this->gamesLogic.emplace_back(std::make_unique<GameLogic>(command.getID(), command.getSecondParameter().c_str()));
     }
 
-    auto match = std::find_if(this->gamesLogic.begin(),
-                              this->gamesLogic.end(),
-                              [&command] (GameLogic &logic)
-                              { return logic.getName() == command.getFirstParameter(); });
-
-    bool matchFound = match != this->gamesLogic.end();
-
-    if (command.getValue() == this->commands.DESERIALIZED_JOIN &&
-        matchFound) {
-        (*match)->addPlayer(command.getID());
+    if (command.getValue() == this->commands.DESERIALIZED_JOIN) {
+        auto match = std::find_if(this->gamesLogic.begin(),
+                                  this->gamesLogic.end(),
+                                  [&command] (std::unique_ptr<GameLogic> &logic)
+                                  { return logic->getName() == command.getFirstParameter(); });
+        if (match != this->gamesLogic.end()) {
+            (*match)->addPlayer(command.getID());
+        }
     }
 
     if ((command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH ||
-        command.getValue() == this->commands.DESERIALIZED_QUIT_GAME) &&
-        matchFound) {
+        command.getValue() == this->commands.DESERIALIZED_QUIT_GAME)) {
+        auto match = std::find_if(this->gamesLogic.begin(),
+                                  this->gamesLogic.end(),
+                                  [&command] (std::unique_ptr<GameLogic> &logic)
+                                  { return logic->hasPlayer(command.getID()); });
         (*match)->removePlayer(command.getID());
     }
+}
+
+MatchResponses GameModelLogic::getResponses() {
+    MatchResponses responses;
+    for (auto &logic : this->gamesLogic) {
+        MatchResponse response = logic->getResponse();
+        responses.addResponse(response);
+    }
+
+    return std::move(responses);
 }

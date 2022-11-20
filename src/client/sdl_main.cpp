@@ -34,7 +34,9 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
     //TODO falta obtener el resto de la info.
-
+    if (response.getMatchResponses().size() == 0) {
+        return;
+    }
     for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
         int car_y = convert.toPixels(player.getPosY(), renderer.GetOutputHeight());

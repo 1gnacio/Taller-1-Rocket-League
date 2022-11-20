@@ -10,12 +10,15 @@ private:
     std::mutex mutex;
     BoxLogic gamePhysics;
 public:
-    MatchResponse getResponse();
+    void updateTime();
+    BallResponse getBallResponse();
+    PlayerResponses getPlayerResponses();
     float getCarData(int carNumber, int key);
     float playersAmount();
     bool hasPlayer(int id);
     void addPlayer(int id);
     void removePlayer(int id);
+    void applyLogic(Command &command);
 };
 
 

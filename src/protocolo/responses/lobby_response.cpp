@@ -52,3 +52,7 @@ LobbyResponse::LobbyResponse(RoomResponses &rooms, ActionResultResponse &result)
 : rooms(rooms), actionResult(result) {}
 
 LobbyResponse::LobbyResponse(ActionResultResponse &actionResult) : rooms(), actionResult(actionResult) {}
+
+std::vector<RoomResponse> LobbyResponse::roomResponses() {
+    return this->rooms.getRoomResponses();
+}

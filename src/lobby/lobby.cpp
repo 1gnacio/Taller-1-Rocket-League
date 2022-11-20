@@ -43,8 +43,12 @@ void lobby::on_pushButton_join_clicked()
 {   //TODO UNIR
     hide();
     if (currSelectedGame.size()) {
-        //protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
-        //std::cout << protocolo.receiveResponse() << std::endl;
+        std::string value = CommandValues().DESERIALIZED_JOIN;
+        std::string parameter = currSelectedGame.toStdString();
+        Command command = ProtocolCommands().createCommand(this->connection.getId(),
+                                                           value,
+                                                           parameter);
+        this->connection.push(command);
         on_pushButton_refresh_clicked();
         currSelectedGame.clear();
     }
@@ -56,18 +60,24 @@ void lobby::on_pushButton_join_clicked()
 
 void lobby::on_pushButton_refresh_clicked()
 {   //TODO LISTAR
-    //protocolo.sendActions("LISTAR");
+    std::string value = CommandValues().DESERIALIZED_LIST;
+    Command command = ProtocolCommands().createCommand(this->connection.getId(), value);
+    this->connection.push(command);
+    Response r = this->connection.pop();
+    std::vector<RoomResponse> rooms = r.getRoomResponses();
+
     std::string name_str, players_str;
-    std::istringstream input_stream(/*protocolo.receiveResponse()*/"");
-    //int i = 1;
     model.removeRows(0, model.rowCount());
-    //FIXME: hay que usar el protocolo nuevo
-    while (input_stream >> name_str) {
-        input_stream >> players_str;
-        // Fijarse si se puede sacar lo de new.
-        QStandardItem *name = new QStandardItem(QString::fromStdString(name_str));
-        QStandardItem *players = new QStandardItem(QString::fromStdString(players_str));
-        QStandardItem *status = new QStandardItem("-------");
+
+    for (auto& room : rooms) {
+        std::string statusText = "Comenzada";
+
+        if (room.getWaitingForPlayers()) {
+            statusText = "Esperando jugadores";
+        }
+        QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
+        QStandardItem *players = new QStandardItem(QString::fromStdString(std::to_string(room.getCurrentPlayers())));
+        QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
         model.appendRow( QList<QStandardItem*>() << name << status << players);
     }
 }
@@ -84,6 +94,14 @@ void lobby::on_pushButton_createGame_clicked()
 {
     hide();
     //TODO CREAR
+    std::string value = CommandValues().DESERIALIZED_CREATE;
+    std::string firstParameter = std::to_string(maxPlayers);
+    std::string secondParameter = currSelectedGame.toStdString();
+    Command command = ProtocolCommands().createCommand(this->connection.getId(),
+                                                       value,
+                                                       firstParameter,
+                                                       secondParameter);
+    this->connection.push(command);
     on_pushButton_refresh_clicked();
     _client.run();
     show();

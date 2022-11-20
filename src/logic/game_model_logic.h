@@ -12,12 +12,11 @@ private:
     std::vector<std::string> actionCommands;
     std::vector<std::string> movementCommands;
 
-    void applyMatchLogic(Command &command);
+    void applyMatchAction(Command &command);
 public:
     GameModelLogic();
-    void updateModel(Command &command);
-    Response getResponse();
-    void updateTime();
+    void updateModel(Command &command, bool lobbyStatus);
+    MatchResponses getResponses();
 
 };
 
