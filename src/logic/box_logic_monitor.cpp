@@ -37,8 +37,7 @@ void BoxLogicMonitor::updateTime() {
     this->gamePhysics.updateStatus();
 }
 
-float BoxLogicMonitor::playersAmount() {
-    std::lock_guard<std::mutex> lock(mutex);
+int BoxLogicMonitor::playersAmount() {
     return this->gamePhysics.playersAmount();
 }
 

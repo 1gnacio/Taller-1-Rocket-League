@@ -13,7 +13,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection) {}
+        isRunning(false), connection(connection) {}
 
 void Client::readStandardInput() {
     //TODO: opción para que el usurario pueda elegir las teclas.
@@ -84,14 +84,19 @@ void Client::readStandardInput() {
 }
 
 void Client::run() {
+    this->isRunning = true;
     sdl_handler.showWindow();
     std::thread standardInput(&Client::readStandardInput, this);
+    MatchResponse realMatch(true);
 
     while (this->isRunning) {
         Response response = this->connection.pop();
-        sdl_handler.updateScreen(response);
+        MatchResponse match = response.getMatchResponseByClientId(this->connection.getId());
+        if (!match.isDummy()) {
+            realMatch = match;
+        }
+        sdl_handler.updateScreen(realMatch);
         sdl_handler.renderScreen();
-        SDL_Delay(5);   //TODO: ver
     }
 
     standardInput.join();

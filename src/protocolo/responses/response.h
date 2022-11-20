@@ -32,6 +32,7 @@ public:
     void addLobbyResponse(LobbyResponse &response);
     float getBallPositionY();
     std::vector<RoomResponse> getRoomResponses();
+    MatchResponse getMatchResponseByClientId(int id);
 
     int getActionId();
 };

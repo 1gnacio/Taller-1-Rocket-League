@@ -68,3 +68,7 @@ std::vector<RoomResponse> Response::getRoomResponses() {
 int Response::getActionId() {
     return this->lobbyResponse.getActionId();
 }
+
+MatchResponse Response::getMatchResponseByClientId(int id) {
+    return std::move(this->getMatchResponses().getMatchResponseByClientId(id));
+}

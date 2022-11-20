@@ -20,6 +20,8 @@ public:
 
     void addResponse(MatchResponse &response);
     MatchResponse getMatchResponse();
+
+    MatchResponse getMatchResponseByClientId(int id);
 };
 
 

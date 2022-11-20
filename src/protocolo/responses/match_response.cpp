@@ -1,4 +1,5 @@
 #include <utility>
+#include <algorithm>
 #include "match_response.h"
 
 std::vector<unsigned char> MatchResponse::serialize() {
@@ -161,3 +162,9 @@ int MatchResponse::getVisitorsGoals() {
 int MatchResponse::getTime() {
     return time_insec;
 }
+
+bool MatchResponse::hasPlayer(int id) {
+    return this->players.hasPlayer(id);
+}
+
+MatchResponse::MatchResponse(bool dummy) : dummy(dummy) {}

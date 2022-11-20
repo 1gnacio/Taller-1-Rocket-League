@@ -32,27 +32,26 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 }
 
 #ifndef SDL_TESTING
-void sdl_main::updateScreen(Response& response) {
+void sdl_main::updateScreen(MatchResponse& response) {
     //TODO falta obtener el resto de la info.
-    if (response.getMatchResponses().size() == 0) {
-        return;
-    }
-    for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
+    for (auto &player: response.getPlayersResponse().getPlayers()) {
+        players.clear();
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
         int car_y = convert.toPixels(player.getPosY(), renderer.GetOutputHeight());
         double car_angle = convert.toDegrees(player.getRotationAngle());
+        players.emplace_back(renderer);
         //TODO ver como crear mas jugadores
         players.back().update(car_x, car_y, car_angle, FRAME_RATE, player.accelerating(), player.flying(), player.onTurbo());
     }
 
-    int ball_x = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosX(), renderer.GetOutputWidth());
-    int ball_y = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosY(), renderer.GetOutputHeight());
-    double ball_angle = convert.toDegrees(response.getMatchResponses().getMatchResponse().getBall().getRotationAngle());
+    int ball_x = convert.toPixels(response.getBall().getPosX(), renderer.GetOutputWidth());
+    int ball_y = convert.toPixels(response.getBall().getPosY(), renderer.GetOutputHeight());
+    double ball_angle = convert.toDegrees(response.getBall().getRotationAngle());
     //int ball_radius = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().g)
     ball.update(ball_x, ball_y, ball_angle, 20);
-    int local_goals= response.getMatchResponses().getMatchResponse().getLocalGoals();
-    int visitors_goals=response.getMatchResponses().getMatchResponse().getVisitorsGoals();
-    int time = response.getMatchResponses().getMatchResponse().getTime();
+    int local_goals= response.getLocalGoals();
+    int visitors_goals=response.getVisitorsGoals();
+    int time = response.getTime();
     scoreboard.update(format_duration((std::chrono::milliseconds)time *1000),local_goals,visitors_goals);
 }
 #endif

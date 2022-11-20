@@ -24,8 +24,9 @@ private:
     bool isGoalLocal;
     bool isGoalVisitor;
     bool activeReplay;
+    bool dummy = false;
 public:
-
+    MatchResponse(bool dummy);
     MatchResponse(int goalsLocal,
                   int goalsVisitor,
                   int time_insec,
@@ -56,6 +57,8 @@ public:
     int getTime();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
+    bool hasPlayer(int id);
+    bool isDummy() {return this->dummy; };
 };
 
 

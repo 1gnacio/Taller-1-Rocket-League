@@ -23,6 +23,8 @@ public:
     PlayerResponse getPlayer();
     std::vector<PlayerResponse> getPlayers();
     [[nodiscard]] static int getSize(int count) { return count * PlayerResponse::size(); };
+
+    bool hasPlayer(int id);
 };
 
 

@@ -53,9 +53,9 @@ void lobby::on_pushButton_join_clicked()
         currSelectedGame.clear();
         Response r = this->connection.pop();
 
-        while (r.getActionId() != this->connection.getId()) {
-            r = this->connection.pop();
-        }
+//        while (r.getActionId() != this->connection.getId()) {
+//            r = this->connection.pop();
+//        }
 
         std::vector<RoomResponse> rooms = r.getRoomResponses();
 

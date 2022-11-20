@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <stdexcept>
 #include "match_responses.h"
 
 MatchResponses::MatchResponses(std::vector<MatchResponse> &responses) : matches(responses) {}
@@ -73,4 +75,18 @@ void MatchResponses::addResponse(MatchResponse& response) {
 
 MatchResponse MatchResponses::getMatchResponse() {
     return matches.back();
+}
+
+MatchResponse MatchResponses::getMatchResponseByClientId(int id) {
+    auto found = std::find_if(this->matches.begin(),
+                              this->matches.end(),
+                              [&id](MatchResponse &match)
+                              { return match.hasPlayer(id); });
+
+    if (found == this->matches.end()) {
+        MatchResponse dummyResponse(true);
+        return std::move(dummyResponse);
+    }
+
+    return *found;
 }

@@ -14,7 +14,7 @@ public:
     BallResponse getBallResponse();
     PlayerResponses getPlayerResponses();
     float getCarData(int carNumber, int key);
-    float playersAmount();
+    int playersAmount();
     bool hasPlayer(int id);
     void addPlayer(int id);
     void removePlayer(int id);

@@ -20,22 +20,19 @@ void GameLogic::updateModel() {
     this->commandCount = 0;
     while (this->isStarted) {
         commandCount = 0;
-        while(!commandQueue.empty() && commandCount < 50) {
+        while(!commandQueue.empty() && commandCount < 2 * this->gamePhysics.playersAmount()) {
             Command command = this->commandQueue.pop();
             std::cout << "llega un comando de " << command.getValue() << std::endl;
             this->gamePhysics.applyLogic(command);
             commandCount++;
         }
-        //this->gamePhysics.updateTime();
+        this->gamePhysics.updateTime();
 
     }
 }
 
 float GameLogic::getCarData(int carNumber, int key) {
     return gamePhysics.getCarData(carNumber, key);
-}
-float GameLogic::playersAmount() {
-    return gamePhysics.playersAmount();
 }
 
 MatchResponse GameLogic::getResponse() {
