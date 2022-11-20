@@ -26,7 +26,7 @@ void GameLogic::updateModel() {
             this->gamePhysics.applyLogic(command);
             commandCount++;
         }
-        this->gamePhysics.updateTime();
+       // this->gamePhysics.updateTime();
 
     }
 }
@@ -50,4 +50,8 @@ bool GameLogic::hasPlayer(int id) {
 GameLogic::~GameLogic() {
     this->isStarted = false;
     this->updateModelHandler.join();
+}
+
+int GameLogic::playersAmount() {
+    return gamePhysics.playersAmount();
 }

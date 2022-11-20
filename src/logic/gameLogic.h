@@ -26,7 +26,7 @@ public:
     bool withoutPlayers;
     MatchResponse getResponse();
     float getCarData(int carNumber, int key);
-    float playersAmount();
+    int playersAmount();
     bool hasPlayer(int id);
     std::string getName() { return this->game.getName(); };
     void addPlayer(int id) { this->gamePhysics.addPlayer(id); };

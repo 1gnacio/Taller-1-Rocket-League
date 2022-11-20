@@ -1,6 +1,6 @@
 #include "lobby.h"
 #include "./ui_lobby.h"
-#include "src/constants/response_values.h"
+#include "../src/constants/response_values.h"
 #include <string>
 #include <sstream>
 

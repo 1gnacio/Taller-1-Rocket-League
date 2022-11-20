@@ -6,7 +6,7 @@
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
 #include "../src/constants/response_values.h"
-
+#include "unistd.h"
 
 // hilos:
 // uno que se queda esperando la 'q' de entrada estandar (hilo principal)
@@ -69,9 +69,10 @@ void Server::gameFlow(){
             if (command.getValue() != CommandValues().DESERIALIZED_NOP) {
                 logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
             }
-            //logic.updateTime();
+            logic.updateTime();
             MatchResponses matches = this->logic.getResponses();
             Response response(lobby, matches);
+            usleep((1/25)*1000000);
             endpoint.push(response);
         }
     } catch (...) {
