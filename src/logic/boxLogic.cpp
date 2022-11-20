@@ -4,6 +4,7 @@
 #include <time.h>
 #include "car.h"
 #include <iostream>
+#include <algorithm>
 
 BoxLogic::BoxLogic():
     isActive(true) {
@@ -272,4 +273,21 @@ BallResponse BoxLogic::getBallResponse() {
             this->getBallData(LogicValues().POS_Y),
             this->getBallData(LogicValues().ANGLE),
             false, false, false};
+}
+
+int BoxLogic::getPositionVectorCar(int id) {
+    int pos = 0;
+    for(auto &x : cars) {
+        if (x.getId() == id)
+            return pos;
+        else
+            pos++;
+    }
+    return pos;
+
+}
+
+void BoxLogic::removePlayer(int id) {
+    int pos = getPositionVectorCar(id);
+    cars.erase(cars.begin() + pos, cars.begin() + pos+1);
 }

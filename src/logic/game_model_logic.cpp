@@ -82,7 +82,6 @@ MatchResponses GameModelLogic::getResponses() {
         MatchResponse response = logic->getResponse();
         responses.addResponse(response);
     }
-
     return std::move(responses);
 }
 

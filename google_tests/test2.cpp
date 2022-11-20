@@ -198,3 +198,11 @@ TEST(response, RespuestaCorrecta) {
     BallResponse response = logic.getBallResponse();
     EXPECT_TRUE(response.getPosY() > -2.8); // PosY inicial pelota
 }
+
+TEST(physics, SeEliminaAutoCorrectamente) {
+    BoxLogic physics;
+    physics.addPlayer(PLAYER_ID);
+    //update(physics,100);
+    physics.removePlayer(PLAYER_ID);
+    EXPECT_EQ(physics.playersAmount(), 0);
+}
