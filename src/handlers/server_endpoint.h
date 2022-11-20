@@ -24,6 +24,8 @@ public:
 
     Command pop();
 
+    bool queueEmpty();
+
     void cleanFinishedConnections();
 
     void stopConnections();

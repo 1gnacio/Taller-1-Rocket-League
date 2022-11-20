@@ -54,3 +54,7 @@ ServerEndpoint::~ServerEndpoint() {
     this->isActive = false;
     this->sender.join();
 }
+
+bool ServerEndpoint::queueEmpty() {
+    return receivedCommands.empty();
+}

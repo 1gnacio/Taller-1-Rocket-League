@@ -64,14 +64,18 @@ void Server::startHandler(Socket &socket) {
 void Server::gameFlow(){
     try {
         while(!this->isClosed) {
-            Command command = endpoint.pop();
-            LobbyResponse lobby = monitor.applyLogic(command);
-            logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
+            LobbyResponse lobby;
+            if(!endpoint.queueEmpty()){
+                Command command = endpoint.pop();
+                lobby = monitor.applyLogic(command);
+                logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
+            }
             MatchResponses matches = this->logic.getResponses();
             Response response(lobby, matches);
             if (response.getMatchResponses().size() > 0) {
                 endpoint.push(response);
             }
+            logic.updateTime();
         }
     } catch (...) {
         throw;
