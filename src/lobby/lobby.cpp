@@ -1,5 +1,6 @@
 #include "lobby.h"
 #include "./ui_lobby.h"
+#include "src/constants/response_values.h"
 #include <string>
 #include <sstream>
 
@@ -41,7 +42,6 @@ void lobby::on_pushButton_connect_clicked()
 
 void lobby::on_pushButton_join_clicked()
 {   //TODO UNIR
-    hide();
     if (currSelectedGame.size()) {
         std::string value = CommandValues().DESERIALIZED_JOIN;
         std::string parameter = currSelectedGame.toStdString();
@@ -51,10 +51,35 @@ void lobby::on_pushButton_join_clicked()
         this->connection.push(command);
         on_pushButton_refresh_clicked();
         currSelectedGame.clear();
-    }
+        Response r = this->connection.pop();
 
-    _client.run();
-    show();
+        while (r.getActionId() != this->connection.getId()) {
+            r = this->connection.pop();
+        }
+
+        std::vector<RoomResponse> rooms = r.getRoomResponses();
+
+        std::string name_str, players_str;
+        model.removeRows(0, model.rowCount());
+
+        for (auto& room : rooms) {
+            std::string statusText = "Comenzada";
+
+            if (room.getWaitingForPlayers()) {
+                statusText = "Esperando jugadores";
+            }
+            QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
+            QStandardItem *players = new QStandardItem(QString::fromStdString(std::to_string(room.getCurrentPlayers())));
+            QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
+            model.appendRow( QList<QStandardItem*>() << name << status << players);
+        }
+
+        if (r.getStatus() == ResponseValues().OK) {
+            hide();
+            _client.run();
+            show();
+        }
+    }
 }
 
 
@@ -92,7 +117,6 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    hide();
     //TODO CREAR
     std::string value = CommandValues().DESERIALIZED_CREATE;
     std::string firstParameter = std::to_string(maxPlayers);
@@ -102,9 +126,33 @@ void lobby::on_pushButton_createGame_clicked()
                                                        firstParameter,
                                                        secondParameter);
     this->connection.push(command);
-    on_pushButton_refresh_clicked();
-    _client.run();
-    show();
+    Response r = this->connection.pop();
+    while (r.getActionId() != this->connection.getId()) {
+        r = this->connection.pop();
+    }
+
+    std::vector<RoomResponse> rooms = r.getRoomResponses();
+
+    std::string name_str, players_str;
+    model.removeRows(0, model.rowCount());
+
+    for (auto& room : rooms) {
+        std::string statusText = "Comenzada";
+
+        if (room.getWaitingForPlayers()) {
+            statusText = "Esperando jugadores";
+        }
+        QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
+        QStandardItem *players = new QStandardItem(QString::fromStdString(std::to_string(room.getCurrentPlayers())));
+        QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
+        model.appendRow( QList<QStandardItem*>() << name << status << players);
+    }
+
+    if (r.getStatus() == ResponseValues().OK) {
+        hide();
+        _client.run();
+        show();
+    }
 }
 
 

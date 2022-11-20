@@ -22,6 +22,8 @@ public:
     std::string getStatus() { return actionResult.getStatus(); };
     std::string getMessage() { return actionResult.getMessage(); };
     std::vector<RoomResponse> roomResponses();
+
+    int getActionId();
 };
 
 

@@ -64,3 +64,7 @@ Response::Response(LobbyResponse &lobby, MatchResponses &matchResponses)
 std::vector<RoomResponse> Response::getRoomResponses() {
     return this->lobbyResponse.roomResponses();
 }
+
+int Response::getActionId() {
+    return this->lobbyResponse.getActionId();
+}

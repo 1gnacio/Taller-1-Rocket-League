@@ -56,3 +56,7 @@ LobbyResponse::LobbyResponse(ActionResultResponse &actionResult) : rooms(), acti
 std::vector<RoomResponse> LobbyResponse::roomResponses() {
     return this->rooms.getRoomResponses();
 }
+
+int LobbyResponse::getActionId() {
+    return this->actionResult.getId();
+}
