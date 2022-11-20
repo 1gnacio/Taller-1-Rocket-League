@@ -45,9 +45,7 @@ float BoxLogicMonitor::playersAmount() {
 void BoxLogicMonitor::applyLogic(Command &command) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    if (command.getValue() == CommandValues().DESERIALIZED_TURBO_RELEASE) {
-        this->gamePhysics.addPlayer(command.getID());
-    } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
+   if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_RELEASE ||

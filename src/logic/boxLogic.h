@@ -30,7 +30,7 @@ class BoxLogic {
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void addPlayer(int id);  // Tendra atributo para saber el equipo
     bool hasPlayer(int id);
-    void removePlayer(int id) { /*TODO*/ }
+    void removePlayer(int id);
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
@@ -61,6 +61,7 @@ class BoxLogic {
     void SoccerGoals();
 
     void createSoccerGoals();
+    int getPositionVectorCar(int id);
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_
