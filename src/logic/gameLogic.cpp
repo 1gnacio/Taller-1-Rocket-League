@@ -54,10 +54,15 @@ Response GameLogic::getResponse() {
     PlayerResponses players = gamePhysics.getPlayersData();
 
     std::vector<MatchResponse> matchs;
-    matchs.emplace_back(MatchResponse(this->game.response(ball, players)));
+    matchs.emplace_back(MatchResponse(gamePhysics.gameData(ball, players)));
 
     MatchResponses matches(matchs);
 
     Response response(matches);
     return std::move(response);
+}
+
+void GameLogic::resetData() {
+    gamePhysics.resetData();
+
 }

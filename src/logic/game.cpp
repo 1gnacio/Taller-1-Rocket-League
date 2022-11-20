@@ -22,3 +22,24 @@ MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
                          isWaitingForPlayers, hasFinished, isGoalLocal,
                          isGoalVisitor, activeReplay);
 }
+
+void Game::updateGame(int teamGoal) {
+    if(teamGoal == 1) {
+        isGoalLocal = 1;
+        goalsLocal++;
+    } else if(teamGoal == 2) {
+        isGoalVisitor = 1;
+        goalsVisitor++;
+    }
+
+}
+
+bool Game::goal() {
+
+    return (isGoalLocal || isGoalVisitor);
+}
+
+void Game::resetData() {
+    isGoalVisitor = 0;
+    isGoalLocal = 0;
+}

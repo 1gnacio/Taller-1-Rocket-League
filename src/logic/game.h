@@ -23,6 +23,12 @@ class Game {
  public:
     Game();
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
+
+    void updateGame(int i);
+
+    bool goal();
+
+    void resetData();
 };
 
 #endif  // SRC_LOGIC_GAME_H_

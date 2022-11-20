@@ -4,6 +4,7 @@
 
 #include "car.h"
 #include <iostream>
+#include "../../src/constants/logic_values.h"
 
 Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1) {
 }
@@ -114,4 +115,9 @@ void Car::applyTurbo() {
         carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
    }
 
+}
+
+void Car::resetPosition() {
+    carBody->SetTransform(b2Vec2(2.0f, -2.0f), LogicValues().ANGLE_CAR);
+    carBody->SetLinearVelocity(b2Vec2(0,0));
 }

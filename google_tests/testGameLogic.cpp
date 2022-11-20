@@ -61,7 +61,7 @@ TEST(logic, elAutoSaltaCorrectamente) {
 
     EXPECT_TRUE(logic.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) == 0);
     deserialized = CommandValues().DESERIALIZED_JUMP_PUSHED;
-    c = makeCommands.createCommand(1, deserialized);
+    c = makeCommands.createCommand(PLAYER_ID, deserialized);
     logic.updateModel(c);
     update(logic, 1);
 

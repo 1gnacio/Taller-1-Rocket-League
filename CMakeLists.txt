@@ -228,6 +228,8 @@ add_executable(lobby
         src/protocolo/responses/room_response.h
         src/protocolo/responses/connected_clients.cpp
         src/protocolo/responses/connected_clients.h
+        src/protocolo/responses/action_result_response.cpp
+        src/protocolo/responses/action_result_response.h
         )
 
 target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d)

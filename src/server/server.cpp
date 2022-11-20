@@ -63,6 +63,7 @@ void Server::startHandler(Socket &socket) {
 void Server::gameFlow(){
     try {
         while(!this->isClosed) {
+            logic.resetData();
             Response lastResponse;
             int limitCommands = 0;
             while(!endpoint.queueEmpty() && limitCommands <= 50){

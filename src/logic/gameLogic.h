@@ -9,7 +9,7 @@
 class GameLogic {
  private:
     BoxLogic gamePhysics;
-    Game game;
+    // Game game;
 
  public:
     GameLogic();
@@ -19,6 +19,8 @@ class GameLogic {
     Response getResponse();
     float getCarData(int carNumber, int key);
     float playersAmount();
+
+    void resetData();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

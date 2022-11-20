@@ -9,12 +9,13 @@
 #include "car.h"
 #include "SoccerGoal.h"
 #include <memory>
-
+#include "game.h"
 // Clase de la logica que contiene todos los movimientos de box2d
 
 class BoxLogic {
  private:
     bool isActive;
+    Game game;
     b2Body* ball;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
@@ -54,9 +55,16 @@ class BoxLogic {
     void verifyDoubleJump();
     void verifyTurbo();
 
-    void SoccerGoals();
+    void verifyGoal();
+    void resetPositions();
+
+    MatchResponse gameData(BallResponse &ball, PlayerResponses &players);
 
     void createSoccerGoals();
+
+    void updateGoal();
+
+    void resetData();
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

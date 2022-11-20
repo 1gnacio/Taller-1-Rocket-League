@@ -241,6 +241,11 @@ PlayerResponses BoxLogic::getPlayersData() {
 void BoxLogic::updateStatus() {
     verifyDoubleJump();
     verifyTurbo();
+    verifyGoal();
+}
+void BoxLogic::verifyGoal() {
+    this->updateGoal();
+    this->resetPositions();
 }
 
 void BoxLogic::verifyDoubleJump() {
@@ -257,4 +262,42 @@ void BoxLogic::verifyTurbo() {
 
 void BoxLogic::applyTurbo(int carNumber) {
     getCar(carNumber)->applyTurbo();
+}
+
+/*
+ * teamGoal = 0 -> No hay goles
+ * teamGoal = 1 -> Gol Local
+ * teamGoal = 2 -> Gol visitante
+ */
+void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
+    int teamGoal = 0;
+
+    if((getData(LogicValues().POS_X,ball) > 3.3) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
+        teamGoal = 2;
+    } else if ((getData(LogicValues().POS_X,ball) < (-3.3)) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
+        teamGoal = 1;
+    }
+    game.updateGame(teamGoal);
+}
+
+void BoxLogic::resetPositions() {
+    if(game.goal()) {
+        for (auto &x : cars) {
+            x.resetPosition();
+        }
+        ball->SetLinearVelocity(b2Vec2(0,0));
+        ball->SetTransform(b2Vec2(0, -2.8f),0);
+
+    }
+
+}
+
+MatchResponse BoxLogic::gameData(BallResponse &ball, PlayerResponses &players) {
+
+    return (game.response(ball, players));
+}
+
+void BoxLogic::resetData() {
+    game.resetData();
+
 }

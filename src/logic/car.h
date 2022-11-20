@@ -62,6 +62,8 @@ class Car {
     b2Vec2 getVelocity();
 
     int getId();
+
+    void resetPosition();
 };
 
 
