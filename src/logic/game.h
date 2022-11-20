@@ -21,7 +21,8 @@ class Game {
     bool isGoalVisitor;
     bool activeReplay;
  public:
-    Game();
+    explicit Game(const char *name);
+    std::string getName() {return this->name; };
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
 };
 

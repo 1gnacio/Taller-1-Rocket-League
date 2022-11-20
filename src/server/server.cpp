@@ -5,6 +5,7 @@
 #include "server.h"
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
+#include "../src/constants/response_values.h"
 
 
 // hilos:
@@ -63,20 +64,14 @@ void Server::startHandler(Socket &socket) {
 void Server::gameFlow(){
     try {
         while(!this->isClosed) {
-            Response lastResponse;
-            int limitCommands = 0;
-            while(!endpoint.queueEmpty() && limitCommands <= 50){
-                Command command = endpoint.pop();
-                lastResponse = logic.getResponse();
-                LobbyResponse lobby = monitor.applyLogic(command);
-                lastResponse.addLobbyResponse(lobby);
-                logic.updateModel(command);
-                limitCommands++;
-                endpoint.push(lastResponse);
+            Command command = endpoint.pop();
+            LobbyResponse lobby = monitor.applyLogic(command);
+            logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
+            MatchResponses matches = this->logic.getResponses();
+            Response response(lobby, matches);
+            if (response.getMatchResponses().size() > 0) {
+                endpoint.push(response);
             }
-            logic.updateTime();
-            //std::cout << "Actualizo el tiempo en box2d" << std::endl;
-            endpoint.push(logic.getResponse());
         }
     } catch (...) {
         throw;

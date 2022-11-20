@@ -26,6 +26,10 @@ public:
     explicit RoomResponse(std::vector<unsigned char> &serialized);
     std::vector<unsigned char> serialize();
     void addClient(int id);
+    std::string getName() { return this->name; };
+    int getCurrentPlayers() { return this->currentPlayers; };
+    bool getWaitingForPlayers() { return this->waitingPlayers; };
+
 };
 
 

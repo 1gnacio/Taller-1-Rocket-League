@@ -3,7 +3,7 @@
 #include "../protocolo/responses/ball_response.h"
 #include "../protocolo/responses/player_responses.h"
 
-Game::Game(): name("juego"),
+Game::Game(const char* name): name(name),
               time_inSec(0),
               goalsLocal(0),
               goalsVisitor(0),

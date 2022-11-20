@@ -4,6 +4,10 @@
 #include "match_responses.h"
 
 Response::Response(std::vector<unsigned char> &serializedResponse) : serializer() {
+    if (serializedResponse.empty()) {
+        return;
+    }
+
     int lobbySize = 0;
     int matchesSize = 0;
     int begin = 0;
@@ -53,3 +57,10 @@ float Response::getBallPositionY() {
 }
 
 Response::Response(LobbyResponse &lobby) : matchResponses(), lobbyResponse(lobby) {}
+
+Response::Response(LobbyResponse &lobby, MatchResponses &matchResponses)
+: lobbyResponse(lobby), matchResponses(matchResponses) {}
+
+std::vector<RoomResponse> Response::getRoomResponses() {
+    return this->lobbyResponse.roomResponses();
+}

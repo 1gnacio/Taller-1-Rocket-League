@@ -47,3 +47,7 @@ void RoomResponses::addRoom(RoomResponse &room) {
 }
 
 RoomResponses::RoomResponses(std::vector<RoomResponse> &rooms) : rooms(std::move(rooms)) {}
+
+std::vector<RoomResponse> RoomResponses::getRoomResponses() {
+    return this->rooms;
+}

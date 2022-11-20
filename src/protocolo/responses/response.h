@@ -18,6 +18,7 @@ private:
     MatchResponses matchResponses;
 public:
     Response();
+    Response(LobbyResponse &lobby, MatchResponses &matchResponses);
     Response(std::vector<unsigned char> &serializedResponse);
     Response(MatchResponses &matchResponses);
     Response(LobbyResponse &lobby);
@@ -30,6 +31,7 @@ public:
     MatchResponses getMatchResponses();
     void addLobbyResponse(LobbyResponse &response);
     float getBallPositionY();
+    std::vector<RoomResponse> getRoomResponses();
 };
 
 

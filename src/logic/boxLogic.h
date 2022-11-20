@@ -8,6 +8,7 @@
 #include "../protocolo/responses/player_responses.h"
 #include "car.h"
 #include "SoccerGoal.h"
+#include "../src/protocolo/responses/match_response.h"
 #include <memory>
 
 // Clase de la logica que contiene todos los movimientos de box2d
@@ -28,6 +29,8 @@ class BoxLogic {
     BoxLogic();
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void addPlayer(int id);  // Tendra atributo para saber el equipo
+    bool hasPlayer(int id);
+    void removePlayer(int id) { /*TODO*/ }
     void update(Command &command);
     void update();
     b2Vec2 getGravity();
@@ -47,6 +50,7 @@ class BoxLogic {
     float getBallData(int key);
     float getCarData(int carNumber, int key);
     PlayerResponses getPlayersData();
+    BallResponse getBallResponse();
 
     Car* getCar(int carNumber);
     static b2Vec2 getVectorForce(int direction);

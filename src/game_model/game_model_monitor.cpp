@@ -1,6 +1,4 @@
-#include <stdexcept>
 #include <utility>
-#include <numeric>
 #include "game_model_monitor.h"
 #include "../src/constants/response_values.h"
 
@@ -43,9 +41,6 @@ LobbyResponse GameModelMonitor::leaveRoom(int id, const char *name) {
 }
 
 LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
-    if (command.getValue() == this->commands.DESERIALIZED_LIST)
-        return std::move(this->listRooms(command.getID()));
-
     if (command.getValue() == this->commands.DESERIALIZED_CREATE)
         return std::move(this->createRoom(command.getID(),
                                           command.getSecondParameter().c_str(),
@@ -59,5 +54,5 @@ LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
         return std::move(this->leaveRoom(command.getID(),
                                          command.getFirstParameter().c_str()));
 
-    return {};
+    return std::move(this->listRooms(command.getID()));
 }

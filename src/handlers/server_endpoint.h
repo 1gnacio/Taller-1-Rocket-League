@@ -29,8 +29,6 @@ public:
     void stopConnections();
 
     ~ServerEndpoint();
-
-    bool queueEmpty();
 };
 
 

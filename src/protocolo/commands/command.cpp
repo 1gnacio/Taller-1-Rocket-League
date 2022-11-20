@@ -60,6 +60,10 @@ Command &Command::operator=(Command &&other) noexcept {
 }
 
 Command::Command(std::vector<unsigned char> &serialized) : serializer() {
+    if (serialized.empty()) {
+        return;
+    }
+
     this->serialized = serialized.front();
     this->deserialized = ProtocolCommands().getDeserializedCommandValue(this->serialized);
 
