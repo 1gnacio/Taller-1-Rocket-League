@@ -2,6 +2,7 @@
 #include <iostream>
 
 GameLogic::GameLogic(int ownerId, const char *name) :
+isStarted(true),
 commandCount(0),
 gamePhysics(),
 game(name),
@@ -12,20 +13,22 @@ updateModelHandler(std::thread(&GameLogic::updateModel, this)) {
 }
 
 void GameLogic::updateModel() {
-    Command command = this->commandQueue.pop();
+    while (this->isStarted) {
+        Command command = this->commandQueue.pop();
 
-    std::cout << "llega un comando de " << command.getValue() << std::endl;
-    /*if (this->withoutPlayers == 0) {
-        this->gamePhysics.addPlayer(command.getID());
-        withoutPlayers = 1;
-    }*/
-    this->gamePhysics.applyLogic(command);
+        //std::cout << "llega un comando de " << command.getValue() << std::endl;
+        /*if (this->withoutPlayers == 0) {
+            this->gamePhysics.addPlayer(command.getID());
+            withoutPlayers = 1;
+        }*/
+        this->gamePhysics.applyLogic(command);
 
-    this->commandCount++;
+        this->commandCount++;
 
-    if (this->commandCount > 5) {
-        this->gamePhysics.updateTime();
-        this->commandCount = 0;
+        if (this->commandCount > 50) {
+            this->gamePhysics.updateTime();
+            this->commandCount = 0;
+        }
     }
 }
 
@@ -49,5 +52,6 @@ bool GameLogic::hasPlayer(int id) {
 }
 
 GameLogic::~GameLogic() {
+    this->isStarted = false;
     this->updateModelHandler.join();
 }

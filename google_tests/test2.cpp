@@ -192,13 +192,9 @@ TEST(physics, RealizaUnTurboPorVariosSegundos) {
 }
 
 
-
-
-
-
 TEST(response, RespuestaCorrecta) {
-    GameLogic logic;
+    BoxLogicMonitor logic;
     logic.updateTime();
-    Response response = logic.getResponse();
-    EXPECT_TRUE(response.getBallPositionY() > -2.8); // PosY inicial pelota
+    BallResponse response = logic.getBallResponse();
+    EXPECT_TRUE(response.getPosY() > -2.8); // PosY inicial pelota
 }

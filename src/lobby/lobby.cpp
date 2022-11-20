@@ -96,7 +96,7 @@ void lobby::on_pushButton_createGame_clicked()
     //TODO CREAR
     std::string value = CommandValues().DESERIALIZED_CREATE;
     std::string firstParameter = std::to_string(maxPlayers);
-    std::string secondParameter = currSelectedGame.toStdString();
+    std::string secondParameter = create_gameName.toStdString();
     Command command = ProtocolCommands().createCommand(this->connection.getId(),
                                                        value,
                                                        firstParameter,

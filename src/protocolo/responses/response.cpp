@@ -4,6 +4,10 @@
 #include "match_responses.h"
 
 Response::Response(std::vector<unsigned char> &serializedResponse) : serializer() {
+    if (serializedResponse.empty()) {
+        return;
+    }
+
     int lobbySize = 0;
     int matchesSize = 0;
     int begin = 0;

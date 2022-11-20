@@ -11,10 +11,11 @@
 
 class GameLogic {
  private:
+    bool isStarted;
     int commandCount;
     BoxLogicMonitor gamePhysics;
     Game game;
-    CommandQueue commandQueue;
+    CommandBlockingQueue commandQueue;
     std::thread updateModelHandler;
 
 private:

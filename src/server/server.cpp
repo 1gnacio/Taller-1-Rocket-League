@@ -5,7 +5,7 @@
 #include "server.h"
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
-#include "src/constants/response_values.h"
+#include "../src/constants/response_values.h"
 
 
 // hilos:
@@ -69,7 +69,9 @@ void Server::gameFlow(){
             logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
             MatchResponses matches = this->logic.getResponses();
             Response response(lobby, matches);
-            endpoint.push(response);
+            if (response.getMatchResponses().size() > 0) {
+                endpoint.push(response);
+            }
         }
     } catch (...) {
         throw;

@@ -1,5 +1,5 @@
 #include "command_handler.h"
-#include "src/exceptions/blocking_queue_closed_exception.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 
 CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
 hasFinished(false),
