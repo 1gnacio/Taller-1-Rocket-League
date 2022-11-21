@@ -13,10 +13,10 @@ enable_testing()
 
 # Create the executable
 add_executable(Google_Tests_run
-        test1.cpp
-        testSerialize.cpp
-        test2.cpp
-        testGameLogic.cpp
+        protocolo.cpp
+        serializacion.cpp
+        fisicas.cpp
+        logica.cpp
         ${sources}
         )
 target_link_libraries(
