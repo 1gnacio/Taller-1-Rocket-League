@@ -17,9 +17,10 @@ public:
 
     int count() { return this->matches.size(); };
     int size();
+    int totalPlayers();
 
     void addResponse(MatchResponse &response);
-    MatchResponse getMatchResponse();
+    MatchResponse getMatchResponse(int id);
 };
 
 

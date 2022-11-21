@@ -46,12 +46,17 @@ bool Room::operator()(Room &room) {
 }
 
 RoomResponse Room::list() {
-    return {this->name,
-            this->requiredPlayers,
-            static_cast<int>(this->players.size()),
-            this->isWaiting,
-            this->isStarted,
-            this->isFinished};
+    RoomResponse response(this->name,
+                          this->requiredPlayers,
+                          static_cast<int>(this->players.size()),
+                          this->isWaiting,
+                          this->isStarted,
+                          this->isFinished);
+
+    for (auto& id : this->players) {
+        response.addClient(id);
+    }
+    return std::move(response);
 }
 
 ActionResultResponse Room::leaveRoom(int playerId) {

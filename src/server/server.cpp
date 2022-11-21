@@ -73,11 +73,16 @@ void Server::gameFlow(){
                 lastResponse.addLobbyResponse(lobby);
                 logic.updateModel(command);
                 limitCommands++;
-                endpoint.push(lastResponse);
+                if (!lastResponse.getRoomResponses().empty()) {
+                    endpoint.push(lastResponse);
+                }
             }
             logic.updateTime();
             //std::cout << "Actualizo el tiempo en box2d" << std::endl;
-            endpoint.push(logic.getResponse());
+            lastResponse = logic.getResponse();
+            if (lastResponse.getMatchResponses().totalPlayers() > 0) {
+                endpoint.push(lastResponse);
+            }
         }
     } catch (...) {
         throw;

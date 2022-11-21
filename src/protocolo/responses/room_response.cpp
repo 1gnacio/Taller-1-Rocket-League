@@ -50,3 +50,19 @@ RoomResponse::RoomResponse(std::string &name, int requiredPlayers, int currentPl
 void RoomResponse::addClient(int id) {
     this->clients.addClient(id);
 }
+
+bool RoomResponse::getWaitingForPlayers() {
+    return this->waitingPlayers;
+}
+
+const std::string &RoomResponse::getName() {
+    return this->name;
+}
+
+int RoomResponse::getCurrentPlayers() {
+    return this->currentPlayers;
+}
+
+int RoomResponse::getRequiredPlayers() {
+    return this->requiredPlayers;
+}

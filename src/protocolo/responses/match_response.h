@@ -24,8 +24,9 @@ private:
     bool isGoalLocal;
     bool isGoalVisitor;
     bool activeReplay;
+    bool dummy = false; // los dummies no deberian serializarse
 public:
-
+    explicit MatchResponse(bool dummy);
     MatchResponse(int goalsLocal,
                   int goalsVisitor,
                   int time_insec,
@@ -56,6 +57,9 @@ public:
     int getTime();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
+
+    bool hasClient(int id);
+    bool isDummy() { return this->dummy; };
 };
 
 

@@ -36,3 +36,7 @@ ActionResultResponse::ActionResultResponse() : id(), status(), message() {}
 
 ActionResultResponse::ActionResultResponse(const std::string &status, const std::string &message)
 : status(status), message(message) {}
+
+bool ActionResultResponse::getId() {
+    return this->id;
+}

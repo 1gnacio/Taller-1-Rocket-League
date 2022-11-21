@@ -53,7 +53,19 @@ void Response::addLobbyResponse(LobbyResponse &response) {
 }
 
 float Response::getBallPositionY() {
-    return this->matchResponses.getMatchResponse().getBall().getPosY();
+    return this->matchResponses.getMatchResponse(0).getBall().getPosY();
 }
 
 Response::Response(LobbyResponse &lobby) : matchResponses(), lobbyResponse(lobby) {}
+
+std::vector<RoomResponse> Response::getRoomResponses() {
+    return this->lobbyResponse.getRooms();
+}
+
+bool Response::hasClientStatus(int id) {
+    return this->lobbyResponse.hasClientStatus(id);
+}
+
+MatchResponse Response::getMatchResponseByClientId(int id) {
+    return this->matchResponses.getMatchResponse(id);
+}

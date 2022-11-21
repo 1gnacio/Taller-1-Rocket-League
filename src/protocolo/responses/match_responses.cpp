@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "match_responses.h"
 
 MatchResponses::MatchResponses(std::vector<MatchResponse> &responses) : matches(responses) {}
@@ -71,6 +72,24 @@ void MatchResponses::addResponse(MatchResponse& response) {
     this->matches.push_back(response);
 }
 
-MatchResponse MatchResponses::getMatchResponse() {
-    return matches.back();
+MatchResponse MatchResponses::getMatchResponse(int id) {
+    auto found = std::find_if(this->matches.begin(),
+                              this->matches.end(),
+                              [&id] (MatchResponse &match)
+                              { return match.hasClient(id);});
+
+    if (found == this->matches.end()) {
+        return MatchResponse(true);
+    }
+
+    return *found;
+}
+
+int MatchResponses::totalPlayers() {
+    int count = 0;
+    for (auto &matches : this->matches) {
+        count += matches.getPlayersResponse().getCount();
+    }
+
+    return count;
 }

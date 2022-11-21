@@ -1,5 +1,6 @@
 #include "lobby.h"
 #include "./ui_lobby.h"
+#include "src/constants/response_values.h"
 #include <string>
 #include <sstream>
 
@@ -43,33 +44,51 @@ void lobby::on_pushButton_connect_clicked()
 
 void lobby::on_pushButton_join_clicked()
 {   //TODO UNIR
-    hide();
-    if (currSelectedGame.size()) {
-        //protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
-        //std::cout << protocolo.receiveResponse() << std::endl;
-        on_pushButton_refresh_clicked();
-        currSelectedGame.clear();
+    std::string value = CommandValues().DESERIALIZED_JOIN;
+    std::string parameter = currSelectedGame.toStdString();
+    Command command = ProtocolCommands().createCommand(this->connection.getId(),
+                                                       value,
+                                                       parameter);
+    this->connection.push(command);
+    currSelectedGame.clear();
+    Response r = this->connection.pop();
+    while (!r.hasClientStatus(this->connection.getId())) {
+        this->connection.pop();
     }
 
-    _client.run();
-    show();
+    if (r.getStatus() == ResponseValues().OK) {
+        hide();
+        _client.run();
+        show();
+    }
 }
 
 
 void lobby::on_pushButton_refresh_clicked()
 {   //TODO LISTAR
-    //protocolo.sendActions("LISTAR");
+    std::string value = CommandValues().DESERIALIZED_LIST;
+    Command command = ProtocolCommands().createCommand(this->connection.getId(), value);
+    this->connection.push(command);
+    Response r = this->connection.pop();
+    while (!r.hasClientStatus(this->connection.getId())) {
+        this->connection.pop();
+    }
+    std::vector<RoomResponse> rooms = r.getRoomResponses();
+
     std::string name_str, players_str;
-    std::istringstream input_stream(/*protocolo.receiveResponse()*/"");
-    //int i = 1;
     model.removeRows(0, model.rowCount());
-    //FIXME: hay que usar el protocolo nuevo
-    while (input_stream >> name_str) {
-        input_stream >> players_str;
-        // Fijarse si se puede sacar lo de new.
-        QStandardItem *name = new QStandardItem(QString::fromStdString(name_str));
-        QStandardItem *players = new QStandardItem(QString::fromStdString(players_str));
-        QStandardItem *status = new QStandardItem("-------");
+
+    for (auto& room : rooms) {
+        std::string statusText = "Comenzada";
+        std::string requiredCurrent = std::to_string(room.getCurrentPlayers()) + " / " +
+                                      std::to_string(room.getRequiredPlayers());
+
+        if (room.getWaitingForPlayers()) {
+            statusText = "Esperando jugadores";
+        }
+        QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
+        QStandardItem *players = new QStandardItem(QString::fromStdString(requiredCurrent));
+        QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
         model.appendRow( QList<QStandardItem*>() << name << status << players);
     }
 }
@@ -84,11 +103,26 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    hide();
     //TODO CREAR
-    on_pushButton_refresh_clicked();
-    _client.run();
-    show();
+    std::string value = CommandValues().DESERIALIZED_CREATE;
+    std::string firstParameter = std::to_string(maxPlayers);
+    std::string secondParameter = create_gameName.toStdString();
+    Command command = ProtocolCommands().createCommand(this->connection.getId(),
+                                                       value,
+                                                       firstParameter,
+                                                       secondParameter);
+    this->connection.push(command);
+    currSelectedGame.clear();
+    Response r = this->connection.pop();
+    while (!r.hasClientStatus(this->connection.getId())) {
+        r = this->connection.pop();
+    }
+
+    if (r.getStatus() == ResponseValues().OK) {
+        hide();
+        _client.run();
+        show();
+    }
 }
 
 

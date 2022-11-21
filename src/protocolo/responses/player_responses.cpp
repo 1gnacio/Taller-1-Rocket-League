@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "player_responses.h"
 
 PlayerResponses::PlayerResponses(std::vector<PlayerResponse> &players) :
@@ -42,4 +43,13 @@ void PlayerResponses::addPlayer(PlayerResponse &player) {
 
 std::vector<PlayerResponse> PlayerResponses::getPlayers() {
     return players;
+}
+
+bool PlayerResponses::hasId(int id) {
+    auto found = std::find_if(this->players.begin(),
+                              this->players.end(),
+                              [&id] (PlayerResponse &player)
+                              { return player.getId() == id; });
+
+    return found != this->players.end();
 }

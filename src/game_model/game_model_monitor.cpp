@@ -59,5 +59,5 @@ LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
         return std::move(this->leaveRoom(command.getID(),
                                          command.getFirstParameter().c_str()));
 
-    return {};
+    return std::move(this->listRooms(command.getID()));
 }

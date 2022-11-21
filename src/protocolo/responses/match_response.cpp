@@ -161,3 +161,11 @@ int MatchResponse::getVisitorsGoals() {
 int MatchResponse::getTime() {
     return time_insec;
 }
+
+bool MatchResponse::hasClient(int id) {
+    this->players.hasId(id);
+}
+
+MatchResponse::MatchResponse(bool dummy) : dummy(dummy) {
+
+}

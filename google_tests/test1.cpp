@@ -6,7 +6,7 @@
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
 
-const char* serv = "8088";
+const char* serv = "8080";
 
 void sendCommand(std::string& command) {
     Socket client("localhost", serv);

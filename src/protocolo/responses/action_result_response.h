@@ -18,6 +18,8 @@ public:
     std::vector<unsigned char> serialize();
     std::string getStatus() { return this->status; };
     std::string getMessage() { return this->message; };
+
+    bool getId();
 };
 
 

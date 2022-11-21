@@ -30,6 +30,12 @@ public:
     MatchResponses getMatchResponses();
     void addLobbyResponse(LobbyResponse &response);
     float getBallPositionY();
+
+    std::vector<RoomResponse> getRoomResponses();
+
+    bool hasClientStatus(int i);
+
+    MatchResponse getMatchResponseByClientId(int i);
 };
 
 

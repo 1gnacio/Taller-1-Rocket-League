@@ -13,9 +13,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection)/*, my_lobby()*/{
-    addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
-}
+        isRunning(true), connection(connection) {}
 
 void Client::readStandardInput() {
     //TODO: opción para que el usurario pueda elegir las teclas.
@@ -80,7 +78,7 @@ void Client::readStandardInput() {
                 this->isRunning = false;
                 break;
         }
-        //SDL_Delay(UPDATE_TIME);   //TODO: ver
+        //SDL_Delay(2);   //TODO: ver
     }
 
 }
@@ -89,11 +87,27 @@ void Client::run() {
     sdl_handler.showWindow();
     std::thread standardInput(&Client::readStandardInput, this);
 
-    while (this->isRunning) {
+    Response response = this->connection.pop();
+    MatchResponse match = response.getMatchResponseByClientId(this->connection.getId());
+    while (match.isDummy()) {
         Response response = this->connection.pop();
-        sdl_handler.updateScreen(response);
+        match = response.getMatchResponseByClientId(this->connection.getId());
+    }
+    MatchResponse lastResponse = match;
+
+    while (this->isRunning) {
+        response = this->connection.pop();
+        match = response.getMatchResponseByClientId(this->connection.getId());
+
+        if (match.isDummy()) {
+            sdl_handler.updateScreen(lastResponse);
+        } else {
+            sdl_handler.updateScreen(match);
+        }
         sdl_handler.renderScreen();
-        SDL_Delay(5);   //TODO: ver
+        //SDL_Delay(2);   //TODO: ver
+
+        lastResponse = match;
     }
 
     standardInput.join();
