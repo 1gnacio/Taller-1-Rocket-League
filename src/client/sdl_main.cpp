@@ -12,7 +12,7 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 #endif
 {
 #ifndef SDL_TESTING
-    players.emplace_back(renderer);
+    //players.emplace(0, renderer);
 #else
     window.Show();
 #endif
@@ -33,14 +33,18 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
-    //TODO falta obtener el resto de la info.
 
     for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
         int car_y = convert.toPixels(player.getPosY(), renderer.GetOutputHeight());
         double car_angle = convert.toDegrees(player.getRotationAngle());
-        //TODO ver como crear mas jugadores
-        players.back().update(car_x, car_y, car_angle, FRAME_RATE, player.accelerating(), player.flying(), player.onTurbo());
+        int id = player.getId();
+
+        auto it = players.find(id);
+        if (it == players.end()){
+            players.emplace(id, renderer);
+        }
+        players.at(id).update(car_x, car_y, car_angle, FRAME_RATE, player.accelerating(), player.flying(), player.onTurbo());
     }
 
     int ball_x = convert.toPixels(response.getMatchResponses().getMatchResponse().getBall().getPosX(), renderer.GetOutputWidth());
@@ -61,7 +65,7 @@ void sdl_main::renderScreen() {
     ball.render(renderer);
 #ifndef SDL_TESTING
     for (auto &player:players) {
-        player.render(renderer);
+        player.second.render(renderer);
     }
 #else
     my_object.render(renderer);

@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <list>
 #include <vector>
+#include <map>
 #include "sdl_animation.h"
 #include "sdl_player.h"
 #include "sdl_ball.h"
@@ -27,7 +28,7 @@ private:
     sdl_scoreboard scoreboard;
     unit_conversion convert;
 #ifndef SDL_TESTING
-    std::list<sdl_player> players;
+    std::map<int, sdl_player> players;
 #endif
 public:
     sdl_main();
