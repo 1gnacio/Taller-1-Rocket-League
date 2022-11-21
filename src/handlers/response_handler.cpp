@@ -37,8 +37,23 @@ void ResponseHandler::handleSend() {
         while (!this->hasFinished) {
             Response r = this->queue.pop();
             //TODO que deberia hacer el hilo si no recibe nada del servidor?
-            protocolo.sendResponse(this->socket, r);
-            this->hasFinished = protocolo.isConnectionClosed();
+            Response clientResponse;
+            if (r.getActionId() == this->helper.getId()) {
+                LobbyResponse lr = r.getLobbyResponse();
+                clientResponse.addLobbyResponse(lr);
+                protocolo.sendResponse(this->socket, clientResponse);
+                this->hasFinished = protocolo.isConnectionClosed();
+                continue;
+            }
+
+            MatchResponse mr = r.getMatchResponseByClientId(this->helper.getId());
+
+            if (!mr.isDummy()) {
+                clientResponse.addMatchResponse(mr);
+                protocolo.sendResponse(this->socket, clientResponse);
+                this->hasFinished = protocolo.isConnectionClosed();
+                continue;
+            }
         }
     } catch (std::exception &e) {
         this->hasFinished = true;

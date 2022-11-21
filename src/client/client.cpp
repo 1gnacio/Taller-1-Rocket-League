@@ -141,8 +141,8 @@ void Client::draw() {
 
         float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
 
-        if (16.666f - elapsedMS > 0) {
-            SDL_Delay(floor(16.666f - elapsedMS));
+        if ((float)(1000 / 24) - elapsedMS > 0) {
+            SDL_Delay(floor((float)(1000 / 24) - elapsedMS));
         }
     }
 }

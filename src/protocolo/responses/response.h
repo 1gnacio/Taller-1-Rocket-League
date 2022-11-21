@@ -33,8 +33,11 @@ public:
     float getBallPositionY();
     std::vector<RoomResponse> getRoomResponses();
     MatchResponse getMatchResponseByClientId(int id);
+    LobbyResponse getLobbyResponse() {return this->lobbyResponse; };
 
     int getActionId();
+
+    void addMatchResponse(MatchResponse response);
 };
 
 

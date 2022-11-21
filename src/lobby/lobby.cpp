@@ -69,6 +69,9 @@ void lobby::on_pushButton_refresh_clicked()
     Command command = ProtocolCommands().createCommand(this->connection.getId(), value);
     this->connection.push(command);
     Response r = this->connection.pop();
+    while (r.getActionId() != this->connection.getId()) {
+        r = this->connection.pop();
+    }
     std::vector<RoomResponse> rooms = r.getRoomResponses();
 
     std::string name_str, players_str;

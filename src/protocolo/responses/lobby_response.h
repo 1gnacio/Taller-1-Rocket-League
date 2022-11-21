@@ -11,8 +11,10 @@ class LobbyResponse {
 private:
     RoomResponses rooms;
     ActionResultResponse actionResult;
+    bool dummy = false;
 public:
     LobbyResponse();
+    LobbyResponse(bool dummy);
     explicit LobbyResponse(RoomResponses &rooms);
     explicit LobbyResponse(ActionResultResponse &actionResult);
     LobbyResponse(RoomResponses &rooms, ActionResultResponse &result);
@@ -22,7 +24,7 @@ public:
     std::string getStatus() { return actionResult.getStatus(); };
     std::string getMessage() { return actionResult.getMessage(); };
     std::vector<RoomResponse> roomResponses();
-
+    bool isDummy() const {return this->dummy; };
     int getActionId();
 };
 

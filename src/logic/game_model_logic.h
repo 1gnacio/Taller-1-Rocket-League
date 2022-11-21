@@ -7,6 +7,7 @@
 
 class GameModelLogic {
 private:
+    std::mutex mutex;
     std::vector<std::unique_ptr<GameLogic>> gamesLogic;
     CommandValues commands;
     std::vector<std::string> actionCommands;

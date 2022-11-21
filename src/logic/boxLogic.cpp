@@ -288,6 +288,15 @@ int BoxLogic::getPositionVectorCar(int id) {
 }
 
 void BoxLogic::removePlayer(int id) {
-    int pos = getPositionVectorCar(id);
-    cars.erase(cars.begin() + pos, cars.begin() + pos+1);
+    //int pos = getPositionVectorCar(id);
+    //cars.erase(cars.begin() + pos, cars.begin() + pos+1);
+
+    auto found = std::find_if(this->cars.begin(),
+                              this->cars.end(),
+                              [&id](Car &car)
+                              {return car.getId() == id;});
+
+    if (found != this->cars.end()) {
+        this->cars.erase(found);
+    }
 }

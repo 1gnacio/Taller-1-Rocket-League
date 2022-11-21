@@ -29,6 +29,7 @@ actionCommands({
  * Si la encuentra, pushea a la cola de comandos de la partida el comando recibido.
  */
 void GameModelLogic::updateModel(Command &command) {
+    //std::lock_guard<std::mutex> l(mutex);
     if (std::find(this->movementCommands.begin(),
                   this->movementCommands.end(),
                   command.getValue()) != this->movementCommands.end()) {
@@ -84,6 +85,7 @@ void GameModelLogic::applyMatchAction(Command &command) {
 }
 
 MatchResponses GameModelLogic::getResponses() {
+    //std::lock_guard<std::mutex> l(mutex);
     MatchResponses responses;
     for (auto &logic : this->gamesLogic) {
         MatchResponse response = logic->getResponse();
@@ -93,6 +95,7 @@ MatchResponses GameModelLogic::getResponses() {
 }
 
 void GameModelLogic::updateTime() {
+    //std::lock_guard<std::mutex> l(mutex);
     for (auto &logic : this->gamesLogic) {
         logic->updateTime();
     }

@@ -60,3 +60,7 @@ std::vector<RoomResponse> LobbyResponse::roomResponses() {
 int LobbyResponse::getActionId() {
     return this->actionResult.getId();
 }
+
+LobbyResponse::LobbyResponse(bool d) : dummy(d) {
+
+}

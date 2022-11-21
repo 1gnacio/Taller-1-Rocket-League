@@ -72,3 +72,7 @@ int Response::getActionId() {
 MatchResponse Response::getMatchResponseByClientId(int id) {
     return std::move(this->getMatchResponses().getMatchResponseByClientId(id));
 }
+
+void Response::addMatchResponse(MatchResponse response) {
+    this->matchResponses.addResponse(response);
+}
