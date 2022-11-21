@@ -86,20 +86,14 @@ void Client::readStandardInput() {
 void Client::run() {
     this->isRunning = true;
     sdl_handler.showWindow();
-    std::thread standardInput(&Client::readStandardInput, this);
-    MatchResponse realMatch(true);
 
-    while (this->isRunning) {
-        Response response = this->connection.pop();
-        MatchResponse match = response.getMatchResponseByClientId(this->connection.getId());
-        if (!match.isDummy()) {
-            realMatch = match;
-        }
-        sdl_handler.updateScreen(realMatch);
-        sdl_handler.renderScreen();
-    }
+    std::thread standardInput(&Client::readStandardInput, this);
+    std::thread drawThread(&Client::draw, this);
+    std::thread updateThread(&Client::update, this);
 
     standardInput.join();
+    drawThread.join();
+    updateThread.join();
     sdl_handler.hideWindow();
 }
 
@@ -108,4 +102,47 @@ void Client::addInputCommand(std::string deserialized_key) {
     std::cout << deserialized_key << std::endl;
     Command c = makeCommands.createCommand(this->connection.getId(), deserialized_key);
     this->connection.push(c);
+}
+
+void Client::update() {
+    MatchResponse lastMatch(true);
+    Response response = this->connection.pop();
+    MatchResponse match = response.getMatchResponseByClientId(this->connection.getId());
+    while (match.isDummy()) {
+        response = this->connection.pop();
+        match = response.getMatchResponseByClientId(this->connection.getId());
+    }
+
+    lastMatch = match;
+
+    while (this->isRunning) {
+        response = this->connection.pop();
+        match = response.getMatchResponseByClientId(this->connection.getId());
+        if (match.isDummy()) {
+            sdl_handler.updateScreen(lastMatch);
+        } else {
+            sdl_handler.updateScreen(match);
+        }
+        lastMatch = match;
+        this->screenUpdated = true;
+    }
+}
+
+void Client::draw() {
+    while (this->isRunning) {
+        if (!this->screenUpdated) {
+            continue;
+        }
+        Uint64 start = SDL_GetPerformanceCounter();
+
+        sdl_handler.renderScreen();
+
+        Uint64 end = SDL_GetPerformanceCounter();
+
+        float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
+
+        if (16.666f - elapsedMS > 0) {
+            SDL_Delay(floor(16.666f - elapsedMS));
+        }
+    }
 }

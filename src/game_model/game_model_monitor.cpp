@@ -17,27 +17,24 @@ LobbyResponse GameModelMonitor::createRoom(int id, const char* name, int require
     std::lock_guard<std::mutex> lock(mutex);
 
     ActionResultResponse actionResponse = this->model.createRoom(id, name, requiredPlayers);
-    RoomResponses rooms = this->model.listRooms();
 
-    return std::move(LobbyResponse(rooms, actionResponse));
+    return std::move(LobbyResponse(actionResponse));
 }
 
 LobbyResponse GameModelMonitor::joinRoom(int id, const char* name) {
     std::lock_guard<std::mutex> lock(mutex);
 
     ActionResultResponse actionResponse = this->model.joinRoom(id, name);
-    RoomResponses rooms = this->model.listRooms();
 
-    return std::move(LobbyResponse(rooms, actionResponse));
+    return std::move(LobbyResponse(actionResponse));
 }
 
 LobbyResponse GameModelMonitor::leaveRoom(int id, const char *name) {
     std::lock_guard<std::mutex> lock(mutex);
 
     ActionResultResponse actionResponse = this->model.leaveRoom(id, name);
-    RoomResponses rooms = this->model.listRooms();
 
-    return std::move(LobbyResponse(rooms, actionResponse));
+    return std::move(LobbyResponse(actionResponse));
 }
 
 LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
@@ -53,5 +50,13 @@ LobbyResponse GameModelMonitor::applyLogic(const Command& command) {
     if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH)
         return std::move(this->leaveRoom(command.getID(),
                                          command.getFirstParameter().c_str()));
+
     return std::move(this->listRooms(command.getID()));
+}
+
+LobbyResponse GameModelMonitor::getResponse() {
+    std::lock_guard<std::mutex> lock(mutex);
+
+    RoomResponses rooms = this->model.listRooms();
+    return std::move(LobbyResponse(rooms));
 }

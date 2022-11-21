@@ -26,6 +26,7 @@ class GameModelMonitor {
  public:
     GameModelMonitor();
     LobbyResponse applyLogic(const Command& command);
+    LobbyResponse getResponse();
 
     // hago el monitor del modelo de juego no copiable
     GameModelMonitor(const GameModelMonitor&) = delete;

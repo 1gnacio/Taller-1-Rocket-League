@@ -28,7 +28,7 @@ actionCommands({
  * Busca la partida a partir de los ID.
  * Si la encuentra, pushea a la cola de comandos de la partida el comando recibido.
  */
-void GameModelLogic::updateModel(Command &command, bool lobbyStatusOk) {
+void GameModelLogic::updateModel(Command &command) {
     if (std::find(this->movementCommands.begin(),
                   this->movementCommands.end(),
                   command.getValue()) != this->movementCommands.end()) {
@@ -40,20 +40,27 @@ void GameModelLogic::updateModel(Command &command, bool lobbyStatusOk) {
         if (match == this->gamesLogic.end()) {
             return;
         }
-        (*match)->push(command);
+        (*match)->updateModel(command);
     }
 
     if (std::find(this->actionCommands.begin(),
                   this->actionCommands.end(),
-                  command.getValue()) != this->movementCommands.end()
-                  && lobbyStatusOk) {
+                  command.getValue()) != this->movementCommands.end()) {
         this->applyMatchAction(command);
     }
 }
 
 void GameModelLogic::applyMatchAction(Command &command) {
     if (command.getValue() == this->commands.DESERIALIZED_CREATE) {
-        this->gamesLogic.emplace_back(std::make_unique<GameLogic>(command.getID(), command.getSecondParameter().c_str()));
+        std::string name = command.getSecondParameter();
+        if (std::find_if(this->gamesLogic.begin(),
+                         this->gamesLogic.end(),
+                         [&name] (std::unique_ptr<GameLogic> &logic)
+                         { return logic->getName() == name; })
+                         != this->gamesLogic.end()){
+            return;
+        }
+        this->gamesLogic.emplace_back(std::make_unique<GameLogic>(command.getID(), name.c_str()));
     }
 
     if (command.getValue() == this->commands.DESERIALIZED_JOIN) {

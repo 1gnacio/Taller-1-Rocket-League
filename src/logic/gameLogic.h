@@ -15,11 +15,6 @@ class GameLogic {
     int commandCount;
     BoxLogicMonitor gamePhysics;
     Game game;
-    CommandQueue commandQueue;
-    std::thread updateModelHandler;
-
-private:
-    void updateModel();
 
 public:
     explicit GameLogic(int ownerId, const char* name);
@@ -28,10 +23,10 @@ public:
     float getCarData(int carNumber, int key);
     float playersAmount();
     bool hasPlayer(int id);
+    void updateModel(Command &command);
     std::string getName() { return this->game.getName(); };
     void addPlayer(int id) { this->gamePhysics.addPlayer(id); };
     void removePlayer(int id) { this->gamePhysics.removePlayer(id); };
-    void push(Command &command) { this->commandQueue.push(command); };
 
     ~GameLogic();
 

@@ -17,7 +17,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : monitor(), accepter(servname), logic() {}
+Server::Server(const char* servname) : lobby(), accepter(servname), logic() {}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket
@@ -65,14 +65,8 @@ void Server::gameFlow(){
     try {
         while(!this->isClosed) {
             Command command = endpoint.pop();
-            LobbyResponse lobby = monitor.applyLogic(command);
-            if (command.getValue() != CommandValues().DESERIALIZED_NOP) {
-                logic.updateModel(command, lobby.getStatus() == ResponseValues().OK);
-            }
-            //logic.updateTime();
-            MatchResponses matches = this->logic.getResponses();
-            Response response(lobby, matches);
-            endpoint.push(response);
+            this->lobbyCommands.push(command);
+            this->matchCommands.push(command);
         }
     } catch (...) {
         throw;
@@ -83,6 +77,9 @@ void Server::run() {
     while (!this->isClosed) {
         std::thread accepterThread(&Server::acceptClients, this);
         std::thread gameLoopThread(&Server::gameFlow, this);
+        std::thread gameLobbyThread(&Server::gameLobby, this);
+        std::thread gameTimeThread(&Server::gameTime, this);
+        std::thread gameLogicThread(&Server::gameLogic, this);
 
         std::string signal;
 
@@ -96,11 +93,42 @@ void Server::run() {
 
         accepterThread.join();
         gameLoopThread.join();
+        gameLobbyThread.join();
+        gameTimeThread.join();
+        gameLogicThread.join();
     }
 }
 
 Server::~Server() {
     this->stopHandlers();
     this->cleanFinishedHandlers();
+}
+
+void Server::gameLogic() {
+    while (!this->isClosed) {
+        Command c = this->matchCommands.pop();
+        logic.updateModel(c);
+        MatchResponses mr = this->logic.getResponses();
+        Response r(mr);
+        this->endpoint.push(r);
+    }
+}
+
+void Server::gameTime() {
+    while (!this->isClosed) {
+        this->logic.updateTime();
+        MatchResponses mr = this->logic.getResponses();
+        Response r(mr);
+        this->endpoint.push(r);
+    }
+}
+
+void Server::gameLobby() {
+    while (!this->isClosed) {
+        Command c = this->lobbyCommands.pop();
+        LobbyResponse lr = this->lobby.applyLogic(c);
+        Response r(lr);
+        this->endpoint.push(r);
+    }
 }
 

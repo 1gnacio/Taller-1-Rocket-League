@@ -15,7 +15,7 @@ private:
     void applyMatchAction(Command &command);
 public:
     GameModelLogic();
-    void updateModel(Command &command, bool lobbyStatus);
+    void updateModel(Command &command);
     MatchResponses getResponses();
 
     void updateTime();

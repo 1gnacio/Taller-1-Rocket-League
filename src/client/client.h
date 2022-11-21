@@ -6,11 +6,14 @@
 
 class Client {
 private:
+    bool screenUpdated;
     bool isRunning;
     ServerConnection& connection;
     sdl_main sdl_handler;
     void readStandardInput();
     void addInputCommand(std::string deserialized_key);
+    void update();
+    void draw();
 public:
     explicit Client(ServerConnection& connection);
     ~Client() = default;

@@ -6,9 +6,7 @@ isStarted(true),
 commandCount(0),
 gamePhysics(),
 game(name),
-commandQueue(),
-withoutPlayers(0),
-updateModelHandler(std::thread(&GameLogic::updateModel, this)) {
+withoutPlayers(0) {
     this->gamePhysics.addPlayer(ownerId);
 }
 
@@ -16,19 +14,10 @@ void GameLogic::updateTime() {
     gamePhysics.updateTime();
 }
 
-void GameLogic::updateModel() {
-    this->commandCount = 0;
-    while (this->isStarted) {
-        commandCount = 0;
-        while(!commandQueue.empty() && commandCount < 2 * this->gamePhysics.playersAmount()) {
-            Command command = this->commandQueue.pop();
-            std::cout << "llega un comando de " << command.getValue() << std::endl;
-            this->gamePhysics.applyLogic(command);
-            commandCount++;
-        }
-        this->gamePhysics.updateTime();
-
-    }
+void GameLogic::updateModel(Command &command) {
+    std::cout << "llega un comando de " << command.getValue() << std::endl;
+    this->gamePhysics.applyLogic(command);
+    commandCount++;
 }
 
 float GameLogic::getCarData(int carNumber, int key) {
@@ -49,5 +38,4 @@ bool GameLogic::hasPlayer(int id) {
 
 GameLogic::~GameLogic() {
     this->isStarted = false;
-    this->updateModelHandler.join();
 }

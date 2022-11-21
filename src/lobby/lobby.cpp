@@ -49,29 +49,9 @@ void lobby::on_pushButton_join_clicked()
                                                            value,
                                                            parameter);
         this->connection.push(command);
-        on_pushButton_refresh_clicked();
-        currSelectedGame.clear();
         Response r = this->connection.pop();
-
-//        while (r.getActionId() != this->connection.getId()) {
-//            r = this->connection.pop();
-//        }
-
-        std::vector<RoomResponse> rooms = r.getRoomResponses();
-
-        std::string name_str, players_str;
-        model.removeRows(0, model.rowCount());
-
-        for (auto& room : rooms) {
-            std::string statusText = "Comenzada";
-
-            if (room.getWaitingForPlayers()) {
-                statusText = "Esperando jugadores";
-            }
-            QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
-            QStandardItem *players = new QStandardItem(QString::fromStdString(std::to_string(room.getCurrentPlayers())));
-            QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
-            model.appendRow( QList<QStandardItem*>() << name << status << players);
+        while (r.getActionId() != this->connection.getId()) {
+            r = this->connection.pop();
         }
 
         if (r.getStatus() == ResponseValues().OK) {
@@ -129,23 +109,6 @@ void lobby::on_pushButton_createGame_clicked()
     Response r = this->connection.pop();
     while (r.getActionId() != this->connection.getId()) {
         r = this->connection.pop();
-    }
-
-    std::vector<RoomResponse> rooms = r.getRoomResponses();
-
-    std::string name_str, players_str;
-    model.removeRows(0, model.rowCount());
-
-    for (auto& room : rooms) {
-        std::string statusText = "Comenzada";
-
-        if (room.getWaitingForPlayers()) {
-            statusText = "Esperando jugadores";
-        }
-        QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
-        QStandardItem *players = new QStandardItem(QString::fromStdString(std::to_string(room.getCurrentPlayers())));
-        QStandardItem *status = new QStandardItem(QString::fromStdString(statusText));
-        model.appendRow( QList<QStandardItem*>() << name << status << players);
     }
 
     if (r.getStatus() == ResponseValues().OK) {

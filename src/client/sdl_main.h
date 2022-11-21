@@ -11,7 +11,7 @@
 #include "sdl_arena.h"
 #include <ctime>
 #include "unit_conversion.h"
-
+#include <mutex>
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
 #endif
@@ -26,6 +26,7 @@ private:
     sdl_ball ball;
     sdl_scoreboard scoreboard;
     unit_conversion convert;
+    std::mutex mutex;
 #ifndef SDL_TESTING
     std::list<sdl_player> players;
 #endif

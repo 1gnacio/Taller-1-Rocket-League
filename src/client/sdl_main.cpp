@@ -34,6 +34,7 @@ std::string format_duration( std::chrono::milliseconds ms ) {
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(MatchResponse& response) {
     //TODO falta obtener el resto de la info.
+    std::lock_guard<std::mutex> l(mutex);
     for (auto &player: response.getPlayersResponse().getPlayers()) {
         players.clear();
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
@@ -56,6 +57,7 @@ void sdl_main::updateScreen(MatchResponse& response) {
 }
 #endif
 void sdl_main::renderScreen() {
+    std::lock_guard<std::mutex> l(mutex);
     renderer.Clear();
     arena.render(renderer);
     scoreboard.render(renderer);
