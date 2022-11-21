@@ -19,7 +19,9 @@ class lobby : public QMainWindow
     Q_OBJECT
 
 public:
-    lobby(QWidget *parent = nullptr);
+    lobby(QWidget *parent = nullptr,
+          const char *servname = "",
+          const char *port = "");
     ~lobby();
 
 private slots:

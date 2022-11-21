@@ -3,10 +3,12 @@
 #include <string>
 #include <sstream>
 
-lobby::lobby(QWidget *parent)
+lobby::lobby(QWidget *parent,
+             const char *servname,
+             const char *port)
     : QMainWindow(parent)
     , ui(new Ui::lobby)
-    , connection("localhost", "8080")
+    , connection(servname, port)
     , _client(connection)
 {
     ui->setupUi(this);
