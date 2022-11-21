@@ -217,8 +217,6 @@ add_executable(lobby
         src/client/sdl_player.cpp
         src/client/sdl_main.cpp
         src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h
-        src/protocolo/connection_helper.cpp
-        src/protocolo/connection_helper.h
         src/client/unit_conversion.cpp src/client/unit_conversion.h
         src/protocolo/responses/lobby_response.cpp
         src/protocolo/responses/lobby_response.h
@@ -444,4 +442,6 @@ add_executable(game_server
 target_link_libraries(game_server box2d)
 
 ######################################################################################################################
+enable_testing()
+
 add_subdirectory(google_tests)
