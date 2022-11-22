@@ -5,6 +5,7 @@
 
 Game::Game(): name("juego"),
               time_inSec(0),
+              time_in_miliSec(0),
               goalsLocal(0),
               goalsVisitor(0),
               requiredPlayers(2),
@@ -23,6 +24,10 @@ MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
                          isGoalVisitor, activeReplay);
 }
 
+int Game::getTime() {
+    return time_inSec;
+}
+
 void Game::updateGame(int teamGoal) {
     if(teamGoal == 1) {
         isGoalLocal = 1;
@@ -32,6 +37,13 @@ void Game::updateGame(int teamGoal) {
         goalsVisitor++;
     }
 
+}
+void Game::updateTime() {
+    time_in_miliSec = time_in_miliSec + 40;
+    if(time_in_miliSec > 1000) {
+        time_inSec++;
+        time_in_miliSec = time_in_miliSec - 1000;
+    }
 }
 
 bool Game::goal() {

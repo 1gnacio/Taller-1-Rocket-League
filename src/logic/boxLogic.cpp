@@ -68,6 +68,7 @@ void BoxLogic::updateTime() {
     world->Step(timeStep, LogicValues().VELOCITY_ITERATIONS,
                 LogicValues().POSITION_ITERATIONS);
     usleep(timeStep*1000000);  // (unsleep utiliza microsegundos 1x10-6)
+    game.updateTime();
 }
 
 bool BoxLogic::ballIsAwake() {
@@ -295,6 +296,10 @@ void BoxLogic::resetPositions() {
 
     }
 
+}
+
+int BoxLogic::getTime() {
+    return game.getTime();
 }
 
 MatchResponse BoxLogic::gameData(BallResponse &ball, PlayerResponses &players) {
