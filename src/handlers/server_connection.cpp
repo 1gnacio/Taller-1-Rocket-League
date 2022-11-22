@@ -28,6 +28,8 @@ bool ServerConnection::connectionClosed() {
 
 void ServerConnection::closeConnection() {
     if(this->isConnected) {
+        this->commandQueue.close();
+        this->responseQueue.close();
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
         this->sender.stopHandler();
@@ -37,7 +39,9 @@ void ServerConnection::closeConnection() {
 }
 
 ServerConnection::~ServerConnection() {
-    if(!this->isConnected) {
+    if(this->isConnected) {
+        this->commandQueue.close();
+        this->responseQueue.close();
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
         this->sender.stopHandler();

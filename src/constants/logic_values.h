@@ -13,13 +13,14 @@ public:
     const int Y_VELOCITY = 4;
     const int TURBO_TANK = 5;
     const int USING_TURBO = 6;
+    const int ACCELERATING = 7;
     const int LEFT_DIRECTION = 0;
     const int RIGHT_DIRECTION = 1;
     const int UP_DIRECTION = 2;
     const int DOWN_DIRECTION = 3;
 
-    const float W_CAR = 1.2;
-    const float H_CAR = 0.5;
+    constexpr static const float W_CAR = 1.2;
+    constexpr static const float H_CAR = 0.5;
 
     const float DENSITY_CAR = 1;
     const float FRICTION_CAR = 0.2f;
@@ -29,7 +30,7 @@ public:
     const float DENSITY_BALL = 0.5;
     const float FRICTION_BALL = 0.3f;
     const float RESTITUTION_BALL = 0.6f;
-    const float RADIUS_BALL = 0.2f;
+    constexpr static const float RADIUS_BALL = 0.2f;
     const float ANGLE_BALL = 0;
 
     const int VELOCITY_ITERATIONS = 8;

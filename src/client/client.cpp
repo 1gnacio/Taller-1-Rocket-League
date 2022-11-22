@@ -80,7 +80,6 @@ void Client::readStandardInput() {
                 this->isRunning = false;
                 break;
         }
-        //SDL_Delay(UPDATE_TIME);   //TODO: ver
     }
 
 }
@@ -93,16 +92,15 @@ void Client::run() {
         Response response = this->connection.pop();
         sdl_handler.updateScreen(response);
         sdl_handler.renderScreen();
-        SDL_Delay(5);   //TODO: ver
+        SDL_Delay(TIME_UPDATE_MS);
     }
-
     standardInput.join();
     sdl_handler.hideWindow();
 }
 
 void Client::addInputCommand(std::string deserialized_key) {
     ProtocolCommands makeCommands;
-    std::cout << deserialized_key << std::endl;
+    //std::cout << deserialized_key << std::endl;
     Command c = makeCommands.createCommand(this->connection.getId(), deserialized_key);
     this->connection.push(c);
 }

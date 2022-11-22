@@ -11,6 +11,7 @@ class Game {
  private:
     std::string name;
     int time_inSec;
+    int time_in_miliSec;
     int goalsLocal;
     int goalsVisitor;
     int requiredPlayers;
@@ -29,6 +30,10 @@ class Game {
     bool goal();
 
     void resetData();
+
+    void updateTime();
+
+    int getTime();
 };
 
 #endif  // SRC_LOGIC_GAME_H_

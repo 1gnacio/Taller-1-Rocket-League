@@ -5,7 +5,7 @@
 class sdl_ball {
 private:
     SDL2pp::Texture texture_ball;
-    int radius;
+    int width;
     int x;
     int y;
     double angle;
