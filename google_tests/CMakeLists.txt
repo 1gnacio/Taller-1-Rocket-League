@@ -35,7 +35,6 @@ add_custom_target(gcov
 add_custom_command(TARGET gcov
         COMMAND echo "=================== GCOV ===================="
         COMMAND gcov -b ${CMAKE_SOURCE_DIR}/google_tests/*.cpp -o ${OBJECT_DIR}
-        COMMAND cat CoverageSummary.tmp
         COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage
         )
