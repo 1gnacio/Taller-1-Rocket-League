@@ -31,15 +31,19 @@ Corrector: Martin
     cmake ..
     make -j4
 ```
+
 ## Running
 
-Server: `./game_server 8080`
+Server: `./game_server <puerto>`  
+Para partidas locales recomendamos los puertos `8080` u `8088`
 
-Client: `./game_client localhost 8080`
+Client: `./game_client <nombre del servidor> <puerto>`
 
 ## Testing 
-
-TODO
+```
+    cmake ..
+    ctest -V -S CTestCustom.cmake 
+```
 
 ## Lobby
 
