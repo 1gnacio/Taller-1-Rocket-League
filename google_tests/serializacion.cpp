@@ -188,7 +188,7 @@ TEST(Serializacion, SerializarYDeserializarPartida) {
 
     Response deserializada(serializacion);
 
-    EXPECT_EQ(r.serialize(), deserializada.serialize());
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
 }
 
 TEST(Serializacion, SerializacionYDeserializacionConLobby) {
@@ -214,7 +214,7 @@ TEST(Serializacion, SerializacionYDeserializacionConLobby) {
 
     Response deserializada(serializacion);
 
-    EXPECT_EQ(r.serialize(), deserializada.serialize());
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
 }
 
 TEST(Serializacion, SerializacionYDeserializacionConLobbyYResultadoDeAccion) {
@@ -241,5 +241,5 @@ TEST(Serializacion, SerializacionYDeserializacionConLobbyYResultadoDeAccion) {
 
     Response deserializada(serializacion);
 
-    EXPECT_EQ(r.serialize(), deserializada.serialize());
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
 }

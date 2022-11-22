@@ -1,68 +1,90 @@
 #include <thread>
+#include <vector>
 #include "gtest/gtest.h"
 #include "../src/sockets/socket.h"
 #include "../src/constants/command_values.h"
 #include "../src/protocolo/commands/command.h"
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
+#include "../src/constants/response_values.h"
 
-const char* serv = "8088";
+const char* serv = "8080";
 
-void sendCommand(std::string& command) {
+void receiveResponse(Response &response) {
     Socket client("localhost", serv);
 
-    Command c = ProtocolCommands().createCommand(1, command);
-
-    Protocolo().sendCommand(client, c);
+    for (int i = 0; i < 3; i++) {
+        response = Protocolo().receiveResponse(client);
+    }
 }
 
-void receiveId(int &receivedId) {
+void sendCommands(std::vector<std::string> &values) {
     Socket client("localhost", serv);
 
-    receivedId = Protocolo().receiveId(client);
+    for (auto &value : values) {
+        Command command = ProtocolCommands().createCommand(1, value);
+
+        Protocolo().sendCommand(client, command);
+    }
 }
 
-void sendResponse(Response& response) {
+void receiveId(int &id) {
+    Socket client("localhost", serv);
+
+    for (int i = 0; i < 3; i++) {
+        id = Protocolo().receiveId(client);
+    }
+}
+
+TEST(Protocolo, ClienteEnviaTodosLosComandosDisponiblesYElServidorLosRecibe) {
     Socket server(serv);
+    CommandValues values;
+    std::vector<std::string> deserializedCommands({
+                               values.DESERIALIZED_NOP,
+                               values.DESERIALIZED_UP_PUSHED,
+                               values.DESERIALIZED_UP_RELEASE,
+                               values.DESERIALIZED_DOWN_PUSHED,
+                               values.DESERIALIZED_DOWN_RELEASE,
+                               values.DESERIALIZED_LEFT_PUSHED,
+                               values.DESERIALIZED_LEFT_RELEASE,
+                               values.DESERIALIZED_RIGHT_PUSHED,
+                               values.DESERIALIZED_RIGHT_RELEASE,
+                               values.DESERIALIZED_TURBO_RELEASE,
+                               values.DESERIALIZED_TURBO_PUSHED,
+                               values.DESERIALIZED_JUMP_RELEASE,
+                               values.DESERIALIZED_JUMP_PUSHED,
+                               values.DESERIALIZED_LIST,
+                               values.DESERIALIZED_CREATE,
+                               values.DESERIALIZED_JOIN,
+                               values.DESERIALIZED_QUIT_MATCH,
+                               values.DESERIALIZED_QUIT_GAME
+                       });
+
+    std::thread clientThread(&sendCommands, std::ref(deserializedCommands));
+
+    std::vector<std::string> receivedValues;
 
     Socket connectedClient = server.accept();
 
-    Protocolo().sendResponse(connectedClient, response);
+    for (auto &value : deserializedCommands) {
+        Command c = Protocolo().receiveCommand(connectedClient);
+
+        receivedValues.push_back(c.getValue());
+
+        EXPECT_EQ(receivedValues.back(), value);
+    }
+
+    clientThread.join();
 }
 
-TEST(Protocolo, ClienteEnviaIzquierdaPresionada) {
-    Socket server(serv);
-
-    std::string value = CommandValues().DESERIALIZED_LEFT_PUSHED;
-
-    std::thread clientHandler(&sendCommand, std::ref(value));
-
-    Socket connectedClient = server.accept();
-
-    Command c = Protocolo().receiveCommand(connectedClient);
-
-    clientHandler.join();
-
-    EXPECT_EQ(c.getValue(), CommandValues().DESERIALIZED_LEFT_PUSHED);
-}
-
-TEST(Protocolo, ClienteEnviaNoOperation) {
-    Socket server(serv);
-
-    std::string value = CommandValues().DESERIALIZED_NOP;
-
-    std::thread clientHandler(&sendCommand, std::ref(value));
-
-    Socket connectedClient = server.accept();
-
-    Command c = Protocolo().receiveCommand(connectedClient);
-
-    clientHandler.join();
-
-    EXPECT_EQ(c.getValue(), CommandValues().DESERIALIZED_NOP);
-}
-
-TEST(Protocolo, ServidorEnviaRespuestaDeJugadores) {
+TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
+    ActionResultResponse actionResult(ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
+    LobbyResponse lobbyResponse(actionResult);
+    std::string nombre = "nombre";
+    RoomResponse room(nombre, 3, 2, false, false, true);
+    room.addClient(1);
+    room.addClient(2);
+    lobbyResponse.addRoom(room);
     BallResponse ball(0, 0, 0, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
     std::vector<PlayerResponse> players{player};
@@ -72,32 +94,39 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadores) {
     std::vector<MatchResponse> responses{matchResponse};
     MatchResponses matchResponses(responses);
     Response response(matchResponses);
+    response.addLobbyResponse(lobbyResponse);
 
-    std::thread serverHandler(&sendResponse, std::ref(response));
-
-    Socket client("localhost", serv);
-
-    Response r = Protocolo().receiveResponse(client);
-
-    serverHandler.join();
-
-    EXPECT_EQ(r.getSize(), response.getSize());
-}
-
-TEST(Protocolo, ClienteSeConectaYRecibeId) {
     Socket server(serv);
 
-    int receivedId = 0;
-
-    std::thread clientHandler(&receiveId, std::ref(receivedId));
+    Response receivedResponse;
+    std::thread clientThread(&receiveResponse, std::ref(receivedResponse));
 
     Socket connectedClient = server.accept();
 
+    for (int i = 0; i < 3; i++) {
+        Protocolo().sendResponse(connectedClient, response);
+    }
+
+    clientThread.join();
+
+    EXPECT_EQ(receivedResponse.serialize(), response.serialize());
+}
+
+TEST(Protocolo, ClienteSeConectaYRecibeId) {
     int id = 3;
+    int receivedId = 0;
+    Socket server(serv);
 
-    Protocolo().sendId(connectedClient, id);
+    std::thread clientThread(&receiveId, std::ref(receivedId));
 
-    clientHandler.join();
+    Socket connectedClient = server.accept();
+
+    for (int i = 0; i < 3; i++) {
+        Protocolo().sendId(connectedClient, id);
+    }
+
+    clientThread.join();
 
     EXPECT_EQ(receivedId, id);
+
 }

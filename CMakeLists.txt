@@ -445,3 +445,6 @@ target_link_libraries(game_server box2d)
 enable_testing()
 
 add_subdirectory(google_tests)
+include(CTest)
+
+configure_file("${PROJECT_SOURCE_DIR}/CTestCustom.cmake.in" ${CMAKE_BINARY_DIR}/CTestCustom.cmake)
