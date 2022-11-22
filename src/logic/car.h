@@ -17,6 +17,7 @@ class Car {
     bool isJumping();
     int secondJump;
     int usingTurbo;
+    bool isAccelerating;
 
  public:
     /*
@@ -64,6 +65,8 @@ class Car {
     int getId();
 
     void resetPosition();
+
+    void verifyAcceleration();
 };
 
 

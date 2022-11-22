@@ -62,9 +62,6 @@ b2Vec2 BoxLogic::getGravity() {
 int BoxLogic::wallsAmount() {
     return this->walls.size();
 }
-void BoxLogic::close() {
-    isActive = false;
-}
 
 void BoxLogic::updateTime() {
     float timeStep = 1.0f / 25.0f;
@@ -227,11 +224,11 @@ PlayerResponses BoxLogic::getPlayersData() {
         vector.emplace_back(x.getId(), x.getData(LogicValues().POS_X),
                             x.getData(LogicValues().POS_Y),
                             x.getData(LogicValues().ANGLE),
-                            false,
-                            false,
+                            ((x.getData(LogicValues().X_VELOCITY) != 0) || (x.getData(LogicValues().Y_VELOCITY) != 0)),
+                            (x.getData(LogicValues().POS_Y) < (2.23)),
                             x.getData(LogicValues().USING_TURBO),
                             false,
-                            false,
+                            x.getData(LogicValues().ACCELERATING),
                             false);
     }
     return PlayerResponses(vector);
@@ -242,7 +239,15 @@ void BoxLogic::updateStatus() {
     verifyDoubleJump();
     verifyTurbo();
     verifyGoal();
+    verifyAcceleration();
 }
+
+void BoxLogic::verifyAcceleration() {
+    for (auto &x : cars) {
+        x.verifyAcceleration();
+    }
+}
+
 void BoxLogic::verifyGoal() {
     this->updateGoal();
     this->resetPositions();

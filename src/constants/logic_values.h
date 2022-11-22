@@ -13,6 +13,7 @@ public:
     const int Y_VELOCITY = 4;
     const int TURBO_TANK = 5;
     const int USING_TURBO = 6;
+    const int ACCELERATING = 7;
     const int LEFT_DIRECTION = 0;
     const int RIGHT_DIRECTION = 1;
     const int UP_DIRECTION = 2;

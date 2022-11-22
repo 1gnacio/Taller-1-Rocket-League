@@ -22,20 +22,17 @@ TEST(physics, SeCreaElMapaConGravedad10) {
 
 
     EXPECT_EQ(physics.getGravity(), v);
-    physics.close(); // Sino queda el thread del tiempo corriendo
 }
 
 TEST(physics, SeCreanCorrectamenteLasParedes) {
     BoxLogic physics;
 
     EXPECT_EQ(physics.wallsAmount(), 4);
-    physics.close();
 }
 
 TEST(physics, SeCreaCorrectamenteLaPelota) {
     BoxLogic physics;
     EXPECT_EQ(physics.ballIsAwake(), true);
-    physics.close();
 }
 
 TEST(physics, movimientoCorrectoDePelota) {
@@ -44,7 +41,6 @@ TEST(physics, movimientoCorrectoDePelota) {
 
     EXPECT_EQ(physics.getBallData(LogicValues().POS_X), 0);
     EXPECT_TRUE(physics.getBallData(LogicValues().Y_VELOCITY) != 0);
-    physics.close();
 }
 
 TEST(physics, seAgregaJugadorCorrectamente) {
@@ -52,7 +48,6 @@ TEST(physics, seAgregaJugadorCorrectamente) {
     physics.addPlayer(PLAYER_ID);
 
     EXPECT_EQ(physics.playersAmount(), 1);
-    physics.close();
 }
 TEST(physics, seAgreganVariosJugadoresCorrectamente) {
     BoxLogic physics;
@@ -63,7 +58,6 @@ TEST(physics, seAgreganVariosJugadoresCorrectamente) {
     physics.addPlayer(PLAYER_ID_4);
 
     EXPECT_EQ(physics.playersAmount(), 4);
-    physics.close();
 }
 
 TEST(physics, sePosicionaAutoCorrectamente) {
@@ -73,7 +67,6 @@ TEST(physics, sePosicionaAutoCorrectamente) {
 
     EXPECT_EQ(physics.getCarData(PLAYER_ID,LogicValues().POS_X), 2);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) != 0);
-    physics.close();
 }
 
 TEST(physics, aceleracionCorrectaConComando) {
@@ -86,7 +79,6 @@ TEST(physics, aceleracionCorrectaConComando) {
     physics.startMove(PLAYER_ID,LogicValues().LEFT_DIRECTION); // Le aplica una fuerza, no le setea una velocidad.
     physics.updateTime();
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) != 0);
-    physics.close();
 }
 
 TEST(physics, FrenoCorrectoConComando) {
@@ -95,7 +87,6 @@ TEST(physics, FrenoCorrectoConComando) {
     physics.startMove(PLAYER_ID,LogicValues().LEFT_DIRECTION);
     physics.stopMove(PLAYER_ID);
     EXPECT_EQ(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY), 0);
-    physics.close();
 }
 
 TEST(physics, SaltoCorrectoConComando) {
@@ -109,7 +100,6 @@ TEST(physics, SaltoCorrectoConComando) {
     physics.updateTime();
 
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) < 0);
-    physics.close();
 }
 
 TEST(physics, MueveAnguloEnElAire) {
@@ -191,9 +181,16 @@ TEST(physics, RealizaUnTurboPorVariosSegundos) {
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().TURBO_TANK) < 1);
 }
 
-
-
-
+TEST(physics, ElAutoTieneAcelearacion) {
+    BoxLogic physics;
+    physics.addPlayer(PLAYER_ID);
+    update(physics,100);
+    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
+    physics.startMove(PLAYER_ID, LogicValues().LEFT_DIRECTION);
+    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().ACCELERATING));
+    update(physics,1);
+    EXPECT_FALSE(physics.getCarData(PLAYER_ID,LogicValues().ACCELERATING));
+}
 
 
 TEST(response, RespuestaCorrecta) {
