@@ -29,7 +29,6 @@ void sdl_animation::update(float dt) {
 }
 
 void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, double angle, SDL_RendererFlip &flipType) {
-    //std::cout << currentFrame << std::endl;
     if (textures.empty())
         throw std::runtime_error("Vector de texturas empty");
 

@@ -17,6 +17,8 @@
 #include "../src/protocolo/responses/response.h"
 #endif
 
+#define TIME_UPDATE_MS 10
+
 class sdl_main {
 private:
     SDL2pp::SDL sdl;
@@ -27,6 +29,7 @@ private:
     sdl_ball ball;
     sdl_scoreboard scoreboard;
     unit_conversion convert;
+    int time_ms;
 #ifndef SDL_TESTING
     std::map<int, sdl_player> players;
 #endif

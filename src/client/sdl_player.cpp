@@ -3,7 +3,7 @@
 sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PATH "/car/car"),
                                                     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
                                                     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
-                                                    facingLeft(false), moving(false), onTurbo(false), jumping(false),
+                                                    facingLeft(true), moving(false), onTurbo(false), jumping(false),
                                                     x(300), y(400), angle(0){
     //car_an.setColorMod(255,255,255);
     jump_an.disableLoop();
