@@ -40,9 +40,11 @@ Para partidas locales recomendamos los puertos `8080` u `8088`
 Client: `./game_client <nombre del servidor> <puerto>`
 
 ## Testing 
+Para correr los test y ver el coverage por archivo
 ```
     cmake ..
-    ctest -V -S CTestCustom.cmake 
+    make scrub
+    make gcov
 ```
 
 ## Lobby

@@ -86,6 +86,6 @@ void sdl_main::hideWindow() {
 void sdl_main::updateScreen() {
     //scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
     ball.update(renderer.GetOutputWidth()/2, renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6),0, 20);
-    my_object.update(0,0, 0, FRAME_RATE,true,true,true);
+    //my_object.update(0,0, 0, FRAME_RATE,true,true,true);
 }
 #endif
