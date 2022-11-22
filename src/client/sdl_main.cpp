@@ -36,7 +36,7 @@ void sdl_main::updateScreen(Response& response) {
     int local_goals= response.getMatchResponses().getMatchResponse().getLocalGoals();
     int visitors_goals=response.getMatchResponses().getMatchResponse().getVisitorsGoals();
     scoreboard.update(format_duration((std::chrono::milliseconds) time_ms),local_goals,visitors_goals);
-    time_ms += TIME_UPDATE_MS;
+    time_ms += TIME_UPDATE_MS*2;
 
     for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
         int car_x = convert.toPixels(player.getPosX(), renderer.GetOutputWidth());
