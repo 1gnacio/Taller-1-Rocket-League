@@ -1,15 +1,12 @@
 #include "sdl_player.h"
 
-sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PATH "/car/car"),
+sdl_player::sdl_player(SDL2pp::Renderer &renderer): car_an(renderer, 4, DATA_PATH "/bus/bus"),
                                                     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
                                                     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
                                                     facingLeft(true), moving(false), onTurbo(false), jumping(false),
-                                                    x(300), y(400), angle(0){
+                                                    x(0), y(0), angle(0){
     //car_an.setColorMod(255,255,255);
     jump_an.disableLoop();
-    //TODO tamaño del auto
-    size_h= 8 * renderer.GetOutputHeight() /100;
-    size_w= size_h*3;
 }
 
 
@@ -17,13 +14,15 @@ sdl_player::~sdl_player() {
     //TODO
 }
 
-void sdl_player::update(int _x, int _y, double _angle, float dt, bool isMoving, bool isJumping, bool _onTurbo) {
+void sdl_player::update(int _x, int _y, int _size_w, int _size_h, double _angle, float dt, bool isMoving, bool isJumping, bool _onTurbo) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;
         this->jumping = isJumping;
         this->onTurbo = _onTurbo;
         this->moving = isMoving;
+        this->size_h = _size_h;
+        this->size_w = _size_w;
 #endif
 
 
@@ -61,17 +60,15 @@ void sdl_player::update(int _x, int _y, double _angle, float dt, bool isMoving, 
 
 void sdl_player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    car_an.render(renderer, SDL2pp::Rect(x, y, size_w, size_h), angle, flip);
-
-
+    car_an.render(renderer, SDL2pp::Rect(x-(size_w/2), y-(size_h/2), size_w, size_h), angle, flip);
     if (onTurbo){
         if(facingLeft){
-            turbo_an.render(renderer, SDL2pp::Rect(x + (size_h * 3), y + (size_h / 4), size_h, size_h), angle, flip);
+            turbo_an.render(renderer, SDL2pp::Rect((x-(size_w/2)) + (size_h * 3), (y-(size_h/2)) + (size_h / 4), size_h, size_h), angle, flip);
         } else
-            turbo_an.render(renderer, SDL2pp::Rect(x - (size_h), y + (size_h / 4), size_h, size_h), angle, flip);
+            turbo_an.render(renderer, SDL2pp::Rect((x-(size_w/2)) - (size_h), (y-(size_h/2)) + (size_h / 4), size_h, size_h), angle, flip);
     }
     if(jumping){
-        jump_an.render(renderer, SDL2pp::Rect(x, y, size_h*3, size_h*3), 0,  flip);
+        jump_an.render(renderer, SDL2pp::Rect(x-(size_w/2), y-(size_h/2), size_h*3, size_h*3), 0,  flip);
     }
 }
 
