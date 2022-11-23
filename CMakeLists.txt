@@ -238,6 +238,8 @@ file(GLOB_RECURSE headers "../src/*/*.h")
 
 add_executable(game_client
         client_main.cpp
+        src/thread/common_thread.cpp
+        src/thread/common_thread.h
         src/lobby/lobby.cpp
         src/lobby/lobby.h
         src/lobby/lobby.ui
