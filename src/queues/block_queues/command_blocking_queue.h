@@ -7,10 +7,13 @@
 class CommandBlockingQueue : public CommandQueue {
 private:
     std::condition_variable cv; // tiene elementos?
+    bool isClosed;
 public:
     void push(Command &element);
 
     Command pop();
+
+    void close();
 };
 
 

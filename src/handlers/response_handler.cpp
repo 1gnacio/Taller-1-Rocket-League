@@ -16,25 +16,35 @@ ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, Respo
 
 // hilo que recibe las respuestas del servidor
 void ResponseHandler::handleReceive() {
-    this->helper.awaitHelper();
+    try {
+        this->helper.awaitHelper();
 
-    while (!this->hasFinished) {
-        Response r = protocolo.receiveResponse(this->socket);
-        this->queue.push(r);
-        this->hasFinished = protocolo.isConnectionClosed();
+        while (!this->hasFinished) {
+            Response r = protocolo.receiveResponse(this->socket);
+            this->queue.push(r);
+            this->hasFinished = protocolo.isConnectionClosed();
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
+
 }
 
 // hilo que envia las respuestas del servidor
 void ResponseHandler::handleSend() {
-    this->helper.awaitHelper();
+    try {
+        this->helper.awaitHelper();
 
-    while (!this->hasFinished) {
-        Response r = this->queue.pop();
-        //TODO que deberia hacer el hilo si no recibe nada del servidor?
-        protocolo.sendResponse(this->socket, r);
-        this->hasFinished = protocolo.isConnectionClosed();
+        while (!this->hasFinished) {
+            Response r = this->queue.pop();
+            //TODO que deberia hacer el hilo si no recibe nada del servidor?
+            protocolo.sendResponse(this->socket, r);
+            this->hasFinished = protocolo.isConnectionClosed();
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
+
 }
 
 void ResponseHandler::push(Response &response) {

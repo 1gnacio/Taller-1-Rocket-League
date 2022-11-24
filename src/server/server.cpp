@@ -16,7 +16,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : monitor(), accepter(servname), logic() {}
+Server::Server(const char* servname) : isClosed(false), monitor(), accepter(servname), logic() {}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket

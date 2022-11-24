@@ -9,9 +9,11 @@ class sdl_arena {
 private:
     SDL2pp::Texture texture_stadium;
     SDL2pp::Texture texture_goal;
+    int goal_w;
 public:
     explicit sdl_arena(SDL2pp::Renderer &renderer);
     void render(SDL2pp::Renderer &renderer);
+    void update(int goal_w);
     ~sdl_arena() = default;
 };
 

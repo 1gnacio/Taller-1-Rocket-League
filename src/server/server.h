@@ -11,7 +11,7 @@
 
 class Server {
 private:
-    std::atomic<bool> isClosed = false;
+    std::atomic<bool> isClosed;
     GameModelMonitor monitor;
 
     GameLogic logic;

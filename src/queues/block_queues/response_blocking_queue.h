@@ -7,10 +7,13 @@
 class ResponseBlockingQueue : public ResponseQueue {
 private:
     std::condition_variable cv; // tiene elementos?
+    bool isClosed;
 public:
     void push(Response &element);
 
     Response pop();
+
+    void close();
 };
 
 
