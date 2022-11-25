@@ -68,7 +68,7 @@ void Server::gameFlow(){
             int limitCommands = 0;
             while(!endpoint.queueEmpty() && limitCommands <= 50){
                 Command command = endpoint.pop();
-                lastResponse = logic.getResponse();
+                //lastResponse = logic.getResponse();
                 LobbyResponse lobby = monitor.applyLogic(command);
                 lastResponse.addLobbyResponse(lobby);
                 logic.updateModel(command);
@@ -84,10 +84,36 @@ void Server::gameFlow(){
     }
 }
 
+void Server::lobbyThread() {
+    try {
+        while(!this->isClosed) {
+            int limitCommands = 0;
+            monitor.resetDataOfGames();
+            while(!endpoint.queueEmpty() && limitCommands <= 50){
+                Command command = endpoint.pop();
+                LobbyResponse lobby = monitor.applyLogic(command);
+
+                limitCommands++;
+
+            }
+            std::vector<Response> responses = monitor.getResponse();
+            for(auto &x : responses) {
+                endpoint.push(x);
+            }
+            monitor.updateTime();
+            //std::cout << "Actualizo el tiempo en box2d" << std::endl;
+            // endpoint.push(logic.getResponse());
+        }
+    } catch (...) {
+        throw;
+    }
+}
+
 void Server::run() {
     while (!this->isClosed) {
         std::thread accepterThread(&Server::acceptClients, this);
-        std::thread gameLoopThread(&Server::gameFlow, this);
+        //std::thread gameLoopThread(&Server::gameFlow, this);
+        std::thread lobbyThread(&Server::lobbyThread, this);
 
         std::string signal;
 
@@ -100,7 +126,7 @@ void Server::run() {
         }
 
         accepterThread.join();
-        gameLoopThread.join();
+       // gameLoopThread.join();
     }
 }
 

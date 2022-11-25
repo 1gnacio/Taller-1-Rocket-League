@@ -1,0 +1,40 @@
+//
+// Created by taller on 25/11/22.
+//
+
+#ifndef ROCKET_LEAGUE_COMPLETEGAME_H
+#define ROCKET_LEAGUE_COMPLETEGAME_H
+#include "../game_entities/room.h"
+#include "../logic/gameLogic.h"
+
+class CompleteGame {
+private:
+    Room room;
+    GameLogic logic;
+
+public:
+
+    CompleteGame(int ownerId, int requiredPlayers, const char *name);
+    ActionResultResponse joinPlayer(int id);
+    RoomResponse list();
+    ActionResultResponse leaveRoom(int playerId);
+    Response getResponse();
+
+    bool operator<(const Room &room) const;
+    bool operator()(Room& room);
+    bool playerInRoom(int id);
+    [[nodiscard]] std::string getName() const { return room.getName(); };
+
+    // CompleteGame(const CompleteGame &game, Room room);
+    void applyCommand(Command &command);
+    float ballPosY();
+
+    void updateTime();
+    void resetData();
+};
+
+
+
+
+
+#endif //ROCKET_LEAGUE_COMPLETEGAME_H

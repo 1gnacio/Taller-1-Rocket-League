@@ -20,6 +20,9 @@ class Room {
     RoomResponse list();
     ActionResultResponse leaveRoom(int playerId);
 
+    int playersAmount();
+    bool playerInRoom(int &id);
+
     bool operator<(const Room &room) const;
     bool operator()(Room& room);
 

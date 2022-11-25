@@ -14,7 +14,12 @@
 
 Client::Client(ServerConnection& connection) :
         isRunning(true), connection(connection)/*, my_lobby()*/{
-    addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
+    std::string key = CommandValues().DESERIALIZED_JOIN;
+    std::string name = "partidaDePrueba";
+    ProtocolCommands makeCommands;
+    Command c = makeCommands.createCommand(this->connection.getId(), key, name);
+    this->connection.push(c);
+
 }
 
 void Client::readStandardInput() {
@@ -85,8 +90,9 @@ void Client::readStandardInput() {
 }
 
 void Client::run() {
+    std::cout << "entro al server y mando un join" << std::endl;
     sdl_handler.showWindow();
-    std::thread standardInput(&Client::readStandardInput, this);
+   std::thread standardInput(&Client::readStandardInput, this);
 
     while (this->isRunning) {
         Response response = this->connection.pop();

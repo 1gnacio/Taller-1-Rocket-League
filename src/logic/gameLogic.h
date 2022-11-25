@@ -9,7 +9,6 @@
 class GameLogic {
  private:
     BoxLogic gamePhysics;
-    // Game game;
 
  public:
     GameLogic();
@@ -21,6 +20,8 @@ class GameLogic {
     float playersAmount();
 
     void resetData();
+
+    float ballPosY();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

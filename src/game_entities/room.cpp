@@ -63,3 +63,17 @@ ActionResultResponse Room::leaveRoom(int playerId) {
 
     return {playerId, ResponseValues().OK};
 }
+
+int Room::playersAmount() {
+    return players.size();
+}
+
+bool Room::playerInRoom(int &id) {
+    bool playerInRoom = false;
+    for(auto &x: players) {
+        if (x == id) {
+            playerInRoom = true;
+        }
+    }
+    return playerInRoom;
+}

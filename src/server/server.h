@@ -39,6 +39,7 @@ public:
     ~Server();
 
 
+    void lobbyThread();
 };
 
 

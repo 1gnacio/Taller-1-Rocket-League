@@ -124,7 +124,9 @@ add_executable(lobby
         src/handlers/server_endpoint.h
         src/handlers/client_connection.cpp
         src/handlers/client_connection.h
+        src/game_model/completeGame.cpp
         src/game_model/game_model.cpp
+        src/game_model/completeGame.h
         src/game_model/game_model.h
         src/game_entities/room.cpp
         src/game_entities/room.h
@@ -391,6 +393,8 @@ add_executable(game_server
         src/protocolo/responses/player_response.h
         src/game_model/game_model_monitor.cpp
         src/game_model/game_model_monitor.h
+        src/game_model/completeGame.cpp
+        src/game_model/completeGame.h
         src/handlers/server_endpoint.cpp
         src/handlers/server_endpoint.h
         src/handlers/client_connection.cpp

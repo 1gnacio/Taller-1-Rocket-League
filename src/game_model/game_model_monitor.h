@@ -23,13 +23,24 @@ class GameModelMonitor {
     LobbyResponse joinRoom(int id, const char* name);
     LobbyResponse createRoom(int id, const char* name, int requiredPlayers);
     LobbyResponse leaveRoom(int id, const char* name);
+
+
  public:
+    void run();
     GameModelMonitor();
-    LobbyResponse applyLogic(const Command& command);
+    LobbyResponse applyLogic(Command& command);
+    std::vector<Response> getResponse();
+    int gamesAmount();
 
     // hago el monitor del modelo de juego no copiable
     GameModelMonitor(const GameModelMonitor&) = delete;
     GameModelMonitor& operator=(const GameModelMonitor&) = delete;
+
+    void applyCommandToGame(Command &command);
+
+    void updateTime();
+
+    void resetDataOfGames();
 };
 
 
