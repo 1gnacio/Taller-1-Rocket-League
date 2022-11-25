@@ -4,6 +4,9 @@ project(google_tests)
 # 'lib' is the folder with Google Test sources
 add_subdirectory(lib)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+#start YAML
+find_package(yaml-cpp REQUIRED)
+#end YAML
 
 # 'Google_Tests_run' is the target name
 # 'test1.cpp tests2.cpp' are source files with tests
@@ -15,4 +18,4 @@ add_executable(Google_Tests_run
         testGameLogic.cpp
         ${sources}
         )
-target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets box2d  ${SDL2PP_LIBRARIES})
+target_link_libraries(Google_Tests_run gtest gtest_main Qt5::Widgets box2d  ${SDL2PP_LIBRARIES} yaml-cpp)

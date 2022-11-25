@@ -11,6 +11,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
+
+#start YAML
+find_package(yaml-cpp REQUIRED)
+#end YAML
 #####################################################################################################################
 # start SDL
 # set up SDL2pp library
@@ -336,10 +340,17 @@ add_executable(game_client
         src/protocolo/responses/connected_clients.h
         src/protocolo/responses/action_result_response.cpp
         src/protocolo/responses/action_result_response.h
+        src/configuration/attributes/client_configuration_attributes.cpp
+        src/configuration/attributes/client_configuration_attributes.h
+        src/configuration/attributes/server_configuration_attributes.cpp
+        src/configuration/attributes/server_configuration_attributes.h
+        src/configuration/yaml_configuration.cpp
+        src/configuration/yaml_configuration.h
+        src/constants/configuration_paths.h
         )
         
 
-target_link_libraries(game_client ${SDL2PP_LIBRARIES} Qt5::Widgets)
+target_link_libraries(game_client ${SDL2PP_LIBRARIES} Qt5::Widgets yaml-cpp)
 
 ######################################################################################################################
 
