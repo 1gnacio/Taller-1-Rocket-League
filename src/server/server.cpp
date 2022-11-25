@@ -16,7 +16,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : isClosed(false), monitor(), accepter(servname), logic() {}
+Server::Server(const char* servname) : isClosed(false), accepter(servname), endpoint(), gameModel(this->endpoint){}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket
@@ -60,47 +60,16 @@ void Server::startHandler(Socket &socket) {
     this->endpoint.addPlayer(socket);
 }
 
-void Server::gameFlow(){
-    try {
-        while(!this->isClosed) {
-            logic.resetData();
-            Response lastResponse;
-            int limitCommands = 0;
-            while(!endpoint.queueEmpty() && limitCommands <= 50){
-                Command command = endpoint.pop();
-                //lastResponse = logic.getResponse();
-                LobbyResponse lobby = monitor.applyLogic(command);
-                lastResponse.addLobbyResponse(lobby);
-                logic.updateModel(command);
-                limitCommands++;
-                endpoint.push(lastResponse);
-            }
-            logic.updateTime();
-            //std::cout << "Actualizo el tiempo en box2d" << std::endl;
-            endpoint.push(logic.getResponse());
-        }
-    } catch (...) {
-        throw;
-    }
-}
 
 void Server::lobbyThread() {
     try {
         while(!this->isClosed) {
-            int limitCommands = 0;
-            monitor.resetDataOfGames();
-            while(!endpoint.queueEmpty() && limitCommands <= 50){
-                Command command = endpoint.pop();
-                LobbyResponse lobby = monitor.applyLogic(command);
+            Command command = endpoint.pop();
+            gameModel.applyLogic(command);
+            //int limitCommands = 0;
+            // gameModel.resetDataOfGames();
 
-                limitCommands++;
-
-            }
-            std::vector<Response> responses = monitor.getResponse();
-            for(auto &x : responses) {
-                endpoint.push(x);
-            }
-            monitor.updateTime();
+            // gameModel.updateTime();
             //std::cout << "Actualizo el tiempo en box2d" << std::endl;
             // endpoint.push(logic.getResponse());
         }

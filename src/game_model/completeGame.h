@@ -6,15 +6,17 @@
 #define ROCKET_LEAGUE_COMPLETEGAME_H
 #include "../game_entities/room.h"
 #include "../logic/gameLogic.h"
+#include "../handlers/server_endpoint.h"
 
 class CompleteGame {
 private:
     Room room;
     GameLogic logic;
+    ServerEndpoint & serverEndpoint;
 
 public:
 
-    CompleteGame(int ownerId, int requiredPlayers, const char *name);
+    CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint&serverEndPoint);
     ActionResultResponse joinPlayer(int id);
     RoomResponse list();
     ActionResultResponse leaveRoom(int playerId);
@@ -26,7 +28,7 @@ public:
     [[nodiscard]] std::string getName() const { return room.getName(); };
 
     // CompleteGame(const CompleteGame &game, Room room);
-    void applyCommand(Command &command);
+    void applyCommand(Command &command, bool status);
     float ballPosY();
 
     void updateTime();

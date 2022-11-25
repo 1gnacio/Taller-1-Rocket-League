@@ -11,12 +11,10 @@
 
 class Server {
 private:
-    std::atomic<bool> isClosed;
-    GameModelMonitor monitor;
-
-    GameLogic logic;
     Socket accepter;
     ServerEndpoint endpoint;
+    std::atomic<bool> isClosed;
+    GameModel gameModel;
 
     Socket acceptClient();
 

@@ -3,14 +3,16 @@
 //
 
 #include "completeGame.h"
-#include "src/protocolo/protocol_commands.h"
-#include "src/constants/command_values.h"
 #include <iostream>
 
-CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name):
+CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
+        serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
         logic(){
+        this->logic.addPlayer(ownerId);
 }
+
+
 
 ActionResultResponse CompleteGame::joinPlayer(int id) {
     CommandValues values;
@@ -34,8 +36,12 @@ bool CompleteGame::playerInRoom(int id) {
     return room.playerInRoom(id);
 }
 
-void CompleteGame::applyCommand(Command &command) {
-    logic.updateModel(command);
+void CompleteGame::applyCommand(Command &command, bool status) {
+    if(status) {
+        logic.updateModel(command);
+    }
+    logic.updateTime();
+    this->serverEndpoint.push(logic.getResponse());
 }
 
 float CompleteGame::ballPosY() {

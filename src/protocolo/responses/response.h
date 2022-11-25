@@ -22,6 +22,7 @@ public:
     Response(MatchResponses &matchResponses);
     Response(LobbyResponse &lobby);
 
+    bool isRecipient(int id);
     std::string getStatus() { return this->lobbyResponse.getStatus(); };
     std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta

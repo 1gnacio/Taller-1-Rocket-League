@@ -14,6 +14,7 @@ class GameLogic {
     GameLogic();
     bool withoutPlayers;
     void updateModel(Command &command);
+    void addPlayer(int id);
     void updateTime();
     Response getResponse();
     float getCarData(int carNumber, int key);

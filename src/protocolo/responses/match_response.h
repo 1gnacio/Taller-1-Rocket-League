@@ -56,6 +56,8 @@ public:
     int getTime();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
+
+    bool hasPlayer(int i);
 };
 
 

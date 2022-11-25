@@ -8,22 +8,26 @@
 #include "../src/protocolo/responses/room_responses.h"
 #include "../src/protocolo/responses/action_result_response.h"
 #include "completeGame.h"
+#include "../src/handlers/server_endpoint.h"
 
 class GameModel {
  private:
     std::vector<std::unique_ptr<CompleteGame>> games;
+    ServerEndpoint & serverEndpoint;
+    CommandValues commands;
+    LobbyResponse listRooms();
+
+    LobbyResponse joinRoom(int playerId, const char* name);
+
+    LobbyResponse leaveRoom(int playerId, const char* name);
+
+    LobbyResponse createRoom(int ownerId, const char* name, int requiredPlayers);
  public:
-    RoomResponses listRooms();
-
-    ActionResultResponse joinRoom(int playerId, const char* name);
-
-    ActionResultResponse leaveRoom(int playerId, const char* name);
-
-    ActionResultResponse createRoom(int ownerId, const char* name, int requiredPlayers);
+    GameModel(ServerEndpoint& serverEndpoint);
 
     std::unique_ptr<CompleteGame>* findGame(const char *name);
 
-    void applyCommandToGame(Command &command);
+    void applyCommandToGame(Command &command, bool status);
 
     std::unique_ptr<CompleteGame> *findGame(int id);
 
@@ -35,6 +39,8 @@ class GameModel {
     void updateTime();
 
     void resetDataOfGames();
+
+    void applyLogic(Command& command);
 };
 
 

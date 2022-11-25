@@ -8,14 +8,11 @@
 GameLogic::GameLogic(): withoutPlayers(0) {
 }
 
+
+
 void GameLogic::updateModel(Command &command) {
     std::cout << "llega un comando de " << command.getValue() << std::endl;
-    /*if (this->withoutPlayers == 0) {
-        this->gamePhysics.addPlayer(command.getID());
-        withoutPlayers = 1;
-    }*/
     if (command.getValue() == CommandValues().DESERIALIZED_JOIN) {
-        std::cout << "creo el auto" <<std::endl;
         this->gamePhysics.addPlayer(command.getID()); // this->gamePhysics.addPlayer(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
@@ -26,7 +23,6 @@ void GameLogic::updateModel(Command &command) {
     } else if (command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().RIGHT_DIRECTION);  // gamePhysics.startMove(command.getID(), LogicValues().RIGHT_DIRECTION);
-
     } else if (command.getValue() == CommandValues().DESERIALIZED_TURBO_PUSHED) {
         gamePhysics.applyTurbo(command.getID());  // gamePhysics.applyTurbo(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_JUMP_PUSHED) {
@@ -70,4 +66,8 @@ void GameLogic::resetData() {
 
 float GameLogic::ballPosY() {
     gamePhysics.getBallData(LogicValues().POS_Y);
+}
+
+void GameLogic::addPlayer(int id) {
+    gamePhysics.addPlayer(id);
 }

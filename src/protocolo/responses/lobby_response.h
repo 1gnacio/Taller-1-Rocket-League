@@ -21,6 +21,8 @@ public:
     std::vector<unsigned char> serialize();
     std::string getStatus() { return actionResult.getStatus(); };
     std::string getMessage() { return actionResult.getMessage(); };
+
+    bool isRecipient(int i);
 };
 
 

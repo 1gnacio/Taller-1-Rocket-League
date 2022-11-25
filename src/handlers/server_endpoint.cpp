@@ -12,7 +12,9 @@ void ServerEndpoint::sendResponsesHandler() {
     while (this->isActive) {
         Response r = this->responses.pop();
         for (auto& connection : connections) {
-            connection->push(r);
+            if (r.isRecipient(connection->getId())){
+                connection->push(r);
+            }
         }
     }
 }

@@ -74,3 +74,8 @@ void MatchResponses::addResponse(MatchResponse& response) {
 MatchResponse MatchResponses::getMatchResponse() {
     return matches.back();
 }
+
+bool MatchResponses::isRecipient(int i) {
+    return (this->matches.front().hasPlayer(i));
+
+}

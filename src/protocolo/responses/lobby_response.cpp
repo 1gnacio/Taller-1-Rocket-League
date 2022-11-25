@@ -52,3 +52,8 @@ LobbyResponse::LobbyResponse(RoomResponses &rooms, ActionResultResponse &result)
 : rooms(rooms), actionResult(result) {}
 
 LobbyResponse::LobbyResponse(ActionResultResponse &actionResult) : rooms(), actionResult(actionResult) {}
+
+bool LobbyResponse::isRecipient(int i) {
+    return (this->actionResult.getId() == i);
+
+}

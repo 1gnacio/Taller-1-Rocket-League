@@ -22,6 +22,8 @@ public:
     [[nodiscard]] int getSize() const { return this->players.size() * PlayerResponse::size(); };
     std::vector<PlayerResponse> getPlayers();
     [[nodiscard]] static int getSize(int count) { return count * PlayerResponse::size(); };
+
+    bool hasPlayer(int i);
 };
 
 

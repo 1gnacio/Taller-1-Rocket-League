@@ -1,4 +1,5 @@
 #include "player_responses.h"
+#include <algorithm>
 
 PlayerResponses::PlayerResponses(std::vector<PlayerResponse> &players) :
 serializer(), entitySerializer(), players(players) {}
@@ -42,4 +43,14 @@ void PlayerResponses::addPlayer(PlayerResponse &player) {
 
 std::vector<PlayerResponse> PlayerResponses::getPlayers() {
     return players;
+}
+
+bool PlayerResponses::hasPlayer(int i) {
+
+    auto found = std::find_if(this->players.begin(),
+                              this->players.end(),
+                              [&i](PlayerResponse &player)
+                              {return player.getId() == i;});
+
+    return (found != this->players.end());
 }

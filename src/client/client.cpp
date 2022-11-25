@@ -13,13 +13,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection)/*, my_lobby()*/{
-    std::string key = CommandValues().DESERIALIZED_JOIN;
-    std::string name = "partidaDePrueba";
-    ProtocolCommands makeCommands;
-    Command c = makeCommands.createCommand(this->connection.getId(), key, name);
-    this->connection.push(c);
-
+        isRunning(true), connection(connection) {
 }
 
 void Client::readStandardInput() {
@@ -90,7 +84,6 @@ void Client::readStandardInput() {
 }
 
 void Client::run() {
-    std::cout << "entro al server y mando un join" << std::endl;
     sdl_handler.showWindow();
    std::thread standardInput(&Client::readStandardInput, this);
 

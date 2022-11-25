@@ -2,34 +2,30 @@
 #include "game_model.h"
 #include "../constants/response_values.h"
 #include "completeGame.h"
-#include "src/constants/command_values.h"
-#include "src/protocolo/protocol_commands.h"
-#include <iostream>
+#include "../src/constants/command_values.h"
 
-RoomResponses GameModel::listRooms() {
+LobbyResponse GameModel::listRooms() {
     RoomResponses responses;
 
     for (auto& room : this->games) {
         RoomResponse r = room->list();
         responses.addRoom(r);
     }
-
-    return responses;
+    LobbyResponse lobbyR(responses);
+    return std::move(lobbyR);
 }
 
-ActionResultResponse GameModel::createRoom(int ownerId, const char* name, int requiredPlayers) {
-    CommandValues values;
-    std::vector<std::string> deserializedCommands({
-                                                   values.DESERIALIZED_JOIN,
-                                                  });
-    Command command = ProtocolCommands().createCommand(ownerId, deserializedCommands[0]);
+LobbyResponse GameModel::createRoom(int ownerId, const char* name, int requiredPlayers) {
     if (findGame(name) == nullptr) {
-        this->games.emplace_back(std::make_unique<CompleteGame>(ownerId, requiredPlayers, name));
-        games[games.size()-1]->applyCommand(command);
-        return {ownerId, ResponseValues().OK};
+        this->games.emplace_back(std::make_unique<CompleteGame>(ownerId, requiredPlayers, name, serverEndpoint));
+        // games[games.size()-1]->applyCommand(command);
+        ActionResultResponse actionResultAux(ownerId, ResponseValues().OK);
+        LobbyResponse lobbyR(actionResultAux);
+        return std::move(lobbyR);
     }
-
-    return {ownerId, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_EXISTS};
+    ActionResultResponse actionResultAux(ownerId, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_EXISTS);
+    LobbyResponse lobbyR(actionResultAux);
+    return std::move(lobbyR);
 }
 
 std::unique_ptr<CompleteGame>* GameModel::findGame(const char* name) {
@@ -52,28 +48,51 @@ std::unique_ptr<CompleteGame>* GameModel::findGame(int id) {
     return nullptr;
 }
 
-ActionResultResponse GameModel::joinRoom(int playerId, const char* name) {
+LobbyResponse GameModel::joinRoom(int playerId, const char* name) {
+
 
     if (findGame(name) != nullptr) {
-        return (*findGame(name))->joinPlayer(playerId);
+
+        ActionResultResponse actionResult((*findGame(name))->joinPlayer(playerId));
+        LobbyResponse lobbyR(actionResult);
+        return std::move(lobbyR);
+
     }
 
-    return {playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND};
+    ActionResultResponse actionResultAux(playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
+    LobbyResponse lobbyR(actionResultAux);
+    return std::move(lobbyR);
 }
 
-ActionResultResponse GameModel::leaveRoom(int playerId, const char *name) {
+LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
     auto room = findGame(name);
 
     if (room != nullptr) {
-        return (*room)->leaveRoom(playerId);
+        ActionResultResponse actionResult((*room)->leaveRoom(playerId));
+        LobbyResponse lobbyR(actionResult);
+        return std::move(lobbyR);
     }
-
-    return {playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND};
+    ActionResultResponse actionResultAux(playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
+    LobbyResponse lobbyR(actionResultAux);
+    return std::move(lobbyR);
 }
 
 
-void GameModel::applyCommandToGame(Command &command) {
-    (*findGame(command.getID()))->applyCommand(command);
+void GameModel::applyCommandToGame(Command &command, bool status) {
+
+    if(command.getValue() == CommandValues().DESERIALIZED_NOP) {
+        for (auto &x : games) {
+            x->applyCommand(command, false);
+        }
+        return;
+    }
+    if (!status) {
+        return;
+    }
+    auto room = findGame(command.getID());
+    if(room != nullptr && status) {
+        (*findGame(command.getID()))->applyCommand(command, status);
+    }
 }
 
 int GameModel::gamesAmount() {
@@ -100,4 +119,52 @@ void GameModel::resetDataOfGames() {
         x->resetData();
     }
 
+}
+
+GameModel::GameModel(ServerEndpoint &serverEndpoint): serverEndpoint(serverEndpoint) {
+
+}
+
+void GameModel::applyLogic(Command& command) {
+    ActionResultResponse actionResultAux(command.getID(), ResponseValues().OK);
+    LobbyResponse lobbyResponse(actionResultAux);
+    if (command.getValue() == this->commands.DESERIALIZED_LIST){
+        lobbyResponse = this->listRooms();
+        Response responseAux(lobbyResponse);
+        serverEndpoint.push(responseAux);
+        return;
+    }
+    if (command.getValue() == this->commands.DESERIALIZED_CREATE) {
+        lobbyResponse = this->createRoom(command.getID(),
+                         command.getSecondParameter().c_str(),
+                         std::stoi(command.getFirstParameter()));
+        Response responseAux(lobbyResponse);
+        serverEndpoint.push(responseAux);
+        return;
+    }
+    if (command.getValue() == this->commands.DESERIALIZED_JOIN) {
+        // Modificar
+        lobbyResponse =  std::move(this->joinRoom(command.getID(),
+                                                  command.getFirstParameter().c_str()));
+        /*lobbyResponse = this->createRoom(command.getID(),
+                         command.getSecondParameter().c_str(),
+                         2);*/
+        Response responseAux(lobbyResponse);
+        serverEndpoint.push(responseAux);
+        return;
+    }
+
+    if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH) {
+        lobbyResponse = this->leaveRoom(command.getID(),
+                                         command.getFirstParameter().c_str());
+        Response responseAux(lobbyResponse);
+        serverEndpoint.push(responseAux);
+        return;
+    }
+
+
+
+
+    // si no es ninguno -> cola de cada partida .
+    // applyCommandToGame(command, (lobbyResponse.getStatus() == ResponseValues().OK));
 }

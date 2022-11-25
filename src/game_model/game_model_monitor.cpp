@@ -4,7 +4,7 @@
 #include "game_model_monitor.h"
 #include "../src/constants/response_values.h"
 #include "iostream"
-
+/*
 GameModelMonitor::GameModelMonitor() : model(), commands() {}
 
 LobbyResponse GameModelMonitor::listRooms(int id) {
@@ -61,7 +61,7 @@ LobbyResponse GameModelMonitor::applyLogic(Command& command) {
                                           command.getSecondParameter().c_str(),
                                           2));
         /*return std::move(this->joinRoom(command.getID(),
-                                        command.getFirstParameter().c_str()));*/
+                                        command.getFirstParameter().c_str()));
 
     if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH)
         return std::move(this->leaveRoom(command.getID(),
@@ -76,7 +76,7 @@ void GameModelMonitor::run() {
     /*
      * Mientras el server no cerro
      *  - Leo comandos y actualizo las salas
-     */
+
 }
 
 int GameModelMonitor::gamesAmount() {
@@ -100,3 +100,4 @@ void GameModelMonitor::resetDataOfGames() {
     model.resetDataOfGames();
 
 }
+*/
