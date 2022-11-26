@@ -10,7 +10,7 @@ Game::Game(): name("juego"),
               goalsVisitor(0),
               requiredPlayers(2),
               currentPlayers(2),
-              isWaitingForPlayers(false),
+              isWaitingForPlayers(true),
               hasFinished(false),
               isGoalLocal(false),
               isGoalVisitor(false),
@@ -54,4 +54,9 @@ bool Game::goal() {
 void Game::resetData() {
     isGoalVisitor = 0;
     isGoalLocal = 0;
+}
+
+void Game::setStatus(bool b) {
+    isWaitingForPlayers = b;
+
 }

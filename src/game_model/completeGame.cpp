@@ -38,9 +38,14 @@ void CompleteGame::applyCommand(Command &command) {
     if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
         logic.updateModel(command);
     }
+    logic.updateRoomInfo(this->room);
     logic.updateTime();
+    sendResponse();
+}
+void CompleteGame::sendResponse() {
     this->serverEndpoint.push(logic.getResponse());
 }
+
 
 float CompleteGame::ballPosY() {
 
@@ -65,3 +70,6 @@ void CompleteGame::resetData() {
 
 }
 
+bool CompleteGame::isInGame() {
+    return room.isInGame();
+}

@@ -21,6 +21,7 @@ public:
     RoomResponse list();
     ActionResultResponse leaveRoom(int playerId);
     Response getResponse();
+    bool isInGame();
 
     bool operator<(const Room &room) const;
     bool operator()(Room& room);
@@ -33,6 +34,8 @@ public:
 
     void updateTime();
     void resetData();
+
+    void sendResponse();
 };
 
 
