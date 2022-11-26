@@ -16,7 +16,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : isClosed(false), monitor(), accepter(servname), logic() {}
+Server::Server(const char* servname) : isClosed(false), accepter(servname), endpoint(), gameModel(this->endpoint){}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket
@@ -60,24 +60,18 @@ void Server::startHandler(Socket &socket) {
     this->endpoint.addPlayer(socket);
 }
 
-void Server::gameFlow(){
+
+void Server::lobbyThread() {
     try {
         while(!this->isClosed) {
-            logic.resetData();
-            Response lastResponse;
-            int limitCommands = 0;
-            while(!endpoint.queueEmpty() && limitCommands <= 50){
-                Command command = endpoint.pop();
-                lastResponse = logic.getResponse();
-                LobbyResponse lobby = monitor.applyLogic(command);
-                lastResponse.addLobbyResponse(lobby);
-                logic.updateModel(command);
-                limitCommands++;
-                endpoint.push(lastResponse);
-            }
-            logic.updateTime();
+            Command command = endpoint.pop();
+            gameModel.applyLogic(command);
+            //int limitCommands = 0;
+            // gameModel.resetDataOfGames();
+
+            // gameModel.updateTime();
             //std::cout << "Actualizo el tiempo en box2d" << std::endl;
-            endpoint.push(logic.getResponse());
+            // endpoint.push(logic.getResponse());
         }
     } catch (...) {
         throw;
@@ -87,7 +81,8 @@ void Server::gameFlow(){
 void Server::run() {
     while (!this->isClosed) {
         std::thread accepterThread(&Server::acceptClients, this);
-        std::thread gameLoopThread(&Server::gameFlow, this);
+        //std::thread gameLoopThread(&Server::gameFlow, this);
+        std::thread lobbyThread(&Server::lobbyThread, this);
 
         std::string signal;
 
@@ -96,11 +91,14 @@ void Server::run() {
                 this->isClosed = true;
                 this->accepter.shutdown(SHUT_RDWR);
                 this->accepter.close();
+                this->stopHandlers();
+                this->cleanFinishedHandlers();
             }
         }
 
         accepterThread.join();
-        gameLoopThread.join();
+        lobbyThread.join();
+       // gameLoopThread.join();
     }
 }
 

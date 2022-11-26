@@ -13,8 +13,7 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection)/*, my_lobby()*/{
-    addInputCommand(CommandValues().DESERIALIZED_TURBO_RELEASE);
+        isRunning(true), connection(connection), sdl_handler() {
 }
 
 void Client::readStandardInput() {
@@ -76,7 +75,7 @@ void Client::readStandardInput() {
             case SDL_QUIT:
                 std::cout << "Quit" << std::endl;
                 quit = true;
-                addInputCommand(CommandValues().DESERIALIZED_QUIT_MATCH);
+                quitMatch();
                 this->isRunning = false;
                 break;
         }
@@ -85,6 +84,7 @@ void Client::readStandardInput() {
 }
 
 void Client::run() {
+    this->isRunning = true;
     sdl_handler.showWindow();
     std::thread standardInput(&Client::readStandardInput, this);
 
@@ -96,11 +96,22 @@ void Client::run() {
     }
     standardInput.join();
     sdl_handler.hideWindow();
+    this->connection.clearGameName();
 }
 
 void Client::addInputCommand(std::string deserialized_key) {
     ProtocolCommands makeCommands;
     //std::cout << deserialized_key << std::endl;
     Command c = makeCommands.createCommand(this->connection.getId(), deserialized_key);
+    this->connection.push(c);
+}
+
+void Client::quitMatch() {
+    ProtocolCommands makeCommands;
+    std::string value = CommandValues().DESERIALIZED_QUIT_MATCH;
+    std::string gameName = this->connection.getGameName();
+    Command c = makeCommands.createCommand(this->connection.getId(),
+                                           value,
+                                           gameName);
     this->connection.push(c);
 }

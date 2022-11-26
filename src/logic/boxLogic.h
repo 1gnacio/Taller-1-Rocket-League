@@ -104,6 +104,8 @@ class BoxLogic {
     void verifyAcceleration();
 
     int getTime();
+
+    void removePlayer(int i);
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

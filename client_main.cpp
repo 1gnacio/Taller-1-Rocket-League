@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) try {
     window.show();
 
     return  app.exec();
+
     } catch (const std::exception& err) {
         std::cerr
                 << "Something went wrong and an exception was caught: "

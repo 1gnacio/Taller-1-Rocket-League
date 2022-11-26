@@ -41,6 +41,7 @@ public:
                   bool activeReplay);
 
     explicit MatchResponse(std::vector<unsigned char>& serialized);
+    explicit MatchResponse();
     std::vector<unsigned char> serialize();
 
     void setGoals(uint8_t goalsLocal, uint8_t goalsVisitor);
@@ -56,6 +57,8 @@ public:
     int getTime();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
+
+    bool hasPlayer(int i);
 };
 
 

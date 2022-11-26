@@ -7,6 +7,7 @@
 
 class ServerEndpoint {
 private:
+    std::mutex mutex;
     bool isActive;
     int nextClientId = 1;
     CommandQueue receivedCommands;

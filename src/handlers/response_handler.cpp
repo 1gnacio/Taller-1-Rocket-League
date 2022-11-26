@@ -1,9 +1,9 @@
 #include "response_handler.h"
 
-ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, ResponseQueue &queue, Mode mode) :
+ResponseHandler::ResponseHandler(Socket &socket, IdService& idService, ResponseQueue &queue, Mode mode) :
         queue(queue),
         socket(socket),
-        helper(helper),
+        idService(idService),
         hasFinished(false),
         protocolo()
 {
@@ -16,9 +16,9 @@ ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, Respo
 
 // hilo que recibe las respuestas del servidor
 void ResponseHandler::handleReceive() {
-    try {
-        this->helper.awaitHelper();
+    this->idService.run();
 
+    try {
         while (!this->hasFinished) {
             Response r = protocolo.receiveResponse(this->socket);
             this->queue.push(r);
@@ -32,9 +32,9 @@ void ResponseHandler::handleReceive() {
 
 // hilo que envia las respuestas del servidor
 void ResponseHandler::handleSend() {
-    try {
-        this->helper.awaitHelper();
+    this->idService.run();
 
+    try {
         while (!this->hasFinished) {
             Response r = this->queue.pop();
             //TODO que deberia hacer el hilo si no recibe nada del servidor?
@@ -71,6 +71,5 @@ ResponseHandler::~ResponseHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
     }
-
     this->handler.join();
 }

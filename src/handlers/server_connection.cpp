@@ -4,10 +4,10 @@
 ServerConnection::ServerConnection(const char *hostname, const char *servname) :
 isConnected(true),
 socket(hostname, servname),
-helper(socket),
+idService(RECEIVER, socket, 0),
 commandQueue(),
 sender(this->socket, this->commandQueue, SENDER),
-receiver(this->socket, helper, this->responseQueue, RECEIVER)
+receiver(this->socket, idService, this->responseQueue, RECEIVER)
 {}
 
 void ServerConnection::push(Command &command) {
@@ -28,8 +28,10 @@ bool ServerConnection::connectionClosed() {
 
 void ServerConnection::closeConnection() {
     if(this->isConnected) {
+        std::string value = CommandValues().DESERIALIZED_QUIT_GAME;
+        Command c = ProtocolCommands().createCommand(this->idService.getId(), value);
+        this->commandQueue.push(c);
         this->commandQueue.close();
-        this->responseQueue.close();
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
         this->sender.stopHandler();
@@ -40,8 +42,10 @@ void ServerConnection::closeConnection() {
 
 ServerConnection::~ServerConnection() {
     if(this->isConnected) {
+        std::string value = CommandValues().DESERIALIZED_QUIT_GAME;
+        Command c = ProtocolCommands().createCommand(this->idService.getId(), value);
+        this->commandQueue.push(c);
         this->commandQueue.close();
-        this->responseQueue.close();
         this->socket.shutdown(SHUT_RDWR);
         this->socket.close();
         this->sender.stopHandler();
@@ -49,3 +53,13 @@ ServerConnection::~ServerConnection() {
         this->isConnected = false;
     }
 }
+
+void ServerConnection::setConnectedGameName(std::string &name) {
+    this->gameName = name;
+}
+
+void ServerConnection::clearGameName() {
+    this->gameName.clear();
+}
+
+
