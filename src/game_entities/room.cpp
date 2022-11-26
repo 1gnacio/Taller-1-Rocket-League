@@ -36,6 +36,9 @@ ActionResultResponse Room::joinPlayer(int id) {
 
     return {id, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_FULL};
 }
+bool Room::isInGame() {
+    return this->isStarted;
+}
 
 bool Room::operator<(const Room &room) const {
     return (this->name < room.name);
