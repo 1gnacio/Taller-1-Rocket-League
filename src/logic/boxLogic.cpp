@@ -105,7 +105,6 @@ void BoxLogic::createCar(int id) {
     } else {
         carBodyDef.position.Set(2.0f, -2.0f);
     }
-
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
