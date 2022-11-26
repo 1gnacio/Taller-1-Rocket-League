@@ -105,5 +105,5 @@ int Protocolo::receiveId(Socket &socket) {
 
     std::vector<unsigned char> serializedInt = this->receiveMessage(socket);
 
-    return Serializer().deserializeInt(serializedInt);
+    return serializedInt.size() > 0 ? Serializer().deserializeInt(serializedInt) : 0;
 }

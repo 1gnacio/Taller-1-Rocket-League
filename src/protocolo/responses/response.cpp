@@ -28,37 +28,41 @@ Response::Response(std::vector<unsigned char> &serializedResponse) : serializer(
     std::vector<unsigned char> serializedMatchesResponse(serializedResponse.begin() + end + 1,
                                                          serializedResponse.begin() + end + matchesSize + 1);
 
-    this->matchResponses = MatchResponses(serializedMatchesResponse);
+    this->matchResponse = MatchResponse(serializedMatchesResponse);
 }
 
-Response::Response(MatchResponses &matchResponses) : serializer(), matchResponses(std::move(matchResponses)) {}
+Response::Response(MatchResponse &matchResponse) : serializer(), matchResponse(std::move(matchResponse)) {}
 
 std::vector<unsigned char> Response::serialize() {
     std::vector<unsigned char> serialization;
 
     this->serializer.merge(serialization, this->lobbyResponse.serialize());
-    this->serializer.merge(serialization, this->matchResponses.serialize());
+    this->serializer.merge(serialization, this->matchResponse.serialize());
 
     return serialization;
 }
 
-Response::Response() : lobbyResponse(), matchResponses() {}
-
-MatchResponses Response::getMatchResponses() {
-    return matchResponses;
-}
+Response::Response() : lobbyResponse(), matchResponse() {}
 
 void Response::addLobbyResponse(LobbyResponse &response) {
     this->lobbyResponse = response;
 }
 
 float Response::getBallPositionY() {
-    return this->matchResponses.getMatchResponse().getBall().getPosY();
+    return this->matchResponse.getBall().getPosY();
 }
 
-Response::Response(LobbyResponse &lobby) : matchResponses(), lobbyResponse(lobby) {}
+Response::Response(LobbyResponse &lobby) : matchResponse(), lobbyResponse(lobby) {}
 
 bool Response::isRecipient(int id) {
 
-    return this->lobbyResponse.isRecipient(id) || this->matchResponses.isRecipient(id);
+    return this->lobbyResponse.isRecipient(id) || this->matchResponse.hasPlayer(id);
+}
+
+MatchResponse Response::getMatchResponse() {
+    return this->matchResponse;
+}
+
+std::vector<RoomResponse> Response::getRooms() {
+    return this->lobbyResponse.getRooms();
 }

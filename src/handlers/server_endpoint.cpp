@@ -9,18 +9,24 @@ connections(),
 sender(std::thread(&ServerEndpoint::sendResponsesHandler, this)) {}
 
 void ServerEndpoint::sendResponsesHandler() {
-    while (this->isActive) {
-        Response r = this->responses.pop();
-        for (auto& connection : connections) {
-            if (r.isRecipient(connection->getId())){
-                connection->push(r);
+    try {
+        while (this->isActive) {
+            Response r = this->responses.pop();
+            std::lock_guard<std::mutex> l(mutex);
+            for (auto& connection : connections) {
+                if (r.isRecipient(connection->getId())){
+                    connection->push(r);
+                }
             }
         }
+    } catch (std::exception &e) {
+        this->isActive = false;
     }
 }
 
 void ServerEndpoint::addPlayer(Socket &client) {
-    this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, client, this->responses, this->receivedCommands));
+    std::lock_guard<std::mutex> l(mutex);
+    this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, this->receivedCommands, client));
     this->nextClientId++;
 }
 
@@ -37,12 +43,14 @@ bool waitIfFinished(std::unique_ptr<ClientConnection>& connection) {
 }
 
 void ServerEndpoint::stopConnections() {
+    std::lock_guard<std::mutex> l(mutex);
     for(auto& connection : this->connections) {
         connection->closeConnection();
     }
 }
 
 void ServerEndpoint::cleanFinishedConnections() {
+    std::lock_guard<std::mutex> l(mutex);
     this->connections.erase(std::remove_if(this->connections.begin(),
                                         this->connections.end(),
                                         waitIfFinished),
@@ -50,6 +58,8 @@ void ServerEndpoint::cleanFinishedConnections() {
 }
 
 ServerEndpoint::~ServerEndpoint() {
+    this->responses.close();
+    std::lock_guard<std::mutex> l(mutex);
     for(auto& connection : this->connections) {
         connection->closeConnection();
     }

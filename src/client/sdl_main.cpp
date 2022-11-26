@@ -23,13 +23,13 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
-    int local_goals= response.getMatchResponses().getMatchResponse().getLocalGoals();
-    int visitors_goals=response.getMatchResponses().getMatchResponse().getVisitorsGoals();
+    int local_goals= response.getMatchResponse().getLocalGoals();
+    int visitors_goals=response.getMatchResponse().getVisitorsGoals();
     scoreboard.update(convert.timeToString((std::chrono::milliseconds) time_ms),local_goals,visitors_goals);
     time_ms += TIME_UPDATE_MS*2;
 
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()));
-    for (auto &player: response.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers()) {
+    for (auto &player: response.getMatchResponse().getPlayersResponse().getPlayers()) {
         int car_x = convert.WtoPixels(player.getPosX(), renderer.GetOutputWidth());
         int car_y = convert.HtoPixels(player.getPosY(), renderer.GetOutputHeight());
         double car_angle = convert.toDegrees(player.getRotationAngle());
@@ -45,11 +45,11 @@ void sdl_main::updateScreen(Response& response) {
         players.at(id).update(car_x, car_y, car_w, car_h, car_angle, FRAME_RATE, player.moving(), player.flying(), player.onTurbo());
     }
 
-    int ball_x = convert.WtoPixels(response.getMatchResponses().getMatchResponse().getBall().getPosX(),
+    int ball_x = convert.WtoPixels(response.getMatchResponse().getBall().getPosX(),
                                    renderer.GetOutputWidth());
-    int ball_y = convert.HtoPixels(response.getMatchResponses().getMatchResponse().getBall().getPosY(),
+    int ball_y = convert.HtoPixels(response.getMatchResponse().getBall().getPosY(),
                                    renderer.GetOutputHeight());
-    double ball_angle = convert.toDegrees(response.getMatchResponses().getMatchResponse().getBall().getRotationAngle());
+    double ball_angle = convert.toDegrees(response.getMatchResponse().getBall().getRotationAngle());
     int ball_width =  2.0 * convert.toPixels(LogicValues::RADIUS_BALL, renderer.GetOutputWidth());
     ball.update(ball_x, ball_y, ball_angle, ball_width);
 

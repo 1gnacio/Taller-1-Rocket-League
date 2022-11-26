@@ -61,6 +61,5 @@ CommandHandler::~CommandHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
     }
-
     this->handler.join();
 }

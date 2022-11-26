@@ -91,9 +91,7 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
     MatchResponse matchResponse(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
-    std::vector<MatchResponse> responses{matchResponse};
-    MatchResponses matchResponses(responses);
-    Response response(matchResponses);
+    Response response(matchResponse);
     response.addLobbyResponse(lobbyResponse);
 
     Socket server(serv);

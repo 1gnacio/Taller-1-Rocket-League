@@ -158,8 +158,6 @@ add_executable(lobby
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
-        src/protocolo/connection_helper.cpp
-        src/protocolo/connection_helper.h
         src/lobby/lobby.cpp
         src/lobby/lobby.h
         src/lobby/lobby.ui
@@ -325,8 +323,6 @@ add_executable(game_client
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
-        src/protocolo/connection_helper.cpp
-        src/protocolo/connection_helper.h
         src/client/unit_conversion.cpp src/client/unit_conversion.h
         src/protocolo/responses/lobby_response.cpp
         src/protocolo/responses/lobby_response.h
@@ -338,6 +334,10 @@ add_executable(game_client
         src/protocolo/responses/connected_clients.h
         src/protocolo/responses/action_result_response.cpp
         src/protocolo/responses/action_result_response.h
+        src/thread/common_thread.cpp
+        src/thread/common_thread.h
+        src/handlers/id_service.cpp
+        src/handlers/id_service.h
         )
         
 
@@ -431,8 +431,6 @@ add_executable(game_server
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
-        src/protocolo/connection_helper.cpp
-        src/protocolo/connection_helper.h
         src/protocolo/responses/lobby_response.cpp
         src/protocolo/responses/lobby_response.h
         src/protocolo/responses/room_responses.cpp
@@ -443,6 +441,10 @@ add_executable(game_server
         src/protocolo/responses/connected_clients.h
         src/protocolo/responses/action_result_response.cpp
         src/protocolo/responses/action_result_response.h
+        src/thread/common_thread.cpp
+        src/thread/common_thread.h
+        src/handlers/id_service.cpp
+        src/handlers/id_service.h
         )
 
 target_link_libraries(game_server box2d)

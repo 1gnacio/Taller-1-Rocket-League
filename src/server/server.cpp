@@ -91,10 +91,13 @@ void Server::run() {
                 this->isClosed = true;
                 this->accepter.shutdown(SHUT_RDWR);
                 this->accepter.close();
+                this->stopHandlers();
+                this->cleanFinishedHandlers();
             }
         }
 
         accepterThread.join();
+        lobbyThread.join();
        // gameLoopThread.join();
     }
 }

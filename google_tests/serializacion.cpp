@@ -10,18 +10,16 @@ TEST(Serialize, seSeteanLosGoles) {
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
     MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
-    MatchResponses matches;
-    matches.addResponse(response);
-    Response r(matches);
+    Response r(response);
 
     std::vector<unsigned char> serializada = r.serialize();
 
     Response deserializada(serializada);
 
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getLocalGoals(),
-              deserializada.getMatchResponses().getMatchResponse().getLocalGoals());
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getVisitorsGoals(),
-              deserializada.getMatchResponses().getMatchResponse().getVisitorsGoals());
+    EXPECT_EQ(r.getMatchResponse().getLocalGoals(),
+              deserializada.getMatchResponse().getLocalGoals());
+    EXPECT_EQ(r.getMatchResponse().getVisitorsGoals(),
+              deserializada.getMatchResponse().getVisitorsGoals());
 }
 
 TEST(Serialize, seSeteanLosJugadores) {
@@ -32,22 +30,20 @@ TEST(Serialize, seSeteanLosJugadores) {
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
     MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
-    MatchResponses matches;
-    matches.addResponse(response);
-    Response r(matches);
+    Response r(response);
 
     std::vector<unsigned char> responseSerialized = r.serialize();
 
     Response deserializada(responseSerialized);
 
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getId(),
-              deserializada.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getId());
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getPosY(),
-              deserializada.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getPosY());
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getRotationAngle(),
-              deserializada.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getRotationAngle());
-    EXPECT_EQ(r.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getPosX(),
-              deserializada.getMatchResponses().getMatchResponse().getPlayersResponse().getPlayers().front().getPosX());
+    EXPECT_EQ(r.getMatchResponse().getPlayersResponse().getPlayers().front().getId(),
+              deserializada.getMatchResponse().getPlayersResponse().getPlayers().front().getId());
+    EXPECT_EQ(r.getMatchResponse().getPlayersResponse().getPlayers().front().getPosY(),
+              deserializada.getMatchResponse().getPlayersResponse().getPlayers().front().getPosY());
+    EXPECT_EQ(r.getMatchResponse().getPlayersResponse().getPlayers().front().getRotationAngle(),
+              deserializada.getMatchResponse().getPlayersResponse().getPlayers().front().getRotationAngle());
+    EXPECT_EQ(r.getMatchResponse().getPlayersResponse().getPlayers().front().getPosX(),
+              deserializada.getMatchResponse().getPlayersResponse().getPlayers().front().getPosX());
 
 }
 
@@ -59,16 +55,14 @@ TEST(Serialize, seSeteanLosEstadosDeLaPelota) {
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
     MatchResponse match(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
-    MatchResponses matches;
-    matches.addResponse(match);
-    Response serializar(matches);
+    Response serializar(match);
     std::vector<unsigned char> responseSerialized = serializar.serialize();
 
     Response deserializada(responseSerialized);
 
-    EXPECT_EQ(deserializada.getMatchResponses().getMatchResponse().getBall().getIsMoving(), false);
-    EXPECT_EQ(deserializada.getMatchResponses().getMatchResponse().getBall().getIsFlying(), true);
-    EXPECT_EQ(deserializada.getMatchResponses().getMatchResponse().getBall().getHasBeenPunched(), false);
+    EXPECT_EQ(deserializada.getMatchResponse().getBall().getIsMoving(), false);
+    EXPECT_EQ(deserializada.getMatchResponse().getBall().getIsFlying(), true);
+    EXPECT_EQ(deserializada.getMatchResponse().getBall().getHasBeenPunched(), false);
 }
 
 TEST(Serialize, seSeteanTodosLosDatos) {
@@ -79,9 +73,7 @@ TEST(Serialize, seSeteanTodosLosDatos) {
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
     MatchResponse response(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
-    MatchResponses matches;
-    matches.addResponse(response);
-    Response r(matches);
+    Response r(response);
 
     std::vector<unsigned char> responseSerialized = r.serialize();
 
@@ -180,9 +172,7 @@ TEST(Serializacion, SerializarYDeserializarPartida) {
     players.addPlayer(player);
     std::string prueba = "nombre de prueba";
     MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
-    MatchResponses partidas;
-    partidas.addResponse(partida);
-    Response r(partidas);
+    Response r(partida);
 
     std::vector<unsigned char> serializacion = r.serialize();
 
@@ -206,9 +196,7 @@ TEST(Serializacion, SerializacionYDeserializacionConLobby) {
     players.addPlayer(player1);
     std::string prueba = "nombre de prueba";
     MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
-    MatchResponses partidas;
-    partidas.addResponse(partida);
-    Response r(partidas);
+    Response r(partida);
     r.addLobbyResponse(lobbyResponse);
     std::vector<unsigned char> serializacion = r.serialize();
 
@@ -233,9 +221,7 @@ TEST(Serializacion, SerializacionYDeserializacionConLobbyYResultadoDeAccion) {
     players.addPlayer(player1);
     std::string prueba = "nombre de prueba";
     MatchResponse partida(0, 2, 0, ball, players, 0, 0, prueba, true, false, true, false, false);
-    MatchResponses partidas;
-    partidas.addResponse(partida);
-    Response r(partidas);
+    Response r(partida);
     r.addLobbyResponse(lobbyResponse);
     std::vector<unsigned char> serializacion = r.serialize();
 

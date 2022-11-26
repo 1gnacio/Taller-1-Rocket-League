@@ -1,8 +1,5 @@
-//
-// Created by taller on 25/11/22.
-//
-
 #include "completeGame.h"
+#include "src/constants/response_values.h"
 #include <iostream>
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
@@ -15,13 +12,11 @@ CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, S
 
 
 ActionResultResponse CompleteGame::joinPlayer(int id) {
-    CommandValues values;
-    std::vector<std::string> deserializedCommands({
-                                                          values.DESERIALIZED_JOIN,
-                                                  });
-    Command command = ProtocolCommands().createCommand(id, deserializedCommands[0]); // Refactorizar
-    logic.updateModel(command);
-    return room.joinPlayer(id);
+    ActionResultResponse response = this->room.joinPlayer(id);
+    if (response.getStatus() == ResponseValues().OK) {
+        logic.addPlayer(id);
+    }
+    return response;
 }
 
 RoomResponse CompleteGame::list() {
@@ -29,15 +24,19 @@ RoomResponse CompleteGame::list() {
 }
 
 ActionResultResponse CompleteGame::leaveRoom(int playerId) {
-    return room.leaveRoom(playerId);
+    ActionResultResponse response = room.leaveRoom(playerId);
+    if (response.getStatus() == ResponseValues().OK) {
+        logic.removePlayer(playerId);
+    }
+    return response;
 }
 
 bool CompleteGame::playerInRoom(int id) {
     return room.playerInRoom(id);
 }
 
-void CompleteGame::applyCommand(Command &command, bool status) {
-    if(status) {
+void CompleteGame::applyCommand(Command &command) {
+    if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
         logic.updateModel(command);
     }
     logic.updateTime();

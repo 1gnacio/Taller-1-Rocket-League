@@ -57,3 +57,7 @@ bool LobbyResponse::isRecipient(int i) {
     return (this->actionResult.getId() == i);
 
 }
+
+std::vector<RoomResponse> LobbyResponse::getRooms() {
+    return this->rooms.getRooms();
+}

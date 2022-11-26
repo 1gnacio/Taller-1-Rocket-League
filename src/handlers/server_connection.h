@@ -6,15 +6,15 @@
 #include "../handlers/response_handler.h"
 #include "../queues/block_queues/response_blocking_queue.h"
 #include "../queues/block_queues/command_blocking_queue.h"
-#include "../protocolo/connection_helper.h"
 
 class ServerConnection {
 private:
     bool isConnected;
+    std::string gameName;
     Socket socket;
-    ConnectionHelper helper;
+    IdService idService;
     CommandBlockingQueue commandQueue;
-    ResponseBlockingQueue responseQueue;
+    ResponseQueue responseQueue;
     CommandHandler sender;
     ResponseHandler receiver;
 public:
@@ -28,7 +28,13 @@ public:
 
     void closeConnection();
 
-    [[nodiscard]] int getId() const { return this->helper.getId(); }
+    [[nodiscard]] int getId() const { return this->idService.getId(); }
+
+    void setConnectedGameName(std::string &name);
+
+    void clearGameName();
+
+    std::string getGameName() { return this->gameName;};
 
     ~ServerConnection();
 };

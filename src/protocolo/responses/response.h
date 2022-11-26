@@ -15,11 +15,11 @@ class Response {
 private:
     Serializer serializer;
     LobbyResponse lobbyResponse;
-    MatchResponses matchResponses;
+    MatchResponse matchResponse;
 public:
     Response();
     Response(std::vector<unsigned char> &serializedResponse);
-    Response(MatchResponses &matchResponses);
+    Response(MatchResponse &matchResponse);
     Response(LobbyResponse &lobby);
 
     bool isRecipient(int id);
@@ -27,10 +27,11 @@ public:
     std::vector<unsigned char> serialize();
     // aca pueden haber metodos especificos para obtener atributos de cada respuesta
     // o toda la respuesta de ser necesario
-    int getSize() { return this->matchResponses.size(); };
-    MatchResponses getMatchResponses();
     void addLobbyResponse(LobbyResponse &response);
     float getBallPositionY();
+    std::vector<RoomResponse> getRooms();
+
+    MatchResponse getMatchResponse();
 };
 
 

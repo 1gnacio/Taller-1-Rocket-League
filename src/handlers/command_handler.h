@@ -4,7 +4,6 @@
 #include <thread>
 #include "../queues/command_queue.h"
 #include "enums/mode.h"
-#include "../src/protocolo/connection_helper.h"
 
 class CommandHandler {
 private:

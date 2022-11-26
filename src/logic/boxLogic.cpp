@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "boxLogic.h"
 #include <unistd.h>
 #include <time.h>
@@ -291,7 +292,7 @@ void BoxLogic::resetPositions() {
         for (auto &x : cars) {
             x.resetPosition();
         }
-        ball->SetLinearVelocity(b2Vec2(0,0));
+        ball->SetLinearVelocity(b2Vec2(0.1f,0.1f));
         ball->SetTransform(b2Vec2(0, -2.8f),0);
 
     }
@@ -310,4 +311,10 @@ MatchResponse BoxLogic::gameData(BallResponse &ball, PlayerResponses &players) {
 void BoxLogic::resetData() {
     game.resetData();
 
+}
+
+void BoxLogic::removePlayer(int id) {
+    auto found = std::remove_if(this->cars.begin(), this->cars.end(), [&id](Car &car){return car.getId() == id;});
+
+    this->cars.erase(found, this->cars.end());
 }

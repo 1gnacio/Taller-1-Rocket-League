@@ -61,6 +61,8 @@ ActionResultResponse Room::leaveRoom(int playerId) {
 
     auto result = std::remove(this->players.begin(), this->players.end(), playerId);
 
+    this->players.erase(result, this->players.end());
+
     return {playerId, ResponseValues().OK};
 }
 

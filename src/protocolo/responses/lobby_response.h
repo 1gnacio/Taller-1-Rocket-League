@@ -23,6 +23,8 @@ public:
     std::string getMessage() { return actionResult.getMessage(); };
 
     bool isRecipient(int i);
+
+    std::vector<RoomResponse> getRooms();
 };
 
 

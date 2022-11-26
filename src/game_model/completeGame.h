@@ -28,7 +28,7 @@ public:
     [[nodiscard]] std::string getName() const { return room.getName(); };
 
     // CompleteGame(const CompleteGame &game, Room room);
-    void applyCommand(Command &command, bool status);
+    void applyCommand(Command &command);
     float ballPosY();
 
     void updateTime();

@@ -23,6 +23,8 @@ class GameLogic {
     void resetData();
 
     float ballPosY();
+
+    void removePlayer(int i);
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

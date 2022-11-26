@@ -15,7 +15,7 @@ class GameModel {
     std::vector<std::unique_ptr<CompleteGame>> games;
     ServerEndpoint & serverEndpoint;
     CommandValues commands;
-    LobbyResponse listRooms();
+    LobbyResponse listRooms(int playerId);
 
     LobbyResponse joinRoom(int playerId, const char* name);
 
@@ -27,7 +27,7 @@ class GameModel {
 
     std::unique_ptr<CompleteGame>* findGame(const char *name);
 
-    void applyCommandToGame(Command &command, bool status);
+    void applyCommandToGame(Command &command);
 
     std::unique_ptr<CompleteGame> *findGame(int id);
 
