@@ -128,3 +128,7 @@ void Car::resetPosition() {
     carBody->SetTransform(b2Vec2(2.0f, -2.0f), LogicValues().ANGLE_CAR);
     carBody->SetLinearVelocity(b2Vec2(0.1f,0.1f));
 }
+
+void Car::destroy(std::unique_ptr<b2World> &world) {
+    world->DestroyBody(carBody);
+}
