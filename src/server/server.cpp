@@ -64,7 +64,7 @@ void Server::startHandler(Socket &socket) {
 void Server::lobbyThread() {
     try {
         while(!this->isClosed) {
-            Command command = endpoint.pop();
+            Command command = endpoint.pop(); // Podria ser bloqueante?
             gameModel.applyLogic(command);
             //int limitCommands = 0;
             // gameModel.resetDataOfGames();
