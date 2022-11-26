@@ -1,6 +1,6 @@
 #include "lobby.h"
 #include "./ui_lobby.h"
-#include "src/constants/response_values.h"
+#include "../src/constants/response_values.h"
 #include <string>
 
 lobby::lobby(QWidget *parent,
@@ -59,6 +59,9 @@ void lobby::on_pushButton_join_clicked()
         this->connection.setConnectedGameName(firstParameter);
         hide();
         _client.run();
+        while (r.isRecipient(this->connection.getId())) {
+            r = this->connection.pop();
+        }
         show();
     }
 
@@ -120,6 +123,9 @@ void lobby::on_pushButton_createGame_clicked()
         this->connection.setConnectedGameName(secondParameter);
         hide();
         _client.run();
+        while (r.isRecipient(this->connection.getId())) {
+            r = this->connection.pop();
+        }
         show();
     }
 }

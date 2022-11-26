@@ -320,6 +320,6 @@ void BoxLogic::resetData() {
 
 void BoxLogic::removePlayer(int id) {
     auto found = std::remove_if(this->cars.begin(), this->cars.end(), [&id](Car &car){return car.getId() == id;});
-
+    found->destroy(this->world);
     this->cars.erase(found, this->cars.end());
 }

@@ -1,5 +1,5 @@
 #include "id_service.h"
-#include "src/protocolo/protocolo.h"
+#include "../src/protocolo/protocolo.h"
 
 IdService::IdService(Mode mode, Socket &socket, int id) : mode(mode), socket(socket), id(id) {}
 

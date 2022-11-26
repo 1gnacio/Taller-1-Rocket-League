@@ -62,4 +62,8 @@ void ServerConnection::clearGameName() {
     this->gameName.clear();
 }
 
+void ServerConnection::clearResponses() {
+    this->receiver.clearResponses();
+}
+
 

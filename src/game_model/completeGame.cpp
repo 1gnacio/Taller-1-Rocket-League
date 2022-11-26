@@ -1,6 +1,5 @@
 #include "completeGame.h"
-#include "src/constants/response_values.h"
-#include <iostream>
+#include "../src/constants/response_values.h"
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
         serverEndpoint(serverEndPoint),
@@ -49,7 +48,12 @@ float CompleteGame::ballPosY() {
 }
 
 Response CompleteGame::getResponse() {
-    return logic.getResponse();
+    RoomResponse roomResponse = this->room.list();
+    LobbyResponse lobby;
+    lobby.addRoom(roomResponse);
+    Response response = logic.getResponse();
+    response.addLobbyResponse(lobby);
+    return response;
 }
 
 void CompleteGame::updateTime() {
