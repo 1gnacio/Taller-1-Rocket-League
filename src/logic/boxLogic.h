@@ -10,6 +10,7 @@
 #include "SoccerGoal.h"
 #include <memory>
 #include "game.h"
+#include "../src/game_entities/room.h"
 
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
@@ -106,6 +107,8 @@ class BoxLogic {
     int getTime();
 
     void removePlayer(int i);
+
+    void setRoomInfo(Room &room);
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

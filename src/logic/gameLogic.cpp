@@ -70,3 +70,8 @@ void GameLogic::addPlayer(int id) {
 void GameLogic::removePlayer(int id) {
     gamePhysics.removePlayer(id);
 }
+
+void GameLogic::updateRoomInfo(Room &room) {
+    gamePhysics.setRoomInfo(room);
+}
+
