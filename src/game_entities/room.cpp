@@ -88,7 +88,3 @@ bool Room::playerInRoom(int &id) {
     }
     return playerInRoom;
 }
-
-bool Room::isInGame() {
-    return isStarted;
-}
