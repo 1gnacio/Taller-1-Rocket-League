@@ -17,3 +17,9 @@ Response ResponseQueue::pop() {
 
     return {};
 }
+
+void ResponseQueue::clearResponses() {
+    while (!this->responses.empty()) {
+        this->responses.pop();
+    }
+}

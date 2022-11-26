@@ -73,3 +73,7 @@ ResponseHandler::~ResponseHandler() {
     }
     this->handler.join();
 }
+
+void ResponseHandler::clearResponses() {
+    this->queue.clearResponses();
+}

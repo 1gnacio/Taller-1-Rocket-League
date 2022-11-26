@@ -16,6 +16,8 @@ public:
     virtual void push(Response& response);
 
     virtual Response pop();
+
+    void clearResponses();
 };
 
 
