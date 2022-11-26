@@ -32,6 +32,8 @@ public:
     bool isFinished();
 
     ~ResponseHandler();
+
+    void clearResponses();
 };
 
 

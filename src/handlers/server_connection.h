@@ -37,6 +37,8 @@ public:
     std::string getGameName() { return this->gameName;};
 
     ~ServerConnection();
+
+    void clearResponses();
 };
 
 

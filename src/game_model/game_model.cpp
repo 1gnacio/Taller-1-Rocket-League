@@ -82,6 +82,7 @@ void GameModel::applyCommandToGame(Command &command) {
     if(command.getValue() == CommandValues().DESERIALIZED_NOP) {
         for (auto &x : games) {
             x->applyCommand(command);
+            resetDataOfGames();
         }
         return;
     }
@@ -89,6 +90,7 @@ void GameModel::applyCommandToGame(Command &command) {
     auto room = findGame(command.getID());
     if(room != nullptr) {
         (*findGame(command.getID()))->applyCommand(command);
+        resetDataOfGames();
     }
 }
 

@@ -11,7 +11,7 @@ GameLogic::GameLogic(): withoutPlayers(0) {
 
 
 void GameLogic::updateModel(Command &command) {
-    std::cout << "llega un comando de " << command.getValue() << std::endl;
+    std::cout << "llega un comando de " << command.getValue() <<", Con ID:" << command.getID() <<std::endl;
     if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
