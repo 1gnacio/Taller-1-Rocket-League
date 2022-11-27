@@ -456,6 +456,8 @@ add_executable(game_server
         src/thread/common_thread.h
         src/handlers/id_service.cpp
         src/handlers/id_service.h
+        src/logic/replay_logic.cpp
+        src/logic/replay_logic.h
         )
 
 target_link_libraries(game_server box2d)

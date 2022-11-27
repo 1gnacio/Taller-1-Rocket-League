@@ -331,3 +331,7 @@ void BoxLogic::removePlayer(int id) {
     found->destroy(this->world);
     this->cars.erase(found, this->cars.end());
 }
+
+bool BoxLogic::isGoal() {
+    return this->game.goal();
+}
