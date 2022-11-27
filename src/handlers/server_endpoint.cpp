@@ -9,16 +9,22 @@ connections(),
 sender(std::thread(&ServerEndpoint::sendResponsesHandler, this)) {}
 
 void ServerEndpoint::sendResponsesHandler() {
-    while (this->isActive) {
-        Response r = this->responses.pop();
-        for (auto& connection : connections) {
-            connection->push(r);
+    try {
+        while (this->isActive) {
+            Response r = this->responses.pop();
+            for (auto& connection : connections) {
+                if (r.isRecipient(connection->getId())){
+                    connection->push(r);
+                }
+            }
         }
+    } catch (std::exception &e) {
+        this->isActive = false;
     }
 }
 
 void ServerEndpoint::addPlayer(Socket &client) {
-    this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, client, this->responses, this->receivedCommands));
+    this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, this->receivedCommands, client));
     this->nextClientId++;
 }
 
@@ -48,9 +54,11 @@ void ServerEndpoint::cleanFinishedConnections() {
 }
 
 ServerEndpoint::~ServerEndpoint() {
+    this->responses.close();
     for(auto& connection : this->connections) {
         connection->closeConnection();
     }
+    this->cleanFinishedConnections();
     this->isActive = false;
     this->sender.join();
 }

@@ -1,16 +1,18 @@
 #include <sys/socket.h>
 #include "client_connection.h"
 
-ClientConnection::ClientConnection(int id, Socket &socket, ResponseQueue &responseQueue, CommandQueue& commandQueue) :
+ClientConnection::ClientConnection(int id, CommandQueue& queue, Socket &socket) :
 isClosed(false),
 socket(std::move(socket)),
-helper(this->socket, id),
-sender(this->socket, helper, responseQueue, SENDER),
+idService(SENDER, this->socket, id),
+commandQueue(queue),
+responseQueue(),
+sender(this->socket, idService, responseQueue, SENDER),
 receiver(this->socket, commandQueue, RECEIVER)
 {}
 
 void ClientConnection::push(Response &response) {
-    this->isClosed = this->sender.isFinished();
+    this->isClosed = this->sender.isFinished() || this->receiver.isFinished();
 
     if (!this->isClosed) {
         this->sender.push(response);
@@ -24,6 +26,7 @@ bool ClientConnection::connectionClosed() {
 
 void ClientConnection::closeConnection() {
     if (!this->isClosed) {
+        this->responseQueue.close();
         this->receiver.stopHandler();
         this->sender.stopHandler();
         this->socket.shutdown(SHUT_RDWR);
@@ -34,6 +37,7 @@ void ClientConnection::closeConnection() {
 
 ClientConnection::~ClientConnection() {
     if (!this->isClosed) {
+        this->responseQueue.close();
         this->receiver.stopHandler();
         this->sender.stopHandler();
         this->socket.shutdown(SHUT_RDWR);

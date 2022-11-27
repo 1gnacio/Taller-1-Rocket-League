@@ -6,7 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false) {
 }
 
 int Car::getId() {
@@ -33,13 +33,17 @@ float Car::getData(int key) {
             return turboTank;
         case 6:
             return usingTurbo;
+        case 7:
+            return isAccelerating;
     }
     return 0;
 }
 
+
 void Car::startMove(b2Vec2 vel) {
     if (!isJumping()) {
         carBody->ApplyForceToCenter(vel, true);
+        isAccelerating = true;
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
         carBody->ApplyTorque(torque, true);
@@ -84,6 +88,9 @@ void Car::verifyDoubleJump() {
         this->secondJump = 0;
     }
 }
+void Car::verifyAcceleration() {
+    this->isAccelerating = false;
+}
 
 void Car::verifyTurbo() {
     if(usingTurbo) {
@@ -119,5 +126,9 @@ void Car::applyTurbo() {
 
 void Car::resetPosition() {
     carBody->SetTransform(b2Vec2(2.0f, -2.0f), LogicValues().ANGLE_CAR);
-    carBody->SetLinearVelocity(b2Vec2(0,0));
+    carBody->SetLinearVelocity(b2Vec2(0.1f,0.1f));
+}
+
+void Car::destroy(std::unique_ptr<b2World> &world) {
+    world->DestroyBody(carBody);
 }

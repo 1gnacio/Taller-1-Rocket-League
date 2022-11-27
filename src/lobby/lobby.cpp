@@ -1,12 +1,14 @@
 #include "lobby.h"
 #include "./ui_lobby.h"
+#include "../src/constants/response_values.h"
 #include <string>
-#include <sstream>
 
-lobby::lobby(QWidget *parent)
+lobby::lobby(QWidget *parent,
+             const char *servname,
+             const char *port)
     : QMainWindow(parent)
     , ui(new Ui::lobby)
-    , connection("localhost", "8080")
+    , connection(servname, port)
     , _client(connection)
 {
     ui->setupUi(this);
@@ -41,32 +43,50 @@ void lobby::on_pushButton_connect_clicked()
 
 void lobby::on_pushButton_join_clicked()
 {   //TODO UNIR
-    hide();
-    if (currSelectedGame.size()) {
-        //protocolo.sendActions("UNIR " + currSelectedGame.toStdString());
-        //std::cout << protocolo.receiveResponse() << std::endl;
-        on_pushButton_refresh_clicked();
-        currSelectedGame.clear();
+    if (this->currSelectedGame.isEmpty()) { return; }
+
+    std::string join = CommandValues().DESERIALIZED_JOIN;
+    std::string firstParameter = this->currSelectedGame.toStdString();
+    Command c = ProtocolCommands().createCommand(this->connection.getId(), join, firstParameter);
+    this->connection.push(c);
+    Response r = this->connection.pop();
+
+    while (!r.isRecipient(this->connection.getId())) {
+        r = this->connection.pop();
     }
 
-    _client.run();
-    show();
+    if (r.getStatus() == ResponseValues().OK) {
+        this->connection.setConnectedGameName(firstParameter);
+        hide();
+        _client.run();
+        while (r.isRecipient(this->connection.getId())) {
+            r = this->connection.pop();
+        }
+        show();
+    }
+
+    currSelectedGame.clear();
 }
 
 
 void lobby::on_pushButton_refresh_clicked()
 {   //TODO LISTAR
-    //protocolo.sendActions("LISTAR");
-    std::string name_str, players_str;
-    std::istringstream input_stream(/*protocolo.receiveResponse()*/"");
-    //int i = 1;
+    std::string list = CommandValues().DESERIALIZED_LIST;
+    Command c = ProtocolCommands().createCommand(this->connection.getId(), list);
+    this->connection.push(c);
+    Response r = this->connection.pop();
+
+    while (!r.isRecipient(this->connection.getId())) {
+        r = this->connection.pop();
+    }
+
     model.removeRows(0, model.rowCount());
-    //FIXME: hay que usar el protocolo nuevo
-    while (input_stream >> name_str) {
-        input_stream >> players_str;
-        // Fijarse si se puede sacar lo de new.
-        QStandardItem *name = new QStandardItem(QString::fromStdString(name_str));
-        QStandardItem *players = new QStandardItem(QString::fromStdString(players_str));
+
+    std::string name_str, players_str;
+
+    for (auto &room : r.getRooms()) {
+        QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
+        QStandardItem *players = new QStandardItem(QString::fromStdString(room.getPlayers()));
         QStandardItem *status = new QStandardItem("-------");
         model.appendRow( QList<QStandardItem*>() << name << status << players);
     }
@@ -82,11 +102,32 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    hide();
     //TODO CREAR
-    on_pushButton_refresh_clicked();
-    _client.run();
-    show();
+    if (this->maxPlayers < 1 || this->create_gameName.isEmpty()) {
+        return;
+    }
+
+    std::string create = CommandValues().DESERIALIZED_CREATE;
+    std::string firstParameter = std::to_string(this->maxPlayers);
+    std::string secondParameter = this->create_gameName.toStdString();
+    Command c = ProtocolCommands().createCommand(this->connection.getId(), create,
+                                                 firstParameter, secondParameter);
+    this->connection.push(c);
+    Response r = this->connection.pop();
+
+    while (!r.isRecipient(this->connection.getId())) {
+        r = this->connection.pop();
+    }
+
+    if (r.getStatus() == ResponseValues().OK) {
+        this->connection.setConnectedGameName(secondParameter);
+        hide();
+        _client.run();
+        while (r.isRecipient(this->connection.getId())) {
+            r = this->connection.pop();
+        }
+        show();
+    }
 }
 
 

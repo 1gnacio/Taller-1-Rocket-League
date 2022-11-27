@@ -1,4 +1,5 @@
 #include "response_blocking_queue.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 
 void ResponseBlockingQueue::push(Response &response) {
     std::unique_lock<std::mutex> lock(mutex);
@@ -9,9 +10,18 @@ void ResponseBlockingQueue::push(Response &response) {
 Response ResponseBlockingQueue::pop() {
     std::unique_lock<std::mutex> lock(mutex);
     while(this->responses.empty()) {
+        if (this->isClosed) {
+            throw BlockingQueueClosedException();
+        }
         cv.wait(lock);
     }
-    Response element = this->responses.front();
+    Response element = std::move(this->responses.front());
     this->responses.pop();
-    return element;
+    return std::move(element);
+}
+
+void ResponseBlockingQueue::close() {
+    std::unique_lock<std::mutex> lock(mutex);
+    isClosed = true;
+    cv.notify_all();
 }

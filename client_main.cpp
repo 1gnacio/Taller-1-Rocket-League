@@ -19,10 +19,11 @@ int main(int argc, char* argv[]) try {
 
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(DATA_PATH "/icon.ico"));
-    lobby window;
+    lobby window(nullptr, argv[1], argv[2]);
     window.show();
 
     return  app.exec();
+
     } catch (const std::exception& err) {
         std::cerr
                 << "Something went wrong and an exception was caught: "

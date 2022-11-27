@@ -9,18 +9,22 @@
 class GameLogic {
  private:
     BoxLogic gamePhysics;
-    // Game game;
 
  public:
     GameLogic();
     bool withoutPlayers;
     void updateModel(Command &command);
+    void addPlayer(int id);
     void updateTime();
     Response getResponse();
     float getCarData(int carNumber, int key);
     float playersAmount();
 
     void resetData();
+
+    float ballPosY();
+
+    void removePlayer(int i);
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

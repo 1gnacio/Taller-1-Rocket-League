@@ -10,7 +10,10 @@
 #include "SoccerGoal.h"
 #include <memory>
 #include "game.h"
-// Clase de la logica que contiene todos los movimientos de box2d
+
+/*
+ * Objeto que manipula la física de cada partida a partir de box2d
+ */
 
 class BoxLogic {
  private:
@@ -26,45 +29,83 @@ class BoxLogic {
     static float getData(int key, const b2Body* body);
 
  public:
+    /*
+     * Se instancia una mundo y a partir de ello,
+     * una pelota, los bordes del mapa y los arcos
+     */
     BoxLogic();
+
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
-    void addPlayer(int id);  // Tendra atributo para saber el equipo
+    void createSoccerGoals();
+
+    /*
+     * Cuando ingresa un nuevo jugador, se instancia un auto nuevo
+     * (Actualmente cuando ingresa llega un commando "TURBO_RELEASE" que debe ser modificado).
+     */
+    void addPlayer(int id);
+
     void update(Command &command);
     void update();
-    b2Vec2 getGravity();
+    /*
+     * Actualiza el tiempo en el mundo usando el método Step() en 0.04 segundos.
+     * Además, para que se vea realista su forma de actuar, se utiliza la función usleep()
+     * con el mismo tiempo.
+     */
     void updateTime();
+    /*
+     * Luego de cada actualización del tiempo, se verifican los estados de
+     * doble salto; goles y Turbo para actualizarlos según correspondan.
+     */
     void updateStatus();
-    ~BoxLogic();
 
-    void close();
-    int wallsAmount();
-    int playersAmount();
+    /*
+     * Se aplican los siguientes métodos em el auto dependiendo lo que se quiera
+     * hacer.
+     */
     void startMove(int carNumber, bool direction);  // direc: 0=Izq | 1=Der
     void stopMove(int carNumber);
     void jump(int carNumber);
     void applyTurbo(int carNumber);
 
-    bool ballIsAwake();
+    /*
+     * Para los siguientes 2 métodos se utilizan como claves:
+     *  POS_X = 0;
+     *  POS_Y = 1;
+     *  ANGLE = 2;
+     *  X_VELOCITY = 3;
+     *  Y_VELOCITY = 4;
+     */
     float getBallData(int key);
     float getCarData(int carNumber, int key);
-    PlayerResponses getPlayersData();
 
+    PlayerResponses getPlayersData();
     Car* getCar(int carNumber);
     static b2Vec2 getVectorForce(int direction);
-
     void verifyDoubleJump();
     void verifyTurbo();
-
     void verifyGoal();
     void resetPositions();
-
     MatchResponse gameData(BallResponse &ball, PlayerResponses &players);
-
-    void createSoccerGoals();
 
     void updateGoal();
 
+    /*
+     * Luego de cada gol, se resetea los atributos de Game,
+     * que contiene si existe un gol de algún équipo
+     */
     void resetData();
+
+    b2Vec2 getGravity();
+    int wallsAmount();
+    int playersAmount();
+    bool ballIsAwake();
+    ~BoxLogic();
+
+    void verifyAcceleration();
+
+    int getTime();
+
+    void removePlayer(int i);
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

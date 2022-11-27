@@ -14,6 +14,7 @@ private:
     float posY;
     float rotationAngle;
     //TODO tamaño auto
+    //TODO facingLeft
     bool isMoving;
     bool isFlying;
     bool isTurboActivated;

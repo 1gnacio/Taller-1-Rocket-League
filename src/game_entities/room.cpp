@@ -46,12 +46,18 @@ bool Room::operator()(Room &room) {
 }
 
 RoomResponse Room::list() {
-    return {this->name,
+    RoomResponse r(this->name,
             this->requiredPlayers,
             static_cast<int>(this->players.size()),
             this->isWaiting,
             this->isStarted,
-            this->isFinished};
+            this->isFinished);
+
+    for (auto &client : this->players) {
+        r.addClient(client);
+    }
+
+    return std::move(r);
 }
 
 ActionResultResponse Room::leaveRoom(int playerId) {
@@ -61,5 +67,21 @@ ActionResultResponse Room::leaveRoom(int playerId) {
 
     auto result = std::remove(this->players.begin(), this->players.end(), playerId);
 
+    this->players.erase(result, this->players.end());
+
     return {playerId, ResponseValues().OK};
+}
+
+int Room::playersAmount() {
+    return players.size();
+}
+
+bool Room::playerInRoom(int &id) {
+    bool playerInRoom = false;
+    for(auto &x: players) {
+        if (x == id) {
+            playerInRoom = true;
+        }
+    }
+    return playerInRoom;
 }

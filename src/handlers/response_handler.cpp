@@ -1,9 +1,9 @@
 #include "response_handler.h"
 
-ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, ResponseQueue &queue, Mode mode) :
+ResponseHandler::ResponseHandler(Socket &socket, IdService& idService, ResponseQueue &queue, Mode mode) :
         queue(queue),
         socket(socket),
-        helper(helper),
+        idService(idService),
         hasFinished(false),
         protocolo()
 {
@@ -16,25 +16,35 @@ ResponseHandler::ResponseHandler(Socket &socket, ConnectionHelper& helper, Respo
 
 // hilo que recibe las respuestas del servidor
 void ResponseHandler::handleReceive() {
-    this->helper.awaitHelper();
+    this->idService.run();
 
-    while (!this->hasFinished) {
-        Response r = protocolo.receiveResponse(this->socket);
-        this->queue.push(r);
-        this->hasFinished = protocolo.isConnectionClosed();
+    try {
+        while (!this->hasFinished) {
+            Response r = protocolo.receiveResponse(this->socket);
+            this->queue.push(r);
+            this->hasFinished = protocolo.isConnectionClosed();
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
+
 }
 
 // hilo que envia las respuestas del servidor
 void ResponseHandler::handleSend() {
-    this->helper.awaitHelper();
+    this->idService.run();
 
-    while (!this->hasFinished) {
-        Response r = this->queue.pop();
-        //TODO que deberia hacer el hilo si no recibe nada del servidor?
-        protocolo.sendResponse(this->socket, r);
-        this->hasFinished = protocolo.isConnectionClosed();
+    try {
+        while (!this->hasFinished) {
+            Response r = this->queue.pop();
+            //TODO que deberia hacer el hilo si no recibe nada del servidor?
+            protocolo.sendResponse(this->socket, r);
+            this->hasFinished = protocolo.isConnectionClosed();
+        }
+    } catch (std::exception &e) {
+        this->hasFinished = true;
     }
+
 }
 
 void ResponseHandler::push(Response &response) {
@@ -61,6 +71,9 @@ ResponseHandler::~ResponseHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
     }
-
     this->handler.join();
+}
+
+void ResponseHandler::clearResponses() {
+    this->queue.clearResponses();
 }

@@ -20,6 +20,8 @@ public:
 
     void addResponse(MatchResponse &response);
     MatchResponse getMatchResponse();
+
+    bool isRecipient(int i);
 };
 
 

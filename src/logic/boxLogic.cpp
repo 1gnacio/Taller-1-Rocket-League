@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "boxLogic.h"
 #include <unistd.h>
 #include <time.h>
@@ -62,15 +63,13 @@ b2Vec2 BoxLogic::getGravity() {
 int BoxLogic::wallsAmount() {
     return this->walls.size();
 }
-void BoxLogic::close() {
-    isActive = false;
-}
 
 void BoxLogic::updateTime() {
     float timeStep = 1.0f / 25.0f;
     world->Step(timeStep, LogicValues().VELOCITY_ITERATIONS,
                 LogicValues().POSITION_ITERATIONS);
     usleep(timeStep*1000000);  // (unsleep utiliza microsegundos 1x10-6)
+    game.updateTime();
 }
 
 bool BoxLogic::ballIsAwake() {
@@ -184,15 +183,22 @@ int BoxLogic::playersAmount() {
 }
 
 float BoxLogic::getCarData(int carNumber, int key) {
-    return getCar(carNumber)->getData(key);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        return car->getData(key);
+    }
+    return -1;
 }
 
 Car* BoxLogic::getCar(int carID) {
-    for (auto &x : cars) {
-        if (x.getId() == carID) {
-            return &x;
-        }
+    auto found = std::find_if(this->cars.begin(),
+                 this->cars.end(),
+                 [&carID](Car &car){return car.getId() == carID;});
+
+    if (found != this->cars.end()) {
+        return found.base();
     }
+
     return nullptr;
 }
 
@@ -209,7 +215,10 @@ b2Vec2 BoxLogic::getVectorForce(int direction) {
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     b2Vec2 vel = getVectorForce((int)direction);
-    getCar(carNumber)->startMove(vel);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        getCar(carNumber)->startMove(vel);
+    }
 }
 
 void BoxLogic::stopMove(int carNumber) {
@@ -218,7 +227,10 @@ void BoxLogic::stopMove(int carNumber) {
 
 void BoxLogic::jump(int carNumber) {
     b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
-    getCar(carNumber)->jump(vel);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        car->jump(vel);
+    }
 }
 
 PlayerResponses BoxLogic::getPlayersData() {
@@ -227,11 +239,11 @@ PlayerResponses BoxLogic::getPlayersData() {
         vector.emplace_back(x.getId(), x.getData(LogicValues().POS_X),
                             x.getData(LogicValues().POS_Y),
                             x.getData(LogicValues().ANGLE),
-                            false,
-                            false,
+                            ((x.getData(LogicValues().X_VELOCITY) != 0) || (x.getData(LogicValues().Y_VELOCITY) != 0)),
+                            (x.getData(LogicValues().POS_Y) < (2.23)),
                             x.getData(LogicValues().USING_TURBO),
                             false,
-                            false,
+                            x.getData(LogicValues().ACCELERATING),
                             false);
     }
     return PlayerResponses(vector);
@@ -242,7 +254,15 @@ void BoxLogic::updateStatus() {
     verifyDoubleJump();
     verifyTurbo();
     verifyGoal();
+    verifyAcceleration();
 }
+
+void BoxLogic::verifyAcceleration() {
+    for (auto &x : cars) {
+        x.verifyAcceleration();
+    }
+}
+
 void BoxLogic::verifyGoal() {
     this->updateGoal();
     this->resetPositions();
@@ -285,11 +305,15 @@ void BoxLogic::resetPositions() {
         for (auto &x : cars) {
             x.resetPosition();
         }
-        ball->SetLinearVelocity(b2Vec2(0,0));
+        ball->SetLinearVelocity(b2Vec2(0.1f,0.1f));
         ball->SetTransform(b2Vec2(0, -2.8f),0);
 
     }
 
+}
+
+int BoxLogic::getTime() {
+    return game.getTime();
 }
 
 MatchResponse BoxLogic::gameData(BallResponse &ball, PlayerResponses &players) {
@@ -300,4 +324,10 @@ MatchResponse BoxLogic::gameData(BallResponse &ball, PlayerResponses &players) {
 void BoxLogic::resetData() {
     game.resetData();
 
+}
+
+void BoxLogic::removePlayer(int id) {
+    auto found = std::remove_if(this->cars.begin(), this->cars.end(), [&id](Car &car){return car.getId() == id;});
+    found->destroy(this->world);
+    this->cars.erase(found, this->cars.end());
 }

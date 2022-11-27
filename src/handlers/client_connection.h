@@ -4,18 +4,21 @@
 #include "../sockets/socket.h"
 #include "command_handler.h"
 #include "response_handler.h"
-#include "../protocolo/connection_helper.h"
+#include "../queues/block_queues/response_blocking_queue.h"
+#include "../queues/block_queues/command_blocking_queue.h"
 
 class ClientConnection {
 private:
     bool isClosed;
     // el servidor necesita guardar el socket del cliente en algun lado, por el momento aca
     Socket socket;
-    ConnectionHelper helper;
+    IdService idService;
+    CommandQueue& commandQueue;
+    ResponseBlockingQueue responseQueue;
     CommandHandler receiver;
     ResponseHandler sender;
 public:
-    ClientConnection(int id, Socket& socket, ResponseQueue &responseQueue, CommandQueue& queue);
+    ClientConnection(int id, CommandQueue &queue, Socket& socket);
 
     void push(Response& response);
 
@@ -23,7 +26,7 @@ public:
 
     bool connectionClosed();
 
-    [[nodiscard]] int getId() const { return this->helper.getId(); }
+    [[nodiscard]] int getId() { return this->idService.getId(); }
 
     ~ClientConnection();
 };

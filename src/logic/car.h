@@ -1,3 +1,4 @@
+#include <memory>
 #include "../../box2d/include/box2d/box2d.h"
 
 #ifndef SRC_LOGIC_CAR_H_
@@ -17,6 +18,7 @@ class Car {
     bool isJumping();
     int secondJump;
     int usingTurbo;
+    bool isAccelerating;
 
  public:
     /*
@@ -64,6 +66,10 @@ class Car {
     int getId();
 
     void resetPosition();
+
+    void verifyAcceleration();
+
+    void destroy(std::unique_ptr<b2World> &world);
 };
 
 

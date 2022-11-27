@@ -11,6 +11,7 @@ private:
     sdl_main sdl_handler;
     void readStandardInput();
     void addInputCommand(std::string deserialized_key);
+    void quitMatch();
 public:
     explicit Client(ServerConnection& connection);
     ~Client() = default;
