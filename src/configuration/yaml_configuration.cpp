@@ -1,11 +1,12 @@
+#include <yaml-cpp/yaml.h>
 #include "yaml_configuration.h"
 #include "../src/constants/configuration_paths.h"
 
 YamlConfiguration::YamlConfiguration() {}
 
 ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
-    //TODO
-    throw std::logic_error("Not implemented");
+    YAML::Node config = YAML::LoadFile(DATA_PATH + ConfigurationPaths().SERVER_CONFIG);
+
 }
 
 ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {
