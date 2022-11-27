@@ -25,6 +25,8 @@ class GameLogic {
     float ballPosY();
 
     void removePlayer(int i);
+
+    bool isGoal();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

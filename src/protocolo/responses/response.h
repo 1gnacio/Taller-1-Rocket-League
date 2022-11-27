@@ -16,8 +16,10 @@ private:
     Serializer serializer;
     LobbyResponse lobbyResponse;
     MatchResponse matchResponse;
+    bool isDummy;
 public:
     Response();
+    Response(bool isDummy);
     Response(std::vector<unsigned char> &serializedResponse);
     Response(MatchResponse &matchResponse);
     Response(LobbyResponse &lobby);
@@ -30,6 +32,8 @@ public:
     void addLobbyResponse(LobbyResponse &response);
     float getBallPositionY();
     std::vector<RoomResponse> getRooms();
+    void setActiveReplay();
+    bool dummy() {return this->isDummy;};
 
     MatchResponse getMatchResponse();
 };
