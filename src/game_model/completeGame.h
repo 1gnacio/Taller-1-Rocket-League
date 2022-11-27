@@ -7,13 +7,14 @@
 #include "../game_entities/room.h"
 #include "../logic/gameLogic.h"
 #include "../handlers/server_endpoint.h"
+#include "../logic/replay_logic.h"
 
 class CompleteGame {
 private:
     Room room;
     GameLogic logic;
     ServerEndpoint & serverEndpoint;
-
+    ReplayLogic replayLogic;
 public:
 
     CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint&serverEndPoint);

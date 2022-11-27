@@ -106,6 +106,8 @@ class BoxLogic {
     int getTime();
 
     void removePlayer(int i);
+
+    bool isGoal();
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

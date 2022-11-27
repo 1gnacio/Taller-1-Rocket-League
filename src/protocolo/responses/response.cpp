@@ -3,7 +3,7 @@
 #include "response.h"
 #include "match_responses.h"
 
-Response::Response(std::vector<unsigned char> &serializedResponse) : serializer() {
+Response::Response(std::vector<unsigned char> &serializedResponse) : serializer(), isDummy(false) {
     if (serializedResponse.empty()) {
         return;
     }
@@ -31,7 +31,8 @@ Response::Response(std::vector<unsigned char> &serializedResponse) : serializer(
     this->matchResponse = MatchResponse(serializedMatchesResponse);
 }
 
-Response::Response(MatchResponse &matchResponse) : serializer(), matchResponse(std::move(matchResponse)) {}
+Response::Response(MatchResponse &matchResponse)
+: serializer(), matchResponse(std::move(matchResponse)), isDummy(false) {}
 
 std::vector<unsigned char> Response::serialize() {
     std::vector<unsigned char> serialization;
@@ -42,7 +43,7 @@ std::vector<unsigned char> Response::serialize() {
     return serialization;
 }
 
-Response::Response() : lobbyResponse(), matchResponse() {}
+Response::Response() : lobbyResponse(), matchResponse(), isDummy(false) {}
 
 void Response::addLobbyResponse(LobbyResponse &response) {
     this->lobbyResponse = response;
@@ -66,3 +67,9 @@ MatchResponse Response::getMatchResponse() {
 std::vector<RoomResponse> Response::getRooms() {
     return this->lobbyResponse.getRooms();
 }
+
+void Response::setActiveReplay() {
+    this->matchResponse.setActiveReplay();
+}
+
+Response::Response(bool isDummy) : isDummy(isDummy) {}

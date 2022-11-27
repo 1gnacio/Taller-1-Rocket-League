@@ -1,10 +1,12 @@
+#include <csignal>
 #include "completeGame.h"
 #include "../src/constants/response_values.h"
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
-        logic(){
+        logic()
+        , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/) {
         this->logic.addPlayer(ownerId);
 }
 
@@ -35,11 +37,31 @@ bool CompleteGame::playerInRoom(int id) {
 }
 
 void CompleteGame::applyCommand(Command &command) {
+    if (this->replayLogic.isInReplay()) {
+        Response replayResponse = this->replayLogic.getResponse();
+        if (!replayResponse.dummy()) {
+            this->serverEndpoint.push(replayResponse);
+        } else {
+            this->serverEndpoint.push(logic.getResponse());
+        }
+        float timeStep = 1.0f / 25.0f;
+        usleep(timeStep*1000000);
+        return;
+    }
+
     if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
         logic.updateModel(command);
     }
+
     logic.updateTime();
-    this->serverEndpoint.push(logic.getResponse());
+
+    if (logic.isGoal()) {
+        this->replayLogic.goalScored();
+    }
+
+    Response response = logic.getResponse();
+    this->replayLogic.addResponse(response);
+    this->serverEndpoint.push(response);
 }
 
 float CompleteGame::ballPosY() {

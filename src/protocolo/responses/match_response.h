@@ -57,6 +57,7 @@ public:
     int getTime();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
+    void setActiveReplay() { this->activeReplay = true; };
 
     bool hasPlayer(int i);
 };
