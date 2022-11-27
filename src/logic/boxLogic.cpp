@@ -326,7 +326,7 @@ void BoxLogic::removePlayer(int id) {
 
 bool BoxLogic::isGoal() {
     return this->game.goal();
-
+}
 void BoxLogic::setRoomInfo(Room &room) {
     game.setStatus(room.isInGame());
 }
