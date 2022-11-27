@@ -74,3 +74,7 @@ void GameLogic::removePlayer(int id) {
 bool GameLogic::isGoal() {
     return this->gamePhysics.isGoal();
 }
+
+void GameLogic::updateRoomInfo(Room &room) {
+    gamePhysics.setRoomInfo(room);
+}

@@ -81,16 +81,20 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
 void GameModel::applyCommandToGame(Command &command) {
     if(command.getValue() == CommandValues().DESERIALIZED_NOP) {
         for (auto &x : games) {
+            if(x->isInGame()) {
             x->applyCommand(command);
             resetDataOfGames();
+            }
         }
         return;
     }
 
     auto room = findGame(command.getID());
     if(room != nullptr) {
-        (*findGame(command.getID()))->applyCommand(command);
-        resetDataOfGames();
+        if((*findGame(command.getID()))->isInGame()) {
+            (*findGame(command.getID()))->applyCommand(command);
+            resetDataOfGames();
+        }
     }
 }
 
@@ -140,7 +144,6 @@ void GameModel::applyLogic(Command& command) {
         return;
     }
     if (command.getValue() == this->commands.DESERIALIZED_JOIN) {
-        // Modificar
         LobbyResponse lobby(this->joinRoom(command.getID(),
                                            command.getFirstParameter().c_str()));
         Response responseAux(lobby);

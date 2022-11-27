@@ -34,6 +34,8 @@ class Game {
     void updateTime();
 
     int getTime();
+
+    void setStatus(bool b);
 };
 
 #endif  // SRC_LOGIC_GAME_H_

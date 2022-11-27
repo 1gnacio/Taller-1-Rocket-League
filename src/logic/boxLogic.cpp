@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "car.h"
+#include "../src/game_entities/room.h"
 #include <iostream>
 
 BoxLogic::BoxLogic():
@@ -99,7 +100,11 @@ void BoxLogic::createCar(int id) {
     b2BodyDef carBodyDef;
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = LogicValues().ANGLE_CAR;
-    carBodyDef.position.Set(2.0f, -2.0f);
+    if (id%2) {
+        carBodyDef.position.Set(-2.0f, -2.0f);
+    } else {
+        carBodyDef.position.Set(2.0f, -2.0f);
+    }
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
@@ -321,4 +326,7 @@ void BoxLogic::removePlayer(int id) {
 
 bool BoxLogic::isGoal() {
     return this->game.goal();
+
+void BoxLogic::setRoomInfo(Room &room) {
+    game.setStatus(room.isInGame());
 }

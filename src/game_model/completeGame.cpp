@@ -53,6 +53,7 @@ void CompleteGame::applyCommand(Command &command) {
         logic.updateModel(command);
     }
 
+    logic.updateRoomInfo(this->room);
     logic.updateTime();
 
     if (logic.isGoal()) {
@@ -61,8 +62,13 @@ void CompleteGame::applyCommand(Command &command) {
 
     Response response = logic.getResponse();
     this->replayLogic.addResponse(response);
-    this->serverEndpoint.push(response);
+    sendResponse();
 }
+void CompleteGame::sendResponse() {
+    this->serverEndpoint.push(logic.getResponse());
+
+}
+
 
 float CompleteGame::ballPosY() {
 
@@ -87,3 +93,6 @@ void CompleteGame::resetData() {
 
 }
 
+bool CompleteGame::isInGame() {
+    return room.isInGame();
+}
