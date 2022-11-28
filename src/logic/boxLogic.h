@@ -11,6 +11,7 @@
 #include <memory>
 #include "game.h"
 #include "../src/game_entities/room.h"
+#include "contactListenerHits.h"
 
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
@@ -21,6 +22,7 @@ class BoxLogic {
     bool isActive;
     Game game;
     b2Body* ball;
+    ContactListenerHits contactListener;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
     std::vector<Car> cars;

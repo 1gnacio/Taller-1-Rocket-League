@@ -13,8 +13,8 @@ int Car::getId() {
     return this->id;
 }
 
-void Car::createFixture(b2FixtureDef & fixture) {
-    carBody->CreateFixture(&fixture); // carBody->CreateFixture(&fixture)->GetUserData->pointer = num;
+void Car::createFixture(b2FixtureDef & fixture, uintptr_t codeFixture) {
+    carBody->CreateFixture(&fixture)->GetUserData().pointer = codeFixture; // carBody->CreateFixture(&fixture)->GetUserData->pointer = num;
 }
 
 float Car::getData(int key) {
@@ -139,4 +139,8 @@ void Car::destroy(std::unique_ptr<b2World> &world) {
 
 bool Car::isLocal(){
     return this->isLocalTeam;
+}
+
+bool Car::sameBody(b2Body *pBody) {
+    return (pBody == carBody);
 }

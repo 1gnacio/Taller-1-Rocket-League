@@ -6,13 +6,12 @@
 #include "../src/game_entities/room.h"
 #include <iostream>
 #include "../src/constants/b2DVars.h"
-#include "contactListenerHits.h"
+
 
 BoxLogic::BoxLogic():
     isActive(true) {
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
-    ContactListenerHits contactListener;
-    world->SetContactListener(new ContactListenerHits);
+    world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
     createSoccerGoals();
@@ -99,6 +98,7 @@ void BoxLogic::createBall() {
     fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
     fixtureCircle.filter.maskBits = B2DVars().BIT_CAR | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     ball->CreateFixture(&fixtureCircle);
+    contactListener.addBall(ball);
 }
 
 void BoxLogic::createCar(int id) {
@@ -114,6 +114,7 @@ void BoxLogic::createCar(int id) {
         carBodyDef.position.Set(2.0f, -2.0f);
     }
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
+    contactListener.addCar(cars.back());
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
 
@@ -124,7 +125,7 @@ void BoxLogic::createCar(int id) {
     fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
     fixtureDef.filter.categoryBits = B2DVars().BIT_CAR;
     fixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
-    cars.back().createFixture(fixtureDef);
+    cars.back().createFixture(fixtureDef, 0);
 
     // Create 4 sensors
     b2FixtureDef sensorDef;
@@ -133,19 +134,19 @@ void BoxLogic::createCar(int id) {
     sensorDef.filter.categoryBits = B2DVars().BIT_CAR;
     sensorDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     sensorDef.isSensor = true;
-    cars.back().createFixture(sensorDef); //  cars.back().createFixture(sensorDef, 4 );
+    cars.back().createFixture(sensorDef, 1); //  cars.back().createFixture(sensorDef, 4 );
 
     dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,hCar), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef);
+    cars.back().createFixture(sensorDef, 2);
 
     dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(wCar,0), 90);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef);
+    cars.back().createFixture(sensorDef, 3);
 
     dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar,0), 90);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef);
+    cars.back().createFixture(sensorDef, 4);
 
 
 
