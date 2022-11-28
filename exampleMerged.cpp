@@ -37,13 +37,13 @@ int main() try
             WIDTH, HEIGHT,
             SDL_WINDOW_SHOWN);
 
-    Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);   
+    Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     b2Vec2 gravity(0.0f, 9.8f); // new b2World(gravity));
     b2World world(gravity);
 
     //CREACION DEL PISO
-    
+
     // cartesian origin
     float ground_x = 0.0f;
     float ground_y = 0.0f;
@@ -215,4 +215,3 @@ int main() try
     std::cerr << e.what() << std::endl;
     return 1;
 }
-

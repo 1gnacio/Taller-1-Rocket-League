@@ -5,6 +5,7 @@
 #include "car.h"
 #include "../src/game_entities/room.h"
 #include <iostream>
+#include "../src/constants/b2DVars.h"
 
 BoxLogic::BoxLogic():
     isActive(true) {
@@ -90,6 +91,8 @@ void BoxLogic::createBall() {
     fixtureCircle.density = LogicValues().DENSITY_BALL;
     fixtureCircle.friction = LogicValues().FRICTION_BALL;
     fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
+    fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
+    fixtureCircle.filter.maskBits = B2DVars().BIT_CAR | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     ball->CreateFixture(&fixtureCircle);
 }
 
@@ -114,6 +117,8 @@ void BoxLogic::createCar(int id) {
     fixtureDef.density = LogicValues().DENSITY_CAR;
     fixtureDef.friction = LogicValues().FRICTION_CAR;
     fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
+    fixtureDef.filter.categoryBits = B2DVars().BIT_CAR;
+    fixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     cars.back().createFixture(fixtureDef);
 }
 
@@ -140,6 +145,8 @@ void BoxLogic::createWalls() {
         edge.SetTwoSided(b2Vec2(edgesXStart[i], edgesYStart[i]),
                          b2Vec2(edgesXEnd[i], edgesYEnd[i]));
         edgeFixtureDef.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_GROUND;
+        edgeFixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_CAR;
         x->CreateFixture(&edgeFixtureDef);
         i++;
     }

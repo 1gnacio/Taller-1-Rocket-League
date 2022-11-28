@@ -69,6 +69,11 @@ add_executable(game exampleGame.cpp)
 target_link_libraries(game box2d ${SDL2PP_LIBRARIES})
 
 ######################################################################################################################
+######################################################################################################################
+add_executable(gameSensors sensors.cpp)
+target_link_libraries(gameSensors box2d ${SDL2PP_LIBRARIES})
+######################################################################################################################
+
 add_executable(lobby
         main_lobby.cpp
         src/lobby/lobby.cpp
