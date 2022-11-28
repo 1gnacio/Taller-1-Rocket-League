@@ -69,6 +69,11 @@ add_executable(game exampleGame.cpp)
 target_link_libraries(game box2d ${SDL2PP_LIBRARIES})
 
 ######################################################################################################################
+######################################################################################################################
+add_executable(gameSensors sensors.cpp)
+target_link_libraries(gameSensors box2d ${SDL2PP_LIBRARIES})
+######################################################################################################################
+
 add_executable(lobby
         main_lobby.cpp
         src/lobby/lobby.cpp
@@ -140,6 +145,8 @@ add_executable(lobby
         src/logic/SoccerGoal.h
         src/logic/game.cpp
         src/logic/game.h
+        src/logic/contactListenerHits.cpp
+        src/logic/contactListenerHits.h
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
         src/protocolo/responses/match_response.cpp
@@ -447,6 +454,8 @@ add_executable(game_server
         src/handlers/id_service.h
         src/logic/replay_logic.cpp
         src/logic/replay_logic.h
+        src/logic/contactListenerHits.cpp
+        src/logic/contactListenerHits.h
         )
 
 target_link_libraries(game_server box2d)

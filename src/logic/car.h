@@ -19,6 +19,7 @@ class Car {
     int secondJump;
     int usingTurbo;
     bool isAccelerating;
+    bool isLocalTeam;
 
  public:
     /*
@@ -52,7 +53,7 @@ class Car {
      */
     float getData(int key);
 
-    void createFixture(b2FixtureDef &fixture);
+    void createFixture(b2FixtureDef &fixture, uintptr_t codeFixture);
 
     void verifyDoubleJump();
 
@@ -69,7 +70,11 @@ class Car {
 
     void verifyAcceleration();
 
+    bool isLocal();
+
     void destroy(std::unique_ptr<b2World> &world);
+
+    bool sameBody(b2Body *pBody);
 };
 
 

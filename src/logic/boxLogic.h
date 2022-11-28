@@ -10,6 +10,8 @@
 #include "SoccerGoal.h"
 #include <memory>
 #include "game.h"
+#include "../src/game_entities/room.h"
+#include "contactListenerHits.h"
 
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
@@ -20,6 +22,7 @@ class BoxLogic {
     bool isActive;
     Game game;
     b2Body* ball;
+    ContactListenerHits contactListener;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
     std::vector<Car> cars;
@@ -108,6 +111,11 @@ class BoxLogic {
     void removePlayer(int i);
 
     bool isGoal();
+
+    void setRoomInfo(Room &room);
+
+    bool matchFinished();
+
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

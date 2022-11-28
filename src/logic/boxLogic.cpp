@@ -3,11 +3,15 @@
 #include <unistd.h>
 #include <time.h>
 #include "car.h"
+#include "../src/game_entities/room.h"
 #include <iostream>
+#include "../src/constants/b2DVars.h"
+
 
 BoxLogic::BoxLogic():
     isActive(true) {
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+    world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
     createSoccerGoals();
@@ -38,6 +42,7 @@ void BoxLogic::createSoccerGoals() {
         edge.SetTwoSided(b2Vec2(roofXStart[i], roofYStart[i]),
                          b2Vec2(roofXEnd[i], roofYEnd[i]));
         edgeFixtureDef.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureRoof(edgeFixtureDef);
         i++;
     }
@@ -51,6 +56,7 @@ void BoxLogic::createSoccerGoals() {
         edge.SetTwoSided(b2Vec2(wallXStart[i], wallYStart[i]),
                          b2Vec2(wallXEnd[i], wallYEnd[i]));
         edgeFixtureDef2.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureWall(edgeFixtureDef2);
         i++;
     }
@@ -89,7 +95,10 @@ void BoxLogic::createBall() {
     fixtureCircle.density = LogicValues().DENSITY_BALL;
     fixtureCircle.friction = LogicValues().FRICTION_BALL;
     fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
+    fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
+    fixtureCircle.filter.maskBits = B2DVars().BIT_CAR | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     ball->CreateFixture(&fixtureCircle);
+    contactListener.addBall(ball);
 }
 
 void BoxLogic::createCar(int id) {
@@ -99,8 +108,13 @@ void BoxLogic::createCar(int id) {
     b2BodyDef carBodyDef;
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = LogicValues().ANGLE_CAR;
-    carBodyDef.position.Set(2.0f, -2.0f);
+    if (id%2) {
+        carBodyDef.position.Set(-2.0f, -2.0f);
+    } else {
+        carBodyDef.position.Set(2.0f, -2.0f);
+    }
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
+    contactListener.addCar(cars.back());
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
 
@@ -109,7 +123,34 @@ void BoxLogic::createCar(int id) {
     fixtureDef.density = LogicValues().DENSITY_CAR;
     fixtureDef.friction = LogicValues().FRICTION_CAR;
     fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
-    cars.back().createFixture(fixtureDef);
+    fixtureDef.filter.categoryBits = B2DVars().BIT_CAR;
+    fixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
+    cars.back().createFixture(fixtureDef, 0);
+
+    // Create 4 sensors
+    b2FixtureDef sensorDef;
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,-hCar), 0);
+    sensorDef.shape = &dynamicCar;
+    sensorDef.filter.categoryBits = B2DVars().BIT_CAR;
+    sensorDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
+    sensorDef.isSensor = true;
+    cars.back().createFixture(sensorDef, 1); //  cars.back().createFixture(sensorDef, 4 );
+
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,hCar), 0);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef, 2);
+
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(wCar,0), 90);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef, 3);
+
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar,0), 90);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef, 4);
+
+
+
+
 }
 
 void BoxLogic::createWalls() {
@@ -135,6 +176,8 @@ void BoxLogic::createWalls() {
         edge.SetTwoSided(b2Vec2(edgesXStart[i], edgesYStart[i]),
                          b2Vec2(edgesXEnd[i], edgesYEnd[i]));
         edgeFixtureDef.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_GROUND;
+        edgeFixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_CAR;
         x->CreateFixture(&edgeFixtureDef);
         i++;
     }
@@ -231,7 +274,7 @@ PlayerResponses BoxLogic::getPlayersData() {
                             x.getData(LogicValues().USING_TURBO),
                             false,
                             x.getData(LogicValues().ACCELERATING),
-                            false);
+                            x.isLocal());
     }
     return PlayerResponses(vector);
 }
@@ -286,7 +329,9 @@ void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
     }
     game.updateGame(teamGoal);
 }
-
+bool BoxLogic::matchFinished() {
+    return game.matchFinished();
+}
 void BoxLogic::resetPositions() {
     if(game.goal()) {
         for (auto &x : cars) {
@@ -321,4 +366,7 @@ void BoxLogic::removePlayer(int id) {
 
 bool BoxLogic::isGoal() {
     return this->game.goal();
+}
+void BoxLogic::setRoomInfo(Room &room) {
+    game.setStatus(room.isInGame());
 }

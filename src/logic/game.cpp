@@ -10,7 +10,7 @@ Game::Game(): name("juego"),
               goalsVisitor(0),
               requiredPlayers(2),
               currentPlayers(2),
-              isWaitingForPlayers(false),
+              isWaitingForPlayers(true),
               hasFinished(false),
               isGoalLocal(false),
               isGoalVisitor(false),
@@ -29,10 +29,10 @@ int Game::getTime() {
 }
 
 void Game::updateGame(int teamGoal) {
-    if(teamGoal == 1) {
+    if(teamGoal == 2) {
         isGoalLocal = 1;
         goalsLocal++;
-    } else if(teamGoal == 2) {
+    } else if(teamGoal == 1) {
         isGoalVisitor = 1;
         goalsVisitor++;
     }
@@ -46,6 +46,10 @@ void Game::updateTime() {
     }
 }
 
+bool Game::matchFinished() {
+    return (time_inSec > 180);
+}
+
 bool Game::goal() {
 
     return (isGoalLocal || isGoalVisitor);
@@ -54,4 +58,9 @@ bool Game::goal() {
 void Game::resetData() {
     isGoalVisitor = 0;
     isGoalLocal = 0;
+}
+
+void Game::setStatus(bool b) {
+    isWaitingForPlayers = b;
+
 }
