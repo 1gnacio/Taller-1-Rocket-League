@@ -29,10 +29,10 @@ int Game::getTime() {
 }
 
 void Game::updateGame(int teamGoal) {
-    if(teamGoal == 1) {
+    if(teamGoal == 2) {
         isGoalLocal = 1;
         goalsLocal++;
-    } else if(teamGoal == 2) {
+    } else if(teamGoal == 1) {
         isGoalVisitor = 1;
         goalsVisitor++;
     }

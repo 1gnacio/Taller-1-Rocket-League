@@ -19,6 +19,7 @@ class Car {
     int secondJump;
     int usingTurbo;
     bool isAccelerating;
+    bool isLocalTeam;
 
  public:
     /*
@@ -68,6 +69,8 @@ class Car {
     void resetPosition();
 
     void verifyAcceleration();
+
+    bool isLocal();
 
     void destroy(std::unique_ptr<b2World> &world);
 };

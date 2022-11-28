@@ -236,7 +236,7 @@ PlayerResponses BoxLogic::getPlayersData() {
                             x.getData(LogicValues().USING_TURBO),
                             false,
                             x.getData(LogicValues().ACCELERATING),
-                            false);
+                            x.isLocal());
     }
     return PlayerResponses(vector);
 }
