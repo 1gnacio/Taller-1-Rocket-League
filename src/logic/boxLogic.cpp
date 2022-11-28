@@ -291,7 +291,9 @@ void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
     }
     game.updateGame(teamGoal);
 }
-
+bool BoxLogic::matchFinished() {
+    return game.matchFinished();
+}
 void BoxLogic::resetPositions() {
     if(game.goal()) {
         for (auto &x : cars) {

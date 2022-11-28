@@ -29,6 +29,8 @@ class GameLogic {
 
     bool isGoal();
 
+    bool matchFinished();
+
     void updateRoomInfo(Room &room);
 };
 

@@ -36,6 +36,8 @@ class Game {
     int getTime();
 
     void setStatus(bool b);
+
+    bool matchFinished();
 };
 
 #endif  // SRC_LOGIC_GAME_H_

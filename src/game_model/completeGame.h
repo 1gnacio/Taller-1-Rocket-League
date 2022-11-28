@@ -45,6 +45,8 @@ public:
     bool isInReplay();
 
     void finally();
+
+    bool matchFinished();
 };
 
 

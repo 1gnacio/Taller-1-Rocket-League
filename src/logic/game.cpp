@@ -46,6 +46,10 @@ void Game::updateTime() {
     }
 }
 
+bool Game::matchFinished() {
+    return (time_inSec > 180);
+}
+
 bool Game::goal() {
 
     return (isGoalLocal || isGoalVisitor);

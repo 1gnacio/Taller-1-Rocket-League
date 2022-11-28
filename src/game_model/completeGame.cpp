@@ -77,51 +77,54 @@ void CompleteGame::finally() {
     this->isClosed = true;
 }
 
+bool CompleteGame::matchFinished() {
+    return (logic.matchFinished());
+}
+
 void CompleteGame::gameFlow() {
 
-        try {
-            while(!this->isClosed) {
-                logic.updateRoomInfo(this->room);
-                logic.resetData();
-                if(isInGame()) {
-                    int limitCommands = 0;
-                    while(!commandQueue.isEmpty() && limitCommands <= 50 || (this->replayLogic.isInReplay())){
-                        logic.updateRoomInfo(this->room);
-                        logic.resetData();
-                        if (this->replayLogic.isInReplay()) {
-                            Response replayResponse = this->replayLogic.getResponse();
-                            if (!replayResponse.dummy()) {
-                                this->serverEndpoint.push(replayResponse);
-                            } else {
-                                this->serverEndpoint.push(logic.getResponse());
-                            }
-                            float timeStep = 1.0f / 25.0f;
-                            usleep(timeStep*1000000);
+    try {
+        while(!this->isClosed && !this->matchFinished()) {
+            logic.updateRoomInfo(this->room);
+            logic.resetData();
+            if(isInGame()) {
+                int limitCommands = 0;
+                while(!commandQueue.isEmpty() && limitCommands <= 50 || (this->replayLogic.isInReplay())){
+                    logic.updateRoomInfo(this->room);
+                    logic.resetData();
+                    if (this->replayLogic.isInReplay()) {
+                        Response replayResponse = this->replayLogic.getResponse();
+                        if (!replayResponse.dummy()) {
+                            this->serverEndpoint.push(replayResponse);
                         } else {
-                            Command command = commandQueue.pop();
-                            if(command.getValue() != CommandValues().DESERIALIZED_NOP) { // NO DEBERIA LLEGAR EL COMANDO NOP
-                                logic.updateModel(command);
-                            }
-                            limitCommands++;
+                            this->serverEndpoint.push(logic.getResponse());
                         }
-                    }
-                    if (!this->replayLogic.isInReplay()) {
-                        logic.updateTime();
-                        if (logic.isGoal()) {
-                            this->replayLogic.goalScored();
+                        float timeStep = 1.0f / 25.0f;
+                        usleep(timeStep*1000000);
+                    } else {
+                        Command command = commandQueue.pop();
+                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) { // NO DEBERIA LLEGAR EL COMANDO NOP
+                            logic.updateModel(command);
                         }
-                        Response response = logic.getResponse();
-                        this->replayLogic.addResponse(response);
-                        sendResponse();
+                        limitCommands++;
                     }
-                    //std::cout << "Actualizo el tiempo en box2d" << std::endl;
                 }
+                if (!this->replayLogic.isInReplay()) {
+                    logic.updateTime();
+                    if (logic.isGoal()) {
+                        this->replayLogic.goalScored();
+                    }
+                    Response response = logic.getResponse();
+                    this->replayLogic.addResponse(response);
+                    sendResponse();
+                }
+                //std::cout << "Actualizo el tiempo en box2d" << std::endl;
             }
-        } catch (...) {
-            throw;
         }
+    } catch (...) {
+        throw;
     }
-    // gameflow que agarra de su cola de comandos y los pushea al serverEndpoint
+}
 
 bool CompleteGame::isInReplay() {
     return (this->replayLogic.isInReplay());

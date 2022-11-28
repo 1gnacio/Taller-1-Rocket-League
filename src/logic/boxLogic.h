@@ -112,6 +112,8 @@ class BoxLogic {
 
     void setRoomInfo(Room &room);
 
+    bool matchFinished();
+
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_
