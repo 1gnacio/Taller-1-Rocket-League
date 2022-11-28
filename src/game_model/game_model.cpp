@@ -192,4 +192,7 @@ GameModel::~GameModel(){
     for(auto &x: games) {
         x->finally();
     }
+    for(auto &x: gamesThread) {
+        x.join();
+    }
 }
