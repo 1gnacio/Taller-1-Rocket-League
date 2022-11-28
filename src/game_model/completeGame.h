@@ -15,6 +15,8 @@ private:
     GameLogic logic;
     ServerEndpoint & serverEndpoint;
     ReplayLogic replayLogic;
+    CommandQueue commandQueue;
+    bool isClosed;
 public:
 
     CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint&serverEndPoint);
@@ -37,6 +39,12 @@ public:
     void resetData();
 
     void sendResponse();
+
+    void gameFlow();
+
+    bool isInReplay();
+
+    void finally();
 };
 
 

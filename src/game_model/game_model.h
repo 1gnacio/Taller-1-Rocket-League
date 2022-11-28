@@ -13,6 +13,7 @@
 class GameModel {
  private:
     std::vector<std::unique_ptr<CompleteGame>> games;
+    std::vector<std::thread> gamesThread;
     ServerEndpoint & serverEndpoint;
     CommandValues commands;
     LobbyResponse listRooms(int playerId);
@@ -41,6 +42,11 @@ class GameModel {
     void resetDataOfGames();
 
     void applyLogic(Command& command);
+
+    std::thread initGame(std::unique_ptr<CompleteGame> *completeGame);
+
+    void gameFlow(std::unique_ptr<CompleteGame> *completeGame);
+    ~GameModel();
 };
 
 
