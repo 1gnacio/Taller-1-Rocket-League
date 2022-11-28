@@ -6,10 +6,13 @@
 #include "../src/game_entities/room.h"
 #include <iostream>
 #include "../src/constants/b2DVars.h"
+#include "contactListenerHits.h"
 
 BoxLogic::BoxLogic():
     isActive(true) {
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+    ContactListenerHits contactListener;
+    world->SetContactListener(new ContactListenerHits);
     createWalls();
     createBall();
     createSoccerGoals();
@@ -40,6 +43,7 @@ void BoxLogic::createSoccerGoals() {
         edge.SetTwoSided(b2Vec2(roofXStart[i], roofYStart[i]),
                          b2Vec2(roofXEnd[i], roofYEnd[i]));
         edgeFixtureDef.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureRoof(edgeFixtureDef);
         i++;
     }
@@ -53,6 +57,7 @@ void BoxLogic::createSoccerGoals() {
         edge.SetTwoSided(b2Vec2(wallXStart[i], wallYStart[i]),
                          b2Vec2(wallXEnd[i], wallYEnd[i]));
         edgeFixtureDef2.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureWall(edgeFixtureDef2);
         i++;
     }
@@ -120,6 +125,31 @@ void BoxLogic::createCar(int id) {
     fixtureDef.filter.categoryBits = B2DVars().BIT_CAR;
     fixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     cars.back().createFixture(fixtureDef);
+
+    // Create 4 sensors
+    b2FixtureDef sensorDef;
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,-hCar), 0);
+    sensorDef.shape = &dynamicCar;
+    sensorDef.filter.categoryBits = B2DVars().BIT_CAR;
+    sensorDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
+    sensorDef.isSensor = true;
+    cars.back().createFixture(sensorDef); //  cars.back().createFixture(sensorDef, 4 );
+
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,hCar), 0);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef);
+
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(wCar,0), 90);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef);
+
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar,0), 90);
+    sensorDef.shape = &dynamicCar;
+    cars.back().createFixture(sensorDef);
+
+
+
+
 }
 
 void BoxLogic::createWalls() {

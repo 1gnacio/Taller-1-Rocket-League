@@ -14,7 +14,7 @@ int Car::getId() {
 }
 
 void Car::createFixture(b2FixtureDef & fixture) {
-    carBody->CreateFixture(&fixture);
+    carBody->CreateFixture(&fixture); // carBody->CreateFixture(&fixture)->GetUserData->pointer = num;
 }
 
 float Car::getData(int key) {
