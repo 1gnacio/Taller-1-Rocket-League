@@ -78,9 +78,12 @@ void Server::gameFlow(){
             logic.updateTime();
             //std::cout << "Actualizo el tiempo en box2d" << std::endl;
             endpoint.push(logic.getResponse());
+
+            // No falta un sleep aca? El game loop no puede loopear sin control,
+            // debe looper N veces por segundo.
         }
     } catch (...) {
-        throw;
+        throw; // ??? si atrapas cualquier cosa y la relanzas, para eso no la atrapes
     }
 }
 

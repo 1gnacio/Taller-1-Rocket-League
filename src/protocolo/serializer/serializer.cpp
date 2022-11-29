@@ -30,6 +30,7 @@ int Serializer::deserializeInt(const std::vector<unsigned char> &serializedInt) 
     auto* bytes = const_cast<unsigned char *>(&serializedInt[0]);    // point to beginning of memory
     auto* result = reinterpret_cast<int*>(bytes);
 
+    // no falta asegurar el endianness aca? Como sabes q es little endian?
     return *result;
 }
 

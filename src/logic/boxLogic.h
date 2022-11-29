@@ -11,6 +11,9 @@
 #include <memory>
 #include "game.h"
 
+// Felicito a quien haya documentado la clase. El resto del TP esta pobrisimo
+// en ese aspecto.
+
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
  */

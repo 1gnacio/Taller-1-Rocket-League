@@ -38,6 +38,7 @@ void ResponseHandler::handleSend() {
         while (!this->hasFinished) {
             Response r = this->queue.pop();
             //TODO que deberia hacer el hilo si no recibe nada del servidor?
+            // -> muy posiblemente bloquearse
             protocolo.sendResponse(this->socket, r);
             this->hasFinished = protocolo.isConnectionClosed();
         }

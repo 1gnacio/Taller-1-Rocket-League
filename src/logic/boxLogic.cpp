@@ -168,6 +168,10 @@ float BoxLogic::getData(int key, const b2Body* body) {
         case 4:
             return body->GetLinearVelocity().y;
     }
+
+    // posiblemente no queres retornar un dummy.
+    // Si sabes q key debe ser [0, 4], entonces
+    // es mejor lanzar una excepcion y q rompa.
     return 0;
 }
 
