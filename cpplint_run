@@ -1,2 +1,2 @@
 #!/bin/bash
-cpplint src/* src/*/* src/*/*/*
+cpplint google_tests/* src/* src/*/* src/*/*/*

@@ -1,2 +1,2 @@
 #!/bin/bash
-cppcheck --enable=all --suppress=missingInclude -f --std=c++17 --platform=unix64 -v -i box2d -i google_tests/lib -i SDL2pp  .
+cppcheck --enable=all --suppress=missingInclude -f --std=c++17 --platform=unix64 -v -i box2d -i google_tests/lib -i libs/libSDL2pp -i build -i cmake-build-debug -i cmake-build-debug-coverage .
