@@ -235,6 +235,10 @@ add_executable(lobby
         src/protocolo/responses/connected_clients.h
         src/protocolo/responses/action_result_response.cpp
         src/protocolo/responses/action_result_response.h
+        src/logic/replay_logic.cpp
+        src/logic/replay_logic.h
+        src/handlers/id_service.cpp
+        src/handlers/id_service.h
         )
 
 target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d)
