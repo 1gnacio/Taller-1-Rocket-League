@@ -1,0 +1,2 @@
+#!/bin/bash
+cppcheck --enable=all --suppress=missingInclude -f --std=c++17 --platform=unix64 -v -i box2d -i google_tests/lib -i SDL2pp  .
