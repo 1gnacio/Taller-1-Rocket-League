@@ -23,6 +23,10 @@ class GameModel {
     LobbyResponse leaveRoom(int playerId, const char* name);
 
     LobbyResponse createRoom(int ownerId, const char* name, int requiredPlayers);
+
+    void applyCommand(Command& command);
+
+    bool gameExists(const char* name);
  public:
     GameModel(ServerEndpoint& serverEndpoint);
 
