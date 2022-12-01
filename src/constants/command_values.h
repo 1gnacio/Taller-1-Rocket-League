@@ -35,7 +35,7 @@ public:
     const std::string DESERIALIZED_LEFT_RELEASE = "LEFT_RELEASE";
     const std::string DESERIALIZED_UP_PUSHED = "UP_PUSHED";
     const std::string DESERIALIZED_UP_RELEASE = "UP_RELEASE";
-    const std::string DESERIALIZED_DOWN_PUSHED = "DOWN_PUSHED";
+    std::string DESERIALIZED_DOWN_PUSHED = "DOWN_PUSHED";
     const std::string DESERIALIZED_DOWN_RELEASE = "DOWN_RELEASE";
 
     const std::string DESERIALIZED_JUMP_PUSHED = "JUMP_PUSHED";

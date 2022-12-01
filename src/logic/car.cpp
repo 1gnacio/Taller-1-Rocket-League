@@ -6,7 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE) {
 }
 
 int Car::getId() {
@@ -44,6 +44,7 @@ void Car::startMove(b2Vec2 vel) {
     if (!isJumping()) {
         carBody->ApplyForceToCenter(vel, true);
         isAccelerating = true;
+
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
         carBody->ApplyTorque(torque, true);
@@ -143,4 +144,16 @@ bool Car::isLocal(){
 
 bool Car::sameBody(b2Body *pBody) {
     return (pBody == carBody);
+}
+
+void Car::changeLastDirection(directions &direction) {
+    if(lastDirection != direction) {
+        this->lastDirection = direction;
+        std::cout << "cambio la direccion a " << lastDirection << std::endl;
+    }
+
+}
+
+directions Car::getLastDirection() {
+    return this->lastDirection;
 }

@@ -6,11 +6,12 @@
 #include "../src/game_entities/room.h"
 #include <iostream>
 #include "../src/constants/b2DVars.h"
+#include "stateMachine.h"
 
 
 BoxLogic::BoxLogic():
     isActive(true) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+    world = std::make_unique<b2World>(b2Vec2(0.0f, 7.0f));
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -147,10 +148,6 @@ void BoxLogic::createCar(int id) {
     dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar,0), 90);
     sensorDef.shape = &dynamicCar;
     cars.back().createFixture(sensorDef, 4);
-
-
-
-
 }
 
 void BoxLogic::createWalls() {
@@ -188,16 +185,17 @@ void BoxLogic::addPlayer(int id) {
     this->createCar(id);
 }
 
+BoxLogic::~BoxLogic() {
+}
+
 void BoxLogic::update(Command &command) {
-    // Si es comando de unirse llamo a addPlayer()
+// Si es comando de unirse llamo a addPlayer()
 }
 
 void BoxLogic::update() {
-    // Es necesario?
+// Es necesario?
 }
 
-BoxLogic::~BoxLogic() {
-}
 
 float BoxLogic::getData(int key, const b2Body* body) {
     switch (key) {
@@ -238,20 +236,26 @@ Car* BoxLogic::getCar(int carID) {
     return nullptr;
 }
 
-b2Vec2 BoxLogic::getVectorForce(int direction) {
-    if (direction == LogicValues().LEFT_DIRECTION)
+b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
+    if (direction == LogicValues().LEFT_DIRECTION) {
+        lastDir = LEFT_LAST_DIRECTION;
         return b2Vec2(-2.0f, 0.0f);
-    else if (direction == LogicValues().RIGHT_DIRECTION)
+    } else if (direction == LogicValues().RIGHT_DIRECTION) {
+        lastDir = RIGHT_LAST_DIRECTION;
         return(b2Vec2(2.0f, 0.0f));
-    else if (direction == LogicValues().UP_DIRECTION)
+    } else if (direction == LogicValues().UP_DIRECTION) {
         return (b2Vec2(0.0f, -3.0f));
+    }
     return (b2Vec2(0.0f, -3.0f));
 }
 
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
-    b2Vec2 vel = getVectorForce((int)direction);
+    directions lastDir = NONE;
+    b2Vec2 vel = getVectorForce((int)direction, lastDir);
     getCar(carNumber)->startMove(vel);
+    getCar(carNumber)->changeLastDirection(lastDir);
+
 }
 
 void BoxLogic::stopMove(int carNumber) {
@@ -259,7 +263,8 @@ void BoxLogic::stopMove(int carNumber) {
 }
 
 void BoxLogic::jump(int carNumber) {
-    b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
+    directions lastDirDummy = NONE;
+    b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION), lastDirDummy);
     getCar(carNumber)->jump(vel);
 }
 
@@ -369,4 +374,14 @@ bool BoxLogic::isGoal() {
 }
 void BoxLogic::setRoomInfo(Room &room) {
     game.setStatus(room.isInGame());
+}
+
+void BoxLogic::updateLastDirection(int id, const std::basic_string<char>& deserializedCommand) {
+    directions lastDir = NONE;
+    if(deserializedCommand == CommandValues().DESERIALIZED_UP_PUSHED)
+        lastDir = UP_LAST_DIRECTION;
+    else if(deserializedCommand == CommandValues().DESERIALIZED_DOWN_PUSHED)
+        lastDir = DOWN_LAST_DIRECTION;
+
+    getCar(id)->changeLastDirection(lastDir);
 }

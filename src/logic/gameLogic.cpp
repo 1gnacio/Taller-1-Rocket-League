@@ -17,14 +17,18 @@ void GameLogic::updateModel(Command &command) {
                               LogicValues().LEFT_DIRECTION);
     } else if (command.getValue() == CommandValues().DESERIALIZED_LEFT_RELEASE ||
                command.getValue() == CommandValues().DESERIALIZED_RIGHT_RELEASE) {
-        gamePhysics.stopMove(command.getID());  // gamePhysics.stopMove(command.getID());
+        gamePhysics.stopMove(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_RIGHT_PUSHED) {
         gamePhysics.startMove(command.getID(),
-                              LogicValues().RIGHT_DIRECTION);  // gamePhysics.startMove(command.getID(), LogicValues().RIGHT_DIRECTION);
+                              LogicValues().RIGHT_DIRECTION);
     } else if (command.getValue() == CommandValues().DESERIALIZED_TURBO_PUSHED) {
-        gamePhysics.applyTurbo(command.getID());  // gamePhysics.applyTurbo(command.getID());
+        gamePhysics.applyTurbo(command.getID());
     } else if (command.getValue() == CommandValues().DESERIALIZED_JUMP_PUSHED) {
-        gamePhysics.jump(command.getID());  // gamePhysics.jump(command.getID());
+        gamePhysics.jump(command.getID());
+    } else if ((command.getValue() == CommandValues().DESERIALIZED_DOWN_PUSHED)) {
+        gamePhysics.updateLastDirection(command.getID(), CommandValues().DESERIALIZED_DOWN_PUSHED);
+    } else if((command.getValue() == CommandValues().DESERIALIZED_UP_PUSHED)) {
+        gamePhysics.updateLastDirection(command.getID(), CommandValues().DESERIALIZED_UP_PUSHED);
     }
 }
 

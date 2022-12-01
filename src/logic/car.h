@@ -3,11 +3,19 @@
 
 #ifndef SRC_LOGIC_CAR_H_
 #define SRC_LOGIC_CAR_H_
+//#include"stateMachine.h"
 
 /*
  * Objeto que simula auto en el juego,
  * el cual puede moverse y realizar golpes especiales.
  */
+enum directions {
+    NONE,
+    RIGHT_LAST_DIRECTION,
+    LEFT_LAST_DIRECTION,
+    UP_LAST_DIRECTION,
+    DOWN_LAST_DIRECTION,
+};
 
 class Car {
  private:
@@ -20,6 +28,7 @@ class Car {
     int usingTurbo;
     bool isAccelerating;
     bool isLocalTeam;
+    directions lastDirection;
 
  public:
     /*
@@ -75,6 +84,12 @@ class Car {
     void destroy(std::unique_ptr<b2World> &world);
 
     bool sameBody(b2Body *pBody);
+
+    void changeLastDirection(directions &direction);
+
+    directions getLastDirection();
+
+    void verifyLastMovement();
 };
 
 
