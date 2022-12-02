@@ -121,6 +121,10 @@ class BoxLogic {
     void verifyFlip();
 
     void verifyPunch();
+
+    bool getBallDataPunched(const int i);
+
+    bool BallHasBeenPunched();
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

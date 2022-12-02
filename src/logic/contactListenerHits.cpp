@@ -11,18 +11,14 @@ void ContactListenerHits::BeginContact(b2Contact * contact){
    if(fa->IsSensor()) {
        if(fb->GetBody() == ball->getBallBody()) {
            int id = getId(fa->GetBody());
-           if(getCar(id)->didFlip()/* && !(getCar(id)->punchedBall())*/) {
+           if(getCar(id)->didFlip()) {
                if(fa->GetUserData().pointer == 1) {
-                  getCar(id)->SetPunchedBall(true);
                   ball->punch(1);
                } else if(fa->GetUserData().pointer == 2) {
-                  getCar(id)->SetPunchedBall(true);
                   ball->punch(3);
                } else if(fa->GetUserData().pointer == 3) {
-                  getCar(id)->SetPunchedBall(true);
                   ball->punch(2);
                } else if(fa->GetUserData().pointer == 4) {
-                  getCar(id)->SetPunchedBall(true);
                   ball->punch(4);
                } else {
                   ball->punch(0);
@@ -88,6 +84,7 @@ void ContactListenerHits::addBall(Ball* sameBall) {
 void ContactListenerHits::verifyFlip(Car &car) {
     getCar(car.getId())->setMakeFlip(car.isMakeFlip());
     getCar(car.getId())->setSecFlip(car.getSecFlip());
+
 }
 /*
 void ContactListenerHits::flipShot(Car *pCar) {

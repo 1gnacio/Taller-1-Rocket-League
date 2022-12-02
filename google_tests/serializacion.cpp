@@ -96,7 +96,6 @@ TEST(Serializacion, SerializePlayerId) {
 
 TEST(Serializacion, SerializePlayerPositionX) {
     float test = 10.93f;
-
     PlayerResponse response(0, test, 0, 0, false, false, false, false, false, false);
 
     std::vector<unsigned char> serialized = response.serialize();

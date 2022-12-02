@@ -12,11 +12,24 @@ public:
 
 private:
     bool wasPunchedNormal;
+public:
+    bool isWasPunchedNormal() const;
+
+    bool isWasPunchedFlipShot() const;
+
+    bool isWasPunchedRedShot() const;
+
+    bool isWasPunchedPurpleShot() const;
+
+    bool isWasPunchedGoldShot() const;
+
+private:
     bool wasPunchedFlipShot;
     bool wasPunchedRedShot;
     bool wasPunchedPurpleShot;
     bool wasPunchedGoldShot;
     int framesAfterPunched;
+    float secAfterPunched;
 
 public:
     explicit Ball(b2Body* ballBody);
@@ -35,6 +48,8 @@ public:
     float directionForce(int key);
 
     void copy(Ball &ball);
+
+    bool isWasPunched();
 };
 
 

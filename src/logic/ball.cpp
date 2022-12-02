@@ -11,11 +11,8 @@ Ball::Ball(b2Body* body): ballBody(body), framesAfterPunched(0),
                           wasPunchedFlipShot(false),
                           wasPunchedGoldShot(false),
                           wasPunchedPurpleShot(false),
-                          wasPunchedRedShot(false) {
-
+                          wasPunchedRedShot(false), secAfterPunched(0) {
 };
-
-
 void Ball::punch(int typeOfPunch) {
     switch(typeOfPunch) {
         case 0:
@@ -30,6 +27,7 @@ void Ball::punch(int typeOfPunch) {
             this->wasPunchedGoldShot = true;
     }
     framesAfterPunched = 0;
+    secAfterPunched = 0;
 }
 
 void Ball::resetPunch() {
@@ -93,7 +91,7 @@ float Ball::directionForce(int key) {
 
 
 void Ball::verifyPunch() {
-   // if(framesAfterPunched > 3) {
+   if(secAfterPunched == 0) {
         if(wasPunchedFlipShot) {
             std::cout << "aplico Flip Shot" << std::endl;
             ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*1,directionForce(4)*1), true);
@@ -107,11 +105,35 @@ void Ball::verifyPunch() {
             std::cout << "aplico gold shot" << std::endl;
             ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*10,directionForce(4)*10), true);
         }
-        resetPunch();
-        framesAfterPunched = 0;
-   /* } else {
-        framesAfterPunched++;
-    }*/
+   }
+   secAfterPunched += 0.04;
+   if(secAfterPunched > 3) {
+       resetPunch();
+       secAfterPunched = 0;
+   }
+}
 
+bool Ball::isWasPunchedNormal() const {
+    return wasPunchedNormal;
+}
+
+bool Ball::isWasPunchedFlipShot() const {
+    return wasPunchedFlipShot;
+}
+
+bool Ball::isWasPunchedRedShot() const {
+    return wasPunchedRedShot;
+}
+
+bool Ball::isWasPunchedPurpleShot() const {
+    return wasPunchedPurpleShot;
+}
+
+bool Ball::isWasPunchedGoldShot() const {
+    return wasPunchedGoldShot;
+}
+
+bool Ball::isWasPunched() {
+    return (wasPunchedGoldShot || wasPunchedPurpleShot || wasPunchedRedShot || wasPunchedFlipShot || wasPunchedNormal);
 }
 

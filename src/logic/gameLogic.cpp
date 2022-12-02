@@ -54,6 +54,14 @@ Response GameLogic::getResponse() {
                  this->gamePhysics.getBallData(LogicValues().ANGLE),
                  false, false, false);
 
+                 /*
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_NORMAL),
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_FLIP_SHOT),
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_RED_SHOT),
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT),
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT));*/
+
+
     PlayerResponses players = gamePhysics.getPlayersData();
 
     MatchResponse match(gamePhysics.gameData(ball, players));

@@ -399,3 +399,22 @@ void BoxLogic::verifyPunch() {
     ball.verifyPunch();
 
 }
+
+bool BoxLogic::getBallDataPunched(const int i) {
+    switch (i) {
+        case 6:
+            return (ball.isWasPunchedNormal());
+        case 7:
+            return (ball.isWasPunchedFlipShot());
+        case 8:
+            return (ball.isWasPunchedRedShot());
+        case 9:
+            return (ball.isWasPunchedPurpleShot());
+        case 10:
+            return (ball.isWasPunchedGoldShot());
+    }
+}
+
+bool BoxLogic::BallHasBeenPunched(){
+    return ball.isWasPunched();
+}
