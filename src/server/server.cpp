@@ -5,6 +5,7 @@
 #include "server.h"
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
+#include "src/exceptions/blocking_queue_closed_exception.h"
 
 
 // hilos:
@@ -25,8 +26,6 @@ Socket Server::acceptClient() {
         return this->accepter.accept();
     } catch (LibError& e) {
         throw SocketClosedException(e);
-    } catch (...) {
-        throw;
     }
 }
 
@@ -43,8 +42,6 @@ void Server::acceptClients() {
         this->stopHandlers();
         this->cleanFinishedHandlers();
         return;
-    } catch (...) {
-        throw;
     }
 }
 
@@ -73,8 +70,8 @@ void Server::lobbyThread() {
             //std::cout << "Actualizo el tiempo en box2d" << std::endl;
             // endpoint.push(logic.getResponse());
         }
-    } catch (...) {
-        throw;
+    } catch (BlockingQueueClosedException &e) {
+        this->isClosed = true;
     }
 }
 

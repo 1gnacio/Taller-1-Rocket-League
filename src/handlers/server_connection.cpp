@@ -33,7 +33,8 @@ void ServerConnection::closeConnection() {
             this->socket.shutdown(SHUT_RDWR);
         } catch (LibError &e) {
             if (errno == ENOTCONN) {
-                std::cout << "La conexion con el servidor ha terminado de forma repentina. Posiblemente el servidor se encuentre desconectado." << std::endl;
+                std::cout << "La conexion con el servidor ha terminado de forma repentina. "
+                             "Posiblemente el servidor se encuentre desconectado." << std::endl;
             }
         }
         this->socket.close();
@@ -50,7 +51,8 @@ ServerConnection::~ServerConnection() {
             this->socket.shutdown(SHUT_RDWR);
         } catch (LibError &e) {
             if (errno == ENOTCONN) {
-                std::cout << "La conexion con el servidor ha terminado de forma repentina. Posiblemente el servidor se encuentre desconectado." << std::endl;
+                std::cout << "La conexion con el servidor ha terminado de forma repentina. "
+                             "Posiblemente el servidor se encuentre desconectado." << std::endl;
             }
         }
         this->socket.close();

@@ -45,6 +45,7 @@ bool waitIfFinished(std::unique_ptr<ClientConnection>& connection) {
 void ServerEndpoint::stopConnections() {
     if (this->isActive) {
         this->responses.close();
+        this->receivedCommands.close();
         for(auto& connection : this->connections) {
             connection->closeConnection();
         }
@@ -63,6 +64,7 @@ void ServerEndpoint::cleanFinishedConnections() {
 ServerEndpoint::~ServerEndpoint() {
     if (this->isActive) {
         this->responses.close();
+        this->receivedCommands.close();
         for(auto& connection : this->connections) {
             connection->closeConnection();
         }
