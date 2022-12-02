@@ -1,6 +1,5 @@
 #include <netinet/in.h>
 #include <algorithm>
-#include <iostream>
 #include "protocolo.h"
 #include "../constants/response_values.h"
 #include "../src/sockets/liberror.h"
@@ -48,8 +47,11 @@ void Protocolo::sendResponse(Socket& socket, Response &response) {
 
         this->sendMessage(socket, serialized);
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }
 
@@ -66,8 +68,11 @@ Command Protocolo::receiveCommand(Socket& socket) {
 
         return receivedCommand;
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }
 
@@ -83,8 +88,11 @@ void Protocolo::sendCommand(Socket &socket, Command &command) {
 
         this->sendMessage(socket, serializedCommand);
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }
 
@@ -100,8 +108,11 @@ Response Protocolo::receiveResponse(Socket &socket) {
 
         return {message};
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }
 
@@ -118,8 +129,11 @@ void Protocolo::sendId(Socket &socket, int id) {
 
         this->sendMessage(socket, serializedId);
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }
 
@@ -133,7 +147,10 @@ int Protocolo::receiveId(Socket &socket) {
 
         return serializedInt.size() > 0 ? Serializer().deserializeInt(serializedInt) : 0;
     } catch (LibError& e) {
-        this->connectionClosed = true;
-        throw SocketClosedException(e);
+        if (errno == ECONNRESET) {
+            this->connectionClosed = true;
+            throw SocketClosedException(e);
+        }
+        throw e;
     }
 }

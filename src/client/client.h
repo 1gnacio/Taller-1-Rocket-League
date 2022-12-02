@@ -2,7 +2,7 @@
 #define __CLIENT_CLIENT_H
 
 #include "../handlers/server_connection.h"
-#include "src/client_sdl/sdl_main.h"
+#include "../src/client_sdl/sdl_main.h"
 #include <string>
 
 class Client {

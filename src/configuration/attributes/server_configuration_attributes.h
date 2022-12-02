@@ -4,7 +4,6 @@
 
 class ServerConfigurationAttributes {
 private:
-    float maxTurboQuantity;
     float carWidth;
     float carHeight;
     float carDensity;
@@ -22,13 +21,13 @@ private:
     float jumpImpulse;
 
     int replayTimeInSec;
-    float responsesPerSec;
+    int responsesPerSec;
 
 public:
-    ServerConfigurationAttributes(float maxTurboQuantity, float carWidth, float carHeight, float carDensity,
+    ServerConfigurationAttributes(float carWidth, float carHeight, float carDensity,
                                   float carFriction, float carRestitution, float ballDensity, float ballFriction,
                                   float ballRestitution, float ballRadious, float mapGravity, float movementForceModule,
-                                  float jumpImpulse, int replayTimeInSec, float responsesPerSec);
+                                  float jumpImpulse, int replayTimeInSec, int responsesPerSec);
 };
 
 

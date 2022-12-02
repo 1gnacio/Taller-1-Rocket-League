@@ -1,6 +1,6 @@
 #include "sdl_main.h"
 #include <chrono>
-#include "src/constants/logic_values.h"
+#include "../src/constants/logic_values.h"
 
 //TODO: tamaño de ventana por config.
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),

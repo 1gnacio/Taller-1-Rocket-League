@@ -5,7 +5,7 @@
 #include "server.h"
 #include "../sockets/liberror.h"
 #include "../exceptions/socket_closed_exception.h"
-#include "src/exceptions/blocking_queue_closed_exception.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 
 
 // hilos:
