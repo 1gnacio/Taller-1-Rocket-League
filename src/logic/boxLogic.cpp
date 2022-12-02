@@ -226,15 +226,22 @@ int BoxLogic::playersAmount() {
 }
 
 float BoxLogic::getCarData(int carNumber, int key) {
-    return getCar(carNumber)->getData(key);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        return car->getData(key);
+    }
+    return -1;
 }
 
 Car* BoxLogic::getCar(int carID) {
-    for (auto &x : cars) {
-        if (x.getId() == carID) {
-            return &x;
-        }
+    auto found = std::find_if(this->cars.begin(),
+                 this->cars.end(),
+                 [&carID](Car &car){return car.getId() == carID;});
+
+    if (found != this->cars.end()) {
+        return found.base();
     }
+
     return nullptr;
 }
 
@@ -251,7 +258,10 @@ b2Vec2 BoxLogic::getVectorForce(int direction) {
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     b2Vec2 vel = getVectorForce((int)direction);
-    getCar(carNumber)->startMove(vel);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        getCar(carNumber)->startMove(vel);
+    }
 }
 
 void BoxLogic::stopMove(int carNumber) {
@@ -260,7 +270,10 @@ void BoxLogic::stopMove(int carNumber) {
 
 void BoxLogic::jump(int carNumber) {
     b2Vec2 vel = getVectorForce((LogicValues().UP_DIRECTION));
-    getCar(carNumber)->jump(vel);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        car->jump(vel);
+    }
 }
 
 PlayerResponses BoxLogic::getPlayersData() {
