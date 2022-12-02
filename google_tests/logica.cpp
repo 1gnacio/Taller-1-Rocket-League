@@ -3,7 +3,6 @@
 #include "../src/protocolo/commands/command.h"
 #include "../src/logic/boxLogic.h"
 #include "../src/logic/gameLogic.h"
-#include "../src/constants/logic_values.h"
 #include "../src/constants/command_values.h"
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/game_model/game_model.h"
@@ -24,49 +23,54 @@ TEST(logic, SeCreaElMapaCorrectamente) {
     EXPECT_TRUE(logic.getResponse().getBallPositionY() > -2.8f);
 }
 
-TEST(logic, SeAñadeAutoCorrectamente) {
-    GameLogic logic;
+TEST(logic, SeAniadeAutoCorrectamente) {
+    ServerEndpoint endpoint;
+    CompleteGame game(1, 2, "prueba", endpoint);
     ProtocolCommands makeCommands;
-    std::string deserialized = CommandValues().DESERIALIZED_TURBO_RELEASE;
-    Command c = makeCommands.createCommand(PLAYER_ID, deserialized);
-    logic.updateModel(c);
-    update(logic, 100);
-    EXPECT_EQ(logic.playersAmount(), 1);
+    std::string deserialized = CommandValues().DESERIALIZED_JOIN;
+    std::string name = "prueba";
+    Command c = makeCommands.createCommand(PLAYER_ID, deserialized, name);
+    game.applyCommand(c);
+    game.updateTime();
+    EXPECT_EQ(game.list().getPlayers(), "1");
 }
 
 TEST(logic, SeMueveElAutoCorrectamente) {
-    GameLogic logic;
+    ServerEndpoint endpoint;
+    CompleteGame game(1, 2, "prueba", endpoint);
     ProtocolCommands makeCommands;
-    std::string deserialized = CommandValues().DESERIALIZED_TURBO_RELEASE;
-    Command c = makeCommands.createCommand(PLAYER_ID, deserialized);
-    logic.updateModel(c);
-    update(logic, 100);
+    std::string deserialized = CommandValues().DESERIALIZED_JOIN;
+    std::string name = "prueba";
+    Command c = makeCommands.createCommand(PLAYER_ID, deserialized, deserialized, name);
+    game.applyCommand(c);
+    game.updateTime();
 
-    EXPECT_TRUE(logic.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
+    ASSERT_TRUE(game.getResponse().getMatchResponse().getPlayersResponse().getPlayers().front().moving());
     deserialized = CommandValues().DESERIALIZED_RIGHT_PUSHED;
     c = makeCommands.createCommand(PLAYER_ID, deserialized);
-    logic.updateModel(c);
-    update(logic, 1);
+    game.applyCommand(c);
+    game.updateTime();
 
-    EXPECT_TRUE(logic.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) != 0);
+    ASSERT_TRUE(game.getResponse().getMatchResponse().getPlayersResponse().getPlayers().front().moving());
 }
 
 TEST(logic, elAutoSaltaCorrectamente) {
-    GameLogic logic;
+    ServerEndpoint endpoint;
+    CompleteGame game(1, 2, "prueba", endpoint);
     ProtocolCommands makeCommands;
-    std::string deserialized = CommandValues().DESERIALIZED_TURBO_RELEASE;
-    Command c = makeCommands.createCommand(PLAYER_ID, deserialized);
-    logic.updateModel(c);
-    update(logic, 100);
+    std::string deserialized = CommandValues().DESERIALIZED_JOIN;
+    std::string name = "prueba";
+    Command c = makeCommands.createCommand(PLAYER_ID, deserialized, name);
+    game.applyCommand(c);
+    game.updateTime();
 
-
-    EXPECT_TRUE(logic.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) == 0);
+    ASSERT_TRUE(game.getResponse().getMatchResponse().getPlayersResponse().getPlayers().front().flying());
     deserialized = CommandValues().DESERIALIZED_JUMP_PUSHED;
     c = makeCommands.createCommand(PLAYER_ID, deserialized);
-    logic.updateModel(c);
-    update(logic, 1);
+    game.applyCommand(c);
+    game.updateTime();
 
-    EXPECT_TRUE(logic.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) != 0);
+    ASSERT_TRUE(game.getResponse().getMatchResponse().getPlayersResponse().getPlayers().front().flying());
 }
 
 TEST(logic, EnviarComandoQuitMatchBorraAlJugador) {

@@ -2,9 +2,12 @@
 #include <chrono>
 #include "src/constants/logic_values.h"
 
+//TODO: tamaño de ventana por config.
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
-                      window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   900, 500, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
+                      window("Rocket League",
+                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                             900, 500,
+                             SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
                       renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
                       arena(renderer), scoreboard(renderer), ball(renderer),
                       convert(MAX_WIDTH, MAX_HEIGHT), time_ms(0)
@@ -23,15 +26,30 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 
 #ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
+    bool replay = response.getMatchResponse().isReplaying();
+    bool waitingForPlayers = response.getMatchResponse().waitingForPlayers();
+
+    if (replay) {
+        std::cout << "REPLAY" << std::endl;
+    }
+    if (waitingForPlayers) {
+        std::cout << "WAITING" << std::endl;
+    }
+
+    arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
+                 waitingForPlayers, replay);
     int local_goals= response.getMatchResponse().getLocalGoals();
     int visitors_goals=response.getMatchResponse().getVisitorsGoals();
-    scoreboard.update(convert.timeToString((std::chrono::milliseconds) (response.getMatchResponse().getTime()*1000)),local_goals,visitors_goals);
-    //time_ms += TIME_UPDATE_MS*2;
-
-    arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()));
-    for (auto &player: response.getMatchResponse().getPlayersResponse().getPlayers()) {
-        int car_x = convert.WtoPixels(player.getPosX(), renderer.GetOutputWidth());
-        int car_y = convert.HtoPixels(player.getPosY(), renderer.GetOutputHeight());
+    scoreboard.update(convert.timeToString((std::chrono::milliseconds)
+                (response.getMatchResponse().getTime()*1000)),
+                        local_goals,visitors_goals);
+        //time_ms += TIME_UPDATE_MS*2;
+    for (auto &player:
+    response.getMatchResponse().getPlayersResponse().getPlayers()) {
+        int car_x = convert.WtoPixels(player.getPosX(),
+                                      renderer.GetOutputWidth());
+        int car_y = convert.HtoPixels(player.getPosY(),
+                                      renderer.GetOutputHeight());
         double car_angle = convert.toDegrees(player.getRotationAngle());
         int id = player.getId();
 
@@ -40,17 +58,25 @@ void sdl_main::updateScreen(Response& response) {
             players.emplace(id, renderer);
         }
 
-        int car_w = convert.toPixels(LogicValues::W_CAR, renderer.GetOutputWidth());;
-        int car_h = convert.toPixels(LogicValues::H_CAR, renderer.GetOutputHeight());;
-        players.at(id).update(car_x, car_y, car_w, car_h, car_angle, FRAME_RATE, player.moving(), player.flying(), player.onTurbo());
+        int car_w = convert.toPixels(LogicValues::W_CAR,
+                                     renderer.GetOutputWidth());;
+        int car_h = convert.toPixels(LogicValues::H_CAR,
+                                     renderer.GetOutputHeight());;
+        players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
+                              FRAME_RATE, player.moving(), player.flying(),
+                              player.onTurbo());
     }
 
-    int ball_x = convert.WtoPixels(response.getMatchResponse().getBall().getPosX(),
+    int ball_x = convert.WtoPixels(
+            response.getMatchResponse().getBall().getPosX(),
                                    renderer.GetOutputWidth());
-    int ball_y = convert.HtoPixels(response.getMatchResponse().getBall().getPosY(),
+    int ball_y = convert.HtoPixels(
+            response.getMatchResponse().getBall().getPosY(),
                                    renderer.GetOutputHeight());
-    double ball_angle = convert.toDegrees(response.getMatchResponse().getBall().getRotationAngle());
-    int ball_width =  2.0 * convert.toPixels(LogicValues::RADIUS_BALL, renderer.GetOutputWidth());
+    double ball_angle = convert.toDegrees(
+            response.getMatchResponse().getBall().getRotationAngle());
+    int ball_width =  2.0 * convert.toPixels(LogicValues::RADIUS_BALL,
+                                             renderer.GetOutputWidth());
     ball.update(ball_x, ball_y, ball_angle, ball_width);
 
 }

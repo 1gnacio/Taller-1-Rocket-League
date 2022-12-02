@@ -13,11 +13,9 @@ void sdl_scoreboard::update(const std::string& time,
 }
 
 void sdl_scoreboard::render(SDL2pp::Renderer &renderer) {
-
     SDL2pp::Texture text_sprite(
             renderer,
-            font.RenderText_Blended(text, SDL_Color{255, 255, 255, 255})
-    );
+            font.RenderText_Blended(text, SDL_Color{255, 255, 255, 255}));
     int t_width=renderer.GetOutputWidth()/2;
     int t_height=renderer.GetOutputHeight()/10;
     int vcenter = (renderer.GetOutputWidth()/2) - (t_width/2);

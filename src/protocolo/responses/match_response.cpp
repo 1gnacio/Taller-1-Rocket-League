@@ -167,4 +167,12 @@ bool MatchResponse::hasPlayer(int i) {
 
 }
 
-MatchResponse::MatchResponse() = default;
+bool MatchResponse::isReplaying() {
+    return activeReplay;
+}
+
+bool MatchResponse::waitingForPlayers() {
+    return isWaitingForPlayers;
+}
+
+MatchResponse::MatchResponse()= default;
