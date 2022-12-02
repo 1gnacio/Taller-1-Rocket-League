@@ -1,4 +1,6 @@
 #include "command_handler.h"
+#include "../src/exceptions/socket_closed_exception.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 
 CommandHandler::CommandHandler(Socket &socket, CommandQueue& queue, Mode mode) :
 hasFinished(false),
@@ -20,7 +22,9 @@ void CommandHandler::handleSend() {
             protocolo.sendCommand(this->socket, c);
             this->hasFinished = this->protocolo.isConnectionClosed();
         }
-    } catch (std::exception &e) {
+    } catch (SocketClosedException &e) {
+        this->hasFinished = true;
+    } catch (BlockingQueueClosedException &e) {
         this->hasFinished = true;
     }
 }
@@ -32,7 +36,7 @@ void CommandHandler::handleReceive() {
             this->hasFinished = this->protocolo.isConnectionClosed();
             this->queue.push(c);
         }
-    } catch (std::exception &e) {
+    } catch (SocketClosedException &e) {
         this->hasFinished = true;
     }
 }
@@ -61,5 +65,6 @@ CommandHandler::~CommandHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
     }
+
     this->handler.join();
 }

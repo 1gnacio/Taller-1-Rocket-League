@@ -1,4 +1,6 @@
 #include "response_handler.h"
+#include "../src/exceptions/socket_closed_exception.h"
+#include "../src/exceptions/blocking_queue_closed_exception.h"
 
 ResponseHandler::ResponseHandler(Socket &socket, IdService& idService, ResponseQueue &queue, Mode mode) :
         queue(queue),
@@ -16,15 +18,15 @@ ResponseHandler::ResponseHandler(Socket &socket, IdService& idService, ResponseQ
 
 // hilo que recibe las respuestas del servidor
 void ResponseHandler::handleReceive() {
-    this->idService.run();
-
     try {
+        this->idService.run();
+
         while (!this->hasFinished) {
             Response r = protocolo.receiveResponse(this->socket);
             this->queue.push(r);
             this->hasFinished = protocolo.isConnectionClosed();
         }
-    } catch (std::exception &e) {
+    } catch (SocketClosedException &e) {
         this->hasFinished = true;
     }
 
@@ -32,19 +34,20 @@ void ResponseHandler::handleReceive() {
 
 // hilo que envia las respuestas del servidor
 void ResponseHandler::handleSend() {
-    this->idService.run();
-
     try {
+        this->idService.run();
+
         while (!this->hasFinished) {
             Response r = this->queue.pop();
             //TODO que deberia hacer el hilo si no recibe nada del servidor?
             protocolo.sendResponse(this->socket, r);
             this->hasFinished = protocolo.isConnectionClosed();
         }
-    } catch (std::exception &e) {
+    } catch (SocketClosedException &e) {
+        this->hasFinished = true;
+    } catch (BlockingQueueClosedException &e) {
         this->hasFinished = true;
     }
-
 }
 
 void ResponseHandler::push(Response &response) {
@@ -71,6 +74,7 @@ ResponseHandler::~ResponseHandler() {
     if (!this->hasFinished) {
         this->hasFinished = true;
     }
+
     this->handler.join();
 }
 
