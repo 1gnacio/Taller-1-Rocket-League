@@ -75,5 +75,5 @@ void Response::setActiveReplay() {
 Response::Response(bool isDummy) : isDummy(isDummy) {}
 
 int Response::getTime() {
-   this->matchResponse.getTime();
+   return this->matchResponse.getTime();
 }

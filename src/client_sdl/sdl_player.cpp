@@ -1,7 +1,7 @@
 #include "sdl_player.h"
 
 sdl_player::sdl_player(SDL2pp::Renderer &renderer):
-    car_an(renderer, 4, DATA_PATH "/bus/bus"),
+    car_an(renderer, 4, DATA_PATH "/car1/car"),
     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
     facingLeft(true), moving(false), onTurbo(false), jumping(false),

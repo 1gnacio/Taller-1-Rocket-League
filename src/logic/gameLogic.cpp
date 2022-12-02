@@ -64,7 +64,7 @@ void GameLogic::resetData() {
 }
 
 float GameLogic::ballPosY() {
-    gamePhysics.getBallData(LogicValues().POS_Y);
+    return gamePhysics.getBallData(LogicValues().POS_Y);
 }
 
 void GameLogic::addPlayer(int id) {

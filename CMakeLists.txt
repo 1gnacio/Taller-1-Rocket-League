@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Flags TODO: activarlo
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -Werror -Wno-reorder -pedantic -pedantic-errors")
 # debugging flags
-#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
 
@@ -41,22 +41,22 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 ######################################################################################################################
 add_executable(sdlTesting
         sdl_testing.cpp
-        src/client/unit_conversion.cpp
-        src/client/unit_conversion.h
-        src/client/sdl_main.h
-        src/client/sdl_main.cpp
-        src/client/sdl_animation.h
-        src/client/sdl_animation.cpp
-        src/client/sdl_ball.h
-        src/client/sdl_ball.cpp
-        src/client/sdl_scoreboard.h
-        src/client/sdl_scoreboard.cpp
-        src/client/sdl_arena.h
-        src/client/sdl_arena.cpp
-        src/client/sdl_player.h
-        src/client/sdl_player.cpp
-        src/client/sdl_animation.h
-        src/client/sdl_animation.cpp)
+        src/common/unit_conversion.cpp
+        src/common/unit_conversion.h
+        src/client_sdl/sdl_main.h
+        src/client_sdl/sdl_main.cpp
+        src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_animation.cpp
+        src/client_sdl/sdl_ball.h
+        src/client_sdl/sdl_ball.cpp
+        src/client_sdl/sdl_scoreboard.h
+        src/client_sdl/sdl_scoreboard.cpp
+        src/client_sdl/sdl_arena.h
+        src/client_sdl/sdl_arena.cpp
+        src/client_sdl/sdl_player.h
+        src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_animation.cpp)
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
 target_compile_definitions(sdlTesting PRIVATE SDL_TESTING)
 
@@ -97,8 +97,8 @@ add_executable(lobby
         src/handlers/server_connection.cpp
         src/client/client.cpp
         src/client/client.h
-        src/client/sdl_main.cpp
-        src/client/sdl_main.h
+        src/client_sdl/sdl_main.cpp
+        src/client_sdl/sdl_main.h
         src/server/server.cpp
         src/server/server.h
         src/handlers/server_connection.cpp
@@ -215,20 +215,20 @@ add_executable(lobby
         src/queues/response_queue.cpp src/queues/response_queue.h
         src/sockets/resolvererror.cpp src/sockets/resolvererror.h
         src/protocolo/responses/response.cpp src/protocolo/responses/response.h
-        src/client/sdl_main.cpp src/client/sdl_main.h
-        src/client/sdl_player.h src/client/sdl_player.cpp
-        src/client/sdl_animation.cpp src/client/sdl_animation.h
-        src/client/sdl_ball.cpp src/client/sdl_ball.h
-        src/client/sdl_arena.cpp src/client/sdl_arena.h
-        src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h
+        src/client_sdl/sdl_main.cpp src/client_sdl/sdl_main.h
+        src/client_sdl/sdl_player.h src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_animation.cpp src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h
+        src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
+        src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
-        src/client/sdl_animation.cpp
-        src/client/sdl_animation.h
-        src/client/sdl_player.cpp
-        src/client/sdl_main.cpp
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h
-        src/client/unit_conversion.cpp src/client/unit_conversion.h
+        src/client_sdl/sdl_animation.cpp
+        src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_main.cpp
+        src/client_sdl/sdl_main.h src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
+        src/common/unit_conversion.cpp src/common/unit_conversion.h
         src/protocolo/responses/lobby_response.cpp
         src/protocolo/responses/lobby_response.h
         src/protocolo/responses/room_responses.cpp
@@ -305,12 +305,12 @@ add_executable(game_client
         src/queues/response_queue.cpp src/queues/response_queue.h
         src/sockets/resolvererror.cpp src/sockets/resolvererror.h
         src/protocolo/responses/response.cpp src/protocolo/responses/response.h
-        src/client/sdl_main.cpp src/client/sdl_main.h
-        src/client/sdl_player.h src/client/sdl_player.cpp
-        src/client/sdl_animation.cpp src/client/sdl_animation.h
-        src/client/sdl_ball.cpp src/client/sdl_ball.h
-        src/client/sdl_arena.cpp src/client/sdl_arena.h
-        src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h
+        src/client_sdl/sdl_main.cpp src/client_sdl/sdl_main.h
+        src/client_sdl/sdl_player.h src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_animation.cpp src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h
+        src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
+        src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
         src/protocolo/responses/match_response.cpp
@@ -323,11 +323,11 @@ add_executable(game_client
         src/protocolo/responses/player_responses.h
         src/protocolo/responses/player_response.cpp
         src/protocolo/responses/player_response.h
-        src/client/sdl_animation.cpp
-        src/client/sdl_animation.h
-        src/client/sdl_player.cpp
-        src/client/sdl_main.cpp
-        src/client/sdl_main.h src/client/sdl_ball.cpp src/client/sdl_ball.h src/client/sdl_scoreboard.cpp src/client/sdl_scoreboard.h src/client/sdl_arena.cpp src/client/sdl_arena.h
+        src/client_sdl/sdl_animation.cpp
+        src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_main.cpp
+        src/client_sdl/sdl_main.h src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
         src/protocolo/responses/player_response.h
         src/protocolo/responses/player_response.cpp
         src/protocolo/responses/player_responses.cpp
@@ -338,7 +338,7 @@ add_executable(game_client
         src/queues/block_queues/command_blocking_queue.h
         src/queues/block_queues/response_blocking_queue.cpp
         src/queues/block_queues/response_blocking_queue.h
-        src/client/unit_conversion.cpp src/client/unit_conversion.h
+        src/common/unit_conversion.cpp src/common/unit_conversion.h
         src/protocolo/responses/lobby_response.cpp
         src/protocolo/responses/lobby_response.h
         src/protocolo/responses/room_responses.cpp

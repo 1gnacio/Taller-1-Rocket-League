@@ -19,11 +19,11 @@ private:
     int requiredPlayers;
     int currentPlayers;
     std::string name;
-    bool isWaitingForPlayers;
-    bool hasFinished;
+    bool isWaitingForPlayers = true;
+    bool hasFinished = false;
     bool isGoalLocal;
     bool isGoalVisitor;
-    bool activeReplay;
+    bool activeReplay = false;
 public:
 
     MatchResponse(int goalsLocal,
@@ -55,6 +55,8 @@ public:
     int getLocalGoals();
     int getVisitorsGoals();
     int getTime();
+    bool isReplaying();
+    bool waitingForPlayers();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
     void setActiveReplay() { this->activeReplay = true; };
