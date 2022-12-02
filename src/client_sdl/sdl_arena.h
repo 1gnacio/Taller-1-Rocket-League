@@ -3,7 +3,7 @@
 #define ROCKET_LEAGUE_SDL_ARENA_H
 
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 
 class sdl_arena {
 private:

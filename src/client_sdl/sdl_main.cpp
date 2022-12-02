@@ -1,6 +1,6 @@
 #include "sdl_main.h"
 #include <chrono>
-#include "../constants/logic_values.h"
+#include "src/constants/logic_values.h"
 
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                       window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

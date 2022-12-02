@@ -2,7 +2,8 @@
 #include <cassert>
 #include <string>
 
-sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames, const std::string& path) :
+sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames,
+                             const std::string& path) :
         currentFrame(0), numFrames(numFrames), elapsed(0.0f), loop(true) {
     assert(this->numFrames > 0);
     for (int i = 1; i <= numFrames; ++i) {
@@ -26,7 +27,8 @@ void sdl_animation::update(float dt) {
     }
 }
 
-void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, double angle, SDL_RendererFlip &flipType) {
+void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst,
+                           double angle, SDL_RendererFlip &flipType) {
     if (textures.empty())
         throw std::runtime_error("Vector de texturas vacío");
 
@@ -42,7 +44,7 @@ void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, d
 
 void sdl_animation::advanceFrame() {
     currentFrame++;
-    if(currentFrame >= numFrames)
+    if (currentFrame >= numFrames)
     {
         currentFrame =0;
     }

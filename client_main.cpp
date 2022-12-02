@@ -26,4 +26,5 @@ int main(int argc, char* argv[]) try {
                 << "Something went wrong and"
                    " an unknown exception was caught.\n";
         return -1;
-    }
+}
+
