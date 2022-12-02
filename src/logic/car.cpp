@@ -47,13 +47,13 @@ void Car::startMove(b2Vec2 vel) {
 
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
-        carBody->ApplyTorque(torque, true);
+        if(carBody->GetAngularVelocity() < 2.0f && carBody->GetAngularVelocity() > -2.0f) {
+            carBody->ApplyTorque(torque, true);
+        }
     }
 }
 
 void Car::stopMove() {
-    //carBody->SetLinearVelocity(b2Vec2(0, 0));
-
     if (isJumping()) {
         carBody->SetAngularVelocity(0);
     }
@@ -71,12 +71,43 @@ void Car::modifyJumpedTwoTimes() {
     this->secondJump = 1;
 }
 
+b2Vec2 Car::forceInFlip() {
+    if(lastDirection == RIGHT_LAST_DIRECTION) {
+        return (b2Vec2(1,-0.5));
+    } else if (lastDirection == LEFT_LAST_DIRECTION) {
+        return (b2Vec2(-1,-0.5));
+    } else if (lastDirection == UP_LAST_DIRECTION) {
+        return (b2Vec2(0,-2));
+    } else if (lastDirection == DOWN_LAST_DIRECTION) {
+        return (b2Vec2(0, 2));
+    }
+   return b2Vec2(0,-2);
+}
+
+float Car::forceInTorque(){
+
+    if(lastDirection == RIGHT_LAST_DIRECTION) {
+        return (10);
+    } else if (lastDirection == LEFT_LAST_DIRECTION) {
+        return (-10);
+    } else if (lastDirection == UP_LAST_DIRECTION) {
+        return (-10);
+    } else if (lastDirection == DOWN_LAST_DIRECTION) {
+        return (-10);
+    }
+    return 0;
+
+}
+
 void Car::jump(b2Vec2 vel) {
     if (!secondJump) {
        if (isJumping()) {
            this->modifyJumpedTwoTimes();
+           carBody->ApplyLinearImpulseToCenter(forceInFlip(),true);
+           carBody->ApplyTorque(forceInTorque(),true);
+       } else {
+           carBody->ApplyLinearImpulseToCenter(vel, true);
        }
-        carBody->ApplyLinearImpulseToCenter(vel, true);
     }
 }
 
@@ -87,6 +118,7 @@ bool Car::isJumping() {
 void Car::verifyDoubleJump() {
     if (!isJumping()) {
         this->secondJump = 0;
+        this->lastDirection = NONE;
     }
 }
 void Car::verifyAcceleration() {

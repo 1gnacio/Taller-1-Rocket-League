@@ -21,7 +21,6 @@ void ContactListenerHits::BeginContact(b2Contact * contact){
                std::cout << "choco con la parte trasera del auto " << id <<std::endl;
            }
        }
-
    } else if (fb->IsSensor()) {
        b2Body* body = fb->GetBody();
        int id = getId(body);

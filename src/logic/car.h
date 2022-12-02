@@ -90,6 +90,10 @@ class Car {
     directions getLastDirection();
 
     void verifyLastMovement();
+
+    b2Vec2 forceInFlip();
+
+    float forceInTorque();
 };
 
 

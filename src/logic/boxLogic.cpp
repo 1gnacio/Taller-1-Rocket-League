@@ -244,9 +244,9 @@ b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
         lastDir = RIGHT_LAST_DIRECTION;
         return(b2Vec2(2.0f, 0.0f));
     } else if (direction == LogicValues().UP_DIRECTION) {
-        return (b2Vec2(0.0f, -3.0f));
+        return (b2Vec2(0.0f, -4.0f));
     }
-    return (b2Vec2(0.0f, -3.0f));
+    return (b2Vec2(0.0f, -4.0f));
 }
 
 // Verificar si existe otra manera para no llamar siempre a force ()
