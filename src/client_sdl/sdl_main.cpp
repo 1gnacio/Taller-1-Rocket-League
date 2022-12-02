@@ -1,6 +1,6 @@
 #include "sdl_main.h"
 #include <chrono>
-#include "../constants/logic_values.h"
+#include "src/constants/logic_values.h"
 
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                       window("Rocket League", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -25,8 +25,8 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
 void sdl_main::updateScreen(Response& response) {
     int local_goals= response.getMatchResponse().getLocalGoals();
     int visitors_goals=response.getMatchResponse().getVisitorsGoals();
-    scoreboard.update(convert.timeToString((std::chrono::milliseconds) time_ms),local_goals,visitors_goals);
-    time_ms += TIME_UPDATE_MS*2;
+    scoreboard.update(convert.timeToString((std::chrono::milliseconds) (response.getMatchResponse().getTime()*1000)),local_goals,visitors_goals);
+    //time_ms += TIME_UPDATE_MS*2;
 
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()));
     for (auto &player: response.getMatchResponse().getPlayersResponse().getPlayers()) {

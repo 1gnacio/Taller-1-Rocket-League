@@ -10,7 +10,7 @@ private:
     std::mutex mutex;
     bool isActive;
     int nextClientId = 1;
-    CommandQueue receivedCommands;
+    CommandBlockingQueue receivedCommands;
     ResponseBlockingQueue responses;
     std::vector<std::unique_ptr<ClientConnection>> connections;
     std::thread sender;

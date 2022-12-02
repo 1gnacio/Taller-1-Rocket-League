@@ -13,6 +13,7 @@
 class GameModel {
  private:
     std::vector<std::unique_ptr<CompleteGame>> games;
+    std::vector<std::thread> gamesThread;
     ServerEndpoint & serverEndpoint;
     CommandValues commands;
     LobbyResponse listRooms(int playerId);
@@ -22,6 +23,10 @@ class GameModel {
     LobbyResponse leaveRoom(int playerId, const char* name);
 
     LobbyResponse createRoom(int ownerId, const char* name, int requiredPlayers);
+
+    void applyCommand(Command& command);
+
+    bool gameExists(const char* name);
  public:
     GameModel(ServerEndpoint& serverEndpoint);
 
@@ -41,6 +46,11 @@ class GameModel {
     void resetDataOfGames();
 
     void applyLogic(Command& command);
+
+    std::thread initGame(std::unique_ptr<CompleteGame> *completeGame);
+
+    void gameFlow(std::unique_ptr<CompleteGame> *completeGame);
+    ~GameModel();
 };
 
 

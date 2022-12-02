@@ -1,5 +1,7 @@
 #include <sys/socket.h>
+#include <iostream>
 #include "server_connection.h"
+#include "../src/sockets/liberror.h"
 
 ServerConnection::ServerConnection(const char *hostname, const char *servname) :
 isConnected(true),
@@ -11,9 +13,7 @@ receiver(this->socket, idService, this->responseQueue, RECEIVER)
 {}
 
 void ServerConnection::push(Command &command) {
-    this->isConnected = !this->sender.isFinished() && !this->receiver.isFinished();
-
-    if(this->isConnected) {
+    if(!this->sender.isFinished()) {
         this->commandQueue.push(command);
     }
 }
@@ -23,16 +23,20 @@ Response ServerConnection::pop() {
 }
 
 bool ServerConnection::connectionClosed() {
-    return !this->isConnected;
+    return this->sender.isFinished() || this->receiver.isFinished();
 }
 
 void ServerConnection::closeConnection() {
     if(this->isConnected) {
-        std::string value = CommandValues().DESERIALIZED_QUIT_GAME;
-        Command c = ProtocolCommands().createCommand(this->idService.getId(), value);
-        this->commandQueue.push(c);
         this->commandQueue.close();
-        this->socket.shutdown(SHUT_RDWR);
+        try {
+            this->socket.shutdown(SHUT_RDWR);
+        } catch (LibError &e) {
+            if (errno == ENOTCONN) {
+                std::cout << "La conexion con el servidor ha terminado de forma repentina. "
+                             "Posiblemente el servidor se encuentre desconectado." << std::endl;
+            }
+        }
         this->socket.close();
         this->sender.stopHandler();
         this->receiver.stopHandler();
@@ -42,11 +46,15 @@ void ServerConnection::closeConnection() {
 
 ServerConnection::~ServerConnection() {
     if(this->isConnected) {
-        std::string value = CommandValues().DESERIALIZED_QUIT_GAME;
-        Command c = ProtocolCommands().createCommand(this->idService.getId(), value);
-        this->commandQueue.push(c);
         this->commandQueue.close();
-        this->socket.shutdown(SHUT_RDWR);
+        try {
+            this->socket.shutdown(SHUT_RDWR);
+        } catch (LibError &e) {
+            if (errno == ENOTCONN) {
+                std::cout << "La conexion con el servidor ha terminado de forma repentina. "
+                             "Posiblemente el servidor se encuentre desconectado." << std::endl;
+            }
+        }
         this->socket.close();
         this->sender.stopHandler();
         this->receiver.stopHandler();

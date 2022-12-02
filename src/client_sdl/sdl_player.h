@@ -1,7 +1,7 @@
 #ifndef __SDL_PLAYER_H__
 #define __SDL_PLAYER_H__
 
-#include <SDL2pp/SDL2pp.hh>
+#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include "sdl_animation.h"
 
 class sdl_player {
@@ -18,9 +18,11 @@ private:
     double angle;
     int size_w;
     int size_h;
+
 public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
-    void update(int x, int y, int size_w, int size_h, double angle, float dt, bool isMoving, bool isJumping, bool onTurbo);
+    void update(int x, int y, int size_w, int size_h, double angle,
+                float dt, bool isMoving, bool isJumping, bool onTurbo);
     void render(SDL2pp::Renderer &renderer);
     ~sdl_player();
 

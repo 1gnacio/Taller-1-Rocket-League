@@ -13,7 +13,9 @@ void ServerEndpoint::sendResponsesHandler() {
         while (this->isActive) {
             Response r = this->responses.pop();
             for (auto& connection : connections) {
-                if (r.isRecipient(connection->getId())){
+                if (connection &&
+                    !connection->connectionClosed() &&
+                    r.isRecipient(connection->getId())){
                     connection->push(r);
                 }
             }
@@ -37,12 +39,18 @@ Command ServerEndpoint::pop() {
 }
 
 bool waitIfFinished(std::unique_ptr<ClientConnection>& connection) {
-    return connection->connectionClosed();
+    return !connection || connection->connectionClosed();
 }
 
 void ServerEndpoint::stopConnections() {
-    for(auto& connection : this->connections) {
-        connection->closeConnection();
+    if (this->isActive) {
+        this->responses.close();
+        this->receivedCommands.close();
+        for(auto& connection : this->connections) {
+            connection->closeConnection();
+        }
+        this->isActive = false;
+        this->sender.join();
     }
 }
 
@@ -54,13 +62,15 @@ void ServerEndpoint::cleanFinishedConnections() {
 }
 
 ServerEndpoint::~ServerEndpoint() {
-    this->responses.close();
-    for(auto& connection : this->connections) {
-        connection->closeConnection();
+    if (this->isActive) {
+        this->responses.close();
+        this->receivedCommands.close();
+        for(auto& connection : this->connections) {
+            connection->closeConnection();
+        }
+        this->isActive = false;
+        this->sender.join();
     }
-    this->cleanFinishedConnections();
-    this->isActive = false;
-    this->sender.join();
 }
 
 bool ServerEndpoint::queueEmpty() {

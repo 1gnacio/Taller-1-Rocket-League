@@ -1,7 +1,8 @@
 #include "sdl_arena.h"
 
-sdl_arena::sdl_arena(SDL2pp::Renderer &renderer): texture_stadium(renderer, DATA_PATH "/stadium2.png"),
-                texture_goal(renderer, DATA_PATH "/goal.png"), goal_w(0){}
+sdl_arena::sdl_arena(SDL2pp::Renderer &renderer):
+    texture_stadium(renderer, DATA_PATH "/stadium2.png"),
+    texture_goal(renderer, DATA_PATH "/goal.png"), goal_w(0){}
 
 void sdl_arena::render(SDL2pp::Renderer &renderer) {
     int t_height = renderer.GetOutputHeight();
@@ -14,8 +15,9 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
     renderer.Copy(texture_goal, SDL2pp::NullOpt,
                   SDL2pp::Rect(0, t_height-size_h, goal_w,size_h));
     renderer.Copy(texture_goal, SDL2pp::NullOpt,
-                  SDL2pp::Rect((t_width - goal_w), t_height-size_h, goal_w,size_h), 0,
-                  SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
+                  SDL2pp::Rect((t_width - goal_w), t_height-size_h,
+                               goal_w,size_h),
+                  0,SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
 }
 
 void sdl_arena::update(int _goal_w) {

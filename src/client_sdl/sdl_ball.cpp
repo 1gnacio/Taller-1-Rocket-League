@@ -1,9 +1,8 @@
-
 #include "sdl_ball.h"
 
-
-sdl_ball::sdl_ball(SDL2pp::Renderer &renderer): texture_ball(renderer, DATA_PATH "/ball.png"),
-                                                x(0), y(0), angle(0), width(0) {}
+sdl_ball::sdl_ball(SDL2pp::Renderer &renderer):
+    texture_ball(renderer, DATA_PATH "/ball.png"),
+    x(0), y(0), angle(0), width(0) {}
 
 void sdl_ball::render(SDL2pp::Renderer &renderer) {
     renderer.Copy(texture_ball, SDL2pp::NullOpt
@@ -17,4 +16,3 @@ void sdl_ball::update(int _x, int _y, double _angle, int _width) {
     this->angle = _angle;
     this->width = _width;
 }
-

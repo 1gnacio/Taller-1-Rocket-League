@@ -40,6 +40,10 @@ void GameLogic::updateTime() {
     gamePhysics.updateStatus();
 }
 
+bool GameLogic::matchFinished() {
+    return (gamePhysics.matchFinished());
+}
+
 Response GameLogic::getResponse() {
     BallResponse ball(this->gamePhysics.getBallData(LogicValues().POS_X),
                  this->gamePhysics.getBallData(LogicValues().POS_Y),
@@ -73,4 +77,8 @@ void GameLogic::removePlayer(int id) {
 
 bool GameLogic::isGoal() {
     return this->gamePhysics.isGoal();
+}
+
+void GameLogic::updateRoomInfo(Room &room) {
+    gamePhysics.setRoomInfo(room);
 }

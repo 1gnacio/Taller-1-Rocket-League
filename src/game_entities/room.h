@@ -27,6 +27,8 @@ class Room {
     bool operator()(Room& room);
 
     std::string getName() const { return this->name; };
+
+    bool isInGame();
 };
 
 

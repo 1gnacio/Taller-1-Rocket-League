@@ -15,6 +15,8 @@ private:
     GameLogic logic;
     ServerEndpoint & serverEndpoint;
     ReplayLogic replayLogic;
+    CommandQueue commandQueue;
+    bool isClosed;
 public:
 
     CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint&serverEndPoint);
@@ -22,6 +24,7 @@ public:
     RoomResponse list();
     ActionResultResponse leaveRoom(int playerId);
     Response getResponse();
+    bool isInGame();
 
     bool operator<(const Room &room) const;
     bool operator()(Room& room);
@@ -34,6 +37,16 @@ public:
 
     void updateTime();
     void resetData();
+
+    void sendResponse();
+
+    void gameFlow();
+
+    bool isInReplay();
+
+    void finally();
+
+    bool matchFinished();
 };
 
 

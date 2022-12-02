@@ -1,12 +1,14 @@
 #include <csignal>
 #include "completeGame.h"
 #include "../src/constants/response_values.h"
+#include <iostream>
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
         logic()
-        , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/) {
+        , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/),
+        isClosed(false){
         this->logic.addPlayer(ownerId);
 }
 
@@ -37,32 +39,12 @@ bool CompleteGame::playerInRoom(int id) {
 }
 
 void CompleteGame::applyCommand(Command &command) {
-    if (this->replayLogic.isInReplay()) {
-        Response replayResponse = this->replayLogic.getResponse();
-        if (!replayResponse.dummy()) {
-            this->serverEndpoint.push(replayResponse);
-        } else {
-            this->serverEndpoint.push(logic.getResponse());
-        }
-        float timeStep = 1.0f / 25.0f;
-        usleep(timeStep*1000000);
-        return;
-    }
-
-    if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
-        logic.updateModel(command);
-    }
-
-    logic.updateTime();
-
-    if (logic.isGoal()) {
-        this->replayLogic.goalScored();
-    }
-
-    Response response = logic.getResponse();
-    this->replayLogic.addResponse(response);
-    this->serverEndpoint.push(response);
+    commandQueue.push(command);
 }
+void CompleteGame::sendResponse() {
+    this->serverEndpoint.push(logic.getResponse());
+}
+
 
 float CompleteGame::ballPosY() {
 
@@ -85,5 +67,66 @@ void CompleteGame::updateTime() {
 void CompleteGame::resetData() {
     logic.resetData();
 
+}
+
+bool CompleteGame::isInGame() {
+    return room.isInGame();
+}
+
+void CompleteGame::finally() {
+    this->isClosed = true;
+}
+
+bool CompleteGame::matchFinished() {
+    return (logic.matchFinished());
+}
+
+void CompleteGame::gameFlow() {
+
+    try {
+        while(!this->isClosed && !this->matchFinished()) {
+            logic.updateRoomInfo(this->room);
+            logic.resetData();
+            if(isInGame()) {
+                int limitCommands = 0;
+                while(!commandQueue.isEmpty() && limitCommands <= 50 || (this->replayLogic.isInReplay())){
+                    logic.updateRoomInfo(this->room);
+                    logic.resetData();
+                    if (this->replayLogic.isInReplay()) {
+                        Response replayResponse = this->replayLogic.getResponse();
+                        if (!replayResponse.dummy()) {
+                            this->serverEndpoint.push(replayResponse);
+                        } else {
+                            this->serverEndpoint.push(logic.getResponse());
+                        }
+                        float timeStep = 1.0f / 25.0f;
+                        usleep(timeStep*1000000);
+                    } else {
+                        Command command = commandQueue.pop();
+                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) { // NO DEBERIA LLEGAR EL COMANDO NOP
+                            logic.updateModel(command);
+                        }
+                        limitCommands++;
+                    }
+                }
+                if (!this->replayLogic.isInReplay()) {
+                    logic.updateTime();
+                    if (logic.isGoal()) {
+                        this->replayLogic.goalScored();
+                    }
+                    Response response = logic.getResponse();
+                    this->replayLogic.addResponse(response);
+                    sendResponse();
+                }
+                //std::cout << "Actualizo el tiempo en box2d" << std::endl;
+            }
+        }
+    } catch (...) {
+        throw;
+    }
+}
+
+bool CompleteGame::isInReplay() {
+    return (this->replayLogic.isInReplay());
 }
 

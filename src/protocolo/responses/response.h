@@ -33,6 +33,7 @@ public:
     float getBallPositionY();
     std::vector<RoomResponse> getRooms();
     void setActiveReplay();
+    int getTime();
     bool dummy() {return this->isDummy;};
 
     MatchResponse getMatchResponse();

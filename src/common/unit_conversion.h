@@ -5,6 +5,7 @@
 #define MAX_HEIGHT 3.0
 #include <iostream>
 #include <chrono>
+#include <string>
 
 class unit_conversion {
 private:

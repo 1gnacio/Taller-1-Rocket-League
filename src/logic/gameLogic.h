@@ -5,6 +5,7 @@
 #include "../protocolo/commands/command.h"
 #include "../protocolo/responses/response.h"
 #include "game.h"
+#include "../src/game_entities/room.h"
 
 class GameLogic {
  private:
@@ -27,6 +28,10 @@ class GameLogic {
     void removePlayer(int i);
 
     bool isGoal();
+
+    bool matchFinished();
+
+    void updateRoomInfo(Room &room);
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_
