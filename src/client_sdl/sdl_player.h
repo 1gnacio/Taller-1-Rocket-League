@@ -1,7 +1,7 @@
 #ifndef __SDL_PLAYER_H__
 #define __SDL_PLAYER_H__
 
-#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+#include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include "sdl_animation.h"
 
 class sdl_player {

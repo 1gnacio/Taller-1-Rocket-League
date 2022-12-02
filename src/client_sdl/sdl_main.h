@@ -1,7 +1,7 @@
 #ifndef ROCKET_LEAGUE_SDL_MAIN_H
 #define ROCKET_LEAGUE_SDL_MAIN_H
 
-#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+#include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <list>
 #include <vector>
 #include <map>
@@ -11,10 +11,10 @@
 #include "sdl_scoreboard.h"
 #include "sdl_arena.h"
 #include <ctime>
-#include "src/common/unit_conversion.h"
+#include "../src/common/unit_conversion.h"
 
 #ifndef SDL_TESTING
-#include "src/protocolo/responses/response.h"
+#include "../src/protocolo/responses/response.h"
 #endif
 
 #define TIME_UPDATE_MS 10

@@ -1,7 +1,7 @@
 #ifndef ROCKET_LEAGUE_SDL_SCOREBOARD_H
 #define ROCKET_LEAGUE_SDL_SCOREBOARD_H
 
-#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+#include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <string>
 
 class sdl_scoreboard {

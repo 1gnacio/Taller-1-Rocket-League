@@ -35,6 +35,8 @@ void ServerConnection::closeConnection() {
             if (errno == ENOTCONN) {
                 std::cout << "La conexion con el servidor ha terminado de forma repentina. "
                              "Posiblemente el servidor se encuentre desconectado." << std::endl;
+            } else {
+                std::cout << e.what() << std::endl;
             }
         }
         this->socket.close();

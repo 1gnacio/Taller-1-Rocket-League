@@ -5,7 +5,7 @@
 #ifndef SDL_SDL_ANIMATION_H
 #define SDL_SDL_ANIMATION_H
 
-#include "libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+#include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <vector>
 #include <string>
 
