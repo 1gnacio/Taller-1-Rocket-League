@@ -29,6 +29,21 @@ class Car {
     bool isAccelerating;
     bool isLocalTeam;
     directions lastDirection;
+    float secFlip;
+public:
+    void setSecFlip(float secFlip);
+
+public:
+    float getSecFlip() const;
+
+    bool isMakeFlip() const;
+
+private:
+    bool makeFlip;
+public:
+    void setMakeFlip(bool makeFlip);
+private:
+    bool punched;
 
  public:
     /*
@@ -94,6 +109,14 @@ class Car {
     b2Vec2 forceInFlip();
 
     float forceInTorque();
+
+    bool didFlip();
+
+    bool verifyFlip();
+
+    bool punchedBall() const;
+
+    void SetPunchedBall(bool set);
 };
 
 

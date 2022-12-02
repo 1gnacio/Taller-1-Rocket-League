@@ -6,7 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE), makeFlip(false), secFlip(0) {
 }
 
 int Car::getId() {
@@ -69,6 +69,7 @@ bool Car::jumpedTwoTimes() {
 
 void Car::modifyJumpedTwoTimes() {
     this->secondJump = 1;
+    makeFlip = true;
 }
 
 b2Vec2 Car::forceInFlip() {
@@ -81,6 +82,7 @@ b2Vec2 Car::forceInFlip() {
     } else if (lastDirection == DOWN_LAST_DIRECTION) {
         return (b2Vec2(0, 2));
     }
+   makeFlip = false;
    return b2Vec2(0,-2);
 }
 
@@ -95,6 +97,7 @@ float Car::forceInTorque(){
     } else if (lastDirection == DOWN_LAST_DIRECTION) {
         return (-10);
     }
+    makeFlip = false;
     return 0;
 
 }
@@ -118,6 +121,8 @@ bool Car::isJumping() {
 void Car::verifyDoubleJump() {
     if (!isJumping()) {
         this->secondJump = 0;
+        this->secFlip = 0;
+
         this->lastDirection = NONE;
     }
 }
@@ -139,8 +144,17 @@ void Car::verifyTurbo() {
     }
     if(usingTurbo >=1)
         usingTurbo-=1;
+}
 
-
+bool Car::verifyFlip() {
+    if(makeFlip) {
+        secFlip = secFlip + 0.04;
+    }
+    if(!isJumping()) {
+        this->makeFlip = false;
+        this->punched = false;
+        secFlip = 0;
+    }
 }
 
 b2Vec2 Car::getVelocity() {
@@ -181,11 +195,41 @@ bool Car::sameBody(b2Body *pBody) {
 void Car::changeLastDirection(directions &direction) {
     if(lastDirection != direction) {
         this->lastDirection = direction;
-        std::cout << "cambio la direccion a " << lastDirection << std::endl;
     }
-
 }
 
 directions Car::getLastDirection() {
     return this->lastDirection;
 }
+
+bool Car::didFlip() {
+    if(makeFlip && secFlip < 1) { // 0.2
+        return true;
+    }
+    return false;
+}
+
+bool Car::punchedBall() const {
+    return punched;
+}
+
+void Car::SetPunchedBall(bool set) {
+    punched = set;
+}
+
+float Car::getSecFlip() const {
+    return secFlip;
+}
+
+bool Car::isMakeFlip() const {
+    return makeFlip;
+}
+
+void Car::setMakeFlip(bool makeFlip) {
+    Car::makeFlip = makeFlip;
+}
+
+void Car::setSecFlip(float secFlip) {
+    Car::secFlip = secFlip;
+}
+

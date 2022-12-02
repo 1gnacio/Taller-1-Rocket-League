@@ -29,7 +29,7 @@ public:
 
     const float DENSITY_BALL = 0.5;
     const float FRICTION_BALL = 0.3f;
-    const float RESTITUTION_BALL = 0.6f;
+    const float RESTITUTION_BALL = 0.7f;
     constexpr static const float RADIUS_BALL = 0.2f;
     const float ANGLE_BALL = 0;
 

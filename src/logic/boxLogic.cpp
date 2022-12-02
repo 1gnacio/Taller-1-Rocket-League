@@ -80,13 +80,13 @@ void BoxLogic::updateTime() {
 }
 
 bool BoxLogic::ballIsAwake() {
-    return ball->IsAwake();
+    return ball.isAwake();
 }
 void BoxLogic::createBall() {
     b2BodyDef ballDef;
     ballDef.type = b2_dynamicBody;
     ballDef.position.Set(0, -2.8f);
-    this->ball = world->CreateBody(&ballDef);
+    this->ball.setBody(world->CreateBody(&ballDef));
 
     b2CircleShape shapeCircle;
     shapeCircle.m_radius = LogicValues().RADIUS_BALL;
@@ -98,8 +98,8 @@ void BoxLogic::createBall() {
     fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
     fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
     fixtureCircle.filter.maskBits = B2DVars().BIT_CAR | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
-    ball->CreateFixture(&fixtureCircle);
-    contactListener.addBall(ball);
+    ball.createFixture(fixtureCircle);
+    contactListener.addBall(&ball);
 }
 
 void BoxLogic::createCar(int id) {
@@ -130,22 +130,22 @@ void BoxLogic::createCar(int id) {
 
     // Create 4 sensors
     b2FixtureDef sensorDef;
-    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,-hCar), 0);
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,-hCar/2), 0);
     sensorDef.shape = &dynamicCar;
     sensorDef.filter.categoryBits = B2DVars().BIT_CAR;
     sensorDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_GROUND | B2DVars().BIT_SOCCER_GOAL;
     sensorDef.isSensor = true;
     cars.back().createFixture(sensorDef, 1); //  cars.back().createFixture(sensorDef, 4 );
 
-    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,hCar), 0);
+    dynamicCar.SetAsBox(wCar/2.0f,0.1,b2Vec2(0,hCar/2), 0);
     sensorDef.shape = &dynamicCar;
     cars.back().createFixture(sensorDef, 2);
 
-    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(wCar,0), 90);
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(wCar/2,0),0);
     sensorDef.shape = &dynamicCar;
     cars.back().createFixture(sensorDef, 3);
 
-    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar,0), 90);
+    dynamicCar.SetAsBox(0.1,hCar/2.0f,b2Vec2(-wCar/2,0),0);
     sensorDef.shape = &dynamicCar;
     cars.back().createFixture(sensorDef, 4);
 }
@@ -216,7 +216,7 @@ float BoxLogic::getData(int key, const b2Body* body) {
 
 
 float BoxLogic::getBallData(int key) {
-    return (this->getData(key, ball));
+    return (this->getData(key, ball.getBallBody()));
 }
 
 int BoxLogic::playersAmount() {
@@ -239,10 +239,10 @@ Car* BoxLogic::getCar(int carID) {
 b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
     if (direction == LogicValues().LEFT_DIRECTION) {
         lastDir = LEFT_LAST_DIRECTION;
-        return b2Vec2(-2.0f, 0.0f);
+        return b2Vec2(-1.5f, 0.0f);
     } else if (direction == LogicValues().RIGHT_DIRECTION) {
         lastDir = RIGHT_LAST_DIRECTION;
-        return(b2Vec2(2.0f, 0.0f));
+        return(b2Vec2(1.5f, 0.0f));
     } else if (direction == LogicValues().UP_DIRECTION) {
         return (b2Vec2(0.0f, -4.0f));
     }
@@ -290,6 +290,8 @@ void BoxLogic::updateStatus() {
     verifyTurbo();
     verifyGoal();
     verifyAcceleration();
+    verifyFlip();
+    verifyPunch();
 }
 
 void BoxLogic::verifyAcceleration() {
@@ -315,6 +317,13 @@ void BoxLogic::verifyTurbo() {
     }
 }
 
+void BoxLogic::verifyFlip() {
+    for (auto &x : cars) {
+        x.verifyFlip();
+        contactListener.verifyFlip(x);
+    }
+}
+
 void BoxLogic::applyTurbo(int carNumber) {
     getCar(carNumber)->applyTurbo();
 }
@@ -327,9 +336,9 @@ void BoxLogic::applyTurbo(int carNumber) {
 void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
     int teamGoal = 0;
 
-    if((getData(LogicValues().POS_X,ball) > 3.3) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
+    if((getData(LogicValues().POS_X,ball.getBallBody()) > 3.3) && ((getData(LogicValues().POS_Y,ball.getBallBody())) > 0)) {
         teamGoal = 2;
-    } else if ((getData(LogicValues().POS_X,ball) < (-3.3)) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
+    } else if ((getData(LogicValues().POS_X,ball.getBallBody()) < (-3.3)) && ((getData(LogicValues().POS_Y,ball.getBallBody())) > 0)) {
         teamGoal = 1;
     }
     game.updateGame(teamGoal);
@@ -342,8 +351,8 @@ void BoxLogic::resetPositions() {
         for (auto &x : cars) {
             x.resetPosition();
         }
-        ball->SetLinearVelocity(b2Vec2(0.1f,0.1f));
-        ball->SetTransform(b2Vec2(0, -2.8f),0);
+        ball.getBallBody()->SetLinearVelocity(b2Vec2(0.1f,0.1f));
+        ball.getBallBody()->SetTransform(b2Vec2(0, -2.8f),0);
 
     }
 
@@ -384,4 +393,9 @@ void BoxLogic::updateLastDirection(int id, const std::basic_string<char>& deseri
         lastDir = DOWN_LAST_DIRECTION;
 
     getCar(id)->changeLastDirection(lastDir);
+}
+
+void BoxLogic::verifyPunch() {
+    ball.verifyPunch();
+
 }

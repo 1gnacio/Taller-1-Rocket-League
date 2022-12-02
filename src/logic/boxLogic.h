@@ -22,7 +22,7 @@ class BoxLogic {
  private:
     bool isActive;
     Game game;
-    b2Body* ball;
+    Ball ball;
     ContactListenerHits contactListener;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
@@ -117,6 +117,10 @@ class BoxLogic {
     bool matchFinished();
 
     void updateLastDirection(int id, const std::basic_string<char>& deserializedCommand);
+
+    void verifyFlip();
+
+    void verifyPunch();
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

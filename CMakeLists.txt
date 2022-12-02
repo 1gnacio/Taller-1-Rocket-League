@@ -239,6 +239,8 @@ add_executable(lobby
         src/logic/replay_logic.h
         src/handlers/id_service.cpp
         src/handlers/id_service.h
+        src/logic/ball.cpp
+        src/logic/ball.h
         )
 
 target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d)
@@ -460,6 +462,8 @@ add_executable(game_server
         src/logic/replay_logic.h
         src/logic/contactListenerHits.cpp
         src/logic/contactListenerHits.h
+        src/logic/ball.cpp
+        src/logic/ball.h
         )
 
 target_link_libraries(game_server box2d)
