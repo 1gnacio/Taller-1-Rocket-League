@@ -23,10 +23,6 @@ lobby::lobby(QWidget *parent,
     ui->gamesListTable->verticalHeader()->setVisible(false);
     ui->gamesListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     currSelectedGame.clear();
-
-    //TODO, solo para testing
-    ui->pushButton_join->setEnabled(true);
-
 }
 
 lobby::~lobby()
@@ -35,11 +31,6 @@ lobby::~lobby()
     delete ui;
 }
 
-
-void lobby::on_pushButton_connect_clicked()
-{
-    //TODO
-}
 
 void lobby::on_pushButton_join_clicked()
 {   //TODO UNIR

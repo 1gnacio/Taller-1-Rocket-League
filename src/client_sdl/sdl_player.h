@@ -22,7 +22,8 @@ private:
 public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
     void update(int x, int y, int size_w, int size_h, double angle,
-                float dt, bool isMoving, bool isJumping, bool onTurbo);
+                float dt, bool isMoving, bool isJumping, bool onTurbo,
+                bool facingLeft);
     void render(SDL2pp::Renderer &renderer);
     ~sdl_player();
 

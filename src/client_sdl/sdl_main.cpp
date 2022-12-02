@@ -1,16 +1,21 @@
 #include "sdl_main.h"
 #include <chrono>
+
+#include <utility>
 #include "../src/constants/logic_values.h"
 
 //TODO: tamaño de ventana por config.
 sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
+                      /*mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                            MIX_DEFAULT_CHANNELS, 4096),*/
                       window("Rocket League",
                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                              900, 500,
                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
                       renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
                       arena(renderer), scoreboard(renderer), ball(renderer),
-                      convert(MAX_WIDTH, MAX_HEIGHT), time_ms(0)
+                      convert(MAX_WIDTH, MAX_HEIGHT)/*,
+                      background_music(DATA_PATH "/background.ogg")*/
 #ifdef SDL_TESTING
                       , my_object(renderer)
 #endif
@@ -21,6 +26,7 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
     window.Show();
 #endif
     window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
+    //mixer.FadeInMusic(background_music, -1, 2000);
 }
 
 
@@ -52,19 +58,19 @@ void sdl_main::updateScreen(Response& response) {
                                       renderer.GetOutputHeight());
         double car_angle = convert.toDegrees(player.getRotationAngle());
         int id = player.getId();
-
         auto it = players.find(id);
         if (it == players.end()){
             players.emplace(id, renderer);
         }
 
         int car_w = convert.toPixels(LogicValues::W_CAR,
-                                     renderer.GetOutputWidth());;
+                                     renderer.GetOutputWidth());
         int car_h = convert.toPixels(LogicValues::H_CAR,
-                                     renderer.GetOutputHeight());;
+                                     renderer.GetOutputHeight());
+        bool facingLeft = player.isFacingLeft();
         players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
                               FRAME_RATE, player.moving(), player.flying(),
-                              player.onTurbo());
+                              player.onTurbo(), facingLeft);
     }
 
     int ball_x = convert.WtoPixels(

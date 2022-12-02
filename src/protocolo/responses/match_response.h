@@ -19,11 +19,11 @@ private:
     int requiredPlayers;
     int currentPlayers;
     std::string name;
-    bool isWaitingForPlayers = true;
-    bool hasFinished = false;
+    bool isWaitingForPlayers;
+    bool hasFinished;
     bool isGoalLocal;
     bool isGoalVisitor;
-    bool activeReplay = false;
+    bool activeReplay;
 public:
 
     MatchResponse(int goalsLocal,

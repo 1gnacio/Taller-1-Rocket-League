@@ -47,6 +47,7 @@ public:
     bool accelerating() const { return isAccelerating; }
     bool onTurbo() const { return isTurboActivated; }
     bool localTeam() const { return isLocalTeam; }
+    bool isFacingLeft() const {return facingLeft; }
 
 };
 

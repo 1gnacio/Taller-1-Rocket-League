@@ -2,6 +2,7 @@
 #define ROCKET_LEAGUE_SDL_MAIN_H
 
 #include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+
 #include <list>
 #include <vector>
 #include <map>
@@ -25,11 +26,12 @@ private:
     SDL2pp::SDLTTF ttf;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
+    /*SDL2pp::Mixer mixer;
+    SDL2pp::Music background_music;*/
     sdl_arena arena;
     sdl_ball ball;
     sdl_scoreboard scoreboard;
     unit_conversion convert;
-    int time_ms;
 #ifndef SDL_TESTING
     std::map<int, sdl_player> players;
 #endif
