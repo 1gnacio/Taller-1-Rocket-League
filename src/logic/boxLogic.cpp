@@ -519,32 +519,41 @@ bool BoxLogic::BallHasBeenPunched(){
 }
 
 void BoxLogic::createCurveWalls() {
-/*
-    float ground_x = 0.0f;
-    float ground_y = 0.0f;
+
+    float ground_x = -4.0f;
+    float ground_y = 2.5f;
 
     b2BodyDef groundDef;
     groundDef.type = b2_staticBody;
-    groundDef.position.Set(ground_x, ground_y);
+    //groundDef.position.Set(ground_x, ground_y);
     groundDef.angle = LogicValues().ANGLE_BALL;
     for (int i = 0; i < 1; i++) {
         curveWalls.emplace_back(this->world->CreateBody(&groundDef));
     }
     b2FixtureDef edgeFixtureDef;
-    b2ChainShape edges;
-    b2
-    b2Vec2 vertex[] ={b2Vec2(-2.5,2.51), b2Vec2(-2.53,2.47), b2Vec2(-2.57,2.44), b2Vec2(-2.61,2.2),b2Vec2(-2.66,2.4), b2Vec2(-2.82,2.2), b2Vec2(-2.98,1.8),b2Vec2(-3.14,2.4), b2Vec2(-3.3,1)};
-    b2Vec2 vertex[] ={b2Vec2(-2.4,2.8), b2Vec2(-2.9,2),b2Vec2(-3.3,1)};
-    edges.CreateLoop(vertex,9);
+   // b2ChainShape edges;
+
+    b2PolygonShape shape;
+
+    b2Vec2 vertices[4];
+    vertices[0].Set(-4.0f,3.0f);
+    vertices[1].Set(-2.0f,3.0f);
+    vertices[2].Set(-3.3f,1.0f);
+    vertices[3].Set(-4.0f,1.0f);
+    shape.Set(vertices,4);
+
+   // b2Vec2 vertex[] ={b2Vec2(-2.5,2.51), b2Vec2(-2.53,2.47), b2Vec2(-2.57,2.44), b2Vec2(-2.61,2.2),b2Vec2(-2.66,2.4), b2Vec2(-2.82,2.2), b2Vec2(-2.98,1.8),b2Vec2(-3.14,2.4), b2Vec2(-3.3,1)};
+    //b2Vec2 vertex[] ={b2Vec2(-2.4,2.8), b2Vec2(-2.9,2),b2Vec2(-3.3,1)};
+   // edges.CreateLoop(vertex,9);
 
     int i = 0;
     for (auto &x : curveWalls) {
 
-        edgeFixtureDef.shape = &edges;
+        edgeFixtureDef.shape = &shape;
         edgeFixtureDef.filter.categoryBits = B2DVars().BIT_GROUND;
         edgeFixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_CAR;
         x->CreateFixture(&edgeFixtureDef);
         i++;
     }
-*/
+
 }
