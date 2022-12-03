@@ -20,6 +20,11 @@ class Car {
     int usingTurbo;
     bool isAccelerating;
     bool isLocalTeam;
+    int goals;
+    int assists;
+    int saves;
+    bool facingLeft;
+    bool hasPunchedTheBall;
 
  public:
     /*
@@ -75,6 +80,28 @@ class Car {
     void destroy(std::unique_ptr<b2World> &world);
 
     bool sameBody(b2Body *pBody);
+
+    int getGoals();
+
+    int getAssists();
+
+    int getSaves();
+
+    bool isFacingLeft();
+
+    float remainingTurbo();
+
+    void addGoal();
+
+    void addAssist();
+
+    void addSave();
+
+    void punchedTheBall();
+
+    void notPunchedTheBall();
+
+    bool getHasPunchedTheBall();
 };
 
 

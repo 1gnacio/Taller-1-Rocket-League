@@ -3,12 +3,13 @@
 
 PlayerResponse::PlayerResponse(int id, float posX, float posY, float rotationAngle,
                                bool isMoving, bool isFlying, bool isTurboActivated,
-                               bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam)
+                               bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam,
+                               int goals, int assists, int saves, bool facingLeft, float remainingTurbo)
                                : serializer(), id(id), posX(posX), posY(posY), rotationAngle(rotationAngle),
                                  isMoving(isMoving), isFlying(isFlying), isTurboActivated(isTurboActivated),
                                  hasPunchedTheBall(hasPunchedTheBall), isAccelerating(isAccelerating),
-                                 isLocalTeam(isLocalTeam), goals(0), assists(0), saves(0), facingLeft(false),
-                                 remainingTurbo(0) {}
+                                 isLocalTeam(isLocalTeam), goals(goals), assists(assists), saves(saves),
+                                 facingLeft(facingLeft), remainingTurbo(remainingTurbo) {}
 
 PlayerResponse::PlayerResponse(std::vector<unsigned char> &serialized) : serializer() {
     int firstPosition = 0;
@@ -24,6 +25,11 @@ PlayerResponse::PlayerResponse(std::vector<unsigned char> &serialized) : seriali
     this->serializer.parse(hasPunchedTheBall, serialized, firstPosition, lastPosition);
     this->serializer.parse(isAccelerating, serialized, firstPosition, lastPosition);
     this->serializer.parse(isLocalTeam, serialized, firstPosition, lastPosition);
+    this->serializer.parse(goals, serialized, firstPosition, lastPosition);
+    this->serializer.parse(assists, serialized, firstPosition, lastPosition);
+    this->serializer.parse(saves, serialized, firstPosition, lastPosition);
+    this->serializer.parse(facingLeft, serialized, firstPosition, lastPosition);
+    this->serializer.parse(remainingTurbo, serialized, firstPosition, lastPosition);
 }//TODO tamaño auto.
 
 std::vector<unsigned char> PlayerResponse::serialize() {
@@ -39,6 +45,11 @@ std::vector<unsigned char> PlayerResponse::serialize() {
     this->serializer.merge(serialization, this->serializer.serializeBool(hasPunchedTheBall));
     this->serializer.merge(serialization, this->serializer.serializeBool(isAccelerating));
     this->serializer.merge(serialization, this->serializer.serializeBool(isLocalTeam));
+    this->serializer.merge(serialization, this->serializer.serializeInt(goals));
+    this->serializer.merge(serialization, this->serializer.serializeInt(assists));
+    this->serializer.merge(serialization, this->serializer.serializeInt(saves));
+    this->serializer.merge(serialization, this->serializer.serializeBool(facingLeft));
+    this->serializer.merge(serialization, this->serializer.serializeFloat(remainingTurbo));
 
     return serialization;
 }//TODO tamaño auto.
@@ -54,6 +65,11 @@ int PlayerResponse::size() {
     + 1 // hasPunchedTheBall
     + 1 // isAccelerating
     + 1 // isLocalTeam
+    + sizeof(PlayerResponse::goals)
+    + sizeof(PlayerResponse::assists)
+    + sizeof(PlayerResponse::saves)
+    + sizeof(PlayerResponse::facingLeft)
+    + sizeof(PlayerResponse::remainingTurbo)
     ; //TODO tamaño auto.
 }
 

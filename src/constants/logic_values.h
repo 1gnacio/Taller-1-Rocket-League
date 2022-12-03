@@ -18,6 +18,7 @@ public:
     const int RIGHT_DIRECTION = 1;
     const int UP_DIRECTION = 2;
     const int DOWN_DIRECTION = 3;
+    const int PUNCHED = 8;
 
     constexpr static const float W_CAR = 1.2;
     constexpr static const float H_CAR = 0.5;

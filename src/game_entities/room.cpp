@@ -100,3 +100,7 @@ bool Room::isFinished1() const {
 bool Room::isStarted1() const {
     return isStarted;
 }
+
+bool Room::hasPlayers() {
+    return !this->players.empty();
+}
