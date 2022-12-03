@@ -79,6 +79,6 @@ bool GameLogic::isGoal() {
     return this->gamePhysics.isGoal();
 }
 
-void GameLogic::updateRoomInfo(Room &room) {
-    gamePhysics.setRoomInfo(room);
+void GameLogic::updateRoomInfo(Room &room, bool replay) {
+    gamePhysics.setRoomInfo(room, replay);
 }

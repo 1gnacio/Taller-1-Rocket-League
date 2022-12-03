@@ -11,7 +11,17 @@ class Room {
     std::vector<int> players;
     int requiredPlayers;
     bool isWaiting;
+public:
+    bool isWaiting1() const;
+
+    bool isFinished1() const;
+
+private:
     bool isStarted;
+public:
+    bool isStarted1() const;
+
+private:
     bool isFinished;
     std::string name;
  public:

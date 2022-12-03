@@ -1,7 +1,9 @@
+#include <iostream>
 #include "game.h"
 #include "../protocolo/responses/match_response.h"
 #include "../protocolo/responses/ball_response.h"
 #include "../protocolo/responses/player_responses.h"
+#include "../src/game_entities/room.h"
 
 Game::Game(): name("juego"),
               time_inSec(0),
@@ -60,7 +62,9 @@ void Game::resetData() {
     isGoalLocal = 0;
 }
 
-void Game::setStatus(bool b) {
-    isWaitingForPlayers = b;
+void Game::setStatus(Room &room, bool replay) {
+    isWaitingForPlayers = !(room.isStarted1());
+    hasFinished = room.isFinished1();
+    activeReplay = replay;
 
 }

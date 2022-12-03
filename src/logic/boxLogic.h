@@ -112,7 +112,7 @@ class BoxLogic {
 
     bool isGoal();
 
-    void setRoomInfo(Room &room);
+    void setRoomInfo(Room &room, bool b);
 
     bool matchFinished();
 

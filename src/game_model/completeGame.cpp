@@ -85,12 +85,12 @@ void CompleteGame::gameFlow() {
 
     try {
         while(!this->isClosed && !this->matchFinished()) {
-            logic.updateRoomInfo(this->room);
+            logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
             logic.resetData();
             if(isInGame()) {
                 int limitCommands = 0;
                 while(!commandQueue.isEmpty() && limitCommands <= 50 || (this->replayLogic.isInReplay())){
-                    logic.updateRoomInfo(this->room);
+                    logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {
                         Response replayResponse = this->replayLogic.getResponse();
@@ -118,7 +118,11 @@ void CompleteGame::gameFlow() {
                     this->replayLogic.addResponse(response);
                     sendResponse();
                 }
-                //std::cout << "Actualizo el tiempo en box2d" << std::endl;
+            } else {
+                sendResponse();
+                float timeStep = 1.0f / 10.0f;
+                usleep(timeStep*1000000);
+
             }
         }
     } catch (...) {

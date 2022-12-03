@@ -380,6 +380,6 @@ void BoxLogic::removePlayer(int id) {
 bool BoxLogic::isGoal() {
     return this->game.goal();
 }
-void BoxLogic::setRoomInfo(Room &room) {
-    game.setStatus(room.isInGame());
+void BoxLogic::setRoomInfo(Room &room, bool replay) {
+    game.setStatus(room, replay);
 }
