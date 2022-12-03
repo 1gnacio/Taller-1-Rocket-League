@@ -485,3 +485,40 @@ enable_testing()
 
 add_subdirectory(google_tests)
 include(CTest)
+######################################################################################################################
+
+#**************************************
+#***************Install****************
+#**************************************
+
+set(BIN "/usr/bin")
+set(RESOURCES "/var/game")
+
+install(TARGETS game_client DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(TARGETS game_server DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(TARGETS lobby DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${RESOURCES})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
