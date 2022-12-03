@@ -224,16 +224,16 @@ float BoxLogic::getBallData(int key) {
 
     switch (key) {
         case LogicValues().POS_X:
-            return this->ball->GetPosition().x;
+            return this->ball.getBallBody()->GetPosition().x;
             break;
         case LogicValues().POS_Y:
-            return this->ball->GetPosition().y;
+            return this->ball.getBallBody()->GetPosition().y;
             break;
         case LogicValues().X_VELOCITY:
-            return this->ball->GetLinearVelocity().x;
+            return this->ball.getBallBody()->GetLinearVelocity().x;
             break;
         case LogicValues().Y_VELOCITY:
-            return this->ball->GetLinearVelocity().y;
+            return this->ball.getBallBody()->GetLinearVelocity().y;
             break;
         case LogicValues().PUNCHED:
             return std::find_if(this->cars.begin(),
@@ -385,7 +385,7 @@ void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
             }
             this->ballPunchesVisitor.clear();
         }
-    } else if ((getData(LogicValues().POS_X,ball) < (-3.3)) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
+    } else if ((getData(LogicValues().POS_X,ball.getBallBody()) < (-3.3)) && ((getData(LogicValues().POS_Y,ball.getBallBody())) > 0)) {
         teamGoal = 1;
         if (!this->ballPunchesLocal.empty()) {
             int goalerId = this->ballPunchesLocal.back();

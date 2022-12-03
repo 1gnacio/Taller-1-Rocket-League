@@ -6,10 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE), makeFlip(false), secFlip(0) {
-
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), goals(0), assists(0), saves(0), facingLeft(false) {
-
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE), makeFlip(false), secFlip(0), goals(0), assists(0), saves(0), facingLeft(false) {
 }
 
 int Car::getId() {

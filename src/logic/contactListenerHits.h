@@ -7,7 +7,6 @@
 
 class ContactListenerHits: public b2ContactListener {
 private:
-    std::vector<Car> cars;
     Ball* ball;
 public:
    void addBall(Ball* sameBall);
@@ -20,18 +19,9 @@ public:
 
     Car *getCar(int carID);
 
-    void flipShot(Car *pCar);
-
-    void redShot(Car *pCar);
-
-    void purpleShot(Car *pCar);
-
-    void goldShot(Car *pCar);
 
     void verifyFlip(Car &car);
-
     std::vector<Car>& cars;
-    b2Body* ball;
     std::vector<int>& ballPunchesLocal;
     std::vector<int>& ballPunchesVisitor;
     bool ballIsAlmostLocalGoal;
@@ -44,13 +34,9 @@ public:
     ContactListenerHits(std::vector<Car> &cars,
                         std::vector<int> &ballPunchesLocal,
                         std::vector<int> &ballPunchesVisitor);
-    void addBall(b2Body* sameBall);
-    void addCar(Car &car);
-    void BeginContact(b2Contact * contact);
-    void EndContact(b2Contact * contact);
     // void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
     // void PostSOlve(b2Contact* contact, const b2ContactImpulse* impulse);
-    int getId(b2Body *carBody);
+
 
 };
 
