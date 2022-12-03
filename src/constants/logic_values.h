@@ -23,7 +23,7 @@ public:
     constexpr static const float W_CAR = 1.2;
     constexpr static const float H_CAR = 0.5;
 
-    const float DENSITY_CAR = 1;
+    const float DENSITY_CAR = 0.7;
     const float FRICTION_CAR = 0.2f;
     const float RESTITUTION_CAR = 0.0f;
     const float ANGLE_CAR = 0;

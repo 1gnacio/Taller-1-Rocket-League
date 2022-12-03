@@ -17,9 +17,9 @@ BoxLogic::BoxLogic():
     ballPunchesVisitor(),
     contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
-
     world->SetContactListener(&this->contactListener);
     createWalls();
+    createCurveWalls();
     createBall();
     createSoccerGoals();
 }
@@ -34,8 +34,8 @@ void BoxLogic::createSoccerGoals() {
     roof.position.Set(roof_x, roof_y);
     roof.angle = 0;
 
-        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
-        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
+        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
+        soccerGoals.emplace_back(SoccerGoal(this->world->CreateBody(&roof), this->world->CreateBody(&roof), this->world->CreateBody(&roof)));
 
     b2FixtureDef edgeFixtureDef;
     b2EdgeShape edge;
@@ -67,6 +67,21 @@ void BoxLogic::createSoccerGoals() {
         x.createFixtureWall(edgeFixtureDef2);
         i++;
     }
+    /*
+    b2FixtureDef edgeFixtureDef3;
+    float floorXStart[] = {-4.0f, 4.0f};
+    float floorXEnd[] = {-3.3f, 3.3f};
+    float floorYStart[] = {1.0f, 1.0f};
+    float floorYEnd[] = {1.0f, 1.0f};
+    i = 0;
+    for (auto &x : soccerGoals) {
+        edge.SetTwoSided(b2Vec2(floorXStart[i], floorYStart[i]),
+                         b2Vec2(floorXEnd[i], floorYEnd[i]));
+        edgeFixtureDef3.shape = &edge;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
+        x.createFixtureFloor(edgeFixtureDef3);
+        i++;
+    }*/
 }
 
 b2Vec2 BoxLogic::getGravity() {
@@ -500,4 +515,37 @@ bool BoxLogic::getBallDataPunched(const int i) {
 
 bool BoxLogic::BallHasBeenPunched(){
     return ball.isWasPunched();
+}
+
+void BoxLogic::createCurveWalls() {
+/*
+    float ground_x = 0.0f;
+    float ground_y = 0.0f;
+
+    b2BodyDef groundDef;
+    groundDef.type = b2_staticBody;
+    groundDef.position.Set(ground_x, ground_y);
+    groundDef.angle = LogicValues().ANGLE_BALL;
+    for (int i = 0; i < 1; i++) {
+        curveWalls.emplace_back(this->world->CreateBody(&groundDef));
+    }
+    b2FixtureDef edgeFixtureDef;
+    b2ChainShape edges;
+    b2Vec2 vertex[] ={b2Vec2(-2.5,2.5), b2Vec2(-2.66,2.4), b2Vec2(-2.82,2.2), b2Vec2(-2.98,1.8),b2Vec2(-3.14,2.4), b2Vec2(-3.3,1)};
+
+    edges.CreateChain(vertex,2,b2Vec2(-2.5,2.5),b2Vec2(-3.3,-1));
+
+    int i = 0;
+    for (auto &x : curveWalls) {
+
+        edges.SetTwoSided(b2Vec2(edgesXStart[i], edgesYStart[i]),
+                         b2Vec2(edgesXEnd[i], edgesYEnd[i]));
+
+        edgeFixtureDef.shape = &edges;
+        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_GROUND;
+        edgeFixtureDef.filter.maskBits = B2DVars().BIT_BALL | B2DVars().BIT_CAR;
+        x->CreateFixture(&edgeFixtureDef);
+        i++;
+    }
+*/
 }

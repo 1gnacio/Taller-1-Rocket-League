@@ -4,7 +4,7 @@
 
 #include "SoccerGoal.h"
 
-SoccerGoal::SoccerGoal(b2Body *wall, b2Body *roof): wall(wall), roof(roof) {
+SoccerGoal::SoccerGoal(b2Body *wall, b2Body *roof, b2Body* floor): wall(wall), roof(roof), floor(floor) {
 }
 
 void SoccerGoal::createFixtureRoof(b2FixtureDef & fixture) {
@@ -21,4 +21,9 @@ b2Vec2 SoccerGoal::getPositionWall() {
 
 b2Vec2 SoccerGoal::getPositionRoof() {
     return roof->GetPosition();
+}
+
+void SoccerGoal::createFixtureFloor(b2FixtureDef &def) {
+    floor->CreateFixture(&def);
+
 }
