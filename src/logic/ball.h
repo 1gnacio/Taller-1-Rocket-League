@@ -7,12 +7,16 @@ class Ball {
 private:
 
     b2Body* ballBody;
+    bool wasPunchedNormal;
+    bool wasPunchedFlipShot;
+    bool wasPunchedRedShot;
+    bool wasPunchedPurpleShot;
+    bool wasPunchedGoldShot;
+    int framesAfterPunched;
+    float secAfterPunched;
 public:
     b2Body *getBallBody() const;
 
-private:
-    bool wasPunchedNormal;
-public:
     bool isWasPunchedNormal() const;
 
     bool isWasPunchedFlipShot() const;
@@ -22,14 +26,6 @@ public:
     bool isWasPunchedPurpleShot() const;
 
     bool isWasPunchedGoldShot() const;
-
-private:
-    bool wasPunchedFlipShot;
-    bool wasPunchedRedShot;
-    bool wasPunchedPurpleShot;
-    bool wasPunchedGoldShot;
-    int framesAfterPunched;
-    float secAfterPunched;
 
 public:
     explicit Ball(b2Body* ballBody);

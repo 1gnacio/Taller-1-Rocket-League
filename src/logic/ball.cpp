@@ -6,12 +6,14 @@
 #include "ball.h"
 
 
-Ball::Ball(b2Body* body): ballBody(body), framesAfterPunched(0),
+Ball::Ball(b2Body* body): ballBody(body),
                           wasPunchedNormal(false),
                           wasPunchedFlipShot(false),
-                          wasPunchedGoldShot(false),
+                          wasPunchedRedShot(false),
                           wasPunchedPurpleShot(false),
-                          wasPunchedRedShot(false), secAfterPunched(0) {
+                          wasPunchedGoldShot(false),
+                          framesAfterPunched(0),
+                          secAfterPunched(0) {
 };
 void Ball::punch(int typeOfPunch) {
     switch(typeOfPunch) {
@@ -86,9 +88,8 @@ float Ball::directionForce(int key) {
         else
             return -1;
     }
-
+    return 0;
 }
-
 
 void Ball::verifyPunch() {
    if(secAfterPunched == 0) {

@@ -23,13 +23,13 @@ class BoxLogic {
     bool isActive;
     Game game;
     Ball ball;
-    ContactListenerHits contactListener;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
     std::vector<Car> cars;
     std::vector<SoccerGoal> soccerGoals;
     std::vector<int> ballPunchesLocal;
     std::vector<int> ballPunchesVisitor;
+    ContactListenerHits contactListener;
     void createWalls();
     void createBall();
     static float getData(int key, const b2Body* body);

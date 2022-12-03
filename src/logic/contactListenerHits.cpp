@@ -71,6 +71,7 @@ int ContactListenerHits::getId(b2Body* carBody) {
             return x.getId();
         }
     }
+    return 0;
 }
 
 void ContactListenerHits::EndContact(b2Contact *contact) {

@@ -10,14 +10,12 @@
 
 
 BoxLogic::BoxLogic():
-
     isActive(true),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
     contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
     world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
-
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -242,6 +240,7 @@ float BoxLogic::getBallData(int key) {
                                 {return car.getHasPunchedTheBall();})
                                 != this->cars.end() ? 1 : 0;
     }
+    return 0.0f;
 }
 
 int BoxLogic::playersAmount() {
@@ -496,6 +495,7 @@ bool BoxLogic::getBallDataPunched(const int i) {
         case 10:
             return (ball.isWasPunchedGoldShot());
     }
+    return false;
 }
 
 bool BoxLogic::BallHasBeenPunched(){

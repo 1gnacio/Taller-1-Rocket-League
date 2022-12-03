@@ -70,7 +70,7 @@ Response GameLogic::getResponse() {
     MatchResponse match(gamePhysics.gameData(ball, players));
 
     Response response(match);
-    return std::move(response);
+    return response;
 }
 
 void GameLogic::resetData() {

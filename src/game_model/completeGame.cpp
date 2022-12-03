@@ -89,7 +89,7 @@ void CompleteGame::gameFlow() {
             logic.resetData();
             if(isInGame()) {
                 int limitCommands = 0;
-                while(!commandQueue.isEmpty() && limitCommands <= 50 || (this->replayLogic.isInReplay())){
+                while((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())){
                     logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {

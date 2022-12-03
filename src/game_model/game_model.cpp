@@ -13,7 +13,7 @@ LobbyResponse GameModel::listRooms(int clientId) {
     }
     ActionResultResponse actionResult(clientId, ResponseValues().OK);
     LobbyResponse lobbyR(responses, actionResult);
-    return std::move(lobbyR);
+    return lobbyR;
 }
 
 void GameModel::gameFlow(std::unique_ptr<CompleteGame>* completeGame) {
@@ -34,11 +34,11 @@ LobbyResponse GameModel::createRoom(int ownerId, const char* name, int requiredP
         // games[games.size()-1]->applyCommand(command);
         ActionResultResponse actionResultAux(ownerId, ResponseValues().OK);
         LobbyResponse lobbyR(actionResultAux);
-        return std::move(lobbyR);
+        return lobbyR;
     }
     ActionResultResponse actionResultAux(ownerId, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_EXISTS);
     LobbyResponse lobbyR(actionResultAux);
-    return std::move(lobbyR);
+    return lobbyR;
 }
 
 std::unique_ptr<CompleteGame>* GameModel::findGame(const char* name) {
@@ -64,12 +64,11 @@ LobbyResponse GameModel::joinRoom(int playerId, const char* name) {
     if (gameExists(name)) {
         ActionResultResponse actionResult((*findGame(name))->joinPlayer(playerId));
         LobbyResponse lobbyR(actionResult);
-        return std::move(lobbyR);
+        return lobbyR;
     }
-
     ActionResultResponse actionResultAux(playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
     LobbyResponse lobbyR(actionResultAux);
-    return std::move(lobbyR);
+    return lobbyR;
 }
 
 LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
@@ -86,13 +85,12 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
                                           *found), this->games.end());
         }
         LobbyResponse lobbyR(actionResult);
-        return std::move(lobbyR);
+        return lobbyR;
     }
     ActionResultResponse actionResultAux(playerId, ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
     LobbyResponse lobbyR(actionResultAux);
-    return std::move(lobbyR);
+    return lobbyR;
 }
-
 
 void GameModel::applyCommandToGame(Command &command) {
     if(command.getValue() == CommandValues().DESERIALIZED_NOP) {

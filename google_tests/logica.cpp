@@ -9,12 +9,6 @@
 
 static const int PLAYER_ID = 50;
 
-static void update(GameLogic &logic, int frames) {
-    for (int i = 0; i < frames; i ++) {
-        logic.updateTime();
-    }
-}
-
 TEST(logic, SeCreaElMapaCorrectamente) {
     GameLogic logic;
     logic.getResponse().getBallPositionY();
