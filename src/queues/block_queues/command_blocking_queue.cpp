@@ -9,7 +9,7 @@ void CommandBlockingQueue::push(Command &element) {
 
 Command CommandBlockingQueue::pop() {
     std::unique_lock<std::mutex> lock(mutex);
-    while(this->commands.empty()) {
+    while(this->isClosed || this->commands.empty()) {
         if (this->isClosed) {
             throw BlockingQueueClosedException();
         }

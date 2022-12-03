@@ -12,9 +12,10 @@ void ServerEndpoint::sendResponsesHandler() {
     try {
         while (this->isActive) {
             Response r = this->responses.pop();
-            std::lock_guard<std::mutex> l(mutex);
             for (auto& connection : connections) {
-                if (r.isRecipient(connection->getId())){
+                if (connection &&
+                    !connection->connectionClosed() &&
+                    r.isRecipient(connection->getId())){
                     connection->push(r);
                 }
             }
@@ -25,7 +26,6 @@ void ServerEndpoint::sendResponsesHandler() {
 }
 
 void ServerEndpoint::addPlayer(Socket &client) {
-    std::lock_guard<std::mutex> l(mutex);
     this->connections.emplace_back(std::make_unique<ClientConnection>(this->nextClientId, this->receivedCommands, client));
     this->nextClientId++;
 }
@@ -39,18 +39,22 @@ Command ServerEndpoint::pop() {
 }
 
 bool waitIfFinished(std::unique_ptr<ClientConnection>& connection) {
-    return connection->connectionClosed();
+    return !connection || connection->connectionClosed();
 }
 
 void ServerEndpoint::stopConnections() {
-    std::lock_guard<std::mutex> l(mutex);
-    for(auto& connection : this->connections) {
-        connection->closeConnection();
+    if (this->isActive) {
+        this->responses.close();
+        this->receivedCommands.close();
+        for(auto& connection : this->connections) {
+            connection->closeConnection();
+        }
+        this->isActive = false;
+        this->sender.join();
     }
 }
 
 void ServerEndpoint::cleanFinishedConnections() {
-    std::lock_guard<std::mutex> l(mutex);
     this->connections.erase(std::remove_if(this->connections.begin(),
                                         this->connections.end(),
                                         waitIfFinished),
@@ -58,13 +62,15 @@ void ServerEndpoint::cleanFinishedConnections() {
 }
 
 ServerEndpoint::~ServerEndpoint() {
-    this->responses.close();
-    std::lock_guard<std::mutex> l(mutex);
-    for(auto& connection : this->connections) {
-        connection->closeConnection();
+    if (this->isActive) {
+        this->responses.close();
+        this->receivedCommands.close();
+        for(auto& connection : this->connections) {
+            connection->closeConnection();
+        }
+        this->isActive = false;
+        this->sender.join();
     }
-    this->isActive = false;
-    this->sender.join();
 }
 
 bool ServerEndpoint::queueEmpty() {

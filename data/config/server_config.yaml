@@ -1,0 +1,14 @@
+car_width: 1.2
+car_height: 0.5
+car_density: 1
+car_friction: 0.2
+car_restitution: 0
+ball_density: 0.5
+ball_friction: 0.3
+ball_restitution: 0.6
+ball_radius: 0.2
+gravity: 9.8
+directional_force_module: 2
+jump_impulse: 2
+replay_time_in_sec: 5
+responses_per_sec: 25

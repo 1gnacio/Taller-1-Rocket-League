@@ -5,7 +5,8 @@
 #include "unit_conversion.h"
 #include <cmath>
 
-unit_conversion::unit_conversion(double maxWidthMeters, double maxHeightMeters) {
+unit_conversion::unit_conversion(double maxWidthMeters,
+                                 double maxHeightMeters) {
     this->maxWidthMeters = maxWidthMeters;
     this->maxHeightMeters = maxHeightMeters;
 }
@@ -26,14 +27,13 @@ double unit_conversion::toRadians(double degree) {
 }
 
 std::string unit_conversion::timeToString(std::chrono::milliseconds ms) {
-    using namespace std::chrono;
-    auto secs = duration_cast<seconds>(ms);
-    ms -= duration_cast<milliseconds>(secs);
-    auto mins = duration_cast<minutes>(secs);
-    secs -= duration_cast<seconds>(mins);
-    auto hour = duration_cast<hours>(mins);
-    mins -= duration_cast<minutes>(hour);
-    std::string time = std::to_string(mins.count()) + ":" + std::to_string(secs.count());
+    auto secs = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    auto mins = std::chrono::duration_cast<std::chrono::minutes>(secs);
+    secs -= std::chrono::duration_cast<std::chrono::seconds>(mins);
+    auto hour = std::chrono::duration_cast<std::chrono::hours>(mins);
+    mins -= std::chrono::duration_cast<std::chrono::minutes>(hour);
+    std::string time = std::to_string(mins.count()) +
+            ":" + std::to_string(secs.count());
     return time;
 }
 

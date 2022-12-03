@@ -39,7 +39,6 @@ public:
                   bool isGoalLocal,
                   bool isGoalVisitor,
                   bool activeReplay);
-
     explicit MatchResponse(std::vector<unsigned char>& serialized);
     explicit MatchResponse();
     std::vector<unsigned char> serialize();
@@ -55,6 +54,8 @@ public:
     int getLocalGoals();
     int getVisitorsGoals();
     int getTime();
+    bool isReplaying();
+    bool waitingForPlayers();
     PlayerResponses getPlayersResponse();
     BallResponse getBall();
     void setActiveReplay() { this->activeReplay = true; };

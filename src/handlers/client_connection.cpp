@@ -1,5 +1,7 @@
 #include <sys/socket.h>
+#include <iostream>
 #include "client_connection.h"
+#include "../src/sockets/liberror.h"
 
 ClientConnection::ClientConnection(int id, CommandQueue& queue, Socket &socket) :
 isClosed(false),
@@ -12,25 +14,31 @@ receiver(this->socket, commandQueue, RECEIVER)
 {}
 
 void ClientConnection::push(Response &response) {
-    this->isClosed = this->sender.isFinished() || this->receiver.isFinished();
-
-    if (!this->isClosed) {
+    if (!this->sender.isFinished()) {
         this->sender.push(response);
     }
 }
 
 bool ClientConnection::connectionClosed() {
-    this->isClosed = this->sender.isFinished() || this->receiver.isFinished();
-    return this->isClosed;
+    return this->sender.isFinished() || this->receiver.isFinished();
 }
 
 void ClientConnection::closeConnection() {
     if (!this->isClosed) {
         this->responseQueue.close();
+        try {
+            this->socket.shutdown(SHUT_RDWR);
+        } catch (LibError &e) {
+            if (errno == ENOTCONN) {
+                std::cout << "La conexion con el cliente ha terminado de forma repentina. "
+                             "Posiblemente el cliente haya terminado la conexion de forma abrupta." << std::endl;
+            } else {
+                std::cout << e.what() << std::endl;
+            }
+        }
+        this->socket.close();
         this->receiver.stopHandler();
         this->sender.stopHandler();
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
         this->isClosed = true;
     }
 }
@@ -38,10 +46,19 @@ void ClientConnection::closeConnection() {
 ClientConnection::~ClientConnection() {
     if (!this->isClosed) {
         this->responseQueue.close();
+        try {
+            this->socket.shutdown(SHUT_RDWR);
+        } catch (LibError &e) {
+            if (errno == ENOTCONN) {
+                std::cout << "La conexion con el cliente ha terminado de forma repentina. "
+                             "Posiblemente el cliente haya terminado la conexion de forma abrupta." << std::endl;
+            } else {
+                std::cout << e.what() << std::endl;
+            }
+        }
+        this->socket.close();
         this->receiver.stopHandler();
         this->sender.stopHandler();
-        this->socket.shutdown(SHUT_RDWR);
-        this->socket.close();
         this->isClosed = true;
     }
 }

@@ -44,6 +44,12 @@ public:
     void setMakeFlip(bool makeFlip);
 private:
     bool punched;
+    int goals;
+    int assists;
+    int saves;
+    bool facingLeft;
+    bool hasPunchedTheBall;
+
 
  public:
     /*
@@ -117,6 +123,28 @@ private:
     bool punchedBall() const;
 
     void SetPunchedBall(bool set);
+
+    int getGoals();
+
+    int getAssists();
+
+    int getSaves();
+
+    bool isFacingLeft();
+
+    float remainingTurbo();
+
+    void addGoal();
+
+    void addAssist();
+
+    void addSave();
+
+    void punchedTheBall();
+
+    void notPunchedTheBall();
+
+    bool getHasPunchedTheBall();
 };
 
 

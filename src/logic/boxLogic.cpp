@@ -10,8 +10,14 @@
 
 
 BoxLogic::BoxLogic():
-    isActive(true) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, 7.0f));
+
+    isActive(true),
+    cars(),
+    ballPunchesLocal(),
+    ballPunchesVisitor(),
+    contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
+    world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -115,7 +121,6 @@ void BoxLogic::createCar(int id) {
         carBodyDef.position.Set(2.0f, -2.0f);
     }
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
-    contactListener.addCar(cars.back());
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
 
@@ -216,7 +221,27 @@ float BoxLogic::getData(int key, const b2Body* body) {
 
 
 float BoxLogic::getBallData(int key) {
-    return (this->getData(key, ball.getBallBody()));
+
+    switch (key) {
+        case LogicValues().POS_X:
+            return this->ball->GetPosition().x;
+            break;
+        case LogicValues().POS_Y:
+            return this->ball->GetPosition().y;
+            break;
+        case LogicValues().X_VELOCITY:
+            return this->ball->GetLinearVelocity().x;
+            break;
+        case LogicValues().Y_VELOCITY:
+            return this->ball->GetLinearVelocity().y;
+            break;
+        case LogicValues().PUNCHED:
+            return std::find_if(this->cars.begin(),
+                                this->cars.end(),
+                                [](Car &car)
+                                {return car.getHasPunchedTheBall();})
+                                != this->cars.end() ? 1 : 0;
+    }
 }
 
 int BoxLogic::playersAmount() {
@@ -224,15 +249,22 @@ int BoxLogic::playersAmount() {
 }
 
 float BoxLogic::getCarData(int carNumber, int key) {
-    return getCar(carNumber)->getData(key);
+    auto car = getCar(carNumber);
+    if (car != nullptr) {
+        return car->getData(key);
+    }
+    return -1;
 }
 
 Car* BoxLogic::getCar(int carID) {
-    for (auto &x : cars) {
-        if (x.getId() == carID) {
-            return &x;
-        }
+    auto found = std::find_if(this->cars.begin(),
+                 this->cars.end(),
+                 [&carID](Car &car){return car.getId() == carID;});
+
+    if (found != this->cars.end()) {
+        return found.base();
     }
+
     return nullptr;
 }
 
@@ -251,11 +283,11 @@ b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
 
 // Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
+
     directions lastDir = NONE;
     b2Vec2 vel = getVectorForce((int)direction, lastDir);
     getCar(carNumber)->startMove(vel);
     getCar(carNumber)->changeLastDirection(lastDir);
-
 }
 
 void BoxLogic::stopMove(int carNumber) {
@@ -277,9 +309,10 @@ PlayerResponses BoxLogic::getPlayersData() {
                             ((x.getData(LogicValues().X_VELOCITY) != 0) || (x.getData(LogicValues().Y_VELOCITY) != 0)),
                             (x.getData(LogicValues().POS_Y) < (2.23)),
                             x.getData(LogicValues().USING_TURBO),
-                            false,
+                            x.getHasPunchedTheBall(),
                             x.getData(LogicValues().ACCELERATING),
-                            x.isLocal());
+                            x.isLocal(),
+                            x.getGoals(), x.getAssists(), x.getSaves(), x.isFacingLeft(), x.remainingTurbo());
     }
     return PlayerResponses(vector);
 }
@@ -338,8 +371,36 @@ void BoxLogic::updateGoal() { // refactor -> crear objeto pelota.
 
     if((getData(LogicValues().POS_X,ball.getBallBody()) > 3.3) && ((getData(LogicValues().POS_Y,ball.getBallBody())) > 0)) {
         teamGoal = 2;
-    } else if ((getData(LogicValues().POS_X,ball.getBallBody()) < (-3.3)) && ((getData(LogicValues().POS_Y,ball.getBallBody())) > 0)) {
+        if (!this->ballPunchesVisitor.empty()) {
+            int goalerId = this->ballPunchesVisitor.back();
+            this->addGoalToPlayer(goalerId);
+            if (this->ballPunchesVisitor.size() > 1) {
+                auto found_assistant = std::find_if(this->cars.rbegin(),
+                                                    this->cars.rend(),
+                                                    [&goalerId](Car &car)
+                                                    {return car.getId() != goalerId;});
+                if (found_assistant != this->cars.rend() && !found_assistant->isLocal()) {
+                    found_assistant->addAssist();
+                }
+            }
+            this->ballPunchesVisitor.clear();
+        }
+    } else if ((getData(LogicValues().POS_X,ball) < (-3.3)) && ((getData(LogicValues().POS_Y,ball)) > 0)) {
         teamGoal = 1;
+        if (!this->ballPunchesLocal.empty()) {
+            int goalerId = this->ballPunchesLocal.back();
+            this->addGoalToPlayer(goalerId);
+            if (this->ballPunchesLocal.size() > 1) {
+                auto found_assistant = std::find_if(this->cars.rbegin(),
+                                                    this->cars.rend(),
+                                                    [&goalerId](Car &car)
+                                                    {return car.getId() != goalerId;});
+                if (found_assistant != this->cars.rend() && found_assistant->isLocal()) {
+                    found_assistant->addAssist();
+                }
+            }
+            this->ballPunchesLocal.clear();
+        }
     }
     game.updateGame(teamGoal);
 }
@@ -381,8 +442,30 @@ void BoxLogic::removePlayer(int id) {
 bool BoxLogic::isGoal() {
     return this->game.goal();
 }
-void BoxLogic::setRoomInfo(Room &room) {
-    game.setStatus(room.isInGame());
+void BoxLogic::setRoomInfo(Room &room, bool replay) {
+    game.setStatus(room, replay);
+}
+
+void BoxLogic::addGoalToPlayer(int id) {
+    auto found = std::find_if(this->cars.begin(),
+                 this->cars.end(),
+                 [&id](Car &car)
+                 {return car.getId() == id;});
+
+    if (found != this->cars.end()) {
+        found->addGoal();
+    }
+}
+
+void BoxLogic::addAssistToPlayer(int id) {
+    auto found = std::find_if(this->cars.begin(),
+                              this->cars.end(),
+                              [&id](Car &car)
+                              {return car.getId() == id;});
+
+    if (found != this->cars.end()) {
+        found->addAssist();
+    }
 }
 
 void BoxLogic::updateLastDirection(int id, const std::basic_string<char>& deserializedCommand) {

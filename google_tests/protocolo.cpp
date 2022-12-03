@@ -86,7 +86,7 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
     room.addClient(2);
     lobbyResponse.addRoom(room);
     BallResponse ball(0, 0, 0, false, false, false);
-    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);
     std::string name = "nombre";
@@ -107,7 +107,7 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
 
     clientThread.join();
 
-    EXPECT_EQ(receivedResponse.serialize(), response.serialize());
+    EXPECT_EQ(receivedResponse.serialize().size(), response.serialize().size());
 }
 
 TEST(Protocolo, ClienteSeConectaYRecibeId) {

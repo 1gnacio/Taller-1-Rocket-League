@@ -1,7 +1,8 @@
 #ifndef ROCKET_LEAGUE_SDL_MAIN_H
 #define ROCKET_LEAGUE_SDL_MAIN_H
 
-#include <SDL2pp/SDL2pp.hh>
+#include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+
 #include <list>
 #include <vector>
 #include <map>
@@ -11,7 +12,7 @@
 #include "sdl_scoreboard.h"
 #include "sdl_arena.h"
 #include <ctime>
-#include "unit_conversion.h"
+#include "../src/common/unit_conversion.h"
 
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
@@ -25,14 +26,16 @@ private:
     SDL2pp::SDLTTF ttf;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
+    /*SDL2pp::Mixer mixer;
+    SDL2pp::Music background_music;*/
     sdl_arena arena;
     sdl_ball ball;
     sdl_scoreboard scoreboard;
     unit_conversion convert;
-    int time_ms;
 #ifndef SDL_TESTING
     std::map<int, sdl_player> players;
 #endif
+
 public:
     sdl_main();
     void renderScreen();

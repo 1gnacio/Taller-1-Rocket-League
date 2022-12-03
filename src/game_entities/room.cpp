@@ -88,3 +88,19 @@ bool Room::playerInRoom(int &id) {
     }
     return playerInRoom;
 }
+
+bool Room::isWaiting1() const {
+    return isWaiting;
+}
+
+bool Room::isFinished1() const {
+    return isFinished;
+}
+
+bool Room::isStarted1() const {
+    return isStarted;
+}
+
+bool Room::hasPlayers() {
+    return !this->players.empty();
+}

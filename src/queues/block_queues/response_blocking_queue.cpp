@@ -9,7 +9,7 @@ void ResponseBlockingQueue::push(Response &response) {
 
 Response ResponseBlockingQueue::pop() {
     std::unique_lock<std::mutex> lock(mutex);
-    while(this->responses.empty()) {
+    while(this->isClosed || this->responses.empty()) {
         if (this->isClosed) {
             throw BlockingQueueClosedException();
         }

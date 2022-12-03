@@ -6,8 +6,8 @@
 #include <exception>
 #include <unistd.h>
 
-#include "src/client/sdl_player.h"
-#include "src/client/sdl_main.h"
+#include "src/client_sdl/sdl_player.h"
+#include "src/client_sdl/sdl_main.h"
 
 static bool handleEvents(sdl_player &player);
 
@@ -19,9 +19,6 @@ int main(int argc, char** argv){
             running = handleEvents(py.my_object);
             py.updateScreen();
             py.renderScreen();
-
-            // la cantidad de segundos que debo dormir se debe ajustar en función
-            // de la cantidad de tiempo que demoró el handleEvents y el render
             usleep(FRAME_RATE);
         }
     } catch (std::exception& e) {
@@ -39,8 +36,8 @@ int main(int argc, char** argv){
 static bool handleEvents(sdl_player &player) {
     SDL_Event event;
     // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
-    while(SDL_PollEvent(&event)){
-        switch(event.type) {
+    while (SDL_PollEvent(&event)){
+        switch (event.type) {
             case SDL_KEYDOWN: {
                 // ¿Qué pasa si mantengo presionada la tecla?
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;

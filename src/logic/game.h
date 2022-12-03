@@ -5,6 +5,7 @@
 #include "../protocolo/responses/match_response.h"
 #include "../protocolo/responses/ball_response.h"
 #include "../protocolo/responses/player_responses.h"
+#include "../src/game_entities/room.h"
 
 
 class Game {
@@ -38,6 +39,8 @@ class Game {
     void setStatus(bool b);
 
     bool matchFinished();
+
+    void setStatus(Room &room, bool replay);
 };
 
 #endif  // SRC_LOGIC_GAME_H_

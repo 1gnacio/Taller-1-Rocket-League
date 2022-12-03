@@ -13,19 +13,22 @@ private:
     float posX;
     float posY;
     float rotationAngle;
-    //TODO tamaño auto
-    //TODO facingLeft
     bool isMoving;
     bool isFlying;
     bool isTurboActivated;
     bool hasPunchedTheBall;
     bool isAccelerating;
     bool isLocalTeam;
-
+    int goals;
+    int assists;
+    int saves;
+    bool facingLeft;
+    float remainingTurbo;
 public:
     PlayerResponse(int id, float posX, float posY, float rotationAngle,
                    bool isMoving, bool isFlying, bool isTurboActivated,
-                   bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam);
+                   bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam,
+                   int goals, int assists, int saves, bool facingLeft, float remainingTurbo);
 
     explicit PlayerResponse(std::vector<unsigned char> &serialized);
 
@@ -45,6 +48,7 @@ public:
     bool accelerating() const { return isAccelerating; }
     bool onTurbo() const { return isTurboActivated; }
     bool localTeam() const { return isLocalTeam; }
+    bool isFacingLeft() const {return facingLeft; }
 
 };
 
