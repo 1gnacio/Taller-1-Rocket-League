@@ -9,6 +9,12 @@ std::vector<unsigned char> BallResponse::serialize() {
     this->serializer.merge(serialization, this->serializer.serializeBool(isMoving));
     this->serializer.merge(serialization, this->serializer.serializeBool(isFlying));
     this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunched));
+    /*
+    this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunchedNormal));
+    this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunchedFlipShot));
+    this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunchedRedShot));
+    this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunchedPurpleShot));
+    this->serializer.merge(serialization, this->serializer.serializeBool(hasBeenPunchedGoldShot));*/
 
     return serialization;
 }
@@ -23,6 +29,12 @@ BallResponse::BallResponse(std::vector<unsigned char> serialized) : serializer()
     this->serializer.parse(isMoving, serialized, firstPosition, lastPosition);
     this->serializer.parse(isFlying, serialized, firstPosition, lastPosition);
     this->serializer.parse(hasBeenPunched, serialized, firstPosition, lastPosition);
+    /*
+    this->serializer.parse(hasBeenPunchedNormal, serialized, firstPosition, lastPosition);
+    this->serializer.parse(hasBeenPunchedFlipShot, serialized, firstPosition, lastPosition);
+    this->serializer.parse(hasBeenPunchedRedShot, serialized, firstPosition, lastPosition);
+    this->serializer.parse(hasBeenPunchedPurpleShot, serialized, firstPosition, lastPosition);
+    this->serializer.parse(hasBeenPunchedGoldShot, serialized, firstPosition, lastPosition);*/
 }
 
 BallResponse::BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying,
@@ -36,6 +48,13 @@ int BallResponse::size() {
     + 1 // isMoving
     + 1 // isFlying
     + 1 // hasBeenPunched
+    /*
+    + 1 // hasBeenPunchedNormal
+    + 1 // hasBeenPunchedFlipShot
+    + 1 // hasBeenPunchedRedShot
+    + 1 // hasBeenPunchedPurpleShot
+    + 1 // hasBeenPunchedGoldShot
+     */
     ;
 }
 

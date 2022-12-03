@@ -12,6 +12,7 @@
 #include "game.h"
 #include "../src/game_entities/room.h"
 #include "contactListenerHits.h"
+#include "../src/constants/command_values.h"
 
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
@@ -21,7 +22,7 @@ class BoxLogic {
  private:
     bool isActive;
     Game game;
-    b2Body* ball;
+    Ball ball;
     ContactListenerHits contactListener;
     std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
@@ -50,8 +51,6 @@ class BoxLogic {
      */
     void addPlayer(int id);
 
-    void update(Command &command);
-    void update();
     /*
      * Actualiza el tiempo en el mundo usando el método Step() en 0.04 segundos.
      * Además, para que se vea realista su forma de actuar, se utiliza la función usleep()
@@ -63,7 +62,8 @@ class BoxLogic {
      * doble salto; goles y Turbo para actualizarlos según correspondan.
      */
     void updateStatus();
-
+    void update(Command &command);
+    void update();
     /*
      * Se aplican los siguientes métodos em el auto dependiendo lo que se quiera
      * hacer.
@@ -86,7 +86,7 @@ class BoxLogic {
 
     PlayerResponses getPlayersData();
     Car* getCar(int carNumber);
-    static b2Vec2 getVectorForce(int direction);
+    static b2Vec2 getVectorForce(int direction, directions& lastDir);
     void verifyDoubleJump();
     void verifyTurbo();
     void verifyGoal();
@@ -118,6 +118,16 @@ class BoxLogic {
     void setRoomInfo(Room &room, bool b);
 
     bool matchFinished();
+
+    void updateLastDirection(int id, const std::basic_string<char>& deserializedCommand);
+
+    void verifyFlip();
+
+    void verifyPunch();
+
+    bool getBallDataPunched(const int i);
+
+    bool BallHasBeenPunched();
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

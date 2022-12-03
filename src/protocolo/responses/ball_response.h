@@ -14,6 +14,14 @@ private:
     bool isMoving;
     bool isFlying;
     bool hasBeenPunched;
+    /*
+    bool hasBeenPunchedNormal;
+    bool hasBeenPunchedFlipShot;
+    bool hasBeenPunchedRedShot;
+    bool hasBeenPunchedPurpleShot;
+    bool hasBeenPunchedGoldShot;
+     */
+
 public:
     BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying, bool hasBeenPunched);
     BallResponse(std::vector<unsigned char > serialized);
