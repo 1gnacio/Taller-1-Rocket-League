@@ -11,7 +11,7 @@ GameLogic::GameLogic(): withoutPlayers(0) {
 
 
 void GameLogic::updateModel(Command &command) {
-    std::cout << "llega un comando de " << command.getValue() <<", Con ID:" << command.getID() <<std::endl;
+    //std::cout << "llega un comando de " << command.getValue() <<", Con ID:" << command.getID() <<std::endl;
     if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
@@ -48,7 +48,10 @@ Response GameLogic::getResponse() {
     BallResponse ball(this->gamePhysics.getBallData(LogicValues().POS_X),
                  this->gamePhysics.getBallData(LogicValues().POS_Y),
                  this->gamePhysics.getBallData(LogicValues().ANGLE),
-                 false, false, false);
+                 abs(this->gamePhysics.getBallData(LogicValues().Y_VELOCITY)) +
+                 abs(this->gamePhysics.getBallData(LogicValues().X_VELOCITY)) > 0,
+                 this->gamePhysics.getBallData(LogicValues().POS_Y) < 2.2f,
+                 this->gamePhysics.getBallData(LogicValues().PUNCHED) > 0);
 
     PlayerResponses players = gamePhysics.getPlayersData();
 

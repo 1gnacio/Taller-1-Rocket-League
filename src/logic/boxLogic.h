@@ -27,10 +27,13 @@ class BoxLogic {
     std::vector<b2Body*> walls;
     std::vector<Car> cars;
     std::vector<SoccerGoal> soccerGoals;
+    std::vector<int> ballPunchesLocal;
+    std::vector<int> ballPunchesVisitor;
     void createWalls();
     void createBall();
     static float getData(int key, const b2Body* body);
-
+    void addGoalToPlayer(int id);
+    void addAssistToPlayer(int id);
  public:
     /*
      * Se instancia una mundo y a partir de ello,
@@ -115,7 +118,6 @@ class BoxLogic {
     void setRoomInfo(Room &room, bool b);
 
     bool matchFinished();
-
 };
 
 #endif  //  SRC_LOGIC_BOXLOGIC_H_

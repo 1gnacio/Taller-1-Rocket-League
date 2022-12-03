@@ -39,6 +39,8 @@ private:
     std::string getName() const { return this->name; };
 
     bool isInGame();
+
+    bool hasPlayers();
 };
 
 

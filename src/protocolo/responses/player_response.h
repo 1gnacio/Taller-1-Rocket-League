@@ -27,7 +27,8 @@ private:
 public:
     PlayerResponse(int id, float posX, float posY, float rotationAngle,
                    bool isMoving, bool isFlying, bool isTurboActivated,
-                   bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam);
+                   bool hasPunchedTheBall, bool isAccelerating, bool isLocalTeam,
+                   int goals, int assists, int saves, bool facingLeft, float remainingTurbo);
 
     explicit PlayerResponse(std::vector<unsigned char> &serialized);
 

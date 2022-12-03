@@ -134,3 +134,7 @@ bool CompleteGame::isInReplay() {
     return (this->replayLogic.isInReplay());
 }
 
+bool CompleteGame::hasPlayers() {
+    return this->room.hasPlayers();
+}
+
