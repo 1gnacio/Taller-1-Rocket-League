@@ -6,7 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)) {
+Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), goals(0), assists(0), saves(0), facingLeft(false) {
 }
 
 int Car::getId() {
@@ -44,6 +44,7 @@ void Car::startMove(b2Vec2 vel) {
     if (!isJumping()) {
         carBody->ApplyForceToCenter(vel, true);
         isAccelerating = true;
+        this->facingLeft = vel.x < 0;
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
         carBody->ApplyTorque(torque, true);
@@ -143,4 +144,48 @@ bool Car::isLocal(){
 
 bool Car::sameBody(b2Body *pBody) {
     return (pBody == carBody);
+}
+
+int Car::getGoals() {
+    return this->goals;
+}
+
+int Car::getAssists() {
+    return this->assists;
+}
+
+int Car::getSaves() {
+    return this->saves;
+}
+
+bool Car::isFacingLeft() {
+    return this->facingLeft;
+}
+
+float Car::remainingTurbo() {
+    return this->turboTank;
+}
+
+void Car::addGoal() {
+    this->goals++;
+}
+
+void Car::addAssist() {
+    this->assists++;
+}
+
+void Car::addSave() {
+    this->saves++;
+}
+
+void Car::punchedTheBall() {
+    this->hasPunchedTheBall = true;
+}
+
+void Car::notPunchedTheBall() {
+    this->hasPunchedTheBall = false;
+}
+
+bool Car::getHasPunchedTheBall() {
+    return this->hasPunchedTheBall;
 }

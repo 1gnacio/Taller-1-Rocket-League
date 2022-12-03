@@ -47,6 +47,8 @@ public:
     void finally();
 
     bool matchFinished();
+
+    bool hasPlayers();
 };
 
 
