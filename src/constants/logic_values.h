@@ -30,12 +30,19 @@ public:
 
     const float DENSITY_BALL = 0.5;
     const float FRICTION_BALL = 0.3f;
-    const float RESTITUTION_BALL = 0.6f;
+    const float RESTITUTION_BALL = 0.7f;
     constexpr static const float RADIUS_BALL = 0.2f;
     const float ANGLE_BALL = 0;
 
     const int VELOCITY_ITERATIONS = 8;
     const int POSITION_ITERATIONS = 3;
+
+    const int HAS_BEEN_PUNCHED = 5;
+    const int HAS_BEEN_PUNCHED_NORMAL = 6;
+    const int HAS_BEEN_PUNCHED_FLIP_SHOT= 7;
+    const int HAS_BEEN_PUNCHED_RED_SHOT = 8;
+    const int HAS_BEEN_PUNCHED_PURPLE_SHOT = 9;
+    const int HAS_BEEN_PUNCHED_GOLD_SHOT = 10;
 
 };
 

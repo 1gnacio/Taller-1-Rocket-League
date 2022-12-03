@@ -3,11 +3,19 @@
 
 #ifndef SRC_LOGIC_CAR_H_
 #define SRC_LOGIC_CAR_H_
+//#include"stateMachine.h"
 
 /*
  * Objeto que simula auto en el juego,
  * el cual puede moverse y realizar golpes especiales.
  */
+enum directions {
+    NONE,
+    RIGHT_LAST_DIRECTION,
+    LEFT_LAST_DIRECTION,
+    UP_LAST_DIRECTION,
+    DOWN_LAST_DIRECTION,
+};
 
 class Car {
  private:
@@ -20,11 +28,28 @@ class Car {
     int usingTurbo;
     bool isAccelerating;
     bool isLocalTeam;
+    directions lastDirection;
+    float secFlip;
+public:
+    void setSecFlip(float secFlip);
+
+public:
+    float getSecFlip() const;
+
+    bool isMakeFlip() const;
+
+private:
+    bool makeFlip;
+public:
+    void setMakeFlip(bool makeFlip);
+private:
+    bool punched;
     int goals;
     int assists;
     int saves;
     bool facingLeft;
     bool hasPunchedTheBall;
+
 
  public:
     /*
@@ -80,6 +105,24 @@ class Car {
     void destroy(std::unique_ptr<b2World> &world);
 
     bool sameBody(b2Body *pBody);
+
+    void changeLastDirection(directions &direction);
+
+    directions getLastDirection();
+
+    void verifyLastMovement();
+
+    b2Vec2 forceInFlip();
+
+    float forceInTorque();
+
+    bool didFlip();
+
+    bool verifyFlip();
+
+    bool punchedBall() const;
+
+    void SetPunchedBall(bool set);
 
     int getGoals();
 
