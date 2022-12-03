@@ -306,6 +306,7 @@ void BoxLogic::jump(int carNumber) {
 
 PlayerResponses BoxLogic::getPlayersData() {
     std::vector<PlayerResponse> vector;
+
     for (auto &x : cars) {
         vector.emplace_back(x.getId(), x.getData(LogicValues().POS_X),
                             x.getData(LogicValues().POS_Y),
@@ -488,6 +489,9 @@ void BoxLogic::updateLastDirection(int id,
 
 void BoxLogic::verifyPunch() {
     ball.verifyPunch();
+    for(auto &x : cars) {
+        x.verifyPunch();
+    }
 }
 
 bool BoxLogic::getBallDataPunched(const int i) {
