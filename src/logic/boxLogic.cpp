@@ -41,8 +41,8 @@ void BoxLogic::createSoccerGoals() {
     b2EdgeShape edge;
     float roofXStart[] = {-4.0f, 4.0f};
     float roofXEnd[] = {-3.3f, 3.3f};
-    float roofYStart[] = {0.0f, 0.0f};
-    float roofYEnd[] = {0.0f, 0.0f};
+    float roofYStart[] = {-1.0f, -1.0f};
+    float roofYEnd[] = {-1.0f, -1.0f};
 
     int i = 0;
     for (auto &x : soccerGoals) {
@@ -53,21 +53,22 @@ void BoxLogic::createSoccerGoals() {
         x.createFixtureRoof(edgeFixtureDef);
         i++;
     }
+
     b2FixtureDef edgeFixtureDef2;
     float wallXStart[] = {-4.0f, 4.0f};
     float wallXEnd[] = {-3.6f, 3.6f};
-    float wallYStart[] = {2.5f, 2.5f};
-    float wallYEnd[] = {0.0f, 0.0f};
+    float wallYStart[] = {1.0f, 1.0f};
+    float wallYEnd[] = {-1.0f, -1.0f};
     i = 0;
     for (auto &x : soccerGoals) {
         edge.SetTwoSided(b2Vec2(wallXStart[i], wallYStart[i]),
                          b2Vec2(wallXEnd[i], wallYEnd[i]));
         edgeFixtureDef2.shape = &edge;
-        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
+        edgeFixtureDef2.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureWall(edgeFixtureDef2);
         i++;
     }
-    /*
+
     b2FixtureDef edgeFixtureDef3;
     float floorXStart[] = {-4.0f, 4.0f};
     float floorXEnd[] = {-3.3f, 3.3f};
@@ -78,10 +79,10 @@ void BoxLogic::createSoccerGoals() {
         edge.SetTwoSided(b2Vec2(floorXStart[i], floorYStart[i]),
                          b2Vec2(floorXEnd[i], floorYEnd[i]));
         edgeFixtureDef3.shape = &edge;
-        edgeFixtureDef.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
+        edgeFixtureDef3.filter.categoryBits = B2DVars().BIT_SOCCER_GOAL;
         x.createFixtureFloor(edgeFixtureDef3);
         i++;
-    }*/
+    }
 }
 
 b2Vec2 BoxLogic::getGravity() {
@@ -531,15 +532,13 @@ void BoxLogic::createCurveWalls() {
     }
     b2FixtureDef edgeFixtureDef;
     b2ChainShape edges;
-    b2Vec2 vertex[] ={b2Vec2(-2.5,2.5), b2Vec2(-2.66,2.4), b2Vec2(-2.82,2.2), b2Vec2(-2.98,1.8),b2Vec2(-3.14,2.4), b2Vec2(-3.3,1)};
-
-    edges.CreateChain(vertex,2,b2Vec2(-2.5,2.5),b2Vec2(-3.3,-1));
+    b2
+    b2Vec2 vertex[] ={b2Vec2(-2.5,2.51), b2Vec2(-2.53,2.47), b2Vec2(-2.57,2.44), b2Vec2(-2.61,2.2),b2Vec2(-2.66,2.4), b2Vec2(-2.82,2.2), b2Vec2(-2.98,1.8),b2Vec2(-3.14,2.4), b2Vec2(-3.3,1)};
+    b2Vec2 vertex[] ={b2Vec2(-2.4,2.8), b2Vec2(-2.9,2),b2Vec2(-3.3,1)};
+    edges.CreateLoop(vertex,9);
 
     int i = 0;
     for (auto &x : curveWalls) {
-
-        edges.SetTwoSided(b2Vec2(edgesXStart[i], edgesYStart[i]),
-                         b2Vec2(edgesXEnd[i], edgesYEnd[i]));
 
         edgeFixtureDef.shape = &edges;
         edgeFixtureDef.filter.categoryBits = B2DVars().BIT_GROUND;
