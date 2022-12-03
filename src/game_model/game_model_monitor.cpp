@@ -60,7 +60,7 @@ LobbyResponse GameModelMonitor::applyLogic(Command& command) {
         return std::move(this->createRoom(command.getID(),
                                           command.getSecondParameter().c_str(),
                                           2));
-        /*return std::move(this->joinRoom(command.getID(),
+        return std::move(this->joinRoom(command.getID(),
                                         command.getFirstParameter().c_str()));
 
     if (command.getValue() == this->commands.DESERIALIZED_QUIT_MATCH)
@@ -73,7 +73,6 @@ LobbyResponse GameModelMonitor::applyLogic(Command& command) {
 }
 
 void GameModelMonitor::run() {
-    /*
      * Mientras el server no cerro
      *  - Leo comandos y actualizo las salas
 

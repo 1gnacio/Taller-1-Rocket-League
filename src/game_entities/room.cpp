@@ -11,8 +11,8 @@ requiredPlayers(requiredPlayers),
 name(name),
 isFinished(false) {
     players.push_back(ownerId);
-    isWaiting = players.size() < requiredPlayers;
-    isStarted = players.size() == requiredPlayers;
+    isWaiting = (int)players.size() < requiredPlayers;
+    isStarted = (int)players.size() == requiredPlayers;
     if (isStarted) {
         std::cout << "Comenzando partida " + this->name + "..." << std::endl;
     }
@@ -23,9 +23,9 @@ ActionResultResponse Room::joinPlayer(int id) {
         return {id, ResponseValues().ERROR, ResponseValues().PLAYER_ALREADY_JOINED};
     }
 
-    if (this->players.size() < this->requiredPlayers) {
+    if ((int)this->players.size() < this->requiredPlayers) {
         players.push_back(id);
-        if (players.size() == this->requiredPlayers) {
+        if ((int)players.size() == this->requiredPlayers) {
             std::cout << "Comenzando partida " + this->name + "..." << std::endl;
             this->isStarted = true;
             this->isWaiting = false;
@@ -60,7 +60,7 @@ RoomResponse Room::list() {
         r.addClient(client);
     }
 
-    return std::move(r);
+    return r;
 }
 
 ActionResultResponse Room::leaveRoom(int playerId) {

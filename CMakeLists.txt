@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Flags TODO: activarlo
-#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -Werror -Wno-reorder -pedantic -pedantic-errors")
+# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -pedantic -pedantic-errors")
 # debugging flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 
@@ -485,3 +485,40 @@ enable_testing()
 
 add_subdirectory(google_tests)
 include(CTest)
+######################################################################################################################
+
+#**************************************
+#***************Install****************
+#**************************************
+
+set(BIN "/usr/bin")
+set(RESOURCES "/var/game")
+
+install(TARGETS game_client DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(TARGETS game_server DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(TARGETS lobby DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${RESOURCES})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
