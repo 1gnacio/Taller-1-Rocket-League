@@ -81,13 +81,13 @@ void ContactListenerHits::EndContact(b2Contact *contact) {
     if(fa->IsSensor()) {
         b2Body* body = fa->GetBody();
         int id = getId(body);
-        if(fb->GetBody() == ball) {
+        if(fb->GetBody() == ball->getBallBody()) {
             this->addPunch(id, fb->GetBody()->GetLinearVelocity().x);
         }
     } else if (fb->IsSensor()) {
         b2Body* body = fb->GetBody();
         int id = getId(body);
-        if(fa->GetBody() == ball) {
+        if(fa->GetBody() == ball->getBallBody()) {
             this->addPunch(id, fb->GetBody()->GetLinearVelocity().x);
         }
     }
@@ -108,23 +108,7 @@ void ContactListenerHits::verifyFlip(Car &car) {
     getCar(car.getId())->setSecFlip(car.getSecFlip());
 
 }
-/*
-void ContactListenerHits::flipShot(Car *pCar) {
-    ball->SetLinearVelocity(b2Vec2(pCar->getData(LogicValues().X_VELOCITY),pCar->getData(LogicValues().Y_VELOCITY)));
-}
 
-void ContactListenerHits::purpleShot(Car *pCar) {
-    ball->SetLinearVelocity(b2Vec2(pCar->getData(LogicValues().X_VELOCITY)*3,pCar->getData(LogicValues().Y_VELOCITY)*3));
-}
-
-void ContactListenerHits::redShot(Car *pCar){
-    ball->SetLinearVelocity(b2Vec2(pCar->getData(LogicValues().X_VELOCITY)*1.5,pCar->getData(LogicValues().Y_VELOCITY)*1.5));
-}
-
-void ContactListenerHits::goldShot(Car *pCar){
-    ball->SetLinearVelocity(b2Vec2(pCar->getData(LogicValues().X_VELOCITY)*(-1),pCar->getData(LogicValues().Y_VELOCITY)*(-1)));
-}
-*/
 ContactListenerHits::ContactListenerHits(std::vector<Car> &cars,
                                          std::vector<int> &ballPunchesLocal,
                                          std::vector<int> &ballPunchesVisitor)
