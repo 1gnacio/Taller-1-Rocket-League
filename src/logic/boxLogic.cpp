@@ -235,12 +235,6 @@ float BoxLogic::getBallData(int key) {
         case LogicValues().Y_VELOCITY:
             return this->ball.getBallBody()->GetLinearVelocity().y;
             break;
-        case LogicValues().PUNCHED:
-            return std::find_if(this->cars.begin(),
-                                this->cars.end(),
-                                [](Car &car)
-                                {return car.getHasPunchedTheBall();})
-                                != this->cars.end() ? 1 : 0;
     }
 }
 

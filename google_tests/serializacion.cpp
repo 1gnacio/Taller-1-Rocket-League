@@ -4,7 +4,7 @@
 #include "../src/constants/response_values.h"
 
 TEST(Serialize, seSeteanLosGoles) {
-    BallResponse ball(0, 0, 0, false, false, false);
+    BallResponse ball(0, 0, 0, false, false, false, true, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);
@@ -24,7 +24,7 @@ TEST(Serialize, seSeteanLosGoles) {
 
 TEST(Serialize, seSeteanLosJugadores) {
 
-    BallResponse ball(0, 0, 0, false, false, false);
+    BallResponse ball(0, 0, 0, false, false, false, true, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);
@@ -49,7 +49,7 @@ TEST(Serialize, seSeteanLosJugadores) {
 
 TEST(Serialize, seSeteanLosEstadosDeLaPelota) {
 
-    BallResponse ball(0, 0, 0, false, true, false);
+    BallResponse ball(0, 0, 0, false, true, false, true, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);
@@ -67,7 +67,7 @@ TEST(Serialize, seSeteanLosEstadosDeLaPelota) {
 
 TEST(Serialize, seSeteanTodosLosDatos) {
 
-    BallResponse ball(0, 0, 0, false, false, false);
+    BallResponse ball(0, 0, 0, false, false, false, true, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);
@@ -79,7 +79,7 @@ TEST(Serialize, seSeteanTodosLosDatos) {
 
     Response deserializada(responseSerialized);
 
-    EXPECT_EQ(r.serialize(), deserializada.serialize() );
+    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size() );
 }
 
 TEST(Serializacion, SerializePlayerId) {
@@ -109,7 +109,7 @@ TEST(Serializacion, SerializePlayerPositionX) {
 TEST(Serializacion, SerializeBallResponse) {
     float test = 10.93f;
 
-    BallResponse response(0, test, 0, false, false, false);
+    BallResponse response(0, test, 0, false, false, false, true, false, false, false);
 
     std::vector<unsigned char> serialized = response.serialize();
 
@@ -151,7 +151,7 @@ TEST(Serializacion, SerializarStringConParse) {
 }
 
 TEST(Serializacion, SerializarPartida) {
-    BallResponse ball(1, 0, 1, false, false, false);
+    BallResponse ball(1, 0, 1, false, false, false, true, false, false, false);
     PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponses players;
     players.addPlayer(player);
@@ -166,7 +166,7 @@ TEST(Serializacion, SerializarPartida) {
 }
 
 TEST(Serializacion, SerializarYDeserializarPartida) {
-    BallResponse ball(1, 0, 1, false, false, false);
+    BallResponse ball(1, 0, 1, false, false, false, true, false, false, false);
     PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponses players;
     players.addPlayer(player);
@@ -188,7 +188,7 @@ TEST(Serializacion, SerializacionYDeserializacionConLobby) {
     room.addClient(1);
     room.addClient(2);
     lobbyResponse.addRoom(room);
-    BallResponse ball(1, 0, 1, false, false, false);
+    BallResponse ball(1, 0, 1, false, false, false, true, false, false, false);
     PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponse player1(3, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponses players;
@@ -213,7 +213,7 @@ TEST(Serializacion, SerializacionYDeserializacionConLobbyYResultadoDeAccion) {
     room.addClient(1);
     room.addClient(2);
     lobbyResponse.addRoom(room);
-    BallResponse ball(1, 0, 1, false, false, false);
+    BallResponse ball(1, 0, 1, false, false, false, true, false, false, false);
     PlayerResponse player(1, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponse player1(3, 0, 1, 0, false, false, false, true, false, false, 0, 1, 0, false, 0.5f);
     PlayerResponses players;

@@ -85,7 +85,7 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
     room.addClient(1);
     room.addClient(2);
     lobbyResponse.addRoom(room);
-    BallResponse ball(0, 0, 0, false, false, false);
+    BallResponse ball(0, 0, 0, false, false, false, true, false, false, false);
     PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
     std::vector<PlayerResponse> players{player};
     PlayerResponses playerResponses(players);

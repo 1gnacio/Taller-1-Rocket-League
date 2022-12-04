@@ -55,15 +55,11 @@ Response GameLogic::getResponse() {
                  abs(this->gamePhysics.getBallData(LogicValues().Y_VELOCITY)) +
                  abs(this->gamePhysics.getBallData(LogicValues().X_VELOCITY)) > 0,
                  this->gamePhysics.getBallData(LogicValues().POS_Y) < 2.2f,
-                 this->gamePhysics.getBallData(LogicValues().PUNCHED) > 0);
-
-                 /*
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_NORMAL),
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_FLIP_SHOT),
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_RED_SHOT),
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT),
-                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT));*/
-
+                 this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT));
 
     PlayerResponses players = gamePhysics.getPlayersData();
 

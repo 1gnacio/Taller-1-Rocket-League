@@ -18,7 +18,6 @@ public:
     const int RIGHT_DIRECTION = 1;
     const int UP_DIRECTION = 2;
     const int DOWN_DIRECTION = 3;
-    const int PUNCHED = 8;
 
     constexpr static const float W_CAR = 1.2;
     constexpr static const float H_CAR = 0.5;
@@ -37,7 +36,6 @@ public:
     const int VELOCITY_ITERATIONS = 8;
     const int POSITION_ITERATIONS = 3;
 
-    const int HAS_BEEN_PUNCHED = 5;
     const int HAS_BEEN_PUNCHED_NORMAL = 6;
     const int HAS_BEEN_PUNCHED_FLIP_SHOT= 7;
     const int HAS_BEEN_PUNCHED_RED_SHOT = 8;
