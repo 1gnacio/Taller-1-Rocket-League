@@ -6,11 +6,11 @@ YamlConfiguration::YamlConfiguration() {}
 
 ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
     YAML::Node config = YAML::LoadFile(DATA_PATH + ConfigurationPaths().SERVER_CONFIG);
-    return {config["carWidth"].as<float>(), config["carHeight"].as<float>(), config["carDensity"].as<float>(),
-            config["carFriction"].as<float>(), config["carRestitution"].as<float>(), config["ballDensity"].as<float>(),
-            config["ballFriction"].as<float>(), config["ballRestitution"].as<float>(), config["ballRadious"].as<float>(),
-            config["mapGravity"].as<float>(), config["movementForceModule"].as<float>(), config["jumpImpulse"].as<float>(),
-            config["replayTimeInSec"].as<int>(), config["responsesPerSec"].as<int>()};
+    return {config["car_width"].as<float>(), config["car_height"].as<float>(), config["car_density"].as<float>(),
+            config["car_friction"].as<float>(), config["car_restitution"].as<float>(), config["ball_density"].as<float>(),
+            config["ball_friction"].as<float>(), config["ball_restitution"].as<float>(), config["ball_radius"].as<float>(),
+            config["gravity"].as<float>(), config["directional_force_module"].as<float>(), config["jump_impulse"].as<float>(),
+            config["replay_time_in_sec"].as<int>(), config["responses_per_sec"].as<int>()};
 }
 
 ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {

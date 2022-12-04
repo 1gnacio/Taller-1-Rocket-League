@@ -60,4 +60,5 @@ cmake ..
 make -j4
 
 echo "${green}\n~INSTALANDO ROCKET LEAGUE~\n${reset}"
+sudo make install -j 10
 echo "${green} ROCKET LEAGUE instalado completamente ${reset}"

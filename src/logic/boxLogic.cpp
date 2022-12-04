@@ -8,16 +8,19 @@
 #include "../src/constants/b2DVars.h"
 #include "stateMachine.h"
 #include <string>
+#include "../src/configuration/yaml_configuration.h"
+
 
 
 BoxLogic::BoxLogic(int requiredPlayers):
     isActive(true),
+    configuration(YamlConfiguration().ReadServerConfiguration()),
     game(requiredPlayers),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
     contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+    world = std::make_unique<b2World>(b2Vec2(0.0f, configuration.getMapGravity()));
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -79,7 +82,7 @@ int BoxLogic::wallsAmount() {
 }
 
 void BoxLogic::updateTime() {
-    float timeStep = 1.0f / 25.0f;
+    float timeStep = 1.0f / configuration.getResponsesPerSec();
     world->Step(timeStep, LogicValues().VELOCITY_ITERATIONS,
                 LogicValues().POSITION_ITERATIONS);
     usleep(timeStep*1000000);  // (unsleep utiliza microsegundos 1x10-6)
@@ -96,13 +99,13 @@ void BoxLogic::createBall() {
     this->ball.setBody(world->CreateBody(&ballDef));
 
     b2CircleShape shapeCircle;
-    shapeCircle.m_radius = LogicValues().RADIUS_BALL;
+    shapeCircle.m_radius = configuration.getBallRadius();
 
     b2FixtureDef fixtureCircle;
     fixtureCircle.shape = &shapeCircle;
-    fixtureCircle.density = LogicValues().DENSITY_BALL;
-    fixtureCircle.friction = LogicValues().FRICTION_BALL;
-    fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
+    fixtureCircle.density = configuration.getBallDensity();
+    fixtureCircle.friction = configuration.getBallFriction();
+    fixtureCircle.restitution = configuration.getBallRestitution();
     fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
     fixtureCircle.filter.maskBits = B2DVars().BIT_CAR |
                                     B2DVars().BIT_GROUND |
@@ -112,8 +115,8 @@ void BoxLogic::createBall() {
 }
 
 void BoxLogic::createCar(int id) {
-    float wCar = LogicValues().W_CAR;
-    float hCar = LogicValues().H_CAR;
+    float wCar = configuration.getCarWidth();
+    float hCar = configuration.getCarHeight();
 
     b2BodyDef carBodyDef;
     carBodyDef.type = b2_dynamicBody;
@@ -129,9 +132,9 @@ void BoxLogic::createCar(int id) {
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &dynamicCar;
-    fixtureDef.density = LogicValues().DENSITY_CAR;
-    fixtureDef.friction = LogicValues().FRICTION_CAR;
-    fixtureDef.restitution = LogicValues().RESTITUTION_CAR;
+    fixtureDef.density = configuration.getCarDensity();
+    fixtureDef.friction = configuration.getCarFriction();
+    fixtureDef.restitution = configuration.getCarRestitution();
     fixtureDef.filter.categoryBits = B2DVars().BIT_CAR;
     fixtureDef.filter.maskBits = B2DVars().BIT_BALL |
                                  B2DVars().BIT_GROUND |
@@ -269,16 +272,17 @@ Car* BoxLogic::getCar(int carID) {
 }
 
 b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
+
     if (direction == LogicValues().LEFT_DIRECTION) {
         lastDir = LEFT_LAST_DIRECTION;
-        return b2Vec2(-1.5f, 0.0f);
+        return b2Vec2(configuration.getMovementForceModule()*(-1), 0.0f);
     } else if (direction == LogicValues().RIGHT_DIRECTION) {
         lastDir = RIGHT_LAST_DIRECTION;
-        return(b2Vec2(1.5f, 0.0f));
+        return(b2Vec2(configuration.getMovementForceModule(), 0.0f));
     } else if (direction == LogicValues().UP_DIRECTION) {
-        return (b2Vec2(0.0f, -4.0f));
+        return (b2Vec2(0.0f, configuration.getJumpImpulse()*(-1)));
     }
-    return (b2Vec2(0.0f, -4.0f));
+    return (b2Vec2(0.0f, configuration.getJumpImpulse()*(-1)));
 }
 
 // Verificar si existe otra manera para no llamar siempre a force ()
