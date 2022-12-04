@@ -343,6 +343,7 @@ void BoxLogic::verifyGoal() {
     this->resetPositions();
 }
 
+
 void BoxLogic::verifyDoubleJump() {
     for (auto &x : cars) {
         x.verifyDoubleJump();
@@ -420,8 +421,9 @@ void BoxLogic::resetPositions() {
         for (auto &x : cars) {
             x.resetPosition();
         }
-        ball.getBallBody()->SetLinearVelocity(b2Vec2(0.1f, 0.1f));
+        ball.getBallBody()->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
         ball.getBallBody()->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_BALL, LogicValues().POS_Y_INITIAL_BALL), 0);
+        ball.getBallBody()->SetAngularVelocity(0);
     }
 }
 

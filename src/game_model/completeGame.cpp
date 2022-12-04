@@ -84,15 +84,18 @@ bool CompleteGame::matchFinished() {
 void CompleteGame::gameFlow() {
 
     try {
+        int limitCommands = 0;
         while(!this->isClosed && !this->matchFinished()) {
             logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
             logic.resetData();
+
             if(isInGame()) {
-                int limitCommands = 0;
+                limitCommands = 0;
                 while((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())){
                     logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {
+                        Command command = commandQueue.pop();
                         Response replayResponse = this->replayLogic.getResponse();
                         if (!replayResponse.dummy()) {
                             this->serverEndpoint.push(replayResponse);
@@ -120,7 +123,6 @@ void CompleteGame::gameFlow() {
                 }
             } else {
                 sendResponse();
-                logic.resetData();
                 float timeStep = 1.0f / 10.0f;
                 usleep(timeStep*1000000);
             }
