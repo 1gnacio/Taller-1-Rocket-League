@@ -19,7 +19,8 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 saves(0),
                                 secFlip(0),
                                 makeFlip(false),
-                                facingLeft(false) {
+                                facingLeft(false),
+                                timeAfterPunched(0) {
 }
 
 int Car::getId() {
@@ -286,5 +287,15 @@ void Car::notPunchedTheBall() {
 
 bool Car::getHasPunchedTheBall() {
     return this->hasPunchedTheBall;
+}
+
+void Car::verifyPunch() {
+
+    if(timeAfterPunched > 2) {
+        this->hasPunchedTheBall = false;
+        timeAfterPunched = 0;
+    }
+    timeAfterPunched++;
+
 }
 

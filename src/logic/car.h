@@ -35,6 +35,7 @@ class Car {
     bool punched;
     bool facingLeft;
     bool hasPunchedTheBall;
+    int timeAfterPunched;
     bool canJump();
     bool isJumping();
 public:
@@ -140,6 +141,10 @@ public:
     void notPunchedTheBall();
 
     bool getHasPunchedTheBall();
+
+    void verifyPunch();
+
+
 };
 
 
