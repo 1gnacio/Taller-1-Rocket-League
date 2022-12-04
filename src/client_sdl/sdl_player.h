@@ -9,6 +9,7 @@ private:
     sdl_animation car_an;
     sdl_animation turbo_an;
     sdl_animation jump_an;
+    sdl_animation turboBar_an;
     bool facingLeft;
     bool moving;
     bool onTurbo;
@@ -23,9 +24,9 @@ public:
     explicit sdl_player(SDL2pp::Renderer &renderer);
     void update(int x, int y, int size_w, int size_h, double angle,
                 float dt, bool isMoving, bool isJumping, bool onTurbo,
-                bool facingLeft);
+                bool facingLeft, float turboLeft);
     void render(SDL2pp::Renderer &renderer);
-    ~sdl_player();
+    ~sdl_player() = default;
 
 #ifdef SDL_TESTING
     void moveRight();

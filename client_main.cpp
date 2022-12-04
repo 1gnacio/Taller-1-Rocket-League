@@ -1,8 +1,8 @@
 #include <iostream>
+#include <SDL2pp/SDL2pp.hh>
 #include "src/client/client.h"
 #include <QApplication>
 #include "src/lobby/lobby.h"
-#include "src/handlers/server_connection.h"
 #include "src/configuration/yaml_configuration.h"
 
 int main(int argc, char* argv[]) try {
@@ -11,7 +11,8 @@ int main(int argc, char* argv[]) try {
     }
 
     try {
-        ClientConfigurationAttributes configuration = YamlConfiguration().ReadClientConfiguration();
+        ClientConfigurationAttributes configuration =
+                YamlConfiguration().ReadClientConfiguration();
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
         return -1;
@@ -21,9 +22,12 @@ int main(int argc, char* argv[]) try {
     app.setWindowIcon(QIcon(DATA_PATH "/icon.ico"));
     lobby window(nullptr, argv[1], argv[2]);
     window.show();
-
     return  app.exec();
 
+    } catch (SDL2pp::Exception& e){
+        std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
+        std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
+        return -1;
     } catch (const std::exception& err) {
         std::cerr
                 << "Something went wrong and an exception was caught: "

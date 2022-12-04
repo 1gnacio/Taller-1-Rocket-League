@@ -2,8 +2,8 @@
 
 sdl_arena::sdl_arena(SDL2pp::Renderer &renderer):
     texture_stadium(renderer, DATA_PATH "/stadium2.png"),
-    texture_goal(renderer, DATA_PATH "/goal.png"), goal_w(0),
-    font(DATA_PATH "/Vera.ttf", 80),
+    texture_goal(renderer, DATA_PATH "/goal.png"),
+    font(DATA_PATH "/Vera.ttf", 70), goal_w(0),
     waitingForPlayer(false), replay(false){}
 
 void sdl_arena::render(SDL2pp::Renderer &renderer) {
@@ -19,13 +19,14 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
                   SDL2pp::Rect((t_width - goal_w), t_height-size_h,
                                goal_w,size_h),
                   0,SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
-    //Waiting for players
-    if (waitingForPlayer){
-        renderText(renderer, "WAITING FOR PLAYERS...",
-                   renderer.GetOutputWidth()/2, renderer.GetOutputHeight()/2);
-    } else if (replay) {
+    //REPLAY
+    if (replay) {
         renderText(renderer, "REPLAY",renderer.GetOutputWidth()/2,
                    renderer.GetOutputHeight()/2);
+    }
+    if (waitingForPlayer) {
+        renderText(renderer, "Waiting for players",renderer.GetOutputWidth()/2,
+                   renderer.GetOutputHeight()/4);
     }
 }
 

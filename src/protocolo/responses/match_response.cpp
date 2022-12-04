@@ -175,4 +175,4 @@ bool MatchResponse::waitingForPlayers() {
     return isWaitingForPlayers;
 }
 
-MatchResponse::MatchResponse()= default;
+MatchResponse::MatchResponse() = default;

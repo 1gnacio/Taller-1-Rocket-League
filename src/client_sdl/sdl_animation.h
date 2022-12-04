@@ -15,10 +15,11 @@ class sdl_animation {
 public:
     sdl_animation(SDL2pp::Renderer &renderer, int numFrames,
                   const std::string& path);
-    ~sdl_animation();
+    ~sdl_animation() = default;
     void update(float dt);
+    void updateToFrame(int percentage);
     void render(SDL2pp::Renderer &renderer, SDL2pp::Rect dest,
-                double angle, SDL_RendererFlip &flipType);
+                double angle, SDL_RendererFlip flipType);
 
     /*
      * Para cambiar el color de la textura.

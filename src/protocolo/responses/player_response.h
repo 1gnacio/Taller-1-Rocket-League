@@ -49,6 +49,10 @@ public:
     bool onTurbo() const { return isTurboActivated; }
     bool localTeam() const { return isLocalTeam; }
     bool isFacingLeft() const {return facingLeft; }
+    float getRemainingTurbo() const { return remainingTurbo; }
+    int getGoals() const { return goals; }
+    int getAssists() const { return assists; }
+    int getSaves() const { return saves; }
 
 };
 

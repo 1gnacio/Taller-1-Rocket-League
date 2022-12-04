@@ -182,7 +182,7 @@ int main() try
             }
         }
 
-        // question box, update x and y destination
+        // question box, updateToFrame x and y destination
         box.x = ((SCALED_WIDTH / 2.0f) + pos.x) * MET2PIX  - box.w / 2;
         box.y = ((SCALED_HEIGHT / 2.0f) + pos.y) * MET2PIX - box.h / 2 ;
 
@@ -203,7 +203,7 @@ int main() try
         renderer.SetDrawColor(0, 0, 0); // (32, 70, 49, 0);
 
         renderer.Present();
-        world.Step(1.0f / 60.0f, 6.0f, 2.0f); // update
+        world.Step(1.0f / 60.0f, 6.0f, 2.0f); // updateToFrame
         SDL_Delay(10);
 
     }

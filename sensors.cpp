@@ -242,7 +242,7 @@ int main() try {
 
         renderer.Present();
 
-        world.Step(1.0f / 60.0f, 6.0f, 2.0f); // update box2d
+        world.Step(1.0f / 60.0f, 6.0f, 2.0f); // updateToFrame box2d
 
         SDL_Delay(10);
 

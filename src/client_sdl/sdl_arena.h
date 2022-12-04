@@ -4,6 +4,7 @@
 
 
 #include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
+#include "sdl_animation.h"
 #include <string>
 
 class sdl_arena {

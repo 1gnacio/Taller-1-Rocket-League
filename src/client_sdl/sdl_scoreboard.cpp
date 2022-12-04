@@ -20,7 +20,6 @@ void sdl_scoreboard::render(SDL2pp::Renderer &renderer) {
     int t_height=renderer.GetOutputHeight()/10;
     int vcenter = (renderer.GetOutputWidth()/2) - (t_width/2);
     renderer.FillRect(vcenter, 0, vcenter+t_width, t_height);
-    //renderer.SetDrawColor(255,0,0,255);
     renderer.Copy(text_sprite, SDL2pp::NullOpt,
                   SDL2pp::Rect(vcenter, 0, t_width, t_height));
 }
