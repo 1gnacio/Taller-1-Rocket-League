@@ -173,12 +173,27 @@ b2Vec2 Car::getVelocity() {
     return carBody->GetLinearVelocity();
 }
 
+float Car::directionForce(int key) {
+    if (key == 3) {
+        if (getData(LogicValues().X_VELOCITY) > 0)
+            return 1;
+        else if (getData(LogicValues().X_VELOCITY) < 0)
+            return -1;
+    } else if (key == 4) {
+        if (getData(LogicValues().Y_VELOCITY) > 0)
+            return 1;
+        else if (getData(LogicValues().Y_VELOCITY) < 0)
+            return -1;
+    }
+    return 0;
+}
+
 void Car::applyTurbo() {
     usingTurbo = 2;
     if (turboTank > 0) {
-        b2Vec2 vel(carBody->GetLinearVelocity().x*1.1,
-                   carBody->GetLinearVelocity().y*1.1);
-        carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
+
+       carBody->ApplyForceToCenter(b2Vec2(directionForce(3)*3,directionForce(4)*3), true);
+        //  carBody->ApplyLinearImpulseToCenter(b2Vec2(directionForce(3)*3,directionForce(4)*3), true);
     }
 }
 
@@ -189,7 +204,8 @@ void Car::resetPosition() {
     else
         carBody->SetTransform(b2Vec2(2.0f, -2.0f),
                               LogicValues().ANGLE_CAR);
-    carBody->SetLinearVelocity(b2Vec2(0.1f, 0.1f));
+    carBody->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
+    carBody->SetAngularVelocity(0);
 }
 
 void Car::destroy(std::unique_ptr<b2World> &world) {
