@@ -10,8 +10,9 @@
 #include <string>
 
 
-BoxLogic::BoxLogic():
+BoxLogic::BoxLogic(int requiredPlayers):
     isActive(true),
+    game(requiredPlayers),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),

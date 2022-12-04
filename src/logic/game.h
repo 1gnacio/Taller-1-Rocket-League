@@ -23,7 +23,7 @@ class Game {
     bool isGoalVisitor;
     bool activeReplay;
  public:
-    Game();
+    Game(int requiredPlayers);
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
 
     void updateGame(int i);

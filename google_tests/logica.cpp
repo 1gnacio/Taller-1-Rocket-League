@@ -10,7 +10,7 @@
 static const int PLAYER_ID = 50;
 
 TEST(logic, SeCreaElMapaCorrectamente) {
-    GameLogic logic;
+    GameLogic logic(1);
     logic.getResponse().getBallPositionY();
     EXPECT_EQ(logic.getResponse().getBallPositionY(), -2.8f);
     logic.updateTime();

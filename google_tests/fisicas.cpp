@@ -18,25 +18,25 @@ void update(BoxLogic & physics, int frames) {
 }
 TEST(physics, SeCreaElMapaConGravedad10) {
     b2Vec2 v(0.0f,9.8f);
-    BoxLogic physics;
+    BoxLogic physics(1);
 
 
     EXPECT_EQ(physics.getGravity(), v);
 }
 
 TEST(physics, SeCreanCorrectamenteLasParedes) {
-    BoxLogic physics;
+    BoxLogic physics(1);
 
     EXPECT_EQ(physics.wallsAmount(), 4);
 }
 
 TEST(physics, SeCreaCorrectamenteLaPelota) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     EXPECT_EQ(physics.ballIsAwake(), true);
 }
 
 TEST(physics, movimientoCorrectoDePelota) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.updateTime();
 
     EXPECT_EQ(physics.getBallData(LogicValues().POS_X), 0);
@@ -44,13 +44,13 @@ TEST(physics, movimientoCorrectoDePelota) {
 }
 
 TEST(physics, seAgregaJugadorCorrectamente) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
 
     EXPECT_EQ(physics.playersAmount(), 1);
 }
 TEST(physics, seAgreganVariosJugadoresCorrectamente) {
-    BoxLogic physics;
+    BoxLogic physics(1);
 
     physics.addPlayer(PLAYER_ID);
     physics.addPlayer(PLAYER_ID_2);
@@ -61,16 +61,16 @@ TEST(physics, seAgreganVariosJugadoresCorrectamente) {
 }
 
 TEST(physics, sePosicionaAutoCorrectamente) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     physics.updateTime();
 
-    EXPECT_EQ(physics.getCarData(PLAYER_ID,LogicValues().POS_X), 2);
+    EXPECT_EQ(physics.getCarData(PLAYER_ID,LogicValues().POS_X), -2);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) != 0);
 }
 
 TEST(physics, aceleracionCorrectaConComando) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     for(int i = 0; i < 100; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
@@ -82,7 +82,7 @@ TEST(physics, aceleracionCorrectaConComando) {
 }
 
 TEST(physics, FrenoCorrectoConComando) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     physics.startMove(PLAYER_ID,LogicValues().LEFT_DIRECTION);
     physics.stopMove(PLAYER_ID);
@@ -90,7 +90,7 @@ TEST(physics, FrenoCorrectoConComando) {
 }
 
 TEST(physics, SaltoCorrectoConComando) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     for(int i = 0; i < 100; i++){ // Actualizo tiempo hasta que pueda saltar (Tiene que estar en el suelo y aparece cayendo)
         physics.updateTime();
@@ -103,7 +103,7 @@ TEST(physics, SaltoCorrectoConComando) {
 }
 
 TEST(physics, MueveAnguloEnElAire) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics, 1);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().ANGLE) == 0);
@@ -114,7 +114,7 @@ TEST(physics, MueveAnguloEnElAire) {
 }
 
 TEST(physics, DobleSaltoCorrecto) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics, 100);
 
@@ -131,7 +131,7 @@ TEST(physics, DobleSaltoCorrecto) {
 }
 
 TEST(physics, RealizaTresSaltosYELUltimoNoCuenta) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics,100);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().Y_VELOCITY) == 0);
@@ -151,7 +151,7 @@ TEST(physics, RealizaTresSaltosYELUltimoNoCuenta) {
 }
 
 TEST(physics, RealizaUnTurbo) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics,100);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
@@ -165,7 +165,7 @@ TEST(physics, RealizaUnTurbo) {
 }
 
 TEST(physics, RealizaUnTurboPorVariosSegundos) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics,100);
 
@@ -182,7 +182,7 @@ TEST(physics, RealizaUnTurboPorVariosSegundos) {
 }
 
 TEST(physics, ElAutoTieneAcelearacion) {
-    BoxLogic physics;
+    BoxLogic physics(1);
     physics.addPlayer(PLAYER_ID);
     update(physics,100);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
@@ -194,7 +194,7 @@ TEST(physics, ElAutoTieneAcelearacion) {
 
 
 TEST(response, RespuestaCorrecta) {
-    GameLogic logic;
+    GameLogic logic(1);
     logic.updateTime();
     Response response = logic.getResponse();
     EXPECT_TRUE(response.getBallPositionY() > -2.8); // PosY inicial pelota

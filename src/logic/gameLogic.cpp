@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-GameLogic::GameLogic(): withoutPlayers(0) {
+GameLogic::GameLogic(int requiredPlayers) : gamePhysics(requiredPlayers) {
 }
 
 
