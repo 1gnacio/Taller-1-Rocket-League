@@ -127,6 +127,7 @@ void CompleteGame::gameFlow() {
                 usleep(timeStep*1000000);
             }
         }
+        sendResponse(); // Manda ultima respuesta
     } catch (...) {
         throw;
     }

@@ -51,7 +51,12 @@ void Game::updateTime() {
 }
 
 bool Game::matchFinished() {
-    return (time_inSec > game_time);
+    if(time_inSec > game_time)
+        hasFinished = true;
+    else
+        hasFinished = false;
+
+    return hasFinished;
 }
 
 bool Game::goal() {
@@ -66,7 +71,7 @@ void Game::resetData() {
 
 void Game::setStatus(Room &room, bool replay) {
     isWaitingForPlayers = !(room.isStarted1());
-    hasFinished = room.isFinished1();
+    //hasFinished = room.isFinished1();
     activeReplay = replay;
 
 }
