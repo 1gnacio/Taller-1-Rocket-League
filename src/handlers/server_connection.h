@@ -30,7 +30,7 @@ public:
 
     [[nodiscard]] int getId() const { return this->idService.getId(); }
 
-    void setConnectedGameName(std::string &name);
+    void setConnectedGameName(const std::string &name);
 
     void clearGameName();
 

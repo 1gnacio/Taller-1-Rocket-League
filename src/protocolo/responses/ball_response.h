@@ -23,7 +23,7 @@ public:
     BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying,
                  bool hasBeenPunchedNormal, bool hasBeenPunchedFlipShot, bool hasBeenPunchedRedShot,
                  bool hasBeenPunchedPurpleShot, bool hasBeenPunchedGoldShot);
-    BallResponse(std::vector<unsigned char > serialized);
+    explicit BallResponse(std::vector<unsigned char > serialized);
     BallResponse();
     std::vector<unsigned char> serialize();
 

@@ -21,9 +21,9 @@
 class BoxLogic {
  private:
     bool isActive;
+    std::unique_ptr<b2World> world;
     Game game;
     Ball ball;
-    std::unique_ptr<b2World> world;
     std::vector<b2Body*> walls;
     std::vector<Car> cars;
     std::vector<SoccerGoal> soccerGoals;
@@ -31,16 +31,14 @@ class BoxLogic {
     std::vector<int> ballPunchesVisitor;
     ContactListenerHits contactListener;
     void createWalls();
-    void createBall();
     static float getData(int key, const b2Body* body);
     void addGoalToPlayer(int id);
-    void addAssistToPlayer(int id);
  public:
     /*
      * Se instancia una mundo y a partir de ello,
      * una pelota, los bordes del mapa y los arcos
      */
-    BoxLogic(int requiredPlayers);
+    explicit BoxLogic(int requiredPlayers, const char *name);
 
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void createSoccerGoals();

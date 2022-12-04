@@ -15,7 +15,7 @@ Response ResponseQueue::pop() {
         return r;
     }
 
-    return {true};
+    return Response(true);
 }
 
 void ResponseQueue::clearResponses() {

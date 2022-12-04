@@ -26,7 +26,7 @@ Response ReplayLogic::getResponse() {
     if (this->responses.empty()) {
         this->isActive = false;
         this->elapsedTimeInSec = this->replayTimeInSec;
-        return {true};
+        return std::move(Response(true));
     }
     Response response = this->responses.front();
     this->responses.erase(this->responses.begin());

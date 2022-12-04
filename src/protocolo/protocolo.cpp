@@ -101,12 +101,12 @@ Response Protocolo::receiveResponse(Socket &socket) {
         if (this->connectionClosed) {
             ActionResultResponse actionResponse(ResponseValues().ERROR, ResponseValues().CONNECTION_CLOSED);
             LobbyResponse lobby(actionResponse);
-            return {lobby};
+            return std::move(Response(lobby));
         }
 
         std::vector<unsigned char> message = this->receiveMessage(socket);
 
-        return {message};
+        return std::move(Response(message));
     } catch (LibError& e) {
         if (errno == ECONNRESET) {
             this->connectionClosed = true;

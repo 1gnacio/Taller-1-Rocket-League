@@ -57,7 +57,7 @@ Response::Response(LobbyResponse &lobby) : matchResponse(), lobbyResponse(lobby)
 
 bool Response::isRecipient(int id) {
 
-    return this->lobbyResponse.isRecipient(id) || this->matchResponse.hasPlayer(id);
+    return this->lobbyResponse.isRecipient(id);
 }
 
 MatchResponse Response::getMatchResponse() {

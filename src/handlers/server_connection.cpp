@@ -64,7 +64,7 @@ ServerConnection::~ServerConnection() {
     }
 }
 
-void ServerConnection::setConnectedGameName(std::string &name) {
+void ServerConnection::setConnectedGameName(const std::string &name) {
     this->gameName = name;
 }
 

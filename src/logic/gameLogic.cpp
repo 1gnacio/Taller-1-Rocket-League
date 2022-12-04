@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-GameLogic::GameLogic(int requiredPlayers) : gamePhysics(requiredPlayers) {
+GameLogic::GameLogic(int requiredPlayers, const char *name) : gamePhysics(requiredPlayers, name) {
 }
 
 

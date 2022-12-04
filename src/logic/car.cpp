@@ -19,7 +19,9 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 saves(0),
                                 secFlip(0),
                                 makeFlip(false),
+                                punched(false),
                                 facingLeft(false),
+                                hasPunchedTheBall(false),
                                 timeAfterPunched(0) {
 }
 
@@ -46,9 +48,9 @@ float Car::getData(int key) {
         case 5:
             return turboTank;
         case 6:
-            return usingTurbo;
+            return usingTurbo ? 1 : 0;
         case 7:
-            return isAccelerating;
+            return isAccelerating ? 1 : 0;
     }
     return 0;
 }
@@ -216,7 +218,7 @@ bool Car::isLocal() {
     return this->isLocalTeam;
 }
 
-bool Car::sameBody(b2Body *pBody) {
+bool Car::sameBody(const b2Body *pBody) {
     return (pBody == carBody);
 }
 

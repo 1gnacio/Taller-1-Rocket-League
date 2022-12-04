@@ -5,8 +5,8 @@
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
 
-Game::Game(int requiredPlayers):
-              name("juego"),
+Game::Game(int requiredPlayers, const char *name):
+              name(name),
               time_inSec(0),
               time_in_miliSec(0),
               goalsLocal(0),
@@ -21,8 +21,9 @@ Game::Game(int requiredPlayers):
 }
 
 MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
+    std::string stringName(this->name);
     return MatchResponse(goalsLocal, goalsVisitor, time_inSec, ball, players,
-                         requiredPlayers, currentPlayers, name,
+                         requiredPlayers, currentPlayers, stringName,
                          isWaitingForPlayers, hasFinished, isGoalLocal,
                          isGoalVisitor, activeReplay);
 }

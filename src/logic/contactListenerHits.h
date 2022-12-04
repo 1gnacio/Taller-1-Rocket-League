@@ -7,12 +7,12 @@
 
 class ContactListenerHits: public b2ContactListener {
 private:
-    Ball* ball;
+    Ball& ball;
 public:
-   void addBall(Ball* sameBall);
+   void addBall(Ball &sameBall);
    void addCar(Car &car);
-   void BeginContact(b2Contact * contact);
-   void EndContact(b2Contact * contact);
+   void BeginContact(b2Contact * contact) override;
+   void EndContact(b2Contact * contact) override;
    // void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
    // void PostSOlve(b2Contact* contact, const b2ContactImpulse* impulse);
    int getId(b2Body *carBody);
@@ -31,7 +31,8 @@ public:
                             float ballPositionY,
                             float ballVelocityX);
 public:
-    ContactListenerHits(std::vector<Car> &cars,
+    ContactListenerHits(Ball &ball,
+                        std::vector<Car> &cars,
                         std::vector<int> &ballPunchesLocal,
                         std::vector<int> &ballPunchesVisitor);
     // void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);

@@ -1,14 +1,48 @@
 #include <iostream>
 #include "ball.h"
+#include "../src/constants/b2DVars.h"
 
-Ball::Ball(b2Body* body): ballBody(body),
-                          wasPunchedNormal(false),
-                          wasPunchedFlipShot(false),
-                          wasPunchedRedShot(false),
-                          wasPunchedPurpleShot(false),
-                          wasPunchedGoldShot(false),
-                          framesAfterPunched(0),
-                          secAfterPunched(0) {
+Ball::Ball(std::unique_ptr<b2World> &world) :
+bodyDef(this->createBodyDef()),
+shape(this->createShape()),
+fixtureDef(this->createFixtureDef()),
+ballBody(world->CreateBody(&this->bodyDef)),
+wasPunchedNormal(false),
+wasPunchedFlipShot(false),
+wasPunchedRedShot(false),
+wasPunchedPurpleShot(false),
+wasPunchedGoldShot(false),
+framesAfterPunched(0),
+secAfterPunched(0) {
+    this->ballBody->CreateFixture(&this->fixtureDef);
+}
+
+b2CircleShape Ball::createShape() {
+    b2CircleShape shapeCircle;
+    shapeCircle.m_radius = LogicValues::RADIUS_BALL;
+
+    return shapeCircle;
+}
+
+b2BodyDef Ball::createBodyDef() {
+    b2BodyDef ballDef;
+    ballDef.type = b2_dynamicBody;
+    ballDef.position.Set(0, -2.8f);
+    return ballDef;
+}
+
+b2FixtureDef Ball::createFixtureDef() {
+    b2FixtureDef fixtureCircle;
+    fixtureCircle.shape = &this->shape;
+    fixtureCircle.density = LogicValues().DENSITY_BALL;
+    fixtureCircle.friction = LogicValues().FRICTION_BALL;
+    fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
+    fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
+    fixtureCircle.filter.maskBits = B2DVars().BIT_CAR |
+                                    B2DVars().BIT_GROUND |
+                                    B2DVars().BIT_SOCCER_GOAL;
+
+    return fixtureCircle;
 }
 
 void Ball::punch(int typeOfPunch) {
@@ -46,9 +80,6 @@ void Ball::createFixture(b2FixtureDef &fixture) {
 
 bool Ball::isAwake() {
     return ballBody->IsAwake();
-}
-
-Ball::Ball() {
 }
 
 void Ball::setBody(b2Body *ball) {

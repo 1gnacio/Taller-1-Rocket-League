@@ -9,9 +9,11 @@ private:
     std::condition_variable cv; // tiene elementos?
     bool isClosed;
 public:
-    void push(Command &element);
+    CommandBlockingQueue();
 
-    Command pop();
+    void push(Command &element) override;
+
+    Command pop() override;
 
     void close();
 };

@@ -27,7 +27,12 @@ std::thread GameModel::initGame(std::unique_ptr<CompleteGame>* completeGame) {
 }
 
 LobbyResponse GameModel::createRoom(int ownerId, const char* name, int requiredPlayers) {
-    if (!this->gameExists(name)) {
+    auto found = std::find_if(this->games.begin(),
+                              this->games.end(),
+                              [&name](const std::unique_ptr<CompleteGame>& game)
+                              {return game->getName() == name;});
+
+    if (found == this->games.end()) {
         this->games.emplace_back(std::make_unique<CompleteGame>(ownerId, requiredPlayers, name, serverEndpoint));
         this->gamesThread.push_back(initGame(&games.back()));
 
@@ -41,28 +46,14 @@ LobbyResponse GameModel::createRoom(int ownerId, const char* name, int requiredP
     return lobbyR;
 }
 
-std::unique_ptr<CompleteGame>* GameModel::findGame(const char* name) {
-    std::string roomName = name;
-    for(auto &x: games) {
-        if (x->getName() == roomName) {
-            return &x;
-        }
-    }
-    return nullptr;
-}
-
-std::unique_ptr<CompleteGame>* GameModel::findGame(int id) {
-    for(auto &x: games) {
-        if (x->playerInRoom(id)) {
-            return &x;
-        };
-    }
-    return nullptr;
-}
-
 LobbyResponse GameModel::joinRoom(int playerId, const char* name) {
-    if (gameExists(name)) {
-        ActionResultResponse actionResult((*findGame(name))->joinPlayer(playerId));
+    auto found = std::find_if(this->games.begin(),
+                              this->games.end(),
+                              [&name](const std::unique_ptr<CompleteGame>& game)
+                              {return game->getName() == name;});
+
+    if (found != this->games.end()) {
+        ActionResultResponse actionResult((*found)->joinPlayer(playerId));
         LobbyResponse lobbyR(actionResult);
         return lobbyR;
     }
@@ -74,7 +65,7 @@ LobbyResponse GameModel::joinRoom(int playerId, const char* name) {
 LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
     auto found = std::find_if(this->games.begin(),
                               this->games.end(),
-                              [&name] (std::unique_ptr<CompleteGame>& game)
+                              [&name] (const std::unique_ptr<CompleteGame>& game)
                               { return game->getName() == name;});
 
     if (found != this->games.end()) {
@@ -93,22 +84,14 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
 }
 
 void GameModel::applyCommandToGame(Command &command) {
-    if(command.getValue() == CommandValues().DESERIALIZED_NOP) {
-        for (auto &x : games) {
-            if(x->isInGame()) {
-            x->applyCommand(command);
-            resetDataOfGames();
-            }
-        }
-        return;
-    }
+    auto found = std::find_if(this->games.begin(),
+                              this->games.end(),
+                              [&command](const std::unique_ptr<CompleteGame>& game)
+                              {return game->playerInRoom(command.getID());});
 
-    auto room = findGame(command.getID());
-    if(room != nullptr) {
-        if((*findGame(command.getID()))->isInGame()) {
-            (*findGame(command.getID()))->applyCommand(command);
-            resetDataOfGames();
-        }
+    if(found != this->games.end() && (*found)->isInGame()) {
+        (*found)->applyCommand(command);
+        (*found)->resetData();
     }
 }
 
@@ -118,9 +101,12 @@ int GameModel::gamesAmount() {
 
 std::vector<Response> GameModel::getResponse() {
     std::vector<Response> responses;
-    for(auto &x: games) {
-        responses.emplace_back(x->getResponse());
-    }
+    std::transform(this->games.begin(),
+                   this->games.end(),
+                   std::back_inserter(responses),
+                   [](std::unique_ptr<CompleteGame> &game)
+                   {return game->getResponse();});
+
     return responses;
 }
 
@@ -138,9 +124,7 @@ void GameModel::resetDataOfGames() {
 
 }
 
-GameModel::GameModel(ServerEndpoint &serverEndpoint): serverEndpoint(serverEndpoint) {
-
-}
+GameModel::GameModel(ServerEndpoint &serverEndpoint): serverEndpoint(serverEndpoint) {}
 
 void GameModel::applyLogic(Command& command) {
     if (command.getValue() == this->commands.DESERIALIZED_LIST){
@@ -204,7 +188,7 @@ void GameModel::applyCommand(Command& command) {
 bool GameModel::gameExists(const char *name) {
     auto found = std::find_if(this->games.begin(),
                               this->games.end(),
-                              [&name] (std::unique_ptr<CompleteGame>& game)
+                              [&name] (const std::unique_ptr<CompleteGame>& game)
                               { return game->getName() == name;});
 
     return found != this->games.end();

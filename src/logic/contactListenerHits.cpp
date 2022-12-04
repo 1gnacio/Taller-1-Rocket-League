@@ -7,19 +7,19 @@ void ContactListenerHits::BeginContact(b2Contact * contact) {
     b2Fixture* fa = contact->GetFixtureA();
     b2Fixture* fb = contact->GetFixtureB();
     if (fa->IsSensor()) {
-        if (fb->GetBody() == ball->getBallBody()) {
+        if (fb->GetBody() == ball.getBallBody()) {
             int id = getId(fa->GetBody());
             if (getCar(id)->didFlip()) {
                 if (fa->GetUserData().pointer == 1) {
-                   ball->punch(1);
+                   ball.punch(1);
                 } else if (fa->GetUserData().pointer == 2) {
-                   ball->punch(3);
+                   ball.punch(3);
                 } else if (fa->GetUserData().pointer == 3) {
-                   ball->punch(2);
+                   ball.punch(2);
                 } else if (fa->GetUserData().pointer == 4) {
-                   ball->punch(4);
+                   ball.punch(4);
                 } else {
-                   ball->punch(0);
+                   ball.punch(0);
                 }
             }
            this->verifyAlmostGoal(fb->GetBody()->GetPosition().x,
@@ -54,13 +54,13 @@ void ContactListenerHits::EndContact(b2Contact *contact) {
     if (fa->IsSensor()) {
         b2Body* body = fa->GetBody();
         int id = getId(body);
-        if (fb->GetBody() == ball->getBallBody()) {
+        if (fb->GetBody() == ball.getBallBody()) {
             this->addPunch(id, fb->GetBody()->GetLinearVelocity().x);
         }
     } else if (fb->IsSensor()) {
         b2Body* body = fb->GetBody();
         int id = getId(body);
-        if (fa->GetBody() == ball->getBallBody()) {
+        if (fa->GetBody() == ball.getBallBody()) {
             this->addPunch(id, fb->GetBody()->GetLinearVelocity().x);
         }
     }
@@ -70,23 +70,20 @@ void ContactListenerHits::addCar(Car &car) {
     cars.push_back(car);
 }
 
-void ContactListenerHits::addBall(Ball* sameBall) {
-    this->ball = sameBall;
-}
-
 void ContactListenerHits::verifyFlip(Car &car) {
     getCar(car.getId())->setMakeFlip(car.isMakeFlip());
     getCar(car.getId())->setSecFlip(car.getSecFlip());
 }
 
-ContactListenerHits::ContactListenerHits(std::vector<Car> &cars,
+ContactListenerHits::ContactListenerHits(Ball &ball,
+                                         std::vector<Car> &cars,
                                          std::vector<int> &ballPunchesLocal,
-                                         std::vector<int> &ballPunchesVisitor)
-: cars(cars),
-ballPunchesLocal(ballPunchesLocal),
-ballPunchesVisitor(ballPunchesVisitor),
-ballIsAlmostLocalGoal(false),
-ballIsAlmostVisitorGoal(false) {}
+                                         std::vector<int> &ballPunchesVisitor) :
+                                         cars(cars), ball(ball),
+                                         ballPunchesLocal(ballPunchesLocal),
+                                         ballPunchesVisitor(ballPunchesVisitor),
+                                         ballIsAlmostLocalGoal(false),
+                                         ballIsAlmostVisitorGoal(false) {}
 
 void ContactListenerHits::addPunch(int id, float ballVelocityX) {
     auto found = std::find_if(this->cars.begin(),

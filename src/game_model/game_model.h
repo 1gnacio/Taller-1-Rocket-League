@@ -28,14 +28,9 @@ class GameModel {
 
     bool gameExists(const char* name);
  public:
-    GameModel(ServerEndpoint& serverEndpoint);
-
-    std::unique_ptr<CompleteGame>* findGame(const char *name);
+    explicit GameModel(ServerEndpoint& serverEndpoint);
 
     void applyCommandToGame(Command &command);
-
-    std::unique_ptr<CompleteGame> *findGame(int id);
-
 
     int gamesAmount();
 

@@ -44,7 +44,7 @@ bool Room::operator<(const Room &room) const {
     return (this->name < room.name);
 }
 
-bool Room::operator()(Room &room) {
+bool Room::operator()(const Room &room) {
     return this->name == room.name;
 }
 
@@ -79,14 +79,11 @@ int Room::playersAmount() {
     return players.size();
 }
 
-bool Room::playerInRoom(int &id) {
-    bool playerInRoom = false;
-    for(auto &x: players) {
-        if (x == id) {
-            playerInRoom = true;
-        }
-    }
-    return playerInRoom;
+bool Room::playerInRoom(const int &id) {
+    return std::any_of(this->players.begin(),
+                       this->players.end(),
+                       [&id](int &playerId)
+                       {return playerId == id;});
 }
 
 bool Room::isWaiting1() const {

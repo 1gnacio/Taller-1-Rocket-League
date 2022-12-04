@@ -25,3 +25,5 @@ void CommandBlockingQueue::close() {
     isClosed = true;
     cv.notify_all();
 }
+
+CommandBlockingQueue::CommandBlockingQueue() : cv(), isClosed(false) {}

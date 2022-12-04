@@ -12,7 +12,7 @@ class GameLogic {
     BoxLogic gamePhysics;
 
  public:
-    GameLogic(int requiredPlayers);
+    explicit GameLogic(int requiredPlayers, const char *name);
     void updateModel(Command &command);
     void addPlayer(int id);
     void updateTime();

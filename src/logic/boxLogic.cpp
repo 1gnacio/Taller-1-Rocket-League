@@ -10,17 +10,17 @@
 #include <string>
 
 
-BoxLogic::BoxLogic(int requiredPlayers):
+BoxLogic::BoxLogic(int requiredPlayers, const char *name):
     isActive(true),
-    game(requiredPlayers),
+    world(std::make_unique<b2World>(b2Vec2(0.0f, 9.8f))),
+    ball(world),
+    game(requiredPlayers, name),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
-    contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, 9.8f));
+    contactListener(ball, cars, ballPunchesLocal, ballPunchesVisitor) {
     world->SetContactListener(&this->contactListener);
     createWalls();
-    createBall();
     createSoccerGoals();
 }
 
@@ -88,27 +88,6 @@ void BoxLogic::updateTime() {
 
 bool BoxLogic::ballIsAwake() {
     return ball.isAwake();
-}
-void BoxLogic::createBall() {
-    b2BodyDef ballDef;
-    ballDef.type = b2_dynamicBody;
-    ballDef.position.Set(0, -2.8f);
-    this->ball.setBody(world->CreateBody(&ballDef));
-
-    b2CircleShape shapeCircle;
-    shapeCircle.m_radius = LogicValues().RADIUS_BALL;
-
-    b2FixtureDef fixtureCircle;
-    fixtureCircle.shape = &shapeCircle;
-    fixtureCircle.density = LogicValues().DENSITY_BALL;
-    fixtureCircle.friction = LogicValues().FRICTION_BALL;
-    fixtureCircle.restitution = LogicValues().RESTITUTION_BALL;
-    fixtureCircle.filter.categoryBits = B2DVars().BIT_BALL;
-    fixtureCircle.filter.maskBits = B2DVars().BIT_CAR |
-                                    B2DVars().BIT_GROUND |
-                                    B2DVars().BIT_SOCCER_GOAL;
-    ball.createFixture(fixtureCircle);
-    contactListener.addBall(&ball);
 }
 
 void BoxLogic::createCar(int id) {
@@ -302,20 +281,23 @@ void BoxLogic::jump(int carNumber) {
 PlayerResponses BoxLogic::getPlayersData() {
     std::vector<PlayerResponse> vector;
 
-    for (auto &x : cars) {
-        vector.emplace_back(x.getId(), x.getData(LogicValues().POS_X),
-                            x.getData(LogicValues().POS_Y),
-                            x.getData(LogicValues().ANGLE),
-                            ((x.getData(LogicValues().X_VELOCITY) != 0) ||
-                            (x.getData(LogicValues().Y_VELOCITY) != 0)),
-                            (x.getData(LogicValues().POS_Y) < (2.23)),
-                            x.getData(LogicValues().USING_TURBO),
-                            x.getHasPunchedTheBall(),
-                            x.getData(LogicValues().ACCELERATING),
-                            x.isLocal(),
-                            x.getGoals(), x.getAssists(), x.getSaves(),
-                            x.isFacingLeft(), x.remainingTurbo());
-    }
+    std::transform(this->cars.begin(),
+                   this->cars.end(),
+                   std::back_inserter(vector),
+                   [](Car &x)
+                   { return PlayerResponse(x.getId(),
+                                           x.getData(LogicValues().POS_X),
+                                           x.getData(LogicValues().POS_Y),
+                                           x.getData(LogicValues().ANGLE),
+                                           ((x.getData(LogicValues().X_VELOCITY) != 0) ||
+                                           (x.getData(LogicValues().Y_VELOCITY) != 0)),
+                                           (x.getData(LogicValues().POS_Y) < (2.23)),
+                                           x.getData(LogicValues().USING_TURBO) > 0,
+                                           x.getHasPunchedTheBall(),
+                                           x.getData(LogicValues().ACCELERATING) > 0,
+                                           x.isLocal(),
+                                           x.getGoals(), x.getAssists(), x.getSaves(),
+                                           x.isFacingLeft(), x.remainingTurbo());});
     return PlayerResponses(vector);
 }
 
@@ -457,17 +439,6 @@ void BoxLogic::addGoalToPlayer(int id) {
 
     if (found != this->cars.end()) {
         found->addGoal();
-    }
-}
-
-void BoxLogic::addAssistToPlayer(int id) {
-    auto found = std::find_if(this->cars.begin(),
-                              this->cars.end(),
-                              [&id](Car &car)
-                              {return car.getId() == id;});
-
-    if (found != this->cars.end()) {
-        found->addAssist();
     }
 }
 

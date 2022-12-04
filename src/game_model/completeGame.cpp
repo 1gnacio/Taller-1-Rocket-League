@@ -6,9 +6,10 @@
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
-        logic(requiredPlayers)
+        logic(requiredPlayers, name)
         , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/),
-        isClosed(false){
+        commandQueue(),
+        isClosed(false) {
         this->logic.addPlayer(ownerId);
 }
 

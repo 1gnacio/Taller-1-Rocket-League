@@ -10,7 +10,7 @@
 
 class Game {
  private:
-    std::string name;
+    const char* name;
     int time_inSec;
     int time_in_miliSec;
     int goalsLocal;
@@ -23,7 +23,7 @@ class Game {
     bool isGoalVisitor;
     bool activeReplay;
  public:
-    Game(int requiredPlayers);
+    explicit Game(int requiredPlayers, const char *name);
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
 
     void updateGame(int i);

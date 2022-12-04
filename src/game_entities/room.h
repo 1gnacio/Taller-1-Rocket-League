@@ -22,10 +22,10 @@ class Room {
     ActionResultResponse leaveRoom(int playerId);
 
     int playersAmount();
-    bool playerInRoom(int &id);
+    bool playerInRoom(const int &id);
 
     bool operator<(const Room &room) const;
-    bool operator()(Room& room);
+    bool operator()(const Room& room);
 
     std::string getName() const { return this->name; };
 

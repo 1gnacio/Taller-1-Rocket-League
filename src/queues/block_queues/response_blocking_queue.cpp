@@ -25,3 +25,5 @@ void ResponseBlockingQueue::close() {
     isClosed = true;
     cv.notify_all();
 }
+
+ResponseBlockingQueue::ResponseBlockingQueue() : cv(), isClosed(false) {}

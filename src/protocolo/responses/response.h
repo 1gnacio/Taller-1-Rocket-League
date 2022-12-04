@@ -1,9 +1,5 @@
-//
-// Created by ignacio on 30/10/22.
-//
-
-#ifndef TALLER_1_ROCKET_LEAGUE_RESPONSE_H
-#define TALLER_1_ROCKET_LEAGUE_RESPONSE_H
+#ifndef RESPONSE_H
+#define RESPONSE_H
 
 #include <string>
 #include <vector>
@@ -19,10 +15,10 @@ private:
     bool isDummy;
 public:
     Response();
-    Response(bool isDummy);
-    Response(std::vector<unsigned char> &serializedResponse);
-    Response(MatchResponse &matchResponse);
-    Response(LobbyResponse &lobby);
+    explicit Response(bool isDummy);
+    explicit Response(std::vector<unsigned char> &serializedResponse);
+    explicit Response(MatchResponse &matchResponse);
+    explicit Response(LobbyResponse &lobby);
 
     bool isRecipient(int id);
     std::string getStatus() { return this->lobbyResponse.getStatus(); };
@@ -40,4 +36,4 @@ public:
 };
 
 
-#endif //TALLER_1_ROCKET_LEAGUE_RESPONSE_H
+#endif // RESPONSE_H

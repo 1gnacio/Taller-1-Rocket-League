@@ -100,7 +100,7 @@ public:
 
     void destroy(std::unique_ptr<b2World> &world);
 
-    bool sameBody(b2Body *pBody);
+    bool sameBody(const b2Body *pBody);
 
     void changeLastDirection(directions &direction);
 
