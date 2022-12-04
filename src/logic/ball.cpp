@@ -1,16 +1,6 @@
 #include <iostream>
 #include "ball.h"
 
-Ball::Ball(b2Body* body): ballBody(body),
-                          wasPunchedNormal(false),
-                          wasPunchedFlipShot(false),
-                          wasPunchedRedShot(false),
-                          wasPunchedPurpleShot(false),
-                          wasPunchedGoldShot(false),
-                          framesAfterPunched(0),
-                          secAfterPunched(0) {
-}
-
 void Ball::punch(int typeOfPunch) {
     switch (typeOfPunch) {
         case 0:
@@ -72,12 +62,12 @@ float Ball::getData(int key) {
 }
 
 float Ball::directionForce(int key) {
-    if (key == 3) {
+    if (key == LogicValues().X_VELOCITY) {
         if (getData(LogicValues().X_VELOCITY) > 1)
             return 1;
         else
             return -1;
-    } else if (key == 4) {
+    } else if (key == LogicValues().Y_VELOCITY) {
         if (getData(LogicValues().Y_VELOCITY) > 1)
             return 1;
         else
@@ -89,24 +79,20 @@ float Ball::directionForce(int key) {
 void Ball::verifyPunch() {
     if (secAfterPunched == 0) {
         if (wasPunchedFlipShot) {
-            std::cout << "aplico Flip Shot" << std::endl;
-            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*1,
-                                                directionForce(4)*1),
+            ballBody->ApplyForceToCenter(b2Vec2(directionForce(LogicValues().X_VELOCITY)*forceInFlipShot,
+                                                directionForce(LogicValues().Y_VELOCITY)*forceInFlipShot),
                                                 true);
         } else if (wasPunchedRedShot) {
-            std::cout << "aplico Red Shot" << std::endl;
-            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*2,
-                                                directionForce(4)*2),
+            ballBody->ApplyForceToCenter(b2Vec2(directionForce(LogicValues().X_VELOCITY)*forceInRedShot,
+                                                directionForce(LogicValues().Y_VELOCITY)*forceInRedShot),
                                                 true);
         } else if (wasPunchedPurpleShot) {
-            std::cout << "aplico Purple shot" << std::endl;
-            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*5,
-                                                directionForce(4)*5),
+            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*forceInPurpleShot,
+                                                directionForce(4)*forceInPurpleShot),
                                                 true);
         } else if (wasPunchedGoldShot) {
-            std::cout << "aplico gold shot" << std::endl;
-            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*10,
-                                                directionForce(4)*10),
+            ballBody->ApplyForceToCenter(b2Vec2(directionForce(3)*forceInGoldShot,
+                                                directionForce(4)*forceInGoldShot),
                                                 true);
         }
     }
@@ -142,3 +128,10 @@ bool Ball::isWasPunched() {
             wasPunchedRedShot || wasPunchedFlipShot || wasPunchedNormal);
 }
 
+void Ball::setForces(float forceFlip, float forceRed, float forcePurple, float forceGold) {
+    this->forceInFlipShot = forceFlip;
+    this->forceInRedShot = forceRed;
+    this->forceInPurpleShot = forcePurple;
+    this->forceInGoldShot = forceGold;
+
+}

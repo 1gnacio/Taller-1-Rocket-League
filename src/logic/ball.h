@@ -14,6 +14,12 @@ private:
     bool wasPunchedGoldShot;
     int framesAfterPunched;
     float secAfterPunched;
+    float forceInFlipShot;
+    float forceInRedShot;
+    float forceInPurpleShot;
+    float forceInGoldShot;
+
+
 public:
     b2Body *getBallBody() const;
 
@@ -28,9 +34,10 @@ public:
     bool isWasPunchedGoldShot() const;
 
 public:
-    explicit Ball(b2Body* ballBody);
+    // explicit Ball(b2Body* ballBody);
     Ball();
     void setBody(b2Body* ball);
+    void setForces(float forceFlip, float forceRed, float forcePurple, float forceGold);
     void punch(int typeOfPunch);
     void resetPunch();
     void createFixture(b2FixtureDef &fixture);

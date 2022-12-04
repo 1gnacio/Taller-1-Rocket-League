@@ -10,7 +10,9 @@ ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
             config["car_friction"].as<float>(), config["car_restitution"].as<float>(), config["ball_density"].as<float>(),
             config["ball_friction"].as<float>(), config["ball_restitution"].as<float>(), config["ball_radius"].as<float>(),
             config["gravity"].as<float>(), config["directional_force_module"].as<float>(), config["jump_impulse"].as<float>(),
-            config["replay_time_in_sec"].as<int>(), config["responses_per_sec"].as<int>()};
+            config["replay_time_in_sec"].as<int>(), config["responses_per_sec"].as<int>(), config["game_time"].as<int>(),
+            config["force_flip_shot"].as<float>(), config["force_red_shot"].as<float>(), config["force_purple_shot"].as<float>(),
+            config["force_gold_shot"].as<float>(), config["turbo_force"].as<float>() };
 }
 
 ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {

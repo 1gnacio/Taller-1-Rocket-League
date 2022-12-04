@@ -174,12 +174,12 @@ b2Vec2 Car::getVelocity() {
 }
 
 float Car::directionForce(int key) {
-    if (key == 3) {
+    if (key == LogicValues().X_VELOCITY) {
         if (getData(LogicValues().X_VELOCITY) > 0)
             return 1;
         else if (getData(LogicValues().X_VELOCITY) < 0)
             return -1;
-    } else if (key == 4) {
+    } else if (key == LogicValues().Y_VELOCITY) {
         if (getData(LogicValues().Y_VELOCITY) > 0)
             return 1;
         else if (getData(LogicValues().Y_VELOCITY) < 0)
@@ -191,18 +191,16 @@ float Car::directionForce(int key) {
 void Car::applyTurbo() {
     usingTurbo = 2;
     if (turboTank > 0) {
-
-       carBody->ApplyForceToCenter(b2Vec2(directionForce(3)*3,directionForce(4)*3), true);
-        //  carBody->ApplyLinearImpulseToCenter(b2Vec2(directionForce(3)*3,directionForce(4)*3), true);
+       carBody->ApplyForceToCenter(b2Vec2(directionForce(LogicValues().X_VELOCITY)*turboForce,directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
     }
 }
 
 void Car::resetPosition() {
     if (id%2)
-        carBody->SetTransform(b2Vec2(-2.0f, -2.0f),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_LOCAL, LogicValues().POS_Y_INITIAL_CAR_LOCAL),
                               LogicValues().ANGLE_CAR);
     else
-        carBody->SetTransform(b2Vec2(2.0f, -2.0f),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_VISITOR, LogicValues().POS_Y_INITIAL_CAR_VISITOR),
                               LogicValues().ANGLE_CAR);
     carBody->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
     carBody->SetAngularVelocity(0);
@@ -313,5 +311,9 @@ void Car::verifyPunch() {
     }
     timeAfterPunched++;
 
+}
+
+void Car::setTurboForce(float force) {
+    turboForce = force;
 }
 

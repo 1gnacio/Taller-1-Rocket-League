@@ -5,7 +5,7 @@
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
 
-Game::Game(int requiredPlayers):
+Game::Game(int requiredPlayers, int time):
               name("juego"),
               time_inSec(0),
               time_in_miliSec(0),
@@ -17,7 +17,8 @@ Game::Game(int requiredPlayers):
               hasFinished(false),
               isGoalLocal(false),
               isGoalVisitor(false),
-              activeReplay(false) {
+              activeReplay(false),
+              game_time(time) {
 }
 
 MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
@@ -50,7 +51,7 @@ void Game::updateTime() {
 }
 
 bool Game::matchFinished() {
-    return (time_inSec > 180);
+    return (time_inSec > game_time);
 }
 
 bool Game::goal() {
