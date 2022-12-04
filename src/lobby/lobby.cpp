@@ -12,6 +12,7 @@ lobby::lobby(QWidget *parent,
     , _client(connection)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->width(), this->height());
     maxPlayers = 2;
     horizontalHeader.append("Game Name");
     horizontalHeader.append("Status");
@@ -33,12 +34,13 @@ lobby::~lobby()
 
 
 void lobby::on_pushButton_join_clicked()
-{   //TODO UNIR
+{   //UNIR
     if (this->currSelectedGame.isEmpty()) { return; }
 
     std::string join = CommandValues().DESERIALIZED_JOIN;
     std::string firstParameter = this->currSelectedGame.toStdString();
-    Command c = ProtocolCommands().createCommand(this->connection.getId(), join, firstParameter);
+    Command c = ProtocolCommands().createCommand(this->connection.getId(),
+                                         join, firstParameter);
     this->connection.push(c);
     Response r = this->connection.pop();
 
@@ -61,9 +63,10 @@ void lobby::on_pushButton_join_clicked()
 
 
 void lobby::on_pushButton_refresh_clicked()
-{   //TODO LISTAR
+{   //LISTAR
     std::string list = CommandValues().DESERIALIZED_LIST;
-    Command c = ProtocolCommands().createCommand(this->connection.getId(), list);
+    Command c = ProtocolCommands().createCommand(this->connection.getId(),
+                                                 list);
     this->connection.push(c);
     Response r = this->connection.pop();
 
@@ -86,14 +89,15 @@ void lobby::on_pushButton_refresh_clicked()
 
 void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 {
-    currSelectedGame = ui->gamesListTable->model()->data(ui->gamesListTable->model()->index(index.row(),0)).toString();
+    currSelectedGame = ui->gamesListTable->model()->data(
+            ui->gamesListTable->model()->index(index.row(),0)).toString();
     ui->pushButton_join->setEnabled(true);
 }
 
 
 void lobby::on_pushButton_createGame_clicked()
 {
-    //TODO CREAR
+    //CREAR
     if (this->maxPlayers < 1 || this->create_gameName.isEmpty()) {
         return;
     }
@@ -101,8 +105,9 @@ void lobby::on_pushButton_createGame_clicked()
     std::string create = CommandValues().DESERIALIZED_CREATE;
     std::string firstParameter = std::to_string(this->maxPlayers);
     std::string secondParameter = this->create_gameName.toStdString();
-    Command c = ProtocolCommands().createCommand(this->connection.getId(), create,
-                                                 firstParameter, secondParameter);
+    Command c = ProtocolCommands().createCommand(
+            this->connection.getId(), create,
+            firstParameter, secondParameter);
     this->connection.push(c);
     Response r = this->connection.pop();
 
@@ -137,9 +142,3 @@ void lobby::on_lineEdit_gameName_textChanged(const QString &arg1)
         ui->pushButton_createGame->setEnabled(false);
     }
 }
-
-//void lobby::closeEvent(QCloseEvent *bar) {
-//    this->connection.closeConnection();
-//    QWidget::closeEvent(bar);
-//}
-//
