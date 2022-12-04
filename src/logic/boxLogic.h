@@ -13,6 +13,7 @@
 #include "../src/game_entities/room.h"
 #include "contactListenerHits.h"
 #include "../src/constants/command_values.h"
+#include "../src/configuration/attributes/server_configuration_attributes.h"
 
 /*
  * Objeto que manipula la física de cada partida a partir de box2d
@@ -21,6 +22,7 @@
 class BoxLogic {
  private:
     bool isActive;
+    ServerConfigurationAttributes configuration;
     Game game;
     Ball ball;
     std::unique_ptr<b2World> world;
@@ -86,7 +88,7 @@ class BoxLogic {
 
     PlayerResponses getPlayersData();
     Car* getCar(int carNumber);
-    static b2Vec2 getVectorForce(int direction, directions& lastDir);
+    b2Vec2 getVectorForce(int direction, directions& lastDir);
     void verifyDoubleJump();
     void verifyTurbo();
     void verifyGoal();

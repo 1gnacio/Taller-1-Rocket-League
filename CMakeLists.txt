@@ -246,9 +246,15 @@ add_executable(lobby
         src/handlers/id_service.h
         src/logic/ball.cpp
         src/logic/ball.h
+        src/configuration/attributes/client_configuration_attributes.cpp
+        src/configuration/attributes/client_configuration_attributes.h
+        src/configuration/attributes/server_configuration_attributes.cpp
+        src/configuration/attributes/server_configuration_attributes.h
+        src/configuration/yaml_configuration.cpp
+        src/configuration/yaml_configuration.h
         )
 
-target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d)
+target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d yaml-cpp)
 
 ######################################################################################################################
 file(GLOB_RECURSE sources "../src/*/*.cpp")
@@ -476,9 +482,15 @@ add_executable(game_server
         src/logic/contactListenerHits.h
         src/logic/ball.cpp
         src/logic/ball.h
+        src/configuration/attributes/client_configuration_attributes.cpp
+        src/configuration/attributes/client_configuration_attributes.h
+        src/configuration/attributes/server_configuration_attributes.cpp
+        src/configuration/attributes/server_configuration_attributes.h
+        src/configuration/yaml_configuration.cpp
+        src/configuration/yaml_configuration.h
         )
 
-target_link_libraries(game_server box2d)
+target_link_libraries(game_server box2d yaml-cpp)
 
 ######################################################################################################################
 enable_testing()
@@ -493,6 +505,8 @@ include(CTest)
 
 set(BIN "/usr/bin")
 set(RESOURCES "/var/game")
+set(CONFIG "/etc/game")
+
 
 install(TARGETS game_client DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
@@ -502,23 +516,7 @@ install(TARGETS lobby DESTINATION ${BIN} PERMISSIONS WORLD_READ WORLD_WRITE WORL
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${RESOURCES})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/config DESTINATION ${CONFIG})
 
 
 
