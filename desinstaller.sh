@@ -19,6 +19,10 @@ do
         echo "${green}Desinstalando 'qt5'...${reset}"
         sudo apt-get remove qt5-default -y
 
+        sudo apt-get remove qtbase5-dev
+
+        sudo apt-get remove qtdeclarative5-dev
+
         echo "${green}Desinstalando 'libqt5multimedia5-plugnins'...${reset}"
         sudo apt-get remove libqt5multimedia5-plugins -y
         
@@ -40,6 +44,12 @@ do
         shift
         echo "${green}${bold}Desinstalando las dependencias de sdl2...${reset}"
 
+        echo "${green}Desinstalando 'libgbm1'...${reset}"
+        sudo apt-get remove libgbm1
+
+        echo "${green}Desinstalando 'libegl1-mesa0'...${reset}"
+        sudo apt-get remove libegl1-mesa -y
+
         echo "${green}Desinstalando 'libsdl2-dev'...${reset}"
         sudo apt-get remove libsdl2-dev -y
 
@@ -51,6 +61,9 @@ do
 
         echo "${green}Desinstalando 'libsdl2-mixer-dev'...${reset}"
         sudo apt-get remove libsdl2-mixer-dev -y
+
+        echo "${green}Desinstalando 'libsdl2-image1.2-dev'...${reset}"
+        sudo apt-get remove libsdl2-image1.2-dev
         
         ;;
 
@@ -104,6 +117,10 @@ do
         echo "${green}Desinstalando 'qt5'...${reset}"
         sudo apt-get remove qt5-default -y
 
+        sudo apt-get remove qtbase5-dev
+
+        sudo apt-get remove qtdeclarative5-dev
+
         echo "${green}Desinstalando 'libqt5multimedia5-plugnins'...${reset}"
         sudo apt-get remove libqt5multimedia5-plugins -y
         
@@ -123,7 +140,10 @@ do
         sudo apt-get remove libsdl2-mixer-dev -y
         
         echo "${green}Desinstalando 'libsdl2-ttf-dev'...${reset}"
-        sudo apt-get remove libsdl2-mixer-dev -y
+        sudo apt-get remove libsdl2-ttf-dev -y
+
+        echo "${green}Desinstalando 'libsdl2-image1.2-dev'...${reset}"
+        sudo apt-get remove libsdl2-image1.2-dev
 
         echo "${green}Desinstalando 'clang'...${reset}"
         sudo apt-get remove clang -y 
