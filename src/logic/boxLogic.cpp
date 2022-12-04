@@ -15,7 +15,7 @@
 BoxLogic::BoxLogic(int requiredPlayers):
     isActive(true),
     configuration(YamlConfiguration().ReadServerConfiguration()),
-    game(requiredPlayers),
+    game(requiredPlayers, configuration.getGameTime()),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
@@ -95,8 +95,10 @@ bool BoxLogic::ballIsAwake() {
 void BoxLogic::createBall() {
     b2BodyDef ballDef;
     ballDef.type = b2_dynamicBody;
-    ballDef.position.Set(0, -2.8f);
+    ballDef.position.Set(LogicValues().POS_X_INITIAL_BALL, LogicValues().POS_Y_INITIAL_BALL);
     this->ball.setBody(world->CreateBody(&ballDef));
+    this->ball.setForces(configuration.getForceFlipShot(), configuration.getForceRedShot(),
+                         configuration.getForcePurpleShot(), configuration.getForceGoldShot());
 
     b2CircleShape shapeCircle;
     shapeCircle.m_radius = configuration.getBallRadius();
@@ -122,9 +124,9 @@ void BoxLogic::createCar(int id) {
     carBodyDef.type = b2_dynamicBody;
     carBodyDef.angle = LogicValues().ANGLE_CAR;
     if (id%2) {
-        carBodyDef.position.Set(-2.0f, -2.0f);
+        carBodyDef.position.Set(LogicValues().POS_X_INITIAL_CAR_LOCAL, LogicValues().POS_Y_INITIAL_CAR_LOCAL);
     } else {
-        carBodyDef.position.Set(2.0f, -2.0f);
+        carBodyDef.position.Set(LogicValues().POS_X_INITIAL_CAR_VISITOR, LogicValues().POS_Y_INITIAL_CAR_VISITOR);
     }
     cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
     b2PolygonShape dynamicCar;
@@ -140,6 +142,7 @@ void BoxLogic::createCar(int id) {
                                  B2DVars().BIT_GROUND |
                                  B2DVars().BIT_SOCCER_GOAL;
     cars.back().createFixture(fixtureDef, 0);
+    cars.back().setTurboForce(configuration.getTurboForce());
 
     // Create 4 sensors
     b2FixtureDef sensorDef;
@@ -233,16 +236,12 @@ float BoxLogic::getBallData(int key) {
     switch (key) {
         case LogicValues().POS_X:
             return this->ball.getBallBody()->GetPosition().x;
-            break;
         case LogicValues().POS_Y:
             return this->ball.getBallBody()->GetPosition().y;
-            break;
         case LogicValues().X_VELOCITY:
             return this->ball.getBallBody()->GetLinearVelocity().x;
-            break;
         case LogicValues().Y_VELOCITY:
             return this->ball.getBallBody()->GetLinearVelocity().y;
-            break;
     }
     return 0.0f;
 }
@@ -312,7 +311,7 @@ PlayerResponses BoxLogic::getPlayersData() {
                             x.getData(LogicValues().ANGLE),
                             ((x.getData(LogicValues().X_VELOCITY) != 0) ||
                             (x.getData(LogicValues().Y_VELOCITY) != 0)),
-                            (x.getData(LogicValues().POS_Y) < (2.23)),
+                            (x.getData(LogicValues().POS_Y) < LogicValues().ALTITUDE_GROUND),
                             x.getData(LogicValues().USING_TURBO),
                             x.getHasPunchedTheBall(),
                             x.getData(LogicValues().ACCELERATING),
@@ -422,7 +421,7 @@ void BoxLogic::resetPositions() {
             x.resetPosition();
         }
         ball.getBallBody()->SetLinearVelocity(b2Vec2(0.1f, 0.1f));
-        ball.getBallBody()->SetTransform(b2Vec2(0, -2.8f), 0);
+        ball.getBallBody()->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_BALL, LogicValues().POS_Y_INITIAL_BALL), 0);
     }
 }
 

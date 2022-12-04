@@ -1,18 +1,18 @@
 #include <csignal>
 #include "completeGame.h"
 #include "../src/constants/response_values.h"
+#include "../src/configuration/yaml_configuration.h"
 #include <iostream>
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
+        configuration(YamlConfiguration().ReadServerConfiguration()),
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
         logic(requiredPlayers)
-        , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/),
+        , replayLogic(configuration.getReplayTimeInSec(), configuration.getResponsesPerSec()),
         isClosed(false){
         this->logic.addPlayer(ownerId);
 }
-
-
 
 ActionResultResponse CompleteGame::joinPlayer(int id) {
     ActionResultResponse response = this->room.joinPlayer(id);
@@ -99,11 +99,11 @@ void CompleteGame::gameFlow() {
                         } else {
                             this->serverEndpoint.push(logic.getResponse());
                         }
-                        float timeStep = 1.0f / 25.0f;
+                        float timeStep = 1.0f / configuration.getResponsesPerSec();
                         usleep(timeStep*1000000);
                     } else {
                         Command command = commandQueue.pop();
-                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) { // NO DEBERIA LLEGAR EL COMANDO NOP
+                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
                             logic.updateModel(command);
                         }
                         limitCommands++;
@@ -120,9 +120,9 @@ void CompleteGame::gameFlow() {
                 }
             } else {
                 sendResponse();
+                logic.resetData();
                 float timeStep = 1.0f / 10.0f;
                 usleep(timeStep*1000000);
-
             }
         }
     } catch (...) {

@@ -36,6 +36,7 @@ class Car {
     bool facingLeft;
     bool hasPunchedTheBall;
     int timeAfterPunched;
+    float turboForce;
     bool canJump();
     bool isJumping();
 public:
@@ -143,6 +144,8 @@ public:
     bool getHasPunchedTheBall();
 
     void verifyPunch();
+
+    void setTurboForce(float force);
 
 
     float directionForce(int key);

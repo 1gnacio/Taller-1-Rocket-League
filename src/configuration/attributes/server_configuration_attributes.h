@@ -6,6 +6,31 @@ class ServerConfigurationAttributes {
 private:
     float carWidth;
     float carHeight;
+
+    float carDensity;
+    float carFriction;
+    float carRestitution;
+
+    float ballDensity;
+    float ballFriction;
+    float ballRestitution;
+
+    float ballRadius;
+    float mapGravity;
+
+    float movementForceModule;
+    float jumpImpulse;
+
+    int replayTimeInSec;
+    int responsesPerSec;
+    int gameTime;
+
+    float forceFlipShot;
+    float forceRedShot;
+    float forcePurpleShot;
+    float forceGoldShot;
+
+    float turboForce;
 public:
     float getCarWidth() const;
 
@@ -35,29 +60,25 @@ public:
 
     int getResponsesPerSec() const;
 
-private:
-    float carDensity;
-    float carFriction;
-    float carRestitution;
+    float getForceFlipShot() const;
 
-    float ballDensity;
-    float ballFriction;
-    float ballRestitution;
+    float getForceRedShot() const;
 
-    float ballRadius;
-    float mapGravity;
+    float getForcePurpleShot() const;
 
-    float movementForceModule;
-    float jumpImpulse;
+    float getForceGoldShot() const;
 
-    int replayTimeInSec;
-    int responsesPerSec;
+    float getTurboForce() const;
+
+    int getGameTime() const;
+
 
 public:
     ServerConfigurationAttributes(float carWidth, float carHeight, float carDensity,
                                   float carFriction, float carRestitution, float ballDensity, float ballFriction,
                                   float ballRestitution, float ballRadius, float mapGravity, float movementForceModule,
-                                  float jumpImpulse, int replayTimeInSec, int responsesPerSec);
+                                  float jumpImpulse, int replayTimeInSec, int responsesPerSec, int gameTime,
+                                  float forceFlipShot, float forceRedShot, float forcePurpleShot, float forceGoldShot, float turboForce);
 };
 
 

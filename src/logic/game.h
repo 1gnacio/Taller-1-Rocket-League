@@ -22,8 +22,9 @@ class Game {
     bool isGoalLocal;
     bool isGoalVisitor;
     bool activeReplay;
+    int game_time;
  public:
-    Game(int requiredPlayers);
+    Game(int requiredPlayers, int time);
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
 
     void updateGame(int i);
