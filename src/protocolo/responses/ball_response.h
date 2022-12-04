@@ -13,17 +13,16 @@ private:
     float rotationAngle;
     bool isMoving;
     bool isFlying;
-    bool hasBeenPunched;
-    /*
     bool hasBeenPunchedNormal;
     bool hasBeenPunchedFlipShot;
     bool hasBeenPunchedRedShot;
     bool hasBeenPunchedPurpleShot;
     bool hasBeenPunchedGoldShot;
-     */
 
 public:
-    BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying, bool hasBeenPunched);
+    BallResponse(float posX, float posY, float rotationAngle, bool isMoving, bool isFlying,
+                 bool hasBeenPunchedNormal, bool hasBeenPunchedFlipShot, bool hasBeenPunchedRedShot,
+                 bool hasBeenPunchedPurpleShot, bool hasBeenPunchedGoldShot);
     BallResponse(std::vector<unsigned char > serialized);
     BallResponse();
     std::vector<unsigned char> serialize();
@@ -33,7 +32,7 @@ public:
     [[nodiscard]] float getRotationAngle() const { return this->rotationAngle; }
     [[nodiscard]] bool getIsMoving() const { return this->isMoving; }
     [[nodiscard]] bool getIsFlying() const { return this->isFlying; }
-    [[nodiscard]] bool getHasBeenPunched() const { return this->hasBeenPunched; }
+    [[nodiscard]] bool getHasBeenPunched() const { return this->hasBeenPunchedNormal; }
 
     static int size();
 };

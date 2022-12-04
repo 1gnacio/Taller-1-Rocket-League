@@ -40,7 +40,7 @@ class BoxLogic {
      * Se instancia una mundo y a partir de ello,
      * una pelota, los bordes del mapa y los arcos
      */
-    BoxLogic();
+    BoxLogic(int requiredPlayers);
 
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void createSoccerGoals();

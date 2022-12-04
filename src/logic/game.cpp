@@ -5,14 +5,15 @@
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
 
-Game::Game(): name("juego"),
+Game::Game(int requiredPlayers):
+              name("juego"),
               time_inSec(0),
               time_in_miliSec(0),
               goalsLocal(0),
               goalsVisitor(0),
-              requiredPlayers(2),
-              currentPlayers(2),
-              isWaitingForPlayers(true),
+              requiredPlayers(requiredPlayers),
+              currentPlayers(1),
+              isWaitingForPlayers(requiredPlayers > 1),
               hasFinished(false),
               isGoalLocal(false),
               isGoalVisitor(false),
