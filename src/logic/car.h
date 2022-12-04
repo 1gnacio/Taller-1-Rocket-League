@@ -145,6 +145,7 @@ public:
     void verifyPunch();
 
 
+    float directionForce(int key);
 };
 
 
