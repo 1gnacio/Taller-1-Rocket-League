@@ -6,7 +6,21 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID):carBody(body), secondJump(0), id(ID), turboTank(1), isAccelerating(false), isLocalTeam(!(id%2)), lastDirection(NONE), makeFlip(false), secFlip(0), goals(0), assists(0), saves(0), facingLeft(false) {
+Car::Car(b2Body *body, int ID): carBody(body),
+                                secondJump(0),
+                                id(ID),
+                                turboTank(1),
+                                isAccelerating(false),
+                                usingTurbo(0),
+                                isLocalTeam(!(id%2)),
+                                lastDirection(NONE),
+                                goals(0),
+                                assists(0),
+                                saves(0),
+                                secFlip(0),
+                                makeFlip(false),
+                                facingLeft(false),
+                                timeAfterPunched(0) {
 }
 
 int Car::getId() {
@@ -14,7 +28,7 @@ int Car::getId() {
 }
 
 void Car::createFixture(b2FixtureDef & fixture, uintptr_t codeFixture) {
-    carBody->CreateFixture(&fixture)->GetUserData().pointer = codeFixture; // carBody->CreateFixture(&fixture)->GetUserData->pointer = num;
+    carBody->CreateFixture(&fixture)->GetUserData().pointer = codeFixture;
 }
 
 float Car::getData(int key) {
@@ -47,7 +61,8 @@ void Car::startMove(b2Vec2 vel) {
         this->facingLeft = vel.x < 0;
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
-        if(carBody->GetAngularVelocity() < 2.0f && carBody->GetAngularVelocity() > -2.0f) {
+        if (carBody->GetAngularVelocity() < 2.0f &&
+            carBody->GetAngularVelocity() > -2.0f) {
             carBody->ApplyTorque(torque, true);
         }
     }
@@ -57,7 +72,6 @@ void Car::stopMove() {
     if (isJumping()) {
         carBody->SetAngularVelocity(0);
     }
-
 }
 
 bool Car::canJump() {
@@ -73,22 +87,21 @@ void Car::modifyJumpedTwoTimes() {
 }
 
 b2Vec2 Car::forceInFlip() {
-    if(lastDirection == RIGHT_LAST_DIRECTION) {
-        return (b2Vec2(1,-0.5));
+    if (lastDirection == RIGHT_LAST_DIRECTION) {
+        return (b2Vec2(1, -0.5));
     } else if (lastDirection == LEFT_LAST_DIRECTION) {
-        return (b2Vec2(-1,-0.5));
+        return (b2Vec2(-1, -0.5));
     } else if (lastDirection == UP_LAST_DIRECTION) {
-        return (b2Vec2(0,-2));
+        return (b2Vec2(0, -2));
     } else if (lastDirection == DOWN_LAST_DIRECTION) {
         return (b2Vec2(0, 2));
     }
-   makeFlip = false;
-   return b2Vec2(0,-2);
+    makeFlip = false;
+    return b2Vec2(0, -2);
 }
 
-float Car::forceInTorque(){
-
-    if(lastDirection == RIGHT_LAST_DIRECTION) {
+float Car::forceInTorque() {
+    if (lastDirection == RIGHT_LAST_DIRECTION) {
         return (10);
     } else if (lastDirection == LEFT_LAST_DIRECTION) {
         return (-10);
@@ -99,15 +112,14 @@ float Car::forceInTorque(){
     }
     makeFlip = false;
     return 0;
-
 }
 
 void Car::jump(b2Vec2 vel) {
     if (!secondJump) {
        if (isJumping()) {
            this->modifyJumpedTwoTimes();
-           carBody->ApplyLinearImpulseToCenter(forceInFlip(),true);
-           carBody->ApplyTorque(forceInTorque(),true);
+           carBody->ApplyLinearImpulseToCenter(forceInFlip(), true);
+           carBody->ApplyTorque(forceInTorque(), true);
        } else {
            carBody->ApplyLinearImpulseToCenter(vel, true);
        }
@@ -131,26 +143,26 @@ void Car::verifyAcceleration() {
 }
 
 void Car::verifyTurbo() {
-    if(usingTurbo) {
-        if(turboTank > 0.01f) {
-            turboTank -=0.01f;
+    if (usingTurbo) {
+        if (turboTank > 0.01f) {
+            turboTank -= 0.01f;
         } else {
             turboTank = 0;
         }
     } else {
-        if(!isJumping() && !usingTurbo && turboTank< 1) {
+        if (!isJumping() && !usingTurbo && turboTank< 1) {
             turboTank += 0.001f;
         }
     }
-    if(usingTurbo >=1)
-        usingTurbo-=1;
+    if (usingTurbo >= 1)
+        usingTurbo -= 1;
 }
 
-bool Car::verifyFlip() {
-    if(makeFlip) {
+void Car::verifyFlip() {
+    if (makeFlip) {
         secFlip = secFlip + 0.04;
     }
-    if(!isJumping()) {
+    if (!isJumping()) {
         this->makeFlip = false;
         this->punched = false;
         secFlip = 0;
@@ -163,28 +175,28 @@ b2Vec2 Car::getVelocity() {
 
 void Car::applyTurbo() {
     usingTurbo = 2;
-   if(turboTank > 0) {
+    if (turboTank > 0) {
         b2Vec2 vel(carBody->GetLinearVelocity().x*1.1,
                    carBody->GetLinearVelocity().y*1.1);
         carBody->SetLinearVelocity(b2Vec2(vel.x, vel.y));
-   }
-
+    }
 }
 
 void Car::resetPosition() {
-    if(id%2)
-        carBody->SetTransform(b2Vec2(-2.0f, -2.0f), LogicValues().ANGLE_CAR);
-     else
-        carBody->SetTransform(b2Vec2(2.0f, -2.0f), LogicValues().ANGLE_CAR);
-
-    carBody->SetLinearVelocity(b2Vec2(0.1f,0.1f));
+    if (id%2)
+        carBody->SetTransform(b2Vec2(-2.0f, -2.0f),
+                              LogicValues().ANGLE_CAR);
+    else
+        carBody->SetTransform(b2Vec2(2.0f, -2.0f),
+                              LogicValues().ANGLE_CAR);
+    carBody->SetLinearVelocity(b2Vec2(0.1f, 0.1f));
 }
 
 void Car::destroy(std::unique_ptr<b2World> &world) {
     world->DestroyBody(carBody);
 }
 
-bool Car::isLocal(){
+bool Car::isLocal() {
     return this->isLocalTeam;
 }
 
@@ -193,7 +205,7 @@ bool Car::sameBody(b2Body *pBody) {
 }
 
 void Car::changeLastDirection(directions &direction) {
-    if(lastDirection != direction) {
+    if (lastDirection != direction) {
         this->lastDirection = direction;
     }
 }
@@ -203,7 +215,7 @@ directions Car::getLastDirection() {
 }
 
 bool Car::didFlip() {
-    if(makeFlip && secFlip < 1) { // 0.2
+    if (makeFlip && secFlip < 0.2) {
         return true;
     }
     return false;
@@ -275,5 +287,15 @@ void Car::notPunchedTheBall() {
 
 bool Car::getHasPunchedTheBall() {
     return this->hasPunchedTheBall;
+}
+
+void Car::verifyPunch() {
+
+    if(timeAfterPunched > 2) {
+        this->hasPunchedTheBall = false;
+        timeAfterPunched = 0;
+    }
+    timeAfterPunched++;
+
 }
 

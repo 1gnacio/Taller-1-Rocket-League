@@ -11,7 +11,6 @@ GameLogic::GameLogic(): withoutPlayers(0) {
 
 
 void GameLogic::updateModel(Command &command) {
-    //std::cout << "llega un comando de " << command.getValue() <<", Con ID:" << command.getID() <<std::endl;
     if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
@@ -27,7 +26,7 @@ void GameLogic::updateModel(Command &command) {
         gamePhysics.jump(command.getID());
     } else if ((command.getValue() == CommandValues().DESERIALIZED_DOWN_PUSHED)) {
         gamePhysics.updateLastDirection(command.getID(), CommandValues().DESERIALIZED_DOWN_PUSHED);
-    } else if((command.getValue() == CommandValues().DESERIALIZED_UP_PUSHED)) {
+    } else if ((command.getValue() == CommandValues().DESERIALIZED_UP_PUSHED)) {
         gamePhysics.updateLastDirection(command.getID(), CommandValues().DESERIALIZED_UP_PUSHED);
     }
 }
@@ -66,12 +65,11 @@ Response GameLogic::getResponse() {
     MatchResponse match(gamePhysics.gameData(ball, players));
 
     Response response(match);
-    return std::move(response);
+    return response;
 }
 
 void GameLogic::resetData() {
     gamePhysics.resetData();
-
 }
 
 float GameLogic::ballPosY() {

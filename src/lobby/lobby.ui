@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>799</width>
-    <height>629</height>
+    <height>517</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Rocket League Lobby</string>
@@ -20,7 +26,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -90,7 +96,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>5</height>
+          <height>13</height>
          </size>
         </property>
        </spacer>
@@ -121,7 +127,10 @@
         <item>
          <widget class="QSpinBox" name="maxPlayers_count">
           <property name="minimum">
-           <number>2</number>
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -180,7 +189,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
-          <height>5</height>
+          <height>13</height>
          </size>
         </property>
        </spacer>
@@ -188,7 +197,7 @@
       <item>
        <widget class="QTableView" name="gamesListTable">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -201,7 +210,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>779</width>
           <height>16777215</height>
          </size>
         </property>

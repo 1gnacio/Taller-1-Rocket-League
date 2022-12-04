@@ -11,9 +11,9 @@
 
 class CompleteGame {
 private:
+    ServerEndpoint & serverEndpoint;
     Room room;
     GameLogic logic;
-    ServerEndpoint & serverEndpoint;
     ReplayLogic replayLogic;
     CommandQueue commandQueue;
     bool isClosed;

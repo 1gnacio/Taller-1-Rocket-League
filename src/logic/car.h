@@ -19,37 +19,33 @@ enum directions {
 
 class Car {
  private:
-    float turboTank;
-    int id;
     b2Body* carBody;
-    bool canJump();
-    bool isJumping();
     int secondJump;
-    int usingTurbo;
+    int id;
+    float turboTank;
     bool isAccelerating;
+    int usingTurbo;
     bool isLocalTeam;
     directions lastDirection;
+    int goals;
+    int assists;
+    int saves;
     float secFlip;
+    bool makeFlip;
+    bool punched;
+    bool facingLeft;
+    bool hasPunchedTheBall;
+    int timeAfterPunched;
+    bool canJump();
+    bool isJumping();
 public:
     void setSecFlip(float secFlip);
 
-public:
     float getSecFlip() const;
 
     bool isMakeFlip() const;
 
-private:
-    bool makeFlip;
-public:
     void setMakeFlip(bool makeFlip);
-private:
-    bool punched;
-    int goals;
-    int assists;
-    int saves;
-    bool facingLeft;
-    bool hasPunchedTheBall;
-
 
  public:
     /*
@@ -118,7 +114,7 @@ private:
 
     bool didFlip();
 
-    bool verifyFlip();
+    void verifyFlip();
 
     bool punchedBall() const;
 
@@ -145,6 +141,10 @@ private:
     void notPunchedTheBall();
 
     bool getHasPunchedTheBall();
+
+    void verifyPunch();
+
+
 };
 
 
