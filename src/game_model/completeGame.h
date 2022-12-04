@@ -12,6 +12,7 @@
 class CompleteGame {
 private:
     ServerEndpoint & serverEndpoint;
+    ServerConfigurationAttributes configuration;
     Room room;
     GameLogic logic;
     ReplayLogic replayLogic;

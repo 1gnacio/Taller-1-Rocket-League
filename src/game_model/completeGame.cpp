@@ -1,19 +1,19 @@
 #include <csignal>
 #include "completeGame.h"
 #include "../src/constants/response_values.h"
+#include "../src/configuration/yaml_configuration.h"
 #include <iostream>
 
 CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
+        configuration(YamlConfiguration().ReadServerConfiguration()),
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
-        logic(requiredPlayers, name)
-        , replayLogic(5 /*configurable*/, 25 /*respuestas enviadas por el servidor por segundo*/),
+        logic(requiredPlayers, name),
+        replayLogic(configuration.getReplayTimeInSec(), configuration.getResponsesPerSec()),
         commandQueue(),
-        isClosed(false) {
+        isClosed(false){
         this->logic.addPlayer(ownerId);
 }
-
-
 
 ActionResultResponse CompleteGame::joinPlayer(int id) {
     ActionResultResponse response = this->room.joinPlayer(id);
@@ -85,26 +85,29 @@ bool CompleteGame::matchFinished() {
 void CompleteGame::gameFlow() {
 
     try {
+        int limitCommands = 0;
         while(!this->isClosed && !this->matchFinished()) {
             logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
             logic.resetData();
+
             if(isInGame()) {
-                int limitCommands = 0;
+                limitCommands = 0;
                 while((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())){
                     logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {
+                        Command command = commandQueue.pop();
                         Response replayResponse = this->replayLogic.getResponse();
                         if (!replayResponse.dummy()) {
                             this->serverEndpoint.push(replayResponse);
                         } else {
                             this->serverEndpoint.push(logic.getResponse());
                         }
-                        float timeStep = 1.0f / 25.0f;
+                        float timeStep = 1.0f / configuration.getResponsesPerSec();
                         usleep(timeStep*1000000);
                     } else {
                         Command command = commandQueue.pop();
-                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) { // NO DEBERIA LLEGAR EL COMANDO NOP
+                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
                             logic.updateModel(command);
                         }
                         limitCommands++;
@@ -123,9 +126,9 @@ void CompleteGame::gameFlow() {
                 sendResponse();
                 float timeStep = 1.0f / 10.0f;
                 usleep(timeStep*1000000);
-
             }
         }
+        sendResponse(); // Manda ultima respuesta
     } catch (...) {
         throw;
     }

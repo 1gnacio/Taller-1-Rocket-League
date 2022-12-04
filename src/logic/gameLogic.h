@@ -31,6 +31,8 @@ class GameLogic {
     bool matchFinished();
 
     void updateRoomInfo(Room &room, bool b);
+
+    void resetPositions();
 };
 
 #endif  // SRC_LOGIC_GAMELOGIC_H_

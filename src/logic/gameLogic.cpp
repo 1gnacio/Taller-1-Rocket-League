@@ -91,3 +91,8 @@ bool GameLogic::isGoal() {
 void GameLogic::updateRoomInfo(Room &room, bool replay) {
     gamePhysics.setRoomInfo(room, replay);
 }
+
+void GameLogic::resetPositions() {
+    gamePhysics.resetPositions();
+
+}

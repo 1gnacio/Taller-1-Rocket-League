@@ -22,15 +22,9 @@ public:
     constexpr static const float W_CAR = 1.2;
     constexpr static const float H_CAR = 0.5;
 
-    const float DENSITY_CAR = 1;
-    const float FRICTION_CAR = 0.2f;
-    const float RESTITUTION_CAR = 0.0f;
     const float ANGLE_CAR = 0;
 
-    const float DENSITY_BALL = 0.5;
-    const float FRICTION_BALL = 0.3f;
-    const float RESTITUTION_BALL = 0.7f;
-    constexpr static const float RADIUS_BALL = 0.2f;
+    constexpr static const float RADIUS_BALL = 0.3f;
     const float ANGLE_BALL = 0;
 
     const int VELOCITY_ITERATIONS = 8;
@@ -41,6 +35,15 @@ public:
     const int HAS_BEEN_PUNCHED_RED_SHOT = 8;
     const int HAS_BEEN_PUNCHED_PURPLE_SHOT = 9;
     const int HAS_BEEN_PUNCHED_GOLD_SHOT = 10;
+
+    const int POS_X_INITIAL_CAR_LOCAL = -2;
+    const int POS_Y_INITIAL_CAR_LOCAL = -2;
+    const int POS_X_INITIAL_CAR_VISITOR = 2;
+    const int POS_Y_INITIAL_CAR_VISITOR = -2;
+    const float POS_X_INITIAL_BALL = 0.0f;
+    const float POS_Y_INITIAL_BALL = -2.8f;
+
+    const float ALTITUDE_GROUND = 2.23f;
 
 };
 
