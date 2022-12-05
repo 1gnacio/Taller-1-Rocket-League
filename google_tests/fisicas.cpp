@@ -3,6 +3,7 @@
 #include "../src/protocolo/commands/command.h"
 #include "../src/logic/boxLogic.h"
 #include "../src/logic/gameLogic.h"
+#include "../src/configuration/yaml_configuration.h"
 
 static const int PLAYER_ID = 1;
 const int PLAYER_ID_2 = 2;
@@ -17,11 +18,13 @@ void update(BoxLogic & physics, int frames) {
     }
 }
 TEST(physics, SeCreaElMapaConGravedad10) {
-    b2Vec2 v(0.0f,9.8f);
+    ServerConfigurationAttributes c(YamlConfiguration().ReadServerConfiguration());
+    b2Vec2 v(0.0f,c.getMapGravity());
     BoxLogic physics(1);
 
 
-    EXPECT_EQ(physics.getGravity(), v);
+    EXPECT_EQ(physics.getGravity().x, v.x);
+    EXPECT_EQ(physics.getGravity().y, v.y);
 }
 
 TEST(physics, SeCreanCorrectamenteLasParedes) {
@@ -160,8 +163,9 @@ TEST(physics, RealizaUnTurbo) {
     update(physics,1);
     float vel1 = physics.getCarData(PLAYER_ID, LogicValues().X_VELOCITY);
     physics.applyTurbo(PLAYER_ID);
+    update(physics,1);
 
-    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) < vel1);
+    EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) > vel1);
 }
 
 TEST(physics, RealizaUnTurboPorVariosSegundos) {
