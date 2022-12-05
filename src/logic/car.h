@@ -38,8 +38,7 @@ class Car {
     float turboForce;
     bool isJumping();
 
-public:
-
+ public:
     /*
      * Se crea el objeto a partir de un b2Body de la librera de box2D
      */
@@ -78,6 +77,7 @@ public:
     void verifyTurbo();
 
     void modifyJumpedTwoTimes();
+
     bool jumpedTwoTimes();
 
     b2Vec2 getVelocity();
@@ -145,8 +145,6 @@ public:
     bool isMakeFlip() const;
 
     void setMakeFlip(bool makeFlip);
-
 };
-
 
 #endif  // SRC_LOGIC_CAR_H_

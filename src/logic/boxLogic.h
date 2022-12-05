@@ -84,15 +84,23 @@ class BoxLogic {
      *  Y_VELOCITY = 4;
      */
     float getBallData(int key);
+
     float getCarData(int carNumber, int key);
 
     PlayerResponses getPlayersData();
+
     Car* getCar(int carNumber);
+
     b2Vec2 getVectorForce(int direction, directions& lastDir);
+
     void verifyDoubleJump();
+
     void verifyTurbo();
+
     void verifyGoal();
+
     void resetPositions();
+
     MatchResponse gameData(BallResponse &ball, PlayerResponses &players);
 
     void updateGoal();

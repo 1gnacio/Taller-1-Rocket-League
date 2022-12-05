@@ -4,8 +4,9 @@
 #include "../protocolo/responses/ball_response.h"
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
+#include "../src/constants/logic_values.h"
 
-Game::Game(int requiredPlayers, int time):
+Game::Game(int requiredPlayers, int time, int updateT):
               name("juego"),
               time_inSec(0),
               time_in_miliSec(0),
@@ -18,7 +19,8 @@ Game::Game(int requiredPlayers, int time):
               isGoalLocal(false),
               isGoalVisitor(false),
               activeReplay(false),
-              game_time(time) {
+              game_time(time),
+              update(updateT) {
 }
 
 MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
@@ -33,16 +35,16 @@ int Game::getTime() {
 }
 
 void Game::updateGame(int teamGoal) {
-    if (teamGoal == 2) {
+    if (teamGoal == LogicValues().GOAL_LOCAL) {
         isGoalLocal = 1;
         goalsLocal++;
-    } else if (teamGoal == 1) {
+    } else if (teamGoal == LogicValues().GOAL_VISITOR) {
         isGoalVisitor = 1;
         goalsVisitor++;
     }
 }
 void Game::updateTime() {
-    time_in_miliSec = time_in_miliSec + 40;
+    time_in_miliSec = time_in_miliSec + (1000/update);
     if (time_in_miliSec > 1000) {
         time_inSec++;
         time_in_miliSec = time_in_miliSec - 1000;

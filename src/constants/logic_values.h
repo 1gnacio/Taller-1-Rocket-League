@@ -45,6 +45,19 @@ public:
 
     const float ALTITUDE_GROUND = 2.23f;
 
+    const int TOP_SENSOR = 1;
+    const int DOWN_SENSOR = 2;
+    const int HEAD_SENSOR = 3;
+    const int TAIL_SENSOR = 4;
+
+    const int NORMAL_SHOT = 0;
+    const int FLIP_SHOT = 1;
+    const int RED_SHOT = 2;
+    const int PURPLE_SHOT = 3;
+    const int GOLD_SHOT = 4;
+
+    const int GOAL_LOCAL = 2;
+    const int GOAL_VISITOR = 1;
 };
 
 #endif //LOGIC_VALUES_H

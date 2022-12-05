@@ -6,7 +6,6 @@
 #include "../src/game_entities/room.h"
 #include <iostream>
 #include "../src/constants/b2DVars.h"
-#include "stateMachine.h"
 #include <string>
 #include "../src/configuration/yaml_configuration.h"
 
@@ -15,7 +14,7 @@
 BoxLogic::BoxLogic(int requiredPlayers):
     isActive(true),
     configuration(YamlConfiguration().ReadServerConfiguration()),
-    game(requiredPlayers, configuration.getGameTime()),
+    game(requiredPlayers, configuration.getGameTime(), configuration.getResponsesPerSec()),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
@@ -154,19 +153,19 @@ void BoxLogic::createCar(int id) {
                                 B2DVars().BIT_GROUND |
                                 B2DVars().BIT_SOCCER_GOAL;
     sensorDef.isSensor = true;
-    cars.back().createFixture(sensorDef, 1);
+    cars.back().createFixture(sensorDef, LogicValues().TOP_SENSOR);
 
     dynamicCar.SetAsBox(wCar/2.0f, 0.1, b2Vec2(0, hCar/2), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 2);
+    cars.back().createFixture(sensorDef, LogicValues().DOWN_SENSOR);
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 3);
+    cars.back().createFixture(sensorDef, LogicValues().HEAD_SENSOR);
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(-wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 4);
+    cars.back().createFixture(sensorDef, LogicValues().TAIL_SENSOR);
 }
 
 void BoxLogic::createWalls() {

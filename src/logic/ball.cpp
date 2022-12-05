@@ -3,15 +3,15 @@
 
 void Ball::punch(int typeOfPunch) {
     switch (typeOfPunch) {
-        case 0:
+        case LogicValues().NORMAL_SHOT:
             this->wasPunchedNormal = true;
-        case 1:
+        case LogicValues().FLIP_SHOT:
             this->wasPunchedFlipShot = true;
-        case 2:
+        case LogicValues().RED_SHOT:
             this->wasPunchedRedShot = true;
-        case 3:
+        case LogicValues().PURPLE_SHOT:
             this->wasPunchedPurpleShot = true;
-        case 4:
+        case LogicValues().GOLD_SHOT:
             this->wasPunchedGoldShot = true;
     }
     framesAfterPunched = 0;
