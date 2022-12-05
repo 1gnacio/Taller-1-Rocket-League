@@ -1,18 +1,23 @@
 #include <iostream>
 #include "ball.h"
 
-void Ball::punch(int typeOfPunch) {
+void Ball::punch(const int typeOfPunch) {
     switch (typeOfPunch) {
         case LogicValues().NORMAL_SHOT:
             this->wasPunchedNormal = true;
+            break;
         case LogicValues().FLIP_SHOT:
             this->wasPunchedFlipShot = true;
+            break;
         case LogicValues().RED_SHOT:
             this->wasPunchedRedShot = true;
+            break;
         case LogicValues().PURPLE_SHOT:
             this->wasPunchedPurpleShot = true;
+            break;
         case LogicValues().GOLD_SHOT:
             this->wasPunchedGoldShot = true;
+            break;
     }
     framesAfterPunched = 0;
     secAfterPunched = 0;
@@ -103,7 +108,7 @@ void Ball::verifyPunch() {
         }
     }
     secAfterPunched += 0.04;
-    if (secAfterPunched > 3) {
+    if (secAfterPunched > 0.2) {
         resetPunch();
         secAfterPunched = 0;
     }

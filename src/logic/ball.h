@@ -55,7 +55,7 @@ class Ball {
      * Modifica el estado correspondiente de la pelota sobre
      * el tipo de golpe que recibe.
      */
-    void punch(int typeOfPunch);
+    void punch(const int typeOfPunch);
 
     /*
      * Luego de cada paso del tiempo, se reseta el golpe a FALSE

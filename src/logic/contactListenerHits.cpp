@@ -18,9 +18,9 @@ void ContactListenerHits::BeginContact(b2Contact * contact) {
                    ball->punch(LogicValues().RED_SHOT);
                 } else if (fa->GetUserData().pointer == LogicValues().TAIL_SENSOR) {
                    ball->punch(LogicValues().GOLD_SHOT);
-                } else {
-                   ball->punch(LogicValues().NORMAL_SHOT);
                 }
+            } else {
+                ball->punch(LogicValues().NORMAL_SHOT);
             }
            this->verifyAlmostGoal(fb->GetBody()->GetPosition().x,
                                   fb->GetBody()->GetPosition().y,
