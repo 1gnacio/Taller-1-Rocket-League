@@ -108,7 +108,7 @@ void Ball::verifyPunch() {
         }
     }
     secAfterPunched += 0.04;
-    if (secAfterPunched > 0.2) {
+    if (secAfterPunched > 2) {
         resetPunch();
         secAfterPunched = 0;
     }

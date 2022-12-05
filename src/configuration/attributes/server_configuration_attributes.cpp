@@ -7,7 +7,7 @@ ServerConfigurationAttributes::ServerConfigurationAttributes(float carWidth, flo
                                                              float movementForceModule, float jumpImpulse,
                                                              int replayTimeInSec, int responsesPerSec, int gameTime,
                                                              float forceFlipShot, float forceRedShot, float forcePurpleShot, float forceGoldShot,
-                                                             float turboForce) :
+                                                             float turboForce, float torqueForce) :
                                                              carWidth(carWidth), carHeight(carHeight),
                                                              carDensity(carDensity), carFriction(carFriction),
                                                              carRestitution(carRestitution), ballDensity(ballDensity),
@@ -22,7 +22,8 @@ ServerConfigurationAttributes::ServerConfigurationAttributes(float carWidth, flo
                                                              forceRedShot(forceRedShot),
                                                              forcePurpleShot(forcePurpleShot),
                                                              forceGoldShot(forceGoldShot),
-                                                             turboForce(turboForce) {}
+                                                             turboForce(turboForce),
+                                                             torqueForce(torqueForce) {}
 
 float ServerConfigurationAttributes::getCarWidth() const {
     return carWidth;
@@ -102,4 +103,8 @@ float ServerConfigurationAttributes::getForceGoldShot() const {
 
 float ServerConfigurationAttributes::getTurboForce() const {
     return turboForce;
+}
+
+float ServerConfigurationAttributes::getTorqueForce() const {
+    return torqueForce;
 }

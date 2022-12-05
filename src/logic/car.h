@@ -36,13 +36,13 @@ class Car {
     int timeAfterPunched;
     int timeAfterAccelerate;
     float turboForce;
-    bool isJumping();
+    float torqueForce;
 
  public:
     /*
      * Se crea el objeto a partir de un b2Body de la librera de box2D
      */
-    Car(b2Body* carBody, int id);
+    Car(b2Body* carBody, int id, float torqueForce);
 
     /*
      * Comienza el movimiento del auto en la dirección
@@ -111,6 +111,8 @@ class Car {
     float remainingTurbo();
 
     void addGoal();
+
+    bool isJumping();
 
     void addAssist();
 

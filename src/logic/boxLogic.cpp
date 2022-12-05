@@ -128,7 +128,7 @@ void BoxLogic::createCar(int id) {
     } else {
         carBodyDef.position.Set(LogicValues().POS_X_INITIAL_CAR_VISITOR, LogicValues().POS_Y_INITIAL_CAR_VISITOR);
     }
-    cars.emplace_back(Car(world->CreateBody(&carBodyDef), id));
+    cars.emplace_back(Car(world->CreateBody(&carBodyDef), id, configuration.getTorqueForce()));
     b2PolygonShape dynamicCar;
     dynamicCar.SetAsBox(wCar/2.0f, hCar/2.0f);
 
@@ -294,7 +294,7 @@ PlayerResponses BoxLogic::getPlayersData() {
                             x.getData(LogicValues().ANGLE),
                             ((x.getData(LogicValues().X_VELOCITY) != 0) ||
                             (x.getData(LogicValues().Y_VELOCITY) != 0)),
-                            (x.getData(LogicValues().POS_Y) < LogicValues().ALTITUDE_GROUND),
+                            (x.isJumping()),
                             x.getData(LogicValues().USING_TURBO),
                             x.getHasPunchedTheBall(),
                             x.getData(LogicValues().ACCELERATING),
@@ -407,6 +407,7 @@ void BoxLogic::resetPositions() {
         ball.getBallBody()->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
         ball.getBallBody()->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_BALL, LogicValues().POS_Y_INITIAL_BALL), 0);
         ball.getBallBody()->SetAngularVelocity(0);
+        ball.resetPunch();
     }
 }
 
