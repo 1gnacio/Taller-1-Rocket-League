@@ -41,38 +41,6 @@ set(CMAKE_PREFIX_PATH $ENV{HOME}/Documents/Qt/5.15.2/gcc_64)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 # end QT5
 ######################################################################################################################
-add_executable(sdlTesting
-        sdl_testing.cpp
-        src/common/unit_conversion.cpp
-        src/common/unit_conversion.h
-        src/client_sdl/sdl_main.h
-        src/client_sdl/sdl_main.cpp
-        src/client_sdl/sdl_animation.h
-        src/client_sdl/sdl_animation.cpp
-        src/client_sdl/sdl_ball.h
-        src/client_sdl/sdl_ball.cpp
-        src/client_sdl/sdl_scoreboard.h
-        src/client_sdl/sdl_scoreboard.cpp
-        src/client_sdl/sdl_arena.h
-        src/client_sdl/sdl_arena.cpp
-        src/client_sdl/sdl_player.h
-        src/client_sdl/sdl_player.cpp
-        src/client_sdl/sdl_waiting.h
-        src/client_sdl/sdl_waiting.cpp
-        src/client_sdl/sdl_statistics.h
-        src/client_sdl/sdl_statistics.cpp
-        src/client_sdl/sdl_animation.h
-        src/client_sdl/sdl_animation.cpp
-        src/configuration/attributes/client_configuration_attributes.cpp
-        src/configuration/attributes/client_configuration_attributes.h
-        src/configuration/attributes/server_configuration_attributes.cpp
-        src/configuration/attributes/server_configuration_attributes.h
-        src/configuration/yaml_configuration.cpp
-        src/configuration/yaml_configuration.h)
-target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES} yaml-cpp)
-target_compile_definitions(sdlTesting PRIVATE SDL_TESTING yaml-cpp)
-
-######################################################################################################################
 add_executable(boxExample testBox.cpp)
 target_link_libraries(boxExample box2d)
 

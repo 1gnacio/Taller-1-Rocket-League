@@ -1,38 +1,22 @@
 #include "sdl_main.h"
 #include <chrono>
 
-#include <utility>
-#include "../src/constants/logic_values.h"
-
-//TODO: tamaño de ventana por config.
 sdl_main::sdl_main(ClientConfigurationAttributes& conf):
             conf(conf),
-                    sdl(SDL_INIT_VIDEO),
-                      mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                            AUDIO_CHANNELS, 4096),
-                      window("Rocket League",
-                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                             conf.getWindowWidth(), conf.getWindowHeight(),
-                             SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
-                     renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
-                      arena(renderer),  ball(renderer), scoreboard(renderer),
-                      waiting(renderer), statistics(renderer),
-                      convert(MAX_WIDTH, MAX_HEIGHT),
-                      myID(0)
-#ifdef SDL_TESTING
-                      , my_object(renderer)
-#endif
-{
-#ifndef SDL_TESTING
-    //players.emplace(0, renderer);
-#else
-    window.Show();
-#endif
-    window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
-}
+            sdl(SDL_INIT_VIDEO),
+            mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+            AUDIO_CHANNELS, 4096),
+            window("Rocket League",
+                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                 conf.getWindowWidth(), conf.getWindowHeight(),
+                 SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
+            renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
+            arena(renderer),  ball(renderer), scoreboard(renderer),
+            waiting(renderer), statistics(renderer),
+            convert(MAX_WIDTH, MAX_HEIGHT),
+            myID(0){ window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico")); }
 
 
-#ifndef SDL_TESTING
 void sdl_main::updateScreen(Response& response) {
     if (response.dummy()){
         return;
@@ -107,6 +91,7 @@ void sdl_main::updateScreen(Response& response) {
         sounds.update(goal, myTurbo, myAcceleration, myJumping, ballKicked);
     }
 
+    //TODO: sacar ese 0.7
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
                  waitingForPlayers, replay, turboLeft);
     bool finishedGame = response.getMatchResponse().isFinished();
@@ -116,21 +101,17 @@ void sdl_main::updateScreen(Response& response) {
                 response.getMatchResponse().getPlayersResponse().getPlayers());
     }
 }
-#endif
+
 void sdl_main::renderScreen() {
     renderer.Clear();
     arena.render(renderer);
-    scoreboard.render(renderer);
     ball.render(renderer);
-#ifndef SDL_TESTING
     for (auto &player:players) {
         player.second.render(renderer);
     }
-#else
-    my_object.render(renderer);
-#endif
     waiting.render(renderer);
     statistics.render(renderer);
+    scoreboard.render(renderer);
     sounds.renderSounds(mixer);
     renderer.Present();
 }
@@ -157,14 +138,3 @@ void sdl_main::disableSounds() {
     }
     mixer.HaltMusic();
 }
-
-
-#ifdef SDL_TESTING
-void sdl_main::updateScreen() {
-    //scoreboard.update(format_duration((std::chrono::milliseconds)time),0,0);
-    ball.update(renderer.GetOutputWidth()/2,
-                renderer.GetOutputHeight()-(renderer.GetOutputHeight()/6),
-                0, 20);
-    //my_object.updateToFrame(0,0, 0, FRAME_RATE,true,true,true);
-}
-#endif

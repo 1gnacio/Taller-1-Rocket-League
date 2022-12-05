@@ -13,15 +13,12 @@
 #include "sdl_arena.h"
 #include "sdl_waiting.h"
 #include "sdl_statistics.h"
-
 #include <ctime>
 #include "../src/common/unit_conversion.h"
 #include "../src/configuration/attributes/client_configuration_attributes.h"
-#ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
 #include "sdl_music.h"
 
-#endif
 
 #define TIME_UPDATE_MS 20
 
@@ -41,9 +38,7 @@ private:
     sdl_music sounds;
     unit_conversion convert;
     int myID;
-#ifndef SDL_TESTING
     std::map<int, sdl_player> players;
-#endif
 
 public:
     explicit sdl_main(ClientConfigurationAttributes& conf);
@@ -54,14 +49,7 @@ public:
     void enableSounds();
     void disableSounds();
     ~sdl_main() = default;
-
-#ifndef SDL_TESTING
     void updateScreen(Response& response);
-#else
-    void updateScreen();
-    sdl_player my_object;
-#endif
-
 };
 
 #endif //ROCKET_LEAGUE_SDL_MAIN_H
