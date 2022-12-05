@@ -6,7 +6,7 @@
 #include <iostream>
 #include "../../src/constants/logic_values.h"
 
-Car::Car(b2Body *body, int ID): carBody(body),
+Car::Car(b2Body *body, int ID, float torqueForce): carBody(body),
                                 secondJump(0),
                                 id(ID),
                                 turboTank(1),
@@ -23,7 +23,8 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 hasPunchedTheBall(false),
                                 timeAfterPunched(0),
                                 timeAfterAccelerate(0),
-                                turboForce(0) {
+                                turboForce(0),
+                                torqueForce(torqueForce) {
 }
 
 int Car::getId() {
@@ -99,13 +100,13 @@ b2Vec2 Car::forceInFlip() {
 
 float Car::forceInTorque() {
     if (lastDirection == RIGHT_LAST_DIRECTION) {
-        return (10);
+        return (torqueForce);
     } else if (lastDirection == LEFT_LAST_DIRECTION) {
-        return (-10);
+        return (-1*torqueForce);
     } else if (lastDirection == UP_LAST_DIRECTION) {
-        return (-10);
+        return (-1*torqueForce);
     } else if (lastDirection == DOWN_LAST_DIRECTION) {
-        return (-10);
+        return (-1*torqueForce);
     }
     makeFlip = false;
     return 0;

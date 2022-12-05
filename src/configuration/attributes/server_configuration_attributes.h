@@ -31,6 +31,10 @@ private:
     float forceGoldShot;
 
     float turboForce;
+    float torqueForce;
+public:
+    float getTorqueForce() const;
+
 public:
     float getCarWidth() const;
 
@@ -78,7 +82,7 @@ public:
                                   float carFriction, float carRestitution, float ballDensity, float ballFriction,
                                   float ballRestitution, float ballRadius, float mapGravity, float movementForceModule,
                                   float jumpImpulse, int replayTimeInSec, int responsesPerSec, int gameTime,
-                                  float forceFlipShot, float forceRedShot, float forcePurpleShot, float forceGoldShot, float turboForce);
+                                  float forceFlipShot, float forceRedShot, float forcePurpleShot, float forceGoldShot, float turboForce, float torqueForce);
 };
 
 

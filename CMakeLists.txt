@@ -208,7 +208,6 @@ add_executable(lobby
         src/client_sdl/sdl_statistics.h
         src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_player.cpp
-        src/client_sdl/sdl_main.cpp
         src/client_sdl/sdl_main.h src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
         src/common/unit_conversion.cpp src/common/unit_conversion.h
         src/protocolo/responses/lobby_response.cpp
