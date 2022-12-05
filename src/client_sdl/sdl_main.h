@@ -20,7 +20,6 @@
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
 
-
 #endif
 
 #define TIME_UPDATE_MS 20

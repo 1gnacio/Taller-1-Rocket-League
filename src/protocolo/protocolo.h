@@ -14,8 +14,13 @@ class Protocolo {
     bool connectionClosed = false;
     int16_t responseBytes = 2;
 
-    void sendMessage(Socket& socket, std::vector<unsigned char> &message);
+    void sendAll(Socket &socket, std::vector<unsigned char> &message);
+    void receiveAll(Socket &socket, std::vector<unsigned char> &message, uint16_t responseSize);
 
+    void receiveResponseSize(Socket &socket, uint16_t &size);
+    void sendResponseSize(Socket &socket, uint16_t size);
+
+    void sendMessage(Socket& socket, std::vector<unsigned char> &message);
     std::vector<unsigned char> receiveMessage(Socket& socket);
 
  public:
@@ -36,6 +41,5 @@ class Protocolo {
     void sendId(Socket &socket, int id);
 
     int receiveId(Socket &socket);
-
 };
 #endif  // COMMON_SRC_PROTOCOLO_H_
