@@ -8,8 +8,8 @@ CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, S
         configuration(YamlConfiguration().ReadServerConfiguration()),
         serverEndpoint(serverEndPoint),
         room(ownerId,requiredPlayers,name),
-        logic(requiredPlayers)
-        , replayLogic(configuration.getReplayTimeInSec(), configuration.getResponsesPerSec()),
+        logic(requiredPlayers),
+        replayLogic(configuration.getReplayTimeInSec(), configuration.getResponsesPerSec()),
         isClosed(false){
         this->logic.addPlayer(ownerId);
 }
