@@ -9,6 +9,7 @@
 #include "car.h"
 #include "SoccerGoal.h"
 #include <memory>
+#include <string>
 #include "game.h"
 #include "../src/game_entities/room.h"
 #include "contactListenerHits.h"
@@ -37,12 +38,13 @@ class BoxLogic {
     static float getData(int key, const b2Body* body);
     void addGoalToPlayer(int id);
     void addAssistToPlayer(int id);
+
  public:
     /*
      * Se instancia una mundo y a partir de ello,
      * una pelota, los bordes del mapa y los arcos
      */
-    BoxLogic(int requiredPlayers);
+    explicit BoxLogic(int requiredPlayers);
 
     void createCar(int id);  // Cuando haya una conexion se creara un auto nuevo
     void createSoccerGoals();
@@ -64,8 +66,6 @@ class BoxLogic {
      * doble salto; goles y Turbo para actualizarlos según correspondan.
      */
     void updateStatus();
-    void update(Command &command);
-    void update();
     /*
      * Se aplican los siguientes métodos em el auto dependiendo lo que se quiera
      * hacer.
@@ -84,22 +84,30 @@ class BoxLogic {
      *  Y_VELOCITY = 4;
      */
     float getBallData(int key);
+
     float getCarData(int carNumber, int key);
 
     PlayerResponses getPlayersData();
+
     Car* getCar(int carNumber);
+
     b2Vec2 getVectorForce(int direction, directions& lastDir);
+
     void verifyDoubleJump();
+
     void verifyTurbo();
+
     void verifyGoal();
+
     void resetPositions();
+
     MatchResponse gameData(BallResponse &ball, PlayerResponses &players);
 
     void updateGoal();
 
     /*
-     * Luego de cada gol, se resetea los atributos de Game,
-     * que contiene si existe un gol de algún équipo
+     * Luego de cada gol, se resetean los atributos de Game,
+     * que contiene si existe un gol de algún equipo
      */
     void resetData();
 
@@ -113,7 +121,7 @@ class BoxLogic {
 
     int getTime();
 
-    void removePlayer(int i);
+    void removePlayer(int id);
 
     bool isGoal();
 

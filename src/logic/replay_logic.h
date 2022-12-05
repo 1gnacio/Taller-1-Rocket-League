@@ -1,24 +1,25 @@
-#ifndef REPLAY_LOGIC_H
-#define REPLAY_LOGIC_H
+#ifndef SRC_LOGIC_REPLAY_LOGIC_H_
+#define SRC_LOGIC_REPLAY_LOGIC_H_
 
 #include <queue>
+#include <vector>
 #include "../protocolo/responses/match_response.h"
 #include "../protocolo/responses/response.h"
 
 class ReplayLogic {
-private:
+ private:
     bool isActive;
     std::vector<Response> responses;
     int replayTimeInSec;
     int responsesPerSec;
     int elapsedTimeInSec;
-public:
+
+ public:
     ReplayLogic(int replayTimeInSec, int responsesPerSec);
     void goalScored();
     void addResponse(Response &response);
     Response getResponse();
-    bool isInReplay() { return this->isActive && this->elapsedTimeInSec < this->replayTimeInSec; };
+    bool isInReplay() { return this->isActive && this->elapsedTimeInSec < this->replayTimeInSec; }
 };
 
-
-#endif //ROCKET_LEAGUE_REPLAY_LOGIC_H
+#endif  // SRC_LOGIC_REPLAY_LOGIC_H_

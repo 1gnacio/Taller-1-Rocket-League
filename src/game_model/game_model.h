@@ -1,9 +1,10 @@
-#ifndef GAME_MODEL_H
-#define GAME_MODEL_H
+#ifndef SRC_GAME_MODEL_GAME_MODEL_H_
+#define SRC_GAME_MODEL_GAME_MODEL_H_
 
 #include <vector>
 #include <set>
 #include <string>
+#include <memory>
 #include "../game_entities/room.h"
 #include "../src/protocolo/responses/room_responses.h"
 #include "../src/protocolo/responses/action_result_response.h"
@@ -27,23 +28,15 @@ class GameModel {
     void applyCommand(Command& command);
 
     bool gameExists(const char* name);
+
  public:
-    GameModel(ServerEndpoint& serverEndpoint);
+    explicit GameModel(ServerEndpoint& serverEndpoint);
 
     std::unique_ptr<CompleteGame>* findGame(const char *name);
-
-    void applyCommandToGame(Command &command);
-
-    std::unique_ptr<CompleteGame> *findGame(int id);
-
-
-    int gamesAmount();
 
     std::vector<Response> getResponse();
 
     void updateTime();
-
-    void resetDataOfGames();
 
     void applyLogic(Command& command);
 
@@ -53,5 +46,4 @@ class GameModel {
     ~GameModel();
 };
 
-
-#endif // GAME_MODEL_H
+#endif  // SRC_GAME_MODEL_GAME_MODEL_H_

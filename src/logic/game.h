@@ -7,7 +7,10 @@
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
 
-
+/*
+ * Clase que se encarga de manipular los datos de la partida, como por ejemplo el tiempo y los
+ * goles de los equipos.
+ */
 class Game {
  private:
     std::string name;
@@ -23,11 +26,20 @@ class Game {
     bool isGoalVisitor;
     bool activeReplay;
     int game_time;
+    int update;
+
  public:
-    Game(int requiredPlayers, int time);
+    Game(int requiredPlayers, int time, int update);
     MatchResponse response(BallResponse &ball, PlayerResponses &players);
 
-    void updateGame(int i);
+    /*
+     * Verifica si hay goles y modifica los estados
+     *  key:
+     *  1 -> Gol local
+     *  2 -> Gol visitante
+     *  0 -> No hay goles
+     */
+    void updateGame(int key);
 
     bool goal();
 

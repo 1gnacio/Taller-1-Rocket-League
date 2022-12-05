@@ -5,9 +5,9 @@
 #include <memory>
 #include <vector>
 #include "../sockets/socket.h"
-#include "../game_model/game_model_monitor.h"
 #include "../handlers/server_endpoint.h"
 #include "../logic/gameLogic.h"
+#include "../game_model/game_model.h"
 
 class Server {
 private:
