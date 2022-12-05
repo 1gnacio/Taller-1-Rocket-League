@@ -8,12 +8,15 @@
 
 #include "src/client_sdl/sdl_player.h"
 #include "src/client_sdl/sdl_main.h"
+#include "src/configuration/yaml_configuration.h"
+#include "../src/configuration/attributes/client_configuration_attributes.h"
 
 static bool handleEvents(sdl_player &player);
 
 int main(int argc, char** argv){
     try {
-        sdl_main py;
+        ClientConfigurationAttributes config = YamlConfiguration().ReadClientConfiguration();
+        sdl_main py(config);
         bool running = true;
         while (running) {
             running = handleEvents(py.my_object);

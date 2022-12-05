@@ -61,9 +61,15 @@ add_executable(sdlTesting
         src/client_sdl/sdl_statistics.h
         src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_animation.h
-        src/client_sdl/sdl_animation.cpp)
-target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
-target_compile_definitions(sdlTesting PRIVATE SDL_TESTING)
+        src/client_sdl/sdl_animation.cpp
+        src/configuration/attributes/client_configuration_attributes.cpp
+        src/configuration/attributes/client_configuration_attributes.h
+        src/configuration/attributes/server_configuration_attributes.cpp
+        src/configuration/attributes/server_configuration_attributes.h
+        src/configuration/yaml_configuration.cpp
+        src/configuration/yaml_configuration.h)
+target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES} yaml-cpp)
+target_compile_definitions(sdlTesting PRIVATE SDL_TESTING yaml-cpp)
 
 ######################################################################################################################
 add_executable(boxExample testBox.cpp)

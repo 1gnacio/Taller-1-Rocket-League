@@ -16,10 +16,9 @@
 
 #include <ctime>
 #include "../src/common/unit_conversion.h"
-
+#include "../src/configuration/attributes/client_configuration_attributes.h"
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
-#include "../src/configuration/attributes/client_configuration_attributes.h"
 
 #endif
 
