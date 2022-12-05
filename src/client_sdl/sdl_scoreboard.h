@@ -7,6 +7,7 @@
 class sdl_scoreboard {
 private:
     SDL2pp::Font font;
+    SDL2pp::Texture background;
     std::string text;
 public:
     explicit sdl_scoreboard(SDL2pp::Renderer &renderer);
