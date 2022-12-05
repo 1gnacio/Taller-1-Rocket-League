@@ -5,8 +5,11 @@
 #include "../src/client_sdl/sdl_main.h"
 #include <string>
 
+#include "src/configuration/yaml_configuration.h"
+
 class Client {
 private:
+    ClientConfigurationAttributes conf;
     bool isRunning;
     ServerConnection& connection;
     sdl_main sdl_handler;

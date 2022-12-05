@@ -19,12 +19,15 @@
 
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
+#include "src/configuration/attributes/client_configuration_attributes.h"
+
 #endif
 
 #define TIME_UPDATE_MS 20
 
 class sdl_main {
 private:
+    ClientConfigurationAttributes& conf;
     SDL2pp::SDL sdl;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
@@ -43,7 +46,7 @@ private:
 #endif
 
 public:
-    sdl_main();
+    explicit sdl_main(ClientConfigurationAttributes& conf);
     void renderScreen();
     void showWindow();
     void hideWindow();

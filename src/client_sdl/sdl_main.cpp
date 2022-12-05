@@ -5,12 +5,14 @@
 #include "../src/constants/logic_values.h"
 
 //TODO: tamaño de ventana por config.
-sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
+sdl_main::sdl_main(ClientConfigurationAttributes& conf):
+            conf(conf),
+                    sdl(SDL_INIT_VIDEO),
                       /*mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
                             MIX_DEFAULT_CHANNELS, 4096),*/
                       window("Rocket League",
                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                             900, 500,
+                             conf.getWindowWidth(), conf.getWindowHeight(),
                              SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
                      renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
                       arena(renderer),  ball(renderer), scoreboard(renderer),
@@ -59,9 +61,9 @@ void sdl_main::updateScreen(Response& response) {
             if (id == myID) {
                 turboLeft = player.getRemainingTurbo();
             }
-            int car_w = convert.toPixels(LogicValues::W_CAR,
+            int car_w = convert.toPixels(conf.getCarWidth(),
                                          renderer.GetOutputWidth());
-            int car_h = convert.toPixels(LogicValues::H_CAR,
+            int car_h = convert.toPixels(conf.getCarHeight(),
                                          renderer.GetOutputHeight());
             bool facingLeft = player.isFacingLeft();
 
@@ -83,7 +85,7 @@ void sdl_main::updateScreen(Response& response) {
                 renderer.GetOutputHeight());
         double ball_angle = convert.toDegrees(
                 response.getMatchResponse().getBall().getRotationAngle());
-        int ball_width = 2.0 * convert.toPixels(LogicValues::RADIUS_BALL,
+        int ball_width = 2.0 * convert.toPixels(conf.getBallRadius(),
                                                 renderer.GetOutputWidth());
         ball.update(ball_x, ball_y, ball_angle, ball_width);
     }

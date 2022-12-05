@@ -11,8 +11,9 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
+        conf(YamlConfiguration().ReadClientConfiguration()),
         isRunning(true), connection(connection),
-        sdl_handler() {
+        sdl_handler(conf) {
 }
 
 void Client::readStandardInput() {
