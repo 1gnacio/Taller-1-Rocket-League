@@ -44,7 +44,7 @@ bool Room::operator<(const Room &room) const {
     return (this->name < room.name);
 }
 
-bool Room::operator()(Room &room) {
+bool Room::operator()(const Room &room) {
     return this->name == room.name;
 }
 
@@ -75,26 +75,15 @@ ActionResultResponse Room::leaveRoom(int playerId) {
     return {playerId, ResponseValues().OK};
 }
 
-int Room::playersAmount() {
-    return players.size();
-}
-
-bool Room::playerInRoom(int &id) {
+bool Room::playerInRoom(const int &id) {
     bool playerInRoom = false;
     for(auto &x: players) {
         if (x == id) {
+            // cppcheck-suppress useStlAlgorithm
             playerInRoom = true;
         }
     }
     return playerInRoom;
-}
-
-bool Room::isWaiting1() const {
-    return isWaiting;
-}
-
-bool Room::isFinished1() const {
-    return isFinished;
 }
 
 bool Room::isStarted1() const {

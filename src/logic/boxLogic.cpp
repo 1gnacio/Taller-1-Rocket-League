@@ -225,6 +225,8 @@ float BoxLogic::getBallData(int key) {
             return this->ball.getBallBody()->GetLinearVelocity().x;
         case LogicValues().Y_VELOCITY:
             return this->ball.getBallBody()->GetLinearVelocity().y;
+        case LogicValues().ANGLE:
+            return this->ball.getBallBody()->GetAngle();
     }
     return 0.0f;
 }
@@ -286,6 +288,7 @@ PlayerResponses BoxLogic::getPlayersData() {
     std::vector<PlayerResponse> vector;
 
     for (auto &x : cars) {
+        // cppcheck-suppress useStlAlgorithm
         vector.emplace_back(x.getId(), x.getData(LogicValues().POS_X),
                             x.getData(LogicValues().POS_Y),
                             x.getData(LogicValues().ANGLE),
@@ -488,8 +491,4 @@ bool BoxLogic::getBallDataPunched(const int key) {
             return (ball.isWasPunchedGoldShot());
     }
     return false;
-}
-
-bool BoxLogic::BallHasBeenPunched() {
-    return ball.isWasPunched();
 }

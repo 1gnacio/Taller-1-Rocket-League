@@ -21,21 +21,16 @@ class Room {
     RoomResponse list();
     ActionResultResponse leaveRoom(int playerId);
 
-    int playersAmount();
-    bool playerInRoom(int &id);
+    bool playerInRoom(const int &id);
 
     bool operator<(const Room &room) const;
-    bool operator()(Room& room);
+    bool operator()(const Room& room);
 
     std::string getName() const { return this->name; };
 
     bool isInGame();
 
     bool hasPlayers();
-
-    bool isWaiting1() const;
-
-    bool isFinished1() const;
 
     bool isStarted1() const;
 };

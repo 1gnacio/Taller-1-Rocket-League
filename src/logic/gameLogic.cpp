@@ -10,7 +10,7 @@ GameLogic::GameLogic(int requiredPlayers) : gamePhysics(requiredPlayers) {
 
 
 
-void GameLogic::updateModel(Command &command) {
+void GameLogic::updateModel(const Command &command) {
     if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);
@@ -52,6 +52,12 @@ Response GameLogic::getResponse() {
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_RED_SHOT),
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT),
                  this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT));
+
+    std::cout << "normal:" << this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_NORMAL) << std::endl;
+    std::cout << "flip:" << this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_FLIP_SHOT) << std::endl;
+    std::cout << "red:" << this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_RED_SHOT) << std::endl;
+    std::cout << "purple:" << this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT) << std::endl;
+    std::cout << "gold:" << this->gamePhysics.getBallDataPunched(LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT) << std::endl << std::endl;
 
     PlayerResponses players = gamePhysics.getPlayersData();
 

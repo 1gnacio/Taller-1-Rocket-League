@@ -51,6 +51,7 @@ LobbyResponse GameModel::createRoom(int ownerId,
 std::unique_ptr<CompleteGame>* GameModel::findGame(const char* name) {
     std::string roomName = name;
     for (auto &x : games) {
+        // cppcheck-suppress useStlAlgorithm
         if (x->getName() == roomName) {
             return &x;
         }
@@ -72,7 +73,7 @@ LobbyResponse GameModel::joinRoom(int playerId, const char* name) {
 LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
     auto found = std::find_if(this->games.begin(),
                               this->games.end(),
-                              [&name] (std::unique_ptr<CompleteGame>& game)
+                              [&name] (const std::unique_ptr<CompleteGame>& game)
                               { return game->getName() == name;});
 
     if (found != this->games.end()) {
@@ -92,6 +93,7 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
 
 std::vector<Response> GameModel::getResponse() {
     std::vector<Response> responses;
+    // cppcheck-suppress useStlAlgorithm
     for (auto &x : games) {
         responses.emplace_back(x->getResponse());
     }
@@ -163,7 +165,7 @@ void GameModel::applyCommand(Command& command) {
 bool GameModel::gameExists(const char *name) {
     auto found = std::find_if(this->games.begin(),
                               this->games.end(),
-                              [&name] (std::unique_ptr<CompleteGame>& game)
+                              [&name] (const std::unique_ptr<CompleteGame>& game)
                               { return game->getName() == name;});
 
     return found != this->games.end();
