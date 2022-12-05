@@ -8,7 +8,7 @@
 #include "../src/protocolo/protocolo.h"
 #include "../src/constants/response_values.h"
 
-const char* serv = "8080";
+const char* serv = "8088";
 
 void receiveResponse(Response &response) {
     Socket client("localhost", serv);
@@ -108,6 +108,8 @@ TEST(Protocolo, ServidorEnviaRespuestaDeJugadoresYElClienteLaRecibe) {
     clientThread.join();
 
     EXPECT_EQ(receivedResponse.serialize().size(), response.serialize().size());
+    EXPECT_EQ(receivedResponse.getMatchResponse().getPlayersResponse().getPlayers().front().getRemainingTurbo(),
+              response.getMatchResponse().getPlayersResponse().getPlayers().front().getRemainingTurbo());
 }
 
 TEST(Protocolo, ClienteSeConectaYRecibeId) {
