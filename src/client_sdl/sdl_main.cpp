@@ -14,7 +14,15 @@ sdl_main::sdl_main(ClientConfigurationAttributes& conf):
             arena(renderer),  ball(renderer), scoreboard(renderer),
             waiting(renderer), statistics(renderer),
             convert(MAX_WIDTH, MAX_HEIGHT),
-            myID(0){ window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico")); }
+            myID(0){
+    window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
+    if (!conf.enableSound()) {
+        mixer.SetMusicVolume(0);
+        for (int i = 0; i < AUDIO_CHANNELS; ++i) {
+            mixer.SetVolume(i, 0);
+        }
+    }
+}
 
 
 void sdl_main::updateScreen(Response& response) {

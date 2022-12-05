@@ -18,9 +18,11 @@ public:
 
     int getGameTime() const;
 
+    bool enableSound() const;
+
 private:
     int windowHeight;
-
+    bool sound;
     float carWidth;
     float carHeight;
     float ballRadius;
@@ -29,7 +31,7 @@ private:
 public:
     ClientConfigurationAttributes(int windowWidth, int windowHeight,
                                   float carWidth, float carHeight,
-                                  float ballRadius, int gameTime);
+                                  float ballRadius, int gameTime, bool sound);
 };
 
 

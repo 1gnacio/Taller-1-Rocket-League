@@ -17,4 +17,4 @@ directional_force_module: 1.3
 jump_impulse: 4.0
 replay_time_in_sec: 5
 responses_per_sec: 25
-game_time: 25
+game_time: 10
