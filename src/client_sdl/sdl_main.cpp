@@ -58,8 +58,11 @@ void sdl_main::updateScreen(Response& response) {
                                           renderer.GetOutputHeight());
             double car_angle = convert.toDegrees(player.getRotationAngle());
             int id = player.getId();
+            bool mainPlayer = false;
+            bool localTeam = player.localTeam();
             if (id == myID) {
                 turboLeft = player.getRemainingTurbo();
+                mainPlayer = true;
             }
             int car_w = convert.toPixels(conf.getCarWidth(),
                                          renderer.GetOutputWidth());
@@ -69,7 +72,7 @@ void sdl_main::updateScreen(Response& response) {
 
             auto it = players.find(id);
             if (it == players.end()) {
-                players.emplace(id, renderer);
+                players.try_emplace(id, renderer, localTeam, mainPlayer);
             }
 
             players.at(id).update(car_x, car_y, car_w, car_h, car_angle,

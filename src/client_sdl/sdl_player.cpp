@@ -1,12 +1,20 @@
 #include "sdl_player.h"
 
-sdl_player::sdl_player(SDL2pp::Renderer &renderer):
+sdl_player::sdl_player(SDL2pp::Renderer &renderer,
+                       bool localTeam, bool mainPlayer):
     car_an(renderer, 4, DATA_PATH "/car/car"),
     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
     facingLeft(true), moving(false), onTurbo(false), jumping(false),
-    x(0), y(0), angle(0), size_w(0), size_h(0){
-    //car_an.setColorMod(255,255,255);
+    x(0), y(0), angle(0), size_w(0), size_h(0), localTeam(localTeam),
+    mainPlayer(mainPlayer){
+    if (mainPlayer) {
+        car_an.setColorMod(255,255,255);
+    } else if (localTeam) {
+        car_an.setColorMod(255,80,80);
+    } else {
+        car_an.setColorMod(100,80,80);
+    }
     jump_an.disableLoop();
     turbo_an.disableLoop();
 }
