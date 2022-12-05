@@ -20,7 +20,8 @@ BoxLogic::BoxLogic(int requiredPlayers):
     ballPunchesLocal(),
     ballPunchesVisitor(),
     contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, configuration.getMapGravity()));
+    world = std::make_unique<b2World>(b2Vec2(0.0f,
+                                             configuration.getMapGravity()));
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -205,32 +206,15 @@ void BoxLogic::addPlayer(int id) {
 BoxLogic::~BoxLogic() {
 }
 
-void BoxLogic::update(Command &command) {
-// Si es comando de unirse llamo a addPlayer()
-}
-
-void BoxLogic::update() {
-// Es necesario?
-}
-
-
 float BoxLogic::getData(int key, const b2Body* body) {
     switch (key) {
         case 0:
             return body->GetPosition().x;
         case 1:
             return body->GetPosition().y;
-        case 2:
-            return body->GetAngle();
-        case 3:
-            return body->GetLinearVelocity().x;
-        case 4:
-            return body->GetLinearVelocity().y;
     }
     return 0;
 }
-
-
 
 float BoxLogic::getBallData(int key) {
     switch (key) {
@@ -266,12 +250,10 @@ Car* BoxLogic::getCar(int carID) {
     if (found != this->cars.end()) {
         return found.base();
     }
-
     return nullptr;
 }
 
 b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
-
     if (direction == LogicValues().LEFT_DIRECTION) {
         lastDir = LEFT_LAST_DIRECTION;
         return b2Vec2(configuration.getMovementForceModule()*(-1), 0.0f);
@@ -284,7 +266,6 @@ b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
     return (b2Vec2(0.0f, configuration.getJumpImpulse()*(-1)));
 }
 
-// Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     directions lastDir = NONE;
     b2Vec2 vel = getVectorForce((int)direction, lastDir);
@@ -489,22 +470,22 @@ void BoxLogic::updateLastDirection(int id,
 
 void BoxLogic::verifyPunch() {
     ball.verifyPunch();
-    for(auto &x : cars) {
+    for (auto &x : cars) {
         x.verifyPunch();
     }
 }
 
-bool BoxLogic::getBallDataPunched(const int i) {
-    switch (i) {
-        case 6:
+bool BoxLogic::getBallDataPunched(const int key) {
+    switch (key) {
+        case LogicValues().HAS_BEEN_PUNCHED_NORMAL:
             return (ball.isWasPunchedNormal());
-        case 7:
+        case LogicValues().HAS_BEEN_PUNCHED_FLIP_SHOT:
             return (ball.isWasPunchedFlipShot());
-        case 8:
+        case LogicValues().HAS_BEEN_PUNCHED_RED_SHOT:
             return (ball.isWasPunchedRedShot());
-        case 9:
+        case LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT:
             return (ball.isWasPunchedPurpleShot());
-        case 10:
+        case LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT:
             return (ball.isWasPunchedGoldShot());
     }
     return false;

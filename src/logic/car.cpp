@@ -74,9 +74,6 @@ void Car::stopMove() {
     }
 }
 
-bool Car::canJump() {
-    return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
-}
 bool Car::jumpedTwoTimes() {
     return this->secondJump;
 }
@@ -127,7 +124,8 @@ void Car::jump(b2Vec2 vel) {
 }
 
 bool Car::isJumping() {
-    return (carBody->GetPosition().y < (LogicValues().ALTITUDE_GROUND));  // posicion del suelo
+    return (carBody->GetPosition().y <
+            (LogicValues().ALTITUDE_GROUND));
 }
 
 void Car::verifyDoubleJump() {
@@ -189,23 +187,25 @@ float Car::directionForce(int key) {
 }
 
 int Car::directionFace() {
-
     return ((isFacingLeft()) ? -1 : 1);
 }
 
 void Car::applyTurbo() {
     usingTurbo = 2;
     if (turboTank > 0) {
-       carBody->ApplyForceToCenter(b2Vec2(turboForce*(directionFace()),directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
+       carBody->ApplyForceToCenter(b2Vec2(turboForce*(directionFace()),
+                                          directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
     }
 }
 
 void Car::resetPosition() {
     if (id%2)
-        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_LOCAL, LogicValues().POS_Y_INITIAL_CAR_LOCAL),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_LOCAL,
+                                     LogicValues().POS_Y_INITIAL_CAR_LOCAL),
                               LogicValues().ANGLE_CAR);
     else
-        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_VISITOR, LogicValues().POS_Y_INITIAL_CAR_VISITOR),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_VISITOR,
+                                     LogicValues().POS_Y_INITIAL_CAR_VISITOR),
                               LogicValues().ANGLE_CAR);
     carBody->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
     carBody->SetAngularVelocity(0);
@@ -238,14 +238,6 @@ bool Car::didFlip() {
         return true;
     }
     return false;
-}
-
-bool Car::punchedBall() const {
-    return punched;
-}
-
-void Car::SetPunchedBall(bool set) {
-    punched = set;
 }
 
 float Car::getSecFlip() const {
@@ -309,13 +301,11 @@ bool Car::getHasPunchedTheBall() {
 }
 
 void Car::verifyPunch() {
-
-    if(timeAfterPunched > 2) {
+    if (timeAfterPunched > 2) {
         this->hasPunchedTheBall = false;
         timeAfterPunched = 0;
     }
     timeAfterPunched++;
-
 }
 
 void Car::setTurboForce(float force) {

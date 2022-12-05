@@ -94,5 +94,4 @@ void GameLogic::updateRoomInfo(Room &room, bool replay) {
 
 void GameLogic::resetPositions() {
     gamePhysics.resetPositions();
-
 }

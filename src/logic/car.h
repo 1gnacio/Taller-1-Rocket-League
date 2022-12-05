@@ -3,7 +3,6 @@
 
 #ifndef SRC_LOGIC_CAR_H_
 #define SRC_LOGIC_CAR_H_
-//#include"stateMachine.h"
 
 /*
  * Objeto que simula auto en el juego,
@@ -37,18 +36,10 @@ class Car {
     bool hasPunchedTheBall;
     int timeAfterPunched;
     float turboForce;
-    bool canJump();
     bool isJumping();
+
 public:
-    void setSecFlip(float secFlip);
 
-    float getSecFlip() const;
-
-    bool isMakeFlip() const;
-
-    void setMakeFlip(bool makeFlip);
-
- public:
     /*
      * Se crea el objeto a partir de un b2Body de la librera de box2D
      */
@@ -117,10 +108,6 @@ public:
 
     void verifyFlip();
 
-    bool punchedBall() const;
-
-    void SetPunchedBall(bool set);
-
     int getGoals();
 
     int getAssists();
@@ -147,10 +134,18 @@ public:
 
     void setTurboForce(float force);
 
-
     float directionForce(int key);
 
     int directionFace();
+
+    void setSecFlip(float secFlip);
+
+    float getSecFlip() const;
+
+    bool isMakeFlip() const;
+
+    void setMakeFlip(bool makeFlip);
+
 };
 
 

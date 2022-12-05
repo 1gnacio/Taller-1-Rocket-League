@@ -31,7 +31,7 @@ public:
     const int POSITION_ITERATIONS = 3;
 
     const int HAS_BEEN_PUNCHED_NORMAL = 6;
-    const int HAS_BEEN_PUNCHED_FLIP_SHOT= 7;
+    const int HAS_BEEN_PUNCHED_FLIP_SHOT = 7;
     const int HAS_BEEN_PUNCHED_RED_SHOT = 8;
     const int HAS_BEEN_PUNCHED_PURPLE_SHOT = 9;
     const int HAS_BEEN_PUNCHED_GOLD_SHOT = 10;

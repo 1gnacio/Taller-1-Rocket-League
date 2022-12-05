@@ -63,15 +63,9 @@ float Ball::getData(int key) {
 
 float Ball::directionForce(int key) {
     if (key == LogicValues().X_VELOCITY) {
-        if (getData(LogicValues().X_VELOCITY) > 1)
-            return 1;
-        else
-            return -1;
+        return (getData(LogicValues().X_VELOCITY) > 1) ? 1 : -1;
     } else if (key == LogicValues().Y_VELOCITY) {
-        if (getData(LogicValues().Y_VELOCITY) > 1)
-            return 1;
-        else
-            return -1;
+        return (getData(LogicValues().Y_VELOCITY) > 1) ? 1 : -1;
     }
     return 0;
 }
@@ -128,10 +122,10 @@ bool Ball::isWasPunched() {
             wasPunchedRedShot || wasPunchedFlipShot || wasPunchedNormal);
 }
 
-void Ball::setForces(float forceFlip, float forceRed, float forcePurple, float forceGold) {
+void Ball::setForces(float forceFlip, float forceRed,
+                     float forcePurple, float forceGold) {
     this->forceInFlipShot = forceFlip;
     this->forceInRedShot = forceRed;
     this->forceInPurpleShot = forcePurple;
     this->forceInGoldShot = forceGold;
-
 }

@@ -33,25 +33,24 @@ int Game::getTime() {
 }
 
 void Game::updateGame(int teamGoal) {
-    if(teamGoal == 2) {
+    if (teamGoal == 2) {
         isGoalLocal = 1;
         goalsLocal++;
-    } else if(teamGoal == 1) {
+    } else if (teamGoal == 1) {
         isGoalVisitor = 1;
         goalsVisitor++;
     }
-
 }
 void Game::updateTime() {
     time_in_miliSec = time_in_miliSec + 40;
-    if(time_in_miliSec > 1000) {
+    if (time_in_miliSec > 1000) {
         time_inSec++;
         time_in_miliSec = time_in_miliSec - 1000;
     }
 }
 
 bool Game::matchFinished() {
-    if(time_inSec > game_time)
+    if (time_inSec > game_time)
         hasFinished = true;
     else
         hasFinished = false;
@@ -60,7 +59,6 @@ bool Game::matchFinished() {
 }
 
 bool Game::goal() {
-
     return (isGoalLocal || isGoalVisitor);
 }
 
@@ -71,7 +69,5 @@ void Game::resetData() {
 
 void Game::setStatus(Room &room, bool replay) {
     isWaitingForPlayers = !(room.isStarted1());
-    //hasFinished = room.isFinished1();
     activeReplay = replay;
-
 }
