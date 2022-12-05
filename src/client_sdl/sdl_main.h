@@ -11,37 +11,47 @@
 #include "sdl_ball.h"
 #include "sdl_scoreboard.h"
 #include "sdl_arena.h"
+#include "sdl_waiting.h"
+#include "sdl_statistics.h"
+
 #include <ctime>
 #include "../src/common/unit_conversion.h"
 
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
+#include "src/configuration/attributes/client_configuration_attributes.h"
+
 #endif
 
-#define TIME_UPDATE_MS 10
+#define TIME_UPDATE_MS 20
 
 class sdl_main {
 private:
+    ClientConfigurationAttributes& conf;
     SDL2pp::SDL sdl;
-    SDL2pp::SDLTTF ttf;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
+    SDL2pp::SDLTTF ttf;
     /*SDL2pp::Mixer mixer;
     SDL2pp::Music background_music;*/
     sdl_arena arena;
     sdl_ball ball;
     sdl_scoreboard scoreboard;
+    sdl_waiting waiting;
+    sdl_statistics statistics;
     unit_conversion convert;
+    int myID;
 #ifndef SDL_TESTING
     std::map<int, sdl_player> players;
 #endif
 
 public:
-    sdl_main();
+    explicit sdl_main(ClientConfigurationAttributes& conf);
     void renderScreen();
     void showWindow();
     void hideWindow();
-    ~sdl_main();
+    void setID(int id);
+    ~sdl_main() = default;
 
 #ifndef SDL_TESTING
     void updateScreen(Response& response);

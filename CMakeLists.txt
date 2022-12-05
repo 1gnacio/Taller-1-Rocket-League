@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Flags TODO: activarlo
-# set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -pedantic -pedantic-errors")
+#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -pedantic -pedantic-errors")
 # debugging flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 
@@ -56,6 +56,10 @@ add_executable(sdlTesting
         src/client_sdl/sdl_arena.cpp
         src/client_sdl/sdl_player.h
         src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
+        src/client_sdl/sdl_statistics.h
+        src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_animation.h
         src/client_sdl/sdl_animation.cpp)
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
@@ -226,6 +230,10 @@ add_executable(lobby
         src/protocolo/serializer/serializer.h
         src/client_sdl/sdl_animation.cpp
         src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
+        src/client_sdl/sdl_statistics.h
+        src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_player.cpp
         src/client_sdl/sdl_main.cpp
         src/client_sdl/sdl_main.h src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
@@ -252,6 +260,8 @@ add_executable(lobby
         src/configuration/attributes/server_configuration_attributes.h
         src/configuration/yaml_configuration.cpp
         src/configuration/yaml_configuration.h
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
         )
 
 target_link_libraries(lobby ${SDL2PP_LIBRARIES} Qt5::Widgets box2d yaml-cpp)
@@ -320,6 +330,8 @@ add_executable(game_client
         src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h
         src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
         src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
         src/protocolo/responses/match_response.cpp
@@ -369,7 +381,9 @@ add_executable(game_client
         src/thread/common_thread.h
         src/handlers/id_service.cpp
         src/handlers/id_service.h
-        )
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
+        src/client_sdl/sdl_statistics.cpp src/client_sdl/sdl_statistics.h)
         
 
 target_link_libraries(game_client ${SDL2PP_LIBRARIES} Qt5::Widgets yaml-cpp)

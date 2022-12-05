@@ -10,8 +10,8 @@ LobbyResponse::LobbyResponse(std::vector<unsigned char> &serialized) {
 
     serializer.parse(roomsSize, serialized, begin, end);
 
-    std::vector<unsigned char> serializedRooms(serialized.begin() + end + 1,
-                                               serialized.begin() + end + roomsSize + 1);
+    std::vector<unsigned char> serializedRooms(serialized.begin() + end,
+                                               serialized.begin() + end + roomsSize);
 
     this->rooms = RoomResponses(serializedRooms);
 
@@ -20,8 +20,8 @@ LobbyResponse::LobbyResponse(std::vector<unsigned char> &serialized) {
 
     serializer.parse(actionResultSize, serialized, begin, end);
 
-    std::vector<unsigned char> serializedActionResult(serialized.begin() + end + 1,
-                                                      serialized.begin() + end + actionResultSize + 1);
+    std::vector<unsigned char> serializedActionResult(serialized.begin() + end,
+                                                      serialized.begin() + end + actionResultSize);
 
     this->actionResult = ActionResultResponse(serializedActionResult);
 }

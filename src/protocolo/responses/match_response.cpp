@@ -109,8 +109,8 @@ MatchResponse::MatchResponse(std::vector<unsigned char>& serialized) :
         std::vector<unsigned char> playerResponses(serialized.begin() +
                                                    firstPosition,
                                                    serialized.begin() +
-                                                   firstPosition +
-                                                   PlayerResponses::getSize(countPlayers) + 1);
+                                                   lastPosition +
+                                                   PlayerResponses::getSize(countPlayers));
 
         this->players = PlayerResponses(playerResponses);
 
@@ -175,4 +175,4 @@ bool MatchResponse::waitingForPlayers() {
     return isWaitingForPlayers;
 }
 
-MatchResponse::MatchResponse()= default;
+MatchResponse::MatchResponse() = default;

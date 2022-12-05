@@ -5,14 +5,10 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer):
     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
     facingLeft(true), moving(false), onTurbo(false), jumping(false),
-    x(0), y(0), angle(0), size_h(0), size_w(0){
+    x(0), y(0), angle(0), size_w(0), size_h(0){
     //car_an.setColorMod(255,255,255);
     jump_an.disableLoop();
-}
-
-
-sdl_player::~sdl_player() {
-    //TODO
+    turbo_an.disableLoop();
 }
 
 void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
@@ -28,8 +24,6 @@ void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
         this->size_w = _size_w;
         this->facingLeft = _facingLeft;
 #endif
-
-
     this->angle = _angle;
 
     if (moving) {
@@ -64,24 +58,26 @@ void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
 
 void sdl_player::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    car_an.render(renderer, SDL2pp::Rect(x-(size_w/2), y-(size_h/2),
+    int car_x=x-(size_w/2);
+    int car_y=y-(size_h/2);
+    car_an.render(renderer, SDL2pp::Rect(car_x, car_y,
                                          size_w, size_h), angle, flip);
 
     if (onTurbo){
         if (facingLeft){
             turbo_an.render(renderer, SDL2pp::Rect(
-                    (x-(size_w/2)) + (size_h * 3),(y-(size_h/2)) + (size_h / 4),
-                    size_h, size_h), angle, flip);
+                    car_x+size_w, y - size_h,
+                    size_h*2, size_h*2), angle, flip);
+
         } else {
             turbo_an.render(renderer, SDL2pp::Rect(
-                    (x - (size_w / 2)) - (size_h),
-                    (y - (size_h / 2)) + (size_h / 4),
-                    size_h, size_h), angle, flip);
+                    car_x - (size_w/2), y - size_h,
+                    size_h*2, size_h*2), angle, flip);
         }
     }
     if (jumping){
         jump_an.render(renderer, SDL2pp::Rect(
-                x-(size_w/2), y-(size_h/2), size_h*3,
+                x, y+(size_h/2), size_h*3,
                 size_h*3), 0,  flip);
     }
 }

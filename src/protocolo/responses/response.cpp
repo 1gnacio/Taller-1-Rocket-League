@@ -15,20 +15,24 @@ Response::Response(std::vector<unsigned char> &serializedResponse) : serializer(
 
     this->serializer.parse(lobbySize, serializedResponse, begin, end);
 
-    std::vector<unsigned char> serializedLobbyResponse(serializedResponse.begin() + end + 1,
-                                                       serializedResponse.begin() + end + lobbySize + 1);
+    std::vector<unsigned char> serializedLobbyResponse(serializedResponse.begin() + end,
+                                                       serializedResponse.begin() + end + lobbySize);
 
-    this->lobbyResponse = LobbyResponse(serializedLobbyResponse);
+    if (lobbySize > 0) {
+        this->lobbyResponse = LobbyResponse(serializedLobbyResponse);
+    }
 
     begin += lobbySize;
     end += lobbySize;
 
     this->serializer.parse(matchesSize, serializedResponse, begin, end);
 
-    std::vector<unsigned char> serializedMatchesResponse(serializedResponse.begin() + end + 1,
-                                                         serializedResponse.begin() + end + matchesSize + 1);
+    std::vector<unsigned char> serializedMatchesResponse(serializedResponse.begin() + end,
+                                                         serializedResponse.begin() + end + matchesSize);
 
-    this->matchResponse = MatchResponse(serializedMatchesResponse);
+    if (matchesSize > 0) {
+        this->matchResponse = MatchResponse(serializedMatchesResponse);
+    }
 }
 
 Response::Response(MatchResponse &matchResponse)

@@ -25,7 +25,7 @@ public:
                 float dt, bool isMoving, bool isJumping, bool onTurbo,
                 bool facingLeft);
     void render(SDL2pp::Renderer &renderer);
-    ~sdl_player();
+    ~sdl_player() = default;
 
 #ifdef SDL_TESTING
     void moveRight();

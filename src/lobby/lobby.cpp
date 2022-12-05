@@ -13,7 +13,7 @@ lobby::lobby(QWidget *parent,
 {
     ui->setupUi(this);
     this->setFixedSize(this->width(), this->height());
-    maxPlayers = 2;
+    maxPlayers = 1;
     horizontalHeader.append("Game Name");
     horizontalHeader.append("Status");
     horizontalHeader.append("Players");

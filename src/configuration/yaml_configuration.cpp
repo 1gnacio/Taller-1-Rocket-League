@@ -16,6 +16,9 @@ ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
 }
 
 ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {
-    YAML::Node config = YAML::LoadFile(DATA_PATH + ConfigurationPaths().CLIENT_CONFIG);
-    return {config["width"].as<int>(), config["height"].as<int>()};
+    YAML::Node configServer = YAML::LoadFile(DATA_PATH + ConfigurationPaths().SERVER_CONFIG);
+    YAML::Node configClient = YAML::LoadFile(DATA_PATH + ConfigurationPaths().CLIENT_CONFIG);
+    return {configClient["width"].as<int>(), configClient["height"].as<int>(),
+            configServer["car_width"].as<float>(), configServer["car_height"].as<float>(),
+            configServer["ball_radius"].as<float>(), configServer["game_time"].as<int>()};
 }

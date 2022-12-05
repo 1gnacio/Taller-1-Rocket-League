@@ -6,7 +6,7 @@ car_restitution: 0.0
 ball_density: 0.3
 ball_friction: 0.3
 ball_restitution: 0.7
-ball_radius: 0.3
+ball_radius: 0.2
 gravity: 7.0
 force_flip_shot: 1
 force_red_shot: 2
@@ -17,4 +17,4 @@ directional_force_module: 1.3
 jump_impulse: 4.0
 replay_time_in_sec: 5
 responses_per_sec: 25
-game_time: 180
+game_time: 300
