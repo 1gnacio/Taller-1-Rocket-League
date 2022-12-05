@@ -149,6 +149,8 @@ public:
 
 
     float directionForce(int key);
+
+    int directionFace();
 };
 
 
