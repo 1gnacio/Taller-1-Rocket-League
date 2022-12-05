@@ -4,12 +4,12 @@
 
 #include "sdl_music.h"
 
-sdl_music::sdl_music(): background_music(DATA_PATH "/background.ogg"),
-                        goal_chunk(DATA_PATH "/goal.mp3"),
-                        turbo_chunk(DATA_PATH "/turbo.mp3"),
-                        accelerating_chunk(DATA_PATH "/acceleration.mp3"),
-                        jump_chunk(DATA_PATH "/jump.mp3"),
-                        kick_chunk(DATA_PATH "/kick.mp3"),
+sdl_music::sdl_music(): background_music(DATA_PATH "/sounds/background.ogg"),
+                        goal_chunk(DATA_PATH "/sounds/goal.mp3"),
+                        turbo_chunk(DATA_PATH "/sounds/turbo.mp3"),
+                        accelerating_chunk(DATA_PATH "/sounds/acceleration.mp3"),
+                        jump_chunk(DATA_PATH "/sounds/jump.mp3"),
+                        kick_chunk(DATA_PATH "/sounds/kick.mp3"),
                         goal(false), playing_goal(false),turbo(false),
                         playing_turbo(false), accelerating(false), playing_accelerating(false),
                         jumping(false), playing_jump(false), kick(false), playing_kick(false)
