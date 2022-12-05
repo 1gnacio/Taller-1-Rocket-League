@@ -32,8 +32,14 @@ public:
     [[nodiscard]] float getRotationAngle() const { return this->rotationAngle; }
     [[nodiscard]] bool getIsMoving() const { return this->isMoving; }
     [[nodiscard]] bool getIsFlying() const { return this->isFlying; }
-    [[nodiscard]] bool getHasBeenPunched() const { return this->hasBeenPunchedNormal; }
-
+    [[nodiscard]] bool getHasBeenPunched() const { return (this->hasBeenPunchedNormal
+            or this->hasBeenPunchedFlipShot or this->hasBeenPunchedGoldShot
+            or this->hasBeenPunchedPurpleShot or this->hasBeenPunchedRedShot); }
+    [[nodiscard]] bool getHasBeenPunchedNormal() const { return this->hasBeenPunchedNormal; }
+    [[nodiscard]] bool getHasBeenPunchedFlipShot() const { return this->hasBeenPunchedFlipShot; }
+    [[nodiscard]] bool getHasBeenPunchedRedShot() const { return this->hasBeenPunchedRedShot; }
+    [[nodiscard]] bool getHasBeenPunchedGoldShot() const { return this->hasBeenPunchedGoldShot; }
+    [[nodiscard]] bool getHasBeenPunchedPurpleShot() const { return this->hasBeenPunchedPurpleShot; }
     static int size();
 };
 

@@ -2,7 +2,7 @@
 #define ROCKET_LEAGUE_SDL_MAIN_H
 
 #include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
-
+#include <SDL_mixer.h>
 #include <list>
 #include <vector>
 #include <map>
@@ -19,6 +19,7 @@
 #include "../src/configuration/attributes/client_configuration_attributes.h"
 #ifndef SDL_TESTING
 #include "../src/protocolo/responses/response.h"
+#include "sdl_music.h"
 
 #endif
 
@@ -31,13 +32,13 @@ private:
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
     SDL2pp::SDLTTF ttf;
-    /*SDL2pp::Mixer mixer;
-    SDL2pp::Music background_music;*/
+    SDL2pp::Mixer mixer;
     sdl_arena arena;
     sdl_ball ball;
     sdl_scoreboard scoreboard;
     sdl_waiting waiting;
     sdl_statistics statistics;
+    sdl_music sounds;
     unit_conversion convert;
     int myID;
 #ifndef SDL_TESTING
@@ -50,6 +51,8 @@ public:
     void showWindow();
     void hideWindow();
     void setID(int id);
+    void enableSounds();
+    void disableSounds();
     ~sdl_main() = default;
 
 #ifndef SDL_TESTING

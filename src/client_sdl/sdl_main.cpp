@@ -8,8 +8,8 @@
 sdl_main::sdl_main(ClientConfigurationAttributes& conf):
             conf(conf),
                     sdl(SDL_INIT_VIDEO),
-                      /*mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                            MIX_DEFAULT_CHANNELS, 4096),*/
+                      mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                            AUDIO_CHANNELS, 4096),
                       window("Rocket League",
                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                              conf.getWindowWidth(), conf.getWindowHeight(),
@@ -18,8 +18,7 @@ sdl_main::sdl_main(ClientConfigurationAttributes& conf):
                       arena(renderer),  ball(renderer), scoreboard(renderer),
                       waiting(renderer), statistics(renderer),
                       convert(MAX_WIDTH, MAX_HEIGHT),
-                      myID(0)/*,
-                      background_music(DATA_PATH "/background.ogg")*/
+                      myID(0)
 #ifdef SDL_TESTING
                       , my_object(renderer)
 #endif
@@ -30,7 +29,6 @@ sdl_main::sdl_main(ClientConfigurationAttributes& conf):
     window.Show();
 #endif
     window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
-    //mixer.FadeInMusic(background_music, -1, 2000);
 }
 
 
@@ -49,7 +47,10 @@ void sdl_main::updateScreen(Response& response) {
         scoreboard.update(convert.timeToString((std::chrono::milliseconds)
                        (response.getMatchResponse().getTime() * 1000)),
                           local_goals, visitors_goals);
-
+        bool myTurbo = false;
+        bool myAcceleration = false;
+        bool myJumping = false;
+        bool goal = replay;
         for (auto &player:
                 response.getMatchResponse().getPlayersResponse().getPlayers()) {
             int car_x = convert.WtoPixels(player.getPosX(),
@@ -63,6 +64,9 @@ void sdl_main::updateScreen(Response& response) {
             if (id == myID) {
                 turboLeft = player.getRemainingTurbo();
                 mainPlayer = true;
+                myTurbo = player.onTurbo();
+                myJumping = player.flying();
+                myAcceleration = player.accelerating();
             }
             int car_w = convert.toPixels(conf.getCarWidth(),
                                          renderer.GetOutputWidth());
@@ -90,12 +94,24 @@ void sdl_main::updateScreen(Response& response) {
                 response.getMatchResponse().getBall().getRotationAngle());
         int ball_width = 2.0 * convert.toPixels(conf.getBallRadius(),
                                                 renderer.GetOutputWidth());
-        ball.update(ball_x, ball_y, ball_angle, ball_width);
+        bool ballKicked = response.getMatchResponse().getBall().getHasBeenPunched();
+        bool hasBeenPunchedFlipShot = response.getMatchResponse().getBall().getHasBeenPunchedFlipShot();
+        bool hasBeenPunchedRedShot = response.getMatchResponse().getBall().getHasBeenPunchedRedShot();
+        bool hasBeenPunchedPurpleShot = response.getMatchResponse().getBall().getHasBeenPunchedPurpleShot();
+        bool hasBeenPunchedGoldShot = response.getMatchResponse().getBall().getHasBeenPunchedGoldShot();
+        ball.update(ball_x, ball_y, ball_angle, ball_width, hasBeenPunchedRedShot, hasBeenPunchedGoldShot,
+                    hasBeenPunchedFlipShot, hasBeenPunchedPurpleShot);
+
+        if (ballKicked)
+            std::cout << "Ball Kicked" << std::endl;
+        sounds.update(goal, myTurbo, myAcceleration, myJumping, ballKicked);
     }
+
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
                  waitingForPlayers, replay, turboLeft);
     bool finishedGame = response.getMatchResponse().isFinished();
     if (finishedGame){
+        disableSounds();
         statistics.update(
                 response.getMatchResponse().getPlayersResponse().getPlayers());
     }
@@ -115,6 +131,7 @@ void sdl_main::renderScreen() {
 #endif
     waiting.render(renderer);
     statistics.render(renderer);
+    sounds.renderSounds(mixer);
     renderer.Present();
 }
 
@@ -129,6 +146,18 @@ void sdl_main::hideWindow() {
 void sdl_main::setID(int id) {
     this->myID = id;
 }
+
+void sdl_main::enableSounds() {
+    sounds.startBackgroundMusic(mixer);
+}
+
+void sdl_main::disableSounds() {
+    for (int i = 0; i < AUDIO_CHANNELS; ++i) {
+        mixer.FadeOutChannel(i, 0);
+    }
+    mixer.HaltMusic();
+}
+
 
 #ifdef SDL_TESTING
 void sdl_main::updateScreen() {
