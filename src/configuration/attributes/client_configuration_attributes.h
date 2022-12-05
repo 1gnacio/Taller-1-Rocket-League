@@ -5,9 +5,31 @@
 class ClientConfigurationAttributes {
 private:
     int windowWidth;
-    int windowHeight;
 public:
-    ClientConfigurationAttributes(int windowWidth, int windowHeight);
+    int getWindowWidth() const;
+
+    int getWindowHeight() const;
+
+    float getCarWidth() const;
+
+    float getCarHeight() const;
+
+    float getBallRadius() const;
+
+    int getGameTime() const;
+
+private:
+    int windowHeight;
+
+    float carWidth;
+    float carHeight;
+    float ballRadius;
+
+    int gameTime;
+public:
+    ClientConfigurationAttributes(int windowWidth, int windowHeight,
+                                  float carWidth, float carHeight,
+                                  float ballRadius, int gameTime);
 };
 
 

@@ -56,6 +56,10 @@ add_executable(sdlTesting
         src/client_sdl/sdl_arena.cpp
         src/client_sdl/sdl_player.h
         src/client_sdl/sdl_player.cpp
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
+        src/client_sdl/sdl_statistics.h
+        src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_animation.h
         src/client_sdl/sdl_animation.cpp)
 target_link_libraries(sdlTesting ${SDL2PP_LIBRARIES})
@@ -226,6 +230,10 @@ add_executable(lobby
         src/protocolo/serializer/serializer.h
         src/client_sdl/sdl_animation.cpp
         src/client_sdl/sdl_animation.h
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
+        src/client_sdl/sdl_statistics.h
+        src/client_sdl/sdl_statistics.cpp
         src/client_sdl/sdl_player.cpp
         src/client_sdl/sdl_main.cpp
         src/client_sdl/sdl_main.h src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
@@ -322,6 +330,8 @@ add_executable(game_client
         src/client_sdl/sdl_ball.cpp src/client_sdl/sdl_ball.h
         src/client_sdl/sdl_arena.cpp src/client_sdl/sdl_arena.h
         src/client_sdl/sdl_scoreboard.cpp src/client_sdl/sdl_scoreboard.h
+        src/client_sdl/sdl_waiting.h
+        src/client_sdl/sdl_waiting.cpp
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
         src/protocolo/responses/match_response.cpp

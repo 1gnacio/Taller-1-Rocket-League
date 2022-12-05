@@ -8,7 +8,7 @@
 #include "../libs/libSDL2pp/SDL2pp/SDL2pp.hh"
 #include <string>
 #include <vector>
-#include "src/protocolo/responses/player_response.h"
+#include "../src/protocolo/responses/player_response.h"
 
 class sdl_statistics {
 private:
