@@ -18,9 +18,10 @@ find_package(yaml-cpp REQUIRED)
 #####################################################################################################################
 # start SDL
 # set up SDL2pp library
-set(SDL2PP_WITH_IMAGE YES)
-set(SDL2PP_WITH_TTF YES)
-set(SDL2PP_WITH_MIXER YES)
+find_package(SDL2pp REQUIRED)
+set(SDL2PP_WITH_IMAGE ON) # if you need SDL_image support
+set(SDL2PP_WITH_MIXER ON) # if you need SDL_mixer support
+set(SDL2PP_WITH_TTF ON) # if you need SDL_ttf support
 add_subdirectory(libs/libSDL2pp)
 add_subdirectory(box2d)
 include_directories(${PROJECT_SOURCE_DIR}/libs)

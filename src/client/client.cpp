@@ -17,7 +17,6 @@ Client::Client(ServerConnection& connection) :
 }
 
 void Client::readStandardInput() {
-    //TODO: opción para que el usurario pueda elegir las teclas.
     SDL_Event event;
     while (this->isRunning){
         //Ver que convine después. ¿waitEvent y pollEvent?

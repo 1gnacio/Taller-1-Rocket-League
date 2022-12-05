@@ -8,8 +8,8 @@
 sdl_main::sdl_main(ClientConfigurationAttributes& conf):
             conf(conf),
                     sdl(SDL_INIT_VIDEO),
-                      /*mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                            MIX_DEFAULT_CHANNELS, 4096),*/
+                      mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                            MIX_DEFAULT_CHANNELS, 4096),
                       window("Rocket League",
                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                              conf.getWindowWidth(), conf.getWindowHeight(),
