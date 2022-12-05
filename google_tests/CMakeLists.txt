@@ -36,7 +36,7 @@ add_custom_target(gcov
         )
 add_custom_command(TARGET gcov
         COMMAND echo "=================== GCOV ===================="
-        COMMAND gcov -r ${OBJECT_DIR}/protocolo/protocolo.cpp ${OBJECT_DIR}/logic/boxLogic.cpp
+        COMMAND gcov ${OBJECT_DIR}/protocolo/protocolo.cpp ${OBJECT_DIR}/logic/boxLogic.cpp
         COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage
         )

@@ -159,11 +159,14 @@ TEST(physics, RealizaUnTurbo) {
     update(physics,100);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
 
-    physics.startMove(PLAYER_ID,LogicValues().LEFT_DIRECTION);
+    physics.startMove(PLAYER_ID,LogicValues().RIGHT_DIRECTION);
     update(physics,1);
     float vel1 = physics.getCarData(PLAYER_ID, LogicValues().X_VELOCITY);
+    physics.startMove(PLAYER_ID,LogicValues().RIGHT_DIRECTION);
     physics.applyTurbo(PLAYER_ID);
-    update(physics,1);
+    physics.applyTurbo(PLAYER_ID);
+    physics.applyTurbo(PLAYER_ID);
+    update(physics,4);
 
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) > vel1);
 }

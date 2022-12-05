@@ -35,6 +35,12 @@ lobby::~lobby()
 
 void lobby::on_pushButton_join_clicked()
 {   //UNIR
+    if (this->connection.connectionClosed()) {
+        std::cout << "Error de conexion con el servidor." << std::endl;
+        this->close();
+        return;
+    }
+
     if (this->currSelectedGame.isEmpty()) { return; }
 
     std::string join = CommandValues().DESERIALIZED_JOIN;
@@ -64,6 +70,12 @@ void lobby::on_pushButton_join_clicked()
 
 void lobby::on_pushButton_refresh_clicked()
 {   //LISTAR
+    if (this->connection.connectionClosed()) {
+        std::cout << "Error de conexion con el servidor." << std::endl;
+        this->close();
+        return;
+    }
+
     std::string list = CommandValues().DESERIALIZED_LIST;
     Command c = ProtocolCommands().createCommand(this->connection.getId(),
                                                  list);
@@ -97,6 +109,12 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 
 void lobby::on_pushButton_createGame_clicked()
 {
+    if (this->connection.connectionClosed()) {
+        std::cout << "Error de conexion con el servidor." << std::endl;
+        this->close();
+        return;
+    }
+
     //CREAR
     if (this->maxPlayers < 1 || this->create_gameName.isEmpty()) {
         return;

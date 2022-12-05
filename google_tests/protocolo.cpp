@@ -1,5 +1,6 @@
 #include <thread>
 #include <vector>
+#include <sys/socket.h>
 #include "gtest/gtest.h"
 #include "../src/sockets/socket.h"
 #include "../src/constants/command_values.h"
@@ -7,24 +8,50 @@
 #include "../src/protocolo/protocol_commands.h"
 #include "../src/protocolo/protocolo.h"
 #include "../src/constants/response_values.h"
+#include "../src/exceptions/socket_closed_exception.h"
 
-const char* serv = "8088";
+const char* serv = "8080";
+
+void receiveCommand(std::condition_variable &cv, Command &c, bool &isServerUp) {
+    Socket server(serv);
+    isServerUp = true;
+    cv.notify_all();
+
+    Socket client = server.accept();
+    Protocolo p;
+    for (int i = 0; i < 3; ++i) {
+        try {
+            c = p.receiveCommand(client);
+        } catch (SocketClosedException &e) {
+            //
+        }
+    }
+}
 
 void receiveResponse(Response &response) {
     Socket client("localhost", serv);
+    Protocolo p;
 
-    for (int i = 0; i < 3; i++) {
-        response = Protocolo().receiveResponse(client);
+    for (int i = 0; i < 3; ++i) {
+        try {
+            response = p.receiveResponse(client);
+        } catch (SocketClosedException &e) {
+            //
+        }
     }
 }
 
 void sendCommands(std::vector<std::string> &values) {
     Socket client("localhost", serv);
+    Protocolo p;
 
     for (auto &value : values) {
         Command command = ProtocolCommands().createCommand(1, value);
-
-        Protocolo().sendCommand(client, command);
+        try {
+            p.sendCommand(client, command);
+        } catch (SocketClosedException &e) {
+            break;
+        }
     }
 }
 
@@ -128,5 +155,127 @@ TEST(Protocolo, ClienteSeConectaYRecibeId) {
     clientThread.join();
 
     EXPECT_EQ(receivedId, id);
+}
 
+TEST(Protocolo, DesconectoAlClienteYSeEsperaExcepcionAlIntentarEnviarRespuesta) {
+    Protocolo p;
+    ActionResultResponse actionResult(ResponseValues().ERROR, ResponseValues().ROOM_NOT_FOUND);
+    LobbyResponse lobbyResponse(actionResult);
+    std::string nombre = "nombre";
+    RoomResponse room(nombre, 3, 2, false, false, true);
+    room.addClient(1);
+    room.addClient(2);
+    lobbyResponse.addRoom(room);
+    BallResponse ball(0, 0, 0, false, false, false, true, false, false, false);
+    PlayerResponse  player(0, 0, 0, 0, false, false, false, false, false, false, 0, 1, 0, false, 0.5f);
+    std::vector<PlayerResponse> players{player};
+    PlayerResponses playerResponses(players);
+    std::string name = "nombre";
+    MatchResponse matchResponse(0, 0, 0, ball, playerResponses, 0, 0, name, false, false, false, false, false);
+    Response response(matchResponse);
+    response.addLobbyResponse(lobbyResponse);
+
+    Socket server(serv);
+
+    Response receivedResponse;
+    std::thread clientThread(&receiveResponse, std::ref(receivedResponse));
+
+    Socket connectedClient = server.accept();
+
+    for (int i = 0; i < 3; i++) {
+        p.sendResponse(connectedClient, response);
+    }
+
+    clientThread.join();
+
+    connectedClient.shutdown(SHUT_RDWR);
+    connectedClient.close();
+    try {
+        p.sendResponse(connectedClient, response);
+    } catch (SocketClosedException &e) {
+        //
+    }
+
+    p.sendResponse(connectedClient, response);
+
+    Command c = p.receiveCommand(connectedClient);
+
+    EXPECT_TRUE(p.isConnectionClosed());
+}
+
+TEST(Protocolo, DesconectoElServidorYSeEsperaExcepcionAlRecibirComando) {
+    Socket server(serv);
+    std::vector<std::string> values{
+        CommandValues().DESERIALIZED_LEFT_RELEASE,
+        CommandValues().DESERIALIZED_LEFT_RELEASE,
+        CommandValues().DESERIALIZED_LEFT_RELEASE
+    };
+
+    std::thread clientThread(&sendCommands, std::ref(values));
+
+    Socket client = server.accept();
+
+    Protocolo p;
+    for (int i = 0; i < 3; ++i) {
+        if (i == 1) {
+            client.shutdown(SHUT_RDWR);
+            client.close();
+            try {
+                Command c = p.receiveCommand(client);
+            } catch (SocketClosedException &e) {
+                //
+            }
+            continue;
+        }
+        Command c = p.receiveCommand(client);
+    }
+
+    clientThread.join();
+
+    EXPECT_TRUE(p.isConnectionClosed());
+}
+
+TEST(Protocolo, ClienteSeDesconectaDelServidorySeEsperaExcepcionAlEnviarComando) {
+    bool serverUp = false;
+    std::condition_variable cv; // server up?
+    std::mutex m;
+    std::string value = CommandValues().DESERIALIZED_NOP;
+    unsigned char serialized = CommandValues().SERIALIZED_NOP;
+    Command c(0, serialized, value);
+
+    std::thread serverThread(&receiveCommand, std::ref(cv), std::ref(c), std::ref(serverUp));
+
+    std::unique_lock<std::mutex> l(m);
+
+    while (!serverUp) {
+        cv.wait(l);
+    }
+
+    Socket client("localhost", serv);
+
+    Protocolo p;
+    std::string value1 = CommandValues().DESERIALIZED_LEFT_RELEASE;
+    unsigned char serialized1 = CommandValues().SERIALIZED_LEFT_RELEASE;
+    Command c1(0, serialized1, value1);
+    for (int i = 0; i < 3; ++i) {
+        if (i == 1) {
+            client.shutdown(SHUT_RDWR);
+            client.close();
+            try {
+                p.sendCommand(client, c1);
+            } catch (SocketClosedException &e) {
+                //
+            }
+            continue;
+        }
+        p.sendCommand(client, c1);
+    }
+
+    serverThread.join();
+
+    Response r = p.receiveResponse(client);
+
+    EXPECT_EQ(r.getStatus(), ResponseValues().ERROR);
+
+    EXPECT_TRUE(p.isConnectionClosed());
 }
