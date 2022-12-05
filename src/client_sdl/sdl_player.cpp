@@ -6,8 +6,7 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer,
     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
     facingLeft(true), moving(false), onTurbo(false), jumping(false),
-    x(0), y(0), angle(0), size_w(0), size_h(0), localTeam(localTeam),
-    mainPlayer(mainPlayer){
+    x(0), y(0), angle(0), size_w(0), size_h(0){
     if (mainPlayer) {
         car_an.setColorMod(255,255,255);
     } else if (localTeam) {

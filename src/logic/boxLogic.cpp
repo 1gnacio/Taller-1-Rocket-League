@@ -225,6 +225,8 @@ float BoxLogic::getBallData(int key) {
             return this->ball.getBallBody()->GetLinearVelocity().x;
         case LogicValues().Y_VELOCITY:
             return this->ball.getBallBody()->GetLinearVelocity().y;
+        case LogicValues().ANGLE:
+            return this->ball.getBallBody()->GetAngle();
     }
     return 0.0f;
 }

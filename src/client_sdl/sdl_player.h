@@ -18,8 +18,6 @@ private:
     double angle;
     int size_w;
     int size_h;
-    bool localTeam;
-    bool mainPlayer;
 
 public:
     sdl_player(SDL2pp::Renderer &renderer,

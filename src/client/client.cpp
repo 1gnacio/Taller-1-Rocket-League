@@ -95,6 +95,7 @@ void Client::run() {
     this->isRunning = true;
     sdl_handler.setID(connection.getId());
     sdl_handler.showWindow();
+    sdl_handler.enableSounds();
     std::thread standardInput(&Client::readStandardInput, this);
 
     while (this->isRunning) {
@@ -103,6 +104,7 @@ void Client::run() {
         sdl_handler.renderScreen();
         SDL_Delay(TIME_UPDATE_MS);
     }
+    sdl_handler.disableSounds();
     standardInput.join();
     sdl_handler.hideWindow();
     this->connection.clearGameName();

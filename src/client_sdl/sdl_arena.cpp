@@ -47,9 +47,11 @@ void sdl_arena::update(int _goal_w, bool _waitingForPlayer,
     if (waitingForPlayer or replay){
         texture_goal.SetColorMod(80,80,80);
         texture_stadium.SetColorMod(80,80,80);
+        turboBar_an.setColorMod(80,80,80);
     } else{
         texture_goal.SetColorMod(255,255,255);
         texture_stadium.SetColorMod(255,255,255);
+        turboBar_an.setColorMod(255,255,255);
     }
 }
 

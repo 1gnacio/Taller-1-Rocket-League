@@ -388,7 +388,7 @@ add_executable(game_client
         src/handlers/id_service.h
         src/client_sdl/sdl_waiting.h
         src/client_sdl/sdl_waiting.cpp
-        src/client_sdl/sdl_statistics.cpp src/client_sdl/sdl_statistics.h)
+        src/client_sdl/sdl_statistics.cpp src/client_sdl/sdl_statistics.h src/client_sdl/sdl_music.cpp src/client_sdl/sdl_music.h)
         
 
 target_link_libraries(game_client ${SDL2PP_LIBRARIES} Qt5::Widgets yaml-cpp)
