@@ -2,15 +2,16 @@
 // Created by taller on 25/11/22.
 //
 
-#ifndef ROCKET_LEAGUE_COMPLETEGAME_H
-#define ROCKET_LEAGUE_COMPLETEGAME_H
+#ifndef SRC_GAME_MODEL_COMPLETEGAME_H_
+#define SRC_GAME_MODEL_COMPLETEGAME_H_
 #include "../game_entities/room.h"
 #include "../logic/gameLogic.h"
 #include "../handlers/server_endpoint.h"
 #include "../logic/replay_logic.h"
+#include <string>
 
 class CompleteGame {
-private:
+ private:
     ServerEndpoint & serverEndpoint;
     ServerConfigurationAttributes configuration;
     Room room;
@@ -18,8 +19,8 @@ private:
     ReplayLogic replayLogic;
     CommandQueue commandQueue;
     bool isClosed;
-public:
 
+ public:
     CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint&serverEndPoint);
     ActionResultResponse joinPlayer(int id);
     RoomResponse list();
@@ -30,11 +31,9 @@ public:
     bool operator<(const Room &room) const;
     bool operator()(Room& room);
     bool playerInRoom(int id);
-    [[nodiscard]] std::string getName() const { return room.getName(); };
+    [[nodiscard]] std::string getName() const { return room.getName(); }
 
-    // CompleteGame(const CompleteGame &game, Room room);
     void applyCommand(Command &command);
-    float ballPosY();
 
     void updateTime();
     void resetData();
@@ -51,9 +50,4 @@ public:
 
     bool hasPlayers();
 };
-
-
-
-
-
-#endif //ROCKET_LEAGUE_COMPLETEGAME_H
+#endif  // SRC_GAME_MODEL_COMPLETEGAME_H_
