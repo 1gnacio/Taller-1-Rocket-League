@@ -37,6 +37,7 @@ private:
     sdl_waiting waiting;
     sdl_statistics statistics;
     unit_conversion convert;
+    int myID;
 #ifndef SDL_TESTING
     std::map<int, sdl_player> players;
 #endif
@@ -46,6 +47,7 @@ public:
     void renderScreen();
     void showWindow();
     void hideWindow();
+    void setID(int id);
     ~sdl_main() = default;
 
 #ifndef SDL_TESTING

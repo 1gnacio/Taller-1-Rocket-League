@@ -4,7 +4,6 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer):
     car_an(renderer, 4, DATA_PATH "/car/car"),
     turbo_an(renderer, 10, DATA_PATH "/fire/fire"),
     jump_an(renderer, 10, DATA_PATH "/jump/jump"),
-    turboBar_an(renderer, 17, DATA_PATH "/turbo_bar/turbo_car"),
     facingLeft(true), moving(false), onTurbo(false), jumping(false),
     x(0), y(0), angle(0), size_w(0), size_h(0){
     //car_an.setColorMod(255,255,255);
@@ -14,7 +13,7 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer):
 
 void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
                         double _angle, float dt, bool isMoving, bool isJumping,
-                        bool _onTurbo, bool _facingLeft, float turboLeft) {
+                        bool _onTurbo, bool _facingLeft) {
 #ifndef SDL_TESTING
         this->x = _x;
         this->y = _y;
@@ -24,8 +23,6 @@ void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
         this->size_h = _size_h;
         this->size_w = _size_w;
         this->facingLeft = _facingLeft;
-        std::cout << "Turbo Left= " << turboLeft << std::endl;
-        turboBar_an.updateToFrame((int)std::fabs(turboLeft*100.0));
 #endif
     this->angle = _angle;
 
@@ -65,12 +62,6 @@ void sdl_player::render(SDL2pp::Renderer &renderer) {
     int car_y=y-(size_h/2);
     car_an.render(renderer, SDL2pp::Rect(car_x, car_y,
                                          size_w, size_h), angle, flip);
-
-    turboBar_an.render(renderer, SDL2pp::Rect(
-            0, renderer.GetOutputHeight()/7,
-            renderer.GetOutputWidth()/4,
-            renderer.GetOutputHeight()/15),
-                       0, SDL_FLIP_NONE);
 
     if (onTurbo){
         if (facingLeft){

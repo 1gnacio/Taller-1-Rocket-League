@@ -11,7 +11,8 @@
 //       hay una cola de comandos y otra de respuestas, ambas compartidas
 
 Client::Client(ServerConnection& connection) :
-        isRunning(true), connection(connection), sdl_handler() {
+        isRunning(true), connection(connection),
+        sdl_handler() {
 }
 
 void Client::readStandardInput() {
@@ -92,6 +93,7 @@ void Client::readStandardInput() {
 
 void Client::run() {
     this->isRunning = true;
+    sdl_handler.setID(connection.getId());
     sdl_handler.showWindow();
     std::thread standardInput(&Client::readStandardInput, this);
 

@@ -15,12 +15,14 @@ private:
     int goal_w;
     bool waitingForPlayer;
     bool replay;
+    sdl_animation turboBar_an;
     void renderText(SDL2pp::Renderer &renderer,
                     const std::string& text, int x, int y);
 public:
     explicit sdl_arena(SDL2pp::Renderer &renderer);
     void render(SDL2pp::Renderer &renderer);
-    void update(int goal_w, bool waitingForPlayer, bool replay);
+    void update(int goal_w, bool waitingForPlayer,
+                bool replay, float turboLeft);
     ~sdl_arena() = default;
 };
 

@@ -57,4 +57,5 @@ void sdl_animation::disableLoop() {
 
 void sdl_animation::updateToFrame(int percentage) {
     currentFrame = std::abs((percentage * (numFrames-1))/100);
+    //std::cout << "CurrFrame= " << currentFrame << std::endl;
 }

@@ -15,7 +15,8 @@ sdl_main::sdl_main(): sdl(SDL_INIT_VIDEO),
                      renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
                       arena(renderer),  ball(renderer), scoreboard(renderer),
                       waiting(renderer), statistics(renderer),
-                      convert(MAX_WIDTH, MAX_HEIGHT)/*,
+                      convert(MAX_WIDTH, MAX_HEIGHT),
+                      myID(0)/*,
                       background_music(DATA_PATH "/background.ogg")*/
 #ifdef SDL_TESTING
                       , my_object(renderer)
@@ -39,8 +40,7 @@ void sdl_main::updateScreen(Response& response) {
     bool replay = response.getMatchResponse().isReplaying();
     bool waitingForPlayers = response.getMatchResponse().waitingForPlayers();
     waiting.update(waitingForPlayers);
-    arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
-                 waitingForPlayers, replay);
+    float turboLeft = 0;
     if (!waitingForPlayers) {
         int local_goals = response.getMatchResponse().getLocalGoals();
         int visitors_goals = response.getMatchResponse().getVisitorsGoals();
@@ -56,12 +56,14 @@ void sdl_main::updateScreen(Response& response) {
                                           renderer.GetOutputHeight());
             double car_angle = convert.toDegrees(player.getRotationAngle());
             int id = player.getId();
+            if (id == myID) {
+                turboLeft = player.getRemainingTurbo();
+            }
             int car_w = convert.toPixels(LogicValues::W_CAR,
                                          renderer.GetOutputWidth());
             int car_h = convert.toPixels(LogicValues::H_CAR,
                                          renderer.GetOutputHeight());
             bool facingLeft = player.isFacingLeft();
-            float turboLeft = player.getRemainingTurbo();
 
             auto it = players.find(id);
             if (it == players.end()) {
@@ -70,7 +72,7 @@ void sdl_main::updateScreen(Response& response) {
 
             players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
                                   FRAME_RATE, player.moving(), player.flying(),
-                                  player.onTurbo(), facingLeft, turboLeft);
+                                  player.onTurbo(), facingLeft);
         }
 
         int ball_x = convert.WtoPixels(
@@ -85,7 +87,8 @@ void sdl_main::updateScreen(Response& response) {
                                                 renderer.GetOutputWidth());
         ball.update(ball_x, ball_y, ball_angle, ball_width);
     }
-
+    arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
+                 waitingForPlayers, replay, turboLeft);
     bool finishedGame = response.getMatchResponse().isFinished();
     if (finishedGame){
         statistics.update(
@@ -116,6 +119,10 @@ void sdl_main::showWindow() {
 
 void sdl_main::hideWindow() {
     window.Hide();
+}
+
+void sdl_main::setID(int id) {
+    this->myID = id;
 }
 
 #ifdef SDL_TESTING

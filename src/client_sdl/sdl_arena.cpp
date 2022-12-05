@@ -4,7 +4,8 @@ sdl_arena::sdl_arena(SDL2pp::Renderer &renderer):
     texture_stadium(renderer, DATA_PATH "/stadium2.png"),
     texture_goal(renderer, DATA_PATH "/goal.png"),
     font(DATA_PATH "/Vera.ttf", 70), goal_w(0),
-    waitingForPlayer(false), replay(false){}
+    waitingForPlayer(false), replay(false),
+    turboBar_an(renderer, 17, DATA_PATH "/turbo_bar/turbo_car"){}
 
 void sdl_arena::render(SDL2pp::Renderer &renderer) {
     int t_height = renderer.GetOutputHeight();
@@ -19,6 +20,12 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
                   SDL2pp::Rect((t_width - goal_w), t_height-size_h,
                                goal_w,size_h),
                   0,SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
+
+    turboBar_an.render(renderer, SDL2pp::Rect(
+                               0, renderer.GetOutputHeight()/7,
+                               renderer.GetOutputWidth()/4,
+                               renderer.GetOutputHeight()/15),
+                       0, SDL_FLIP_NONE);
     //REPLAY
     if (replay) {
         renderText(renderer, "REPLAY",renderer.GetOutputWidth()/2,
@@ -30,10 +37,12 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
     }
 }
 
-void sdl_arena::update(int _goal_w, bool _waitingForPlayer, bool _replay) {
+void sdl_arena::update(int _goal_w, bool _waitingForPlayer,
+                       bool _replay, float turboLeft) {
     this->goal_w = _goal_w;
     this->waitingForPlayer = _waitingForPlayer;
     this->replay = _replay;
+    turboBar_an.updateToFrame(std::fabs(turboLeft*100.0));
 
     if (waitingForPlayer or replay){
         texture_goal.SetColorMod(80,80,80);
@@ -57,4 +66,5 @@ void sdl_arena::renderText(SDL2pp::Renderer &renderer,
     renderer.Copy(texture_text, SDL2pp::NullOpt,
                   SDL2pp::Rect(x-(text_width/2), y-(text_height/2),
                                text_width, text_height));
+
 }
