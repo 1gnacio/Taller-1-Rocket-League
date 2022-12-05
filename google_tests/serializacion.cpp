@@ -178,7 +178,7 @@ TEST(Serializacion, SerializarYDeserializarPartida) {
 
     Response deserializada(serializacion);
 
-    EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
+    EXPECT_EQ(r.serialize(), deserializada.serialize());
 }
 
 TEST(Serializacion, SerializacionYDeserializacionConLobby) {
@@ -228,4 +228,51 @@ TEST(Serializacion, SerializacionYDeserializacionConLobbyYResultadoDeAccion) {
     Response deserializada(serializacion);
 
     EXPECT_EQ(r.serialize().size(), deserializada.serialize().size());
+}
+
+TEST(Serializacion, SerializarBoolYFloat) {
+    Serializer serializer;
+    bool testBool = false;
+    bool testBool1 = true;
+    float testFloat = 0.5f;
+    float testFloat1 = 1.323f;
+    int testInt = 32;
+    int testInt1 = 32121;
+    std::string testString = "asdasasd";
+
+    std::vector<unsigned char> serializacion;
+    serializer.merge(serializacion, serializer.serializeBool(testBool));
+    serializer.merge(serializacion, serializer.serializeFloat(testFloat1));
+    serializer.merge(serializacion, serializer.serializeBool(testBool1));
+    serializer.merge(serializacion, serializer.serializeFloat(testFloat));
+    serializer.merge(serializacion, serializer.serializeInt(testInt));
+    serializer.merge(serializacion, serializer.serializeInt(testInt1));
+    serializer.merge(serializacion, serializer.serializeString(testString));
+
+    bool resultBool = true;
+    bool resultBool1 = true;
+    float resultFloat = 0;
+    float resultFloat1 = 0;
+    std::string resultString;
+    int resultInt = 0;
+    int resultInt1 = 0;
+
+    int begin = 0;
+    int end = 0;
+
+    serializer.parse(resultBool, serializacion, begin, end);
+    serializer.parse(resultFloat1, serializacion, begin, end);
+    serializer.parse(resultBool1, serializacion, begin, end);
+    serializer.parse(resultFloat, serializacion, begin, end);
+    serializer.parse(resultInt, serializacion, begin, end);
+    serializer.parse(resultInt1, serializacion, begin, end);
+    serializer.parse(resultString, serializacion, begin, end);
+
+    EXPECT_EQ(testFloat, resultFloat);
+    EXPECT_EQ(testFloat1, resultFloat1);
+    EXPECT_EQ(testBool, resultBool);
+    EXPECT_EQ(testBool1, resultBool1);
+    EXPECT_EQ(testInt, resultInt);
+    EXPECT_EQ(testInt1, resultInt1);
+    EXPECT_EQ(testString, resultString);
 }

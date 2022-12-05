@@ -13,8 +13,8 @@ PlayerResponses::PlayerResponses(std::vector<unsigned char> serialized) : serial
 
     for (int i = 0; i < count; i++) {
         int size = PlayerResponse::size();
-        std::vector<unsigned char> player(serialized.begin() + end + 1,
-                                          serialized.begin() + end + size + 1);
+        std::vector<unsigned char> player(serialized.begin() + end,
+                                          serialized.begin() + end + size);
         this->players.emplace_back(player);
         begin += size;
         end += size;

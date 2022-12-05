@@ -12,8 +12,8 @@ RoomResponses::RoomResponses(std::vector<unsigned char> &serialized) : rooms() {
     for (int i = 0; i < count; i++) {
         int size = 0;
         serializer.parse(size, serialized, begin, end);
-        std::vector<unsigned char> room(serialized.begin() + end + 1,
-                                        serialized.begin() + end + size + 1);
+        std::vector<unsigned char> room(serialized.begin() + end,
+                                        serialized.begin() + end + size);
 
         this->rooms.emplace_back(room);
 

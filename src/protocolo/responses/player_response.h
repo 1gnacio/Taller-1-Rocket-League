@@ -22,8 +22,8 @@ private:
     int goals;
     int assists;
     int saves;
-    bool facingLeft;
     float remainingTurbo;
+    bool facingLeft;
 public:
     PlayerResponse(int id, float posX, float posY, float rotationAngle,
                    bool isMoving, bool isFlying, bool isTurboActivated,
