@@ -94,9 +94,14 @@ void sdl_main::updateScreen(Response& response) {
                 response.getMatchResponse().getBall().getRotationAngle());
         int ball_width = 2.0 * convert.toPixels(conf.getBallRadius(),
                                                 renderer.GetOutputWidth());
-        ball.update(ball_x, ball_y, ball_angle, ball_width);
-
         bool ballKicked = response.getMatchResponse().getBall().getHasBeenPunched();
+        bool hasBeenPunchedFlipShot = response.getMatchResponse().getBall().getHasBeenPunchedFlipShot();
+        bool hasBeenPunchedRedShot = response.getMatchResponse().getBall().getHasBeenPunchedRedShot();
+        bool hasBeenPunchedPurpleShot = response.getMatchResponse().getBall().getHasBeenPunchedPurpleShot();
+        bool hasBeenPunchedGoldShot = response.getMatchResponse().getBall().getHasBeenPunchedGoldShot();
+        ball.update(ball_x, ball_y, ball_angle, ball_width, hasBeenPunchedRedShot, hasBeenPunchedGoldShot,
+                    hasBeenPunchedFlipShot, hasBeenPunchedPurpleShot);
+
         if (ballKicked)
             std::cout << "Ball Kicked" << std::endl;
         sounds.update(goal, myTurbo, myAcceleration, myJumping, ballKicked);
