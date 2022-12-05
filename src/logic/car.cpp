@@ -127,7 +127,7 @@ void Car::jump(b2Vec2 vel) {
 }
 
 bool Car::isJumping() {
-    return (carBody->GetPosition().y < (2.23));  // posicion del suelo
+    return (carBody->GetPosition().y < (LogicValues().ALTITUDE_GROUND));  // posicion del suelo
 }
 
 void Car::verifyDoubleJump() {
@@ -144,14 +144,14 @@ void Car::verifyAcceleration() {
 
 void Car::verifyTurbo() {
     if (usingTurbo) {
-        if (turboTank > 0.01f) {
-            turboTank -= 0.01f;
+        if (turboTank > 0.015f) {
+            turboTank -= 0.015f;
         } else {
             turboTank = 0;
         }
     } else {
-        if (!isJumping() && !usingTurbo && turboTank< 1) {
-            turboTank += 0.001f;
+        if (!isJumping() && !usingTurbo && turboTank < 1) {
+            turboTank += 0.004f;
         }
     }
     if (usingTurbo >= 1)
@@ -188,10 +188,15 @@ float Car::directionForce(int key) {
     return 0;
 }
 
+int Car::directionFace() {
+
+    return ((isFacingLeft()) ? -1 : 1);
+}
+
 void Car::applyTurbo() {
     usingTurbo = 2;
     if (turboTank > 0) {
-       carBody->ApplyForceToCenter(b2Vec2(directionForce(LogicValues().X_VELOCITY)*turboForce,directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
+       carBody->ApplyForceToCenter(b2Vec2(turboForce*(directionFace()),directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
     }
 }
 
