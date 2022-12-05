@@ -10,7 +10,7 @@ GameLogic::GameLogic(int requiredPlayers) : gamePhysics(requiredPlayers) {
 
 
 
-void GameLogic::updateModel(Command &command) {
+void GameLogic::updateModel(const Command &command) {
     if (command.getValue() == CommandValues().DESERIALIZED_LEFT_PUSHED) {
         gamePhysics.startMove(command.getID(),
                               LogicValues().LEFT_DIRECTION);

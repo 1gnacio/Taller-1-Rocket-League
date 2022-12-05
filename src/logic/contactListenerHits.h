@@ -26,8 +26,8 @@ class ContactListenerHits: public b2ContactListener {
                         std::vector<int> &ballPunchesLocal,
                         std::vector<int> &ballPunchesVisitor);
     void addBall(Ball* sameBall);
-    void BeginContact(b2Contact * contact);
-    void EndContact(b2Contact * contact);
+    void BeginContact(b2Contact * contact) override;
+    void EndContact(b2Contact * contact) override;
     int getId(b2Body *carBody);
     Car *getCar(int carID);
     void verifyFlip(Car &car);

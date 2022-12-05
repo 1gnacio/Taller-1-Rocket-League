@@ -12,8 +12,8 @@ class GameLogic {
     BoxLogic gamePhysics;
 
  public:
-    GameLogic(int requiredPlayers);
-    void updateModel(Command &command);
+    explicit GameLogic(int requiredPlayers);
+    void updateModel(const Command &command);
     void addPlayer(int id);
     void updateTime();
     Response getResponse();

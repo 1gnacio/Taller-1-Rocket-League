@@ -38,7 +38,19 @@ bool Ball::isAwake() {
     return ballBody->IsAwake();
 }
 
-Ball::Ball() {
+Ball::Ball():
+            ballBody(nullptr),
+            wasPunchedNormal(),
+            wasPunchedFlipShot(false),
+            wasPunchedRedShot(false),
+            wasPunchedPurpleShot(false),
+            wasPunchedGoldShot(false),
+            framesAfterPunched(0),
+            secAfterPunched(0),
+            forceInFlipShot(0),
+            forceInRedShot(0),
+            forceInPurpleShot(0),
+            forceInGoldShot(0) {
 }
 
 void Ball::setBody(b2Body *ball) {

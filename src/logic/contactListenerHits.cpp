@@ -78,7 +78,8 @@ void ContactListenerHits::verifyFlip(Car &car) {
 ContactListenerHits::ContactListenerHits(std::vector<Car> &cars,
                                          std::vector<int> &ballPunchesLocal,
                                          std::vector<int> &ballPunchesVisitor)
-: cars(cars),
+: ball(nullptr),
+cars(cars),
 ballPunchesLocal(ballPunchesLocal),
 ballPunchesVisitor(ballPunchesVisitor),
 ballIsAlmostLocalGoal(false),

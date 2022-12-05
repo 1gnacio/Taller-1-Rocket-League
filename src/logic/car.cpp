@@ -20,8 +20,10 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 secFlip(0),
                                 makeFlip(false),
                                 facingLeft(false),
+                                hasPunchedTheBall(false),
                                 timeAfterPunched(0),
-                                timeAfterAccelerate(0) {
+                                timeAfterAccelerate(0),
+                                turboForce(0) {
 }
 
 int Car::getId() {
@@ -165,7 +167,6 @@ void Car::verifyFlip() {
     }
     if (!isJumping()) {
         this->makeFlip = false;
-        this->punched = false;
         secFlip = 0;
     }
 }
@@ -218,14 +219,12 @@ bool Car::isLocal() {
     return this->isLocalTeam;
 }
 
-bool Car::sameBody(b2Body *pBody) {
+bool Car::sameBody(const b2Body *pBody) {
     return (pBody == carBody);
 }
 
 void Car::changeLastDirection(directions &direction) {
-    if (lastDirection != direction) {
         this->lastDirection = direction;
-    }
 }
 
 bool Car::didFlip() {
