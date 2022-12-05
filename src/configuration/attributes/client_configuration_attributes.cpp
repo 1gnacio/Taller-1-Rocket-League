@@ -2,10 +2,11 @@
 
 ClientConfigurationAttributes::ClientConfigurationAttributes(int windowWidth, int windowHeight,
                                                              float carWidth, float carHeight,
-                                                             float ballRadius, int gameTime, bool sound) :
+                                                             float ballRadius, int gameTime, bool sound, unsigned int updateTime) :
                                                              windowWidth(windowWidth), windowHeight(windowHeight),
                                                              carWidth(carWidth), carHeight(carHeight),
-                                                             ballRadius(ballRadius), gameTime(gameTime), sound(sound){}
+                                                             ballRadius(ballRadius), gameTime(gameTime), sound(sound),
+                                                             updateTime(updateTime){}
 
 int ClientConfigurationAttributes::getWindowWidth() const {
     return windowWidth;
@@ -33,5 +34,9 @@ int ClientConfigurationAttributes::getGameTime() const {
 
 bool ClientConfigurationAttributes::enableSound() const {
     return sound;
+}
+
+unsigned int ClientConfigurationAttributes::getUpdateTime() const {
+    return updateTime;
 }
 

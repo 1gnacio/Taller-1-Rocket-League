@@ -5,21 +5,25 @@
 #include "sdl_statistics.h"
 
 sdl_statistics::sdl_statistics(SDL2pp::Renderer &renderer):
-font(DATA_PATH "/Vera.ttf", 50), activate(false) {}
+font(DATA_PATH "/Vera.ttf", 50),
+background(renderer, DATA_PATH "/football_background.png"),
+activate(false) {}
 
 void sdl_statistics::render(SDL2pp::Renderer &renderer) {
     if (activate){
         int y0 = renderer.GetOutputHeight()/10;
         int height = (renderer.GetOutputHeight()-y0)/text.size();
-        renderer.FillRect(0, y0,
-                          renderer.GetOutputWidth(),
-                          renderer.GetOutputHeight());
+//        renderer.FillRect(0, y0,
+//                          renderer.GetOutputWidth(),
+//                          renderer.GetOutputHeight());
+        renderer.Copy(background, SDL2pp::NullOpt, SDL2pp::Rect(
+                0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
         for (int i = 0; i < text.size(); ++i) {
             text[i].insert(text[i].end(), 30 - text[i].size(), ' ');
             SDL2pp::Texture text_sprite(
                     renderer,
                     font.RenderText_Blended(text[i],
-                                            SDL_Color{255, 255, 255, 255}));
+                                            SDL_Color{0, 0, 0, 255}));
 
             renderer.Copy(text_sprite, SDL2pp::NullOpt,
                           SDL2pp::Rect(0, y0+(i*height),

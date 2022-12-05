@@ -102,7 +102,7 @@ void Client::run() {
         Response response = this->connection.pop();
         sdl_handler.updateScreen(response);
         sdl_handler.renderScreen();
-        SDL_Delay(TIME_UPDATE_MS);
+        SDL_Delay(conf.getUpdateTime());
     }
     sdl_handler.disableSounds();
     standardInput.join();

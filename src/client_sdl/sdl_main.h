@@ -20,8 +20,6 @@
 #include "sdl_music.h"
 
 
-#define TIME_UPDATE_MS 20
-
 class sdl_main {
 private:
     ClientConfigurationAttributes& conf;

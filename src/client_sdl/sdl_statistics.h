@@ -13,6 +13,7 @@
 class sdl_statistics {
 private:
     SDL2pp::Font font;
+    SDL2pp::Texture background;
     std::vector<std::string> text;
     bool activate;
 public:

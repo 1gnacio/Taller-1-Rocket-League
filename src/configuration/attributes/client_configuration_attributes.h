@@ -20,18 +20,21 @@ public:
 
     bool enableSound() const;
 
+    unsigned int getUpdateTime() const;
+
 private:
     int windowHeight;
     bool sound;
     float carWidth;
     float carHeight;
     float ballRadius;
-
+    unsigned int updateTime;
     int gameTime;
 public:
     ClientConfigurationAttributes(int windowWidth, int windowHeight,
                                   float carWidth, float carHeight,
-                                  float ballRadius, int gameTime, bool sound);
+                                  float ballRadius, int gameTime, bool sound,
+                                  unsigned int updateTime);
 };
 
 

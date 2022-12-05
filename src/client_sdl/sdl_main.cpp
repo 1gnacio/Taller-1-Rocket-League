@@ -24,14 +24,16 @@ sdl_main::sdl_main(ClientConfigurationAttributes& conf):
     }
 }
 
-
+//TODO: hacerlo más lindo
 void sdl_main::updateScreen(Response& response) {
     if (response.dummy()){
         return;
     }
     bool replay = response.getMatchResponse().isReplaying();
     bool waitingForPlayers = response.getMatchResponse().waitingForPlayers();
-    waiting.update(waitingForPlayers);
+    int currPlayers = response.getMatchResponse().getCurrPlayer();
+    int totalPlayers = response.getMatchResponse().getRequiredPlayers();
+    waiting.update(waitingForPlayers, currPlayers, totalPlayers);
     float turboLeft = 0;
     if (!waitingForPlayers) {
         int local_goals = response.getMatchResponse().getLocalGoals();
@@ -72,7 +74,7 @@ void sdl_main::updateScreen(Response& response) {
             }
 
             players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
-                                  FRAME_RATE, player.moving(), player.flying(),
+                                  conf.getUpdateTime(), player.moving(), player.flying(),
                                   player.onTurbo(), facingLeft);
         }
 

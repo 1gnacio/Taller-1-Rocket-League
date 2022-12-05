@@ -61,6 +61,8 @@ public:
     void setActiveReplay() { this->activeReplay = true; };
     bool isFinished() {return this->hasFinished; };
     bool hasPlayer(int i);
+    int getCurrPlayer() { return currentPlayers; };
+    int getRequiredPlayers() {return requiredPlayers; };
 };
 
 

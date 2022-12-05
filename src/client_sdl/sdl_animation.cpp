@@ -14,13 +14,14 @@ sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames,
     }
 }
 
-void sdl_animation::update(float dt) {
+void sdl_animation::update(unsigned int dt) {
     this->elapsed += dt;
     //TODO: hacerlo con la cantidad de frames.
     while (this->elapsed > FRAME_RATE) {
         this->advanceFrame();
         this->elapsed -= FRAME_RATE;
     }
+    this->advanceFrame();
 }
 
 void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst,

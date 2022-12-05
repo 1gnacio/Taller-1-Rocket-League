@@ -9,14 +9,14 @@
 #include <vector>
 #include <string>
 
-#define FRAME_RATE (1000000.0f/25.0f)
+#define FRAME_RATE (1000000/25)
 
 class sdl_animation {
 public:
     sdl_animation(SDL2pp::Renderer &renderer, int numFrames,
                   const std::string& path);
     ~sdl_animation() = default;
-    void update(float dt);
+    void update(unsigned int dt);
     void updateToFrame(int percentage);
     void render(SDL2pp::Renderer &renderer, SDL2pp::Rect dest,
                 double angle, SDL_RendererFlip flipType);
@@ -31,7 +31,7 @@ private:
     std::vector<SDL2pp::Texture> textures;
     int currentFrame;
     int numFrames;
-    float elapsed;
+    unsigned int elapsed;
     bool loop;
 };
 

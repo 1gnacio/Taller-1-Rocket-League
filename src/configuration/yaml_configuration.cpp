@@ -21,5 +21,5 @@ ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {
     return {configClient["width"].as<int>(), configClient["height"].as<int>(),
             configServer["car_width"].as<float>(), configServer["car_height"].as<float>(),
             configServer["ball_radius"].as<float>(), configServer["game_time"].as<int>(),
-            configClient["sound_on"].as<bool>()};
+            configClient["sound_on"].as<bool>(), configClient["update_time"].as<unsigned int>() };
 }

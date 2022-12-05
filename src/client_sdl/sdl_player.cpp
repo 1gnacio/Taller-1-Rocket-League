@@ -19,7 +19,7 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer,
 }
 
 void sdl_player::update(int _x, int _y, int _size_w, int _size_h,
-                        double _angle, float dt, bool isMoving, bool isJumping,
+                        double _angle, unsigned int dt, bool isMoving, bool isJumping,
                         bool _onTurbo, bool _facingLeft) {
 #ifndef SDL_TESTING
         this->x = _x;

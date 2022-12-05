@@ -31,10 +31,6 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
         renderText(renderer, "REPLAY",renderer.GetOutputWidth()/2,
                    renderer.GetOutputHeight()/2);
     }
-    if (waitingForPlayer) {
-        renderText(renderer, "Waiting for players",renderer.GetOutputWidth()/2,
-                   renderer.GetOutputHeight()/4);
-    }
 }
 
 void sdl_arena::update(int _goal_w, bool _waitingForPlayer,
