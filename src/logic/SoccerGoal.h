@@ -13,7 +13,5 @@ class SoccerGoal {
     void createFixtureRoof(b2FixtureDef &fixture);
 
     void createFixtureWall(b2FixtureDef &fixture);
-    b2Vec2 getPositionWall();
-    b2Vec2 getPositionRoof();
 };
 #endif  // SRC_LOGIC_SOCCERGOAL_H_

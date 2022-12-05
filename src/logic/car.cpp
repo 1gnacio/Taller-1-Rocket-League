@@ -20,7 +20,8 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 secFlip(0),
                                 makeFlip(false),
                                 facingLeft(false),
-                                timeAfterPunched(0) {
+                                timeAfterPunched(0),
+                                timeAfterAccelerate(0) {
 }
 
 int Car::getId() {
@@ -57,7 +58,8 @@ float Car::getData(int key) {
 void Car::startMove(b2Vec2 vel) {
     if (!isJumping()) {
         carBody->ApplyForceToCenter(vel, true);
-        isAccelerating = true;
+        this->isAccelerating = true;
+        timeAfterAccelerate = 0;
         this->facingLeft = vel.x < 0;
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
@@ -72,10 +74,6 @@ void Car::stopMove() {
     if (isJumping()) {
         carBody->SetAngularVelocity(0);
     }
-}
-
-bool Car::jumpedTwoTimes() {
-    return this->secondJump;
 }
 
 void Car::modifyJumpedTwoTimes() {
@@ -137,13 +135,18 @@ void Car::verifyDoubleJump() {
     }
 }
 void Car::verifyAcceleration() {
-    this->isAccelerating = false;
+    if(timeAfterAccelerate > 0 && !usingTurbo) {
+        this->isAccelerating = false;
+
+    }
+    timeAfterAccelerate++;
 }
 
 void Car::verifyTurbo() {
     if (usingTurbo) {
         if (turboTank > 0.015f) {
             turboTank -= 0.015f;
+            isAccelerating = true;
         } else {
             turboTank = 0;
         }
@@ -165,10 +168,6 @@ void Car::verifyFlip() {
         this->punched = false;
         secFlip = 0;
     }
-}
-
-b2Vec2 Car::getVelocity() {
-    return carBody->GetLinearVelocity();
 }
 
 float Car::directionForce(int key) {
@@ -227,10 +226,6 @@ void Car::changeLastDirection(directions &direction) {
     if (lastDirection != direction) {
         this->lastDirection = direction;
     }
-}
-
-directions Car::getLastDirection() {
-    return this->lastDirection;
 }
 
 bool Car::didFlip() {

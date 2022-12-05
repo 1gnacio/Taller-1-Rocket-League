@@ -14,11 +14,3 @@ void SoccerGoal::createFixtureRoof(b2FixtureDef & fixture) {
 void SoccerGoal::createFixtureWall(b2FixtureDef & fixture) {
     wall->CreateFixture(&fixture);
 }
-
-b2Vec2 SoccerGoal::getPositionWall() {
-    return wall->GetPosition();
-}
-
-b2Vec2 SoccerGoal::getPositionRoof() {
-    return roof->GetPosition();
-}

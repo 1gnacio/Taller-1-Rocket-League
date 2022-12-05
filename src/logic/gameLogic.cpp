@@ -31,13 +31,6 @@ void GameLogic::updateModel(Command &command) {
     }
 }
 
-float GameLogic::getCarData(int carNumber, int key) {
-    return gamePhysics.getCarData(carNumber, key);
-}
-float GameLogic::playersAmount() {
-    return gamePhysics.playersAmount();
-}
-
 void GameLogic::updateTime() {
     gamePhysics.updateTime();
     gamePhysics.updateStatus();
@@ -72,10 +65,6 @@ void GameLogic::resetData() {
     gamePhysics.resetData();
 }
 
-float GameLogic::ballPosY() {
-    return gamePhysics.getBallData(LogicValues().POS_Y);
-}
-
 void GameLogic::addPlayer(int id) {
     gamePhysics.addPlayer(id);
 }
@@ -90,8 +79,4 @@ bool GameLogic::isGoal() {
 
 void GameLogic::updateRoomInfo(Room &room, bool replay) {
     gamePhysics.setRoomInfo(room, replay);
-}
-
-void GameLogic::resetPositions() {
-    gamePhysics.resetPositions();
 }

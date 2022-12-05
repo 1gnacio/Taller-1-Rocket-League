@@ -35,6 +35,7 @@ class Car {
     bool facingLeft;
     bool hasPunchedTheBall;
     int timeAfterPunched;
+    int timeAfterAccelerate;
     float turboForce;
     bool isJumping();
 
@@ -78,10 +79,6 @@ class Car {
 
     void modifyJumpedTwoTimes();
 
-    bool jumpedTwoTimes();
-
-    b2Vec2 getVelocity();
-
     int getId();
 
     void resetPosition();
@@ -95,10 +92,6 @@ class Car {
     bool sameBody(b2Body *pBody);
 
     void changeLastDirection(directions &direction);
-
-    directions getLastDirection();
-
-    void verifyLastMovement();
 
     b2Vec2 forceInFlip();
 
