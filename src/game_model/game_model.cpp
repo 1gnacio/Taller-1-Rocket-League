@@ -2,7 +2,10 @@
 #include "game_model.h"
 #include "../constants/response_values.h"
 #include "completeGame.h"
-#include <iostream>
+#include <memory>
+
+GameModel::GameModel(ServerEndpoint &serverEndpoint): serverEndpoint(serverEndpoint) {
+}
 
 LobbyResponse GameModel::listRooms(int clientId) {
     RoomResponses responses;
@@ -21,41 +24,36 @@ void GameModel::gameFlow(std::unique_ptr<CompleteGame>* completeGame) {
 }
 
 std::thread GameModel::initGame(std::unique_ptr<CompleteGame>* completeGame) {
-
-    std::thread t(&GameModel::gameFlow, this, completeGame );
+    std::thread t(&GameModel::gameFlow, this, completeGame);
     return t;
 }
 
-LobbyResponse GameModel::createRoom(int ownerId, const char* name, int requiredPlayers) {
+LobbyResponse GameModel::createRoom(int ownerId,
+                                    const char* name,
+                                    int requiredPlayers) {
     if (!this->gameExists(name)) {
-        this->games.emplace_back(std::make_unique<CompleteGame>(ownerId, requiredPlayers, name, serverEndpoint));
+        this->games.emplace_back(std::make_unique<CompleteGame>(ownerId,
+                                                                requiredPlayers,
+                                                                name,
+                                                                serverEndpoint));
         this->gamesThread.push_back(initGame(&games.back()));
-
-        // games[games.size()-1]->applyCommand(command);
         ActionResultResponse actionResultAux(ownerId, ResponseValues().OK);
         LobbyResponse lobbyR(actionResultAux);
         return lobbyR;
     }
-    ActionResultResponse actionResultAux(ownerId, ResponseValues().ERROR, ResponseValues().ROOM_ALREADY_EXISTS);
+    ActionResultResponse actionResultAux(ownerId,
+                                         ResponseValues().ERROR,
+                                         ResponseValues().ROOM_ALREADY_EXISTS);
     LobbyResponse lobbyR(actionResultAux);
     return lobbyR;
 }
 
 std::unique_ptr<CompleteGame>* GameModel::findGame(const char* name) {
     std::string roomName = name;
-    for(auto &x: games) {
+    for (auto &x : games) {
         if (x->getName() == roomName) {
             return &x;
         }
-    }
-    return nullptr;
-}
-
-std::unique_ptr<CompleteGame>* GameModel::findGame(int id) {
-    for(auto &x: games) {
-        if (x->playerInRoom(id)) {
-            return &x;
-        };
     }
     return nullptr;
 }
@@ -92,58 +90,22 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
     return lobbyR;
 }
 
-void GameModel::applyCommandToGame(Command &command) {
-    if(command.getValue() == CommandValues().DESERIALIZED_NOP) {
-        for (auto &x : games) {
-            if(x->isInGame()) {
-            x->applyCommand(command);
-            resetDataOfGames();
-            }
-        }
-        return;
-    }
-
-    auto room = findGame(command.getID());
-    if(room != nullptr) {
-        if((*findGame(command.getID()))->isInGame()) {
-            (*findGame(command.getID()))->applyCommand(command);
-            resetDataOfGames();
-        }
-    }
-}
-
-int GameModel::gamesAmount() {
-    return games.size();
-}
-
 std::vector<Response> GameModel::getResponse() {
     std::vector<Response> responses;
-    for(auto &x: games) {
+    for (auto &x : games) {
         responses.emplace_back(x->getResponse());
     }
     return responses;
 }
 
 void GameModel::updateTime() {
-    for(auto &x:games) {
+    for (auto &x : games) {
         x->updateTime();
     }
-
-}
-
-void GameModel::resetDataOfGames() {
-    for(auto &x:games) {
-        x->resetData();
-    }
-
-}
-
-GameModel::GameModel(ServerEndpoint &serverEndpoint): serverEndpoint(serverEndpoint) {
-
 }
 
 void GameModel::applyLogic(Command& command) {
-    if (command.getValue() == this->commands.DESERIALIZED_LIST){
+    if (command.getValue() == this->commands.DESERIALIZED_LIST) {
         LobbyResponse lobby(this->listRooms(command.getID()));
         Response responseAux(lobby);
         serverEndpoint.push(responseAux);
@@ -173,19 +135,16 @@ void GameModel::applyLogic(Command& command) {
         return;
     }
 
-    if((command.getValue() != commands.DESERIALIZED_NOP)) {
+    if ((command.getValue() != commands.DESERIALIZED_NOP)) {
         this->applyCommand(command);
     }
-
-    // si no es ninguno -> cola de cada partida .
-    // applyCommandToGame(command);
 }
 
-GameModel::~GameModel(){
-    for(auto &x: games) {
+GameModel::~GameModel() {
+    for (auto &x : games) {
         x->finally();
     }
-    for(auto &x: gamesThread) {
+    for (auto &x : gamesThread) {
         x.join();
     }
 }

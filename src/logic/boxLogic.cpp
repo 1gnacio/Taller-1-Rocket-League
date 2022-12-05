@@ -6,7 +6,6 @@
 #include "../src/game_entities/room.h"
 #include <iostream>
 #include "../src/constants/b2DVars.h"
-#include "stateMachine.h"
 #include <string>
 #include "../src/configuration/yaml_configuration.h"
 
@@ -15,12 +14,13 @@
 BoxLogic::BoxLogic(int requiredPlayers):
     isActive(true),
     configuration(YamlConfiguration().ReadServerConfiguration()),
-    game(requiredPlayers, configuration.getGameTime()),
+    game(requiredPlayers, configuration.getGameTime(), configuration.getResponsesPerSec()),
     cars(),
     ballPunchesLocal(),
     ballPunchesVisitor(),
     contactListener(cars, ballPunchesLocal, ballPunchesVisitor) {
-    world = std::make_unique<b2World>(b2Vec2(0.0f, configuration.getMapGravity()));
+    world = std::make_unique<b2World>(b2Vec2(0.0f,
+                                             configuration.getMapGravity()));
     world->SetContactListener(&this->contactListener);
     createWalls();
     createBall();
@@ -153,19 +153,19 @@ void BoxLogic::createCar(int id) {
                                 B2DVars().BIT_GROUND |
                                 B2DVars().BIT_SOCCER_GOAL;
     sensorDef.isSensor = true;
-    cars.back().createFixture(sensorDef, 1);
+    cars.back().createFixture(sensorDef, LogicValues().TOP_SENSOR);
 
     dynamicCar.SetAsBox(wCar/2.0f, 0.1, b2Vec2(0, hCar/2), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 2);
+    cars.back().createFixture(sensorDef, LogicValues().DOWN_SENSOR);
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 3);
+    cars.back().createFixture(sensorDef, LogicValues().HEAD_SENSOR);
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(-wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, 4);
+    cars.back().createFixture(sensorDef, LogicValues().TAIL_SENSOR);
 }
 
 void BoxLogic::createWalls() {
@@ -205,32 +205,15 @@ void BoxLogic::addPlayer(int id) {
 BoxLogic::~BoxLogic() {
 }
 
-void BoxLogic::update(Command &command) {
-// Si es comando de unirse llamo a addPlayer()
-}
-
-void BoxLogic::update() {
-// Es necesario?
-}
-
-
 float BoxLogic::getData(int key, const b2Body* body) {
     switch (key) {
         case 0:
             return body->GetPosition().x;
         case 1:
             return body->GetPosition().y;
-        case 2:
-            return body->GetAngle();
-        case 3:
-            return body->GetLinearVelocity().x;
-        case 4:
-            return body->GetLinearVelocity().y;
     }
     return 0;
 }
-
-
 
 float BoxLogic::getBallData(int key) {
     switch (key) {
@@ -266,12 +249,10 @@ Car* BoxLogic::getCar(int carID) {
     if (found != this->cars.end()) {
         return found.base();
     }
-
     return nullptr;
 }
 
 b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
-
     if (direction == LogicValues().LEFT_DIRECTION) {
         lastDir = LEFT_LAST_DIRECTION;
         return b2Vec2(configuration.getMovementForceModule()*(-1), 0.0f);
@@ -284,7 +265,6 @@ b2Vec2 BoxLogic::getVectorForce(int direction, directions& lastDir) {
     return (b2Vec2(0.0f, configuration.getJumpImpulse()*(-1)));
 }
 
-// Verificar si existe otra manera para no llamar siempre a force ()
 void BoxLogic::startMove(int carNumber, bool direction) {
     directions lastDir = NONE;
     b2Vec2 vel = getVectorForce((int)direction, lastDir);
@@ -489,22 +469,22 @@ void BoxLogic::updateLastDirection(int id,
 
 void BoxLogic::verifyPunch() {
     ball.verifyPunch();
-    for(auto &x : cars) {
+    for (auto &x : cars) {
         x.verifyPunch();
     }
 }
 
-bool BoxLogic::getBallDataPunched(const int i) {
-    switch (i) {
-        case 6:
+bool BoxLogic::getBallDataPunched(const int key) {
+    switch (key) {
+        case LogicValues().HAS_BEEN_PUNCHED_NORMAL:
             return (ball.isWasPunchedNormal());
-        case 7:
+        case LogicValues().HAS_BEEN_PUNCHED_FLIP_SHOT:
             return (ball.isWasPunchedFlipShot());
-        case 8:
+        case LogicValues().HAS_BEEN_PUNCHED_RED_SHOT:
             return (ball.isWasPunchedRedShot());
-        case 9:
+        case LogicValues().HAS_BEEN_PUNCHED_PURPLE_SHOT:
             return (ball.isWasPunchedPurpleShot());
-        case 10:
+        case LogicValues().HAS_BEEN_PUNCHED_GOLD_SHOT:
             return (ball.isWasPunchedGoldShot());
     }
     return false;

@@ -4,8 +4,9 @@
 #include "../protocolo/responses/ball_response.h"
 #include "../protocolo/responses/player_responses.h"
 #include "../src/game_entities/room.h"
+#include "../src/constants/logic_values.h"
 
-Game::Game(int requiredPlayers, int time):
+Game::Game(int requiredPlayers, int time, int updateT):
               name("juego"),
               time_inSec(0),
               time_in_miliSec(0),
@@ -18,7 +19,8 @@ Game::Game(int requiredPlayers, int time):
               isGoalLocal(false),
               isGoalVisitor(false),
               activeReplay(false),
-              game_time(time) {
+              game_time(time),
+              update(updateT) {
 }
 
 MatchResponse Game::response(BallResponse &ball, PlayerResponses &players) {
@@ -33,25 +35,24 @@ int Game::getTime() {
 }
 
 void Game::updateGame(int teamGoal) {
-    if(teamGoal == 2) {
+    if (teamGoal == LogicValues().GOAL_LOCAL) {
         isGoalLocal = 1;
         goalsLocal++;
-    } else if(teamGoal == 1) {
+    } else if (teamGoal == LogicValues().GOAL_VISITOR) {
         isGoalVisitor = 1;
         goalsVisitor++;
     }
-
 }
 void Game::updateTime() {
-    time_in_miliSec = time_in_miliSec + 40;
-    if(time_in_miliSec > 1000) {
+    time_in_miliSec = time_in_miliSec + (1000/update);
+    if (time_in_miliSec > 1000) {
         time_inSec++;
         time_in_miliSec = time_in_miliSec - 1000;
     }
 }
 
 bool Game::matchFinished() {
-    if(time_inSec > game_time)
+    if (time_inSec > game_time)
         hasFinished = true;
     else
         hasFinished = false;
@@ -60,7 +61,6 @@ bool Game::matchFinished() {
 }
 
 bool Game::goal() {
-
     return (isGoalLocal || isGoalVisitor);
 }
 
@@ -71,7 +71,5 @@ void Game::resetData() {
 
 void Game::setStatus(Room &room, bool replay) {
     isWaitingForPlayers = !(room.isStarted1());
-    //hasFinished = room.isFinished1();
     activeReplay = replay;
-
 }

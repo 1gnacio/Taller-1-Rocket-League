@@ -4,13 +4,17 @@
 #include "../src/configuration/yaml_configuration.h"
 #include <iostream>
 
-CompleteGame::CompleteGame(int ownerId, int requiredPlayers, const char *name, ServerEndpoint& serverEndPoint):
+CompleteGame::CompleteGame(int ownerId,
+                           int requiredPlayers,
+                           const char *name,
+                           ServerEndpoint& serverEndPoint):
         configuration(YamlConfiguration().ReadServerConfiguration()),
         serverEndpoint(serverEndPoint),
-        room(ownerId,requiredPlayers,name),
+        room(ownerId, requiredPlayers, name),
         logic(requiredPlayers),
-        replayLogic(configuration.getReplayTimeInSec(), configuration.getResponsesPerSec()),
-        isClosed(false){
+        replayLogic(configuration.getReplayTimeInSec(),
+                    configuration.getResponsesPerSec()),
+        isClosed(false) {
         this->logic.addPlayer(ownerId);
 }
 
@@ -45,12 +49,6 @@ void CompleteGame::sendResponse() {
     this->serverEndpoint.push(logic.getResponse());
 }
 
-
-float CompleteGame::ballPosY() {
-
-    return logic.ballPosY();
-}
-
 Response CompleteGame::getResponse() {
     RoomResponse roomResponse = this->room.list();
     LobbyResponse lobby;
@@ -66,7 +64,6 @@ void CompleteGame::updateTime() {
 
 void CompleteGame::resetData() {
     logic.resetData();
-
 }
 
 bool CompleteGame::isInGame() {
@@ -82,16 +79,14 @@ bool CompleteGame::matchFinished() {
 }
 
 void CompleteGame::gameFlow() {
-
     try {
         int limitCommands = 0;
-        while(!this->isClosed && !this->matchFinished()) {
+        while (!this->isClosed && !this->matchFinished()) {
             logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
             logic.resetData();
-
-            if(isInGame()) {
+            if (isInGame()) {
                 limitCommands = 0;
-                while((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())){
+                while ((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())) {
                     logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {
@@ -106,7 +101,7 @@ void CompleteGame::gameFlow() {
                         usleep(timeStep*1000000);
                     } else {
                         Command command = commandQueue.pop();
-                        if(command.getValue() != CommandValues().DESERIALIZED_NOP) {
+                        if (command.getValue() != CommandValues().DESERIALIZED_NOP) {
                             logic.updateModel(command);
                         }
                         limitCommands++;
@@ -127,7 +122,7 @@ void CompleteGame::gameFlow() {
                 usleep(timeStep*1000000);
             }
         }
-        sendResponse(); // Manda ultima respuesta
+        sendResponse();  // Manda ultima respuesta
     } catch (...) {
         throw;
     }

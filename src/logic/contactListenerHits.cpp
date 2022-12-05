@@ -10,16 +10,16 @@ void ContactListenerHits::BeginContact(b2Contact * contact) {
         if (fb->GetBody() == ball->getBallBody()) {
             int id = getId(fa->GetBody());
             if (getCar(id)->didFlip()) {
-                if (fa->GetUserData().pointer == 1) {
-                   ball->punch(1);
-                } else if (fa->GetUserData().pointer == 2) {
-                   ball->punch(3);
-                } else if (fa->GetUserData().pointer == 3) {
-                   ball->punch(2);
-                } else if (fa->GetUserData().pointer == 4) {
-                   ball->punch(4);
+                if (fa->GetUserData().pointer == LogicValues().TOP_SENSOR) {
+                   ball->punch(LogicValues().FLIP_SHOT);
+                } else if (fa->GetUserData().pointer == LogicValues().DOWN_SENSOR) {
+                   ball->punch(LogicValues().PURPLE_SHOT);
+                } else if (fa->GetUserData().pointer == LogicValues().HEAD_SENSOR) {
+                   ball->punch(LogicValues().RED_SHOT);
+                } else if (fa->GetUserData().pointer == LogicValues().TAIL_SENSOR) {
+                   ball->punch(LogicValues().GOLD_SHOT);
                 } else {
-                   ball->punch(0);
+                   ball->punch(LogicValues().NORMAL_SHOT);
                 }
             }
            this->verifyAlmostGoal(fb->GetBody()->GetPosition().x,
@@ -64,10 +64,6 @@ void ContactListenerHits::EndContact(b2Contact *contact) {
             this->addPunch(id, fb->GetBody()->GetLinearVelocity().x);
         }
     }
-}
-
-void ContactListenerHits::addCar(Car &car) {
-    cars.push_back(car);
 }
 
 void ContactListenerHits::addBall(Ball* sameBall) {

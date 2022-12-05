@@ -20,7 +20,8 @@ Car::Car(b2Body *body, int ID): carBody(body),
                                 secFlip(0),
                                 makeFlip(false),
                                 facingLeft(false),
-                                timeAfterPunched(0) {
+                                timeAfterPunched(0),
+                                timeAfterAccelerate(0) {
 }
 
 int Car::getId() {
@@ -57,7 +58,8 @@ float Car::getData(int key) {
 void Car::startMove(b2Vec2 vel) {
     if (!isJumping()) {
         carBody->ApplyForceToCenter(vel, true);
-        isAccelerating = true;
+        this->isAccelerating = true;
+        timeAfterAccelerate = 0;
         this->facingLeft = vel.x < 0;
     } else {
         float torque = (vel.x < 0 ? -2.0f : 2.0f);
@@ -72,13 +74,6 @@ void Car::stopMove() {
     if (isJumping()) {
         carBody->SetAngularVelocity(0);
     }
-}
-
-bool Car::canJump() {
-    return (!isJumping() || (isJumping() && !jumpedTwoTimes()));
-}
-bool Car::jumpedTwoTimes() {
-    return this->secondJump;
 }
 
 void Car::modifyJumpedTwoTimes() {
@@ -127,7 +122,8 @@ void Car::jump(b2Vec2 vel) {
 }
 
 bool Car::isJumping() {
-    return (carBody->GetPosition().y < (LogicValues().ALTITUDE_GROUND));  // posicion del suelo
+    return (carBody->GetPosition().y <
+            (LogicValues().ALTITUDE_GROUND));
 }
 
 void Car::verifyDoubleJump() {
@@ -139,13 +135,18 @@ void Car::verifyDoubleJump() {
     }
 }
 void Car::verifyAcceleration() {
-    this->isAccelerating = false;
+    if(timeAfterAccelerate > 0 && !usingTurbo) {
+        this->isAccelerating = false;
+
+    }
+    timeAfterAccelerate++;
 }
 
 void Car::verifyTurbo() {
     if (usingTurbo) {
         if (turboTank > 0.015f) {
             turboTank -= 0.015f;
+            isAccelerating = true;
         } else {
             turboTank = 0;
         }
@@ -169,10 +170,6 @@ void Car::verifyFlip() {
     }
 }
 
-b2Vec2 Car::getVelocity() {
-    return carBody->GetLinearVelocity();
-}
-
 float Car::directionForce(int key) {
     if (key == LogicValues().X_VELOCITY) {
         if (getData(LogicValues().X_VELOCITY) > 0)
@@ -189,23 +186,25 @@ float Car::directionForce(int key) {
 }
 
 int Car::directionFace() {
-
     return ((isFacingLeft()) ? -1 : 1);
 }
 
 void Car::applyTurbo() {
     usingTurbo = 2;
     if (turboTank > 0) {
-       carBody->ApplyForceToCenter(b2Vec2(turboForce*(directionFace()),directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
+       carBody->ApplyForceToCenter(b2Vec2(turboForce*(directionFace()),
+                                          directionForce(LogicValues().Y_VELOCITY)*turboForce), true);
     }
 }
 
 void Car::resetPosition() {
     if (id%2)
-        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_LOCAL, LogicValues().POS_Y_INITIAL_CAR_LOCAL),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_LOCAL,
+                                     LogicValues().POS_Y_INITIAL_CAR_LOCAL),
                               LogicValues().ANGLE_CAR);
     else
-        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_VISITOR, LogicValues().POS_Y_INITIAL_CAR_VISITOR),
+        carBody->SetTransform(b2Vec2(LogicValues().POS_X_INITIAL_CAR_VISITOR,
+                                     LogicValues().POS_Y_INITIAL_CAR_VISITOR),
                               LogicValues().ANGLE_CAR);
     carBody->SetLinearVelocity(b2Vec2(0.0f, 0.1f));
     carBody->SetAngularVelocity(0);
@@ -229,23 +228,11 @@ void Car::changeLastDirection(directions &direction) {
     }
 }
 
-directions Car::getLastDirection() {
-    return this->lastDirection;
-}
-
 bool Car::didFlip() {
     if (makeFlip && secFlip < 0.2) {
         return true;
     }
     return false;
-}
-
-bool Car::punchedBall() const {
-    return punched;
-}
-
-void Car::SetPunchedBall(bool set) {
-    punched = set;
 }
 
 float Car::getSecFlip() const {
@@ -309,13 +296,11 @@ bool Car::getHasPunchedTheBall() {
 }
 
 void Car::verifyPunch() {
-
-    if(timeAfterPunched > 2) {
+    if (timeAfterPunched > 2) {
         this->hasPunchedTheBall = false;
         timeAfterPunched = 0;
     }
     timeAfterPunched++;
-
 }
 
 void Car::setTurboForce(float force) {

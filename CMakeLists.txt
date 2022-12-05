@@ -139,8 +139,6 @@ add_executable(lobby
         src/protocolo/serializer/entity_serializer.h
         src/protocolo/serializer/serializer.cpp
         src/protocolo/serializer/serializer.h
-        src/game_model/game_model_monitor.cpp
-        src/game_model/game_model_monitor.h
         src/handlers/server_endpoint.cpp
         src/handlers/server_endpoint.h
         src/handlers/client_connection.cpp
@@ -443,8 +441,6 @@ add_executable(game_server
         src/protocolo/responses/player_responses.h
         src/protocolo/responses/player_response.cpp
         src/protocolo/responses/player_response.h
-        src/game_model/game_model_monitor.cpp
-        src/game_model/game_model_monitor.h
         src/game_model/completeGame.cpp
         src/game_model/completeGame.h
         src/handlers/server_endpoint.cpp

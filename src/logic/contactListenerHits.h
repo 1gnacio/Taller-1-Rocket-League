@@ -1,44 +1,42 @@
-#ifndef ROCKET_LEAGUE_CONTACTLISTENERHITS_H
-#define ROCKET_LEAGUE_CONTACTLISTENERHITS_H
+#ifndef SRC_LOGIC_CONTACTLISTENERHITS_H_
+#define SRC_LOGIC_CONTACTLISTENERHITS_H_
 #include "../../box2d/include/box2d/box2d.h"
 #include "car.h"
 #include "ball.h"
 #include <vector>
 
+/*
+ * Clase que hereda de b2ConctactListener, el cual se encarga de
+ * informar cuando se produce un conctact entre la pelota y algún auto.
+ * Tiene la capacidad de informar qué tipo de golpe se produjo, dado que conoce a los
+ * autos y a la pelota.
+ */
+
 class ContactListenerHits: public b2ContactListener {
-private:
+ private:
     Ball* ball;
-public:
-   void addBall(Ball* sameBall);
-   void addCar(Car &car);
-   void BeginContact(b2Contact * contact);
-   void EndContact(b2Contact * contact);
-   // void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-   // void PostSOlve(b2Contact* contact, const b2ContactImpulse* impulse);
-   int getId(b2Body *carBody);
-
-    Car *getCar(int carID);
-
-
-    void verifyFlip(Car &car);
     std::vector<Car>& cars;
     std::vector<int>& ballPunchesLocal;
     std::vector<int>& ballPunchesVisitor;
     bool ballIsAlmostLocalGoal;
     bool ballIsAlmostVisitorGoal;
-    void addPunch(int id, float ballVelocityX);
-    void verifyAlmostGoal(float ballPositionX,
-                            float ballPositionY,
-                            float ballVelocityX);
-public:
+
+ public:
     ContactListenerHits(std::vector<Car> &cars,
                         std::vector<int> &ballPunchesLocal,
                         std::vector<int> &ballPunchesVisitor);
-    // void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-    // void PostSOlve(b2Contact* contact, const b2ContactImpulse* impulse);
+    void addBall(Ball* sameBall);
+    void BeginContact(b2Contact * contact);
+    void EndContact(b2Contact * contact);
+    int getId(b2Body *carBody);
+    Car *getCar(int carID);
+    void verifyFlip(Car &car);
 
+    void addPunch(int id, float ballVelocityX);
 
+    void verifyAlmostGoal(float ballPositionX,
+                            float ballPositionY,
+                            float ballVelocityX);
 };
 
-
-#endif //ROCKET_LEAGUE_CONTACTLISTENERHITS_H
+#endif  // SRC_LOGIC_CONTACTLISTENERHITS_H_
