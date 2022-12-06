@@ -91,8 +91,33 @@ un flip, saber si está en el suelo; su estado en el tanque de turbo, entre otra
 saber si ha sido golpeada con algún movimiento especial y de ser cierto, se aplica una fuerza
 extra.
 
-*Clases sobre la conexión:*
+#### <u>Cliente</u>
+Esta entidad se encarga de:
 
+* La interacción con el usuario a través del teclado y el mouse.
+
+*  Mostrar en pantalla la interfaz gráfica del lobby y el juego principal.
+
+* Conexión con el servidor y recibe las respuestas.
+
+*Clases sobre el juego:*
+
+1) **Client:** esta clase es el loop principal por el cual a partir de una respuesta del servidor de una cola no bloqueante, actualiza los modelos y luego renderiza la pantalla. 
+
+2) **lobby:** clase de qT que muestra una ventana del lobby por el cual los usuarios crean partidas o se unen a alguna ya creada previamente.
+
+3) **sdl_main:** esta clase es la principal de SDL. Posee el resto de los objetos de SDl y la misma tiene dos funciones principales. Una actualiza los datos de todos los modelos de SDl y la otra renderiza los objetos.
+
+4) **unit_conversion:** se encarga de la conversión de unidades entre Box2D y SDl. Ya sea convertir de metros a pixeles o radianes a grados.
+
+5) **sdl_animation:** esta clase genera animaciones a partir de imágenes estáticas al ir cambiando de frames.
+
+6) **sdl_music:** clase que maneja los sonidos del juego.
+
+7) **sld_{objeto}:** cada objeto de SDL tiene su clase, ya sea los *autos*, *arena*, *scoreboard*, etc. Tienen dos funciones principales: *update* y *render*.
+
+
+#### <u>Protocolo y conexiones</u>
 
 1) **ServerEndpoint**: Clase que maneja la conexion de los clientes y el servidor. Tiene un vector de *ClientConnection* que representa cada conexion. Recibe las respuestas del servidor y las envia a los clientes, y recibe los comandos de los clientes y los agrega a una cola de comandos que es usada por el servidor para aplicar la logica del comando a la partida correspondiente.
 
@@ -109,8 +134,6 @@ extra.
 
 5) **CommandHandler**: Clase que maneja el envio o recepcion de comandos. El modo `SENDER` se usa por el cliente para enviar comandos al servidor, el modo `RECEIVER` se usa por el servidor para recibir comandos de un cliente.
 
-
-#### <u>Cliente</u>
 
 ---------
 
