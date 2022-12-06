@@ -75,11 +75,11 @@ El encargado de implementar el cliente fue Iñaki González Bigliardi. Se encarg
 
 | Semana      | Ignacio Garcia Segovia | Iñaki González Bigliardi | Nahuel Gomez | 
 | ----------- | ---------------------- | ------------------------ | ------------ |
-| 1           | Armado de protocolo cliente-servidor | Primeros test con Qt y primera version del lobby | Armado de protocolo cliente-servidor |
-| 2           | Protocolo de comunicacion, logica de hilos de la comunicacion cliente-servidor | Primeros test con SDL y creación de algunos objetos | Logica del servidor con Box2d |
-| 3           | Serializacion de mensajes | Merge entre Qt y SDL. Primeras prubas de los movientos por teclado del juego. | Logica del servidor con Box2d |
-| 4           | Serializacion de mensajes y suite de tests | Animaciónes del juego, arena, scoreboard. Update de los modelos con la respuesta de servidor. | Logica del servidor con Box2d |
-| 5           | Logica de repeticiones, correcciones | Implemetación de la musica, mejoras gráficas y estadísticas. | Logica del servidor con Box2d |
+| 1           | Armado de protocolo cliente-servidor | Primeros test con Qt y primera version del lobby | Programas de Testing<br/> Sobre SDL Y box2D |
+| 2           | Protocolo de comunicacion, logica de hilos de la comunicacion cliente-servidor | Primeros test con SDL y creación de algunos objetos | Creaciones de los objetos básicos<br/>como pelota y auto.|
+| 3           | Serializacion de mensajes | Merge entre Qt y SDL. Primeras prubas de los movientos por teclado del juego. | Loop principal del <br/>juego para un cliente |
+| 4           | Serializacion de mensajes y suite de tests | Animaciónes del juego, arena, scoreboard. Update de los modelos con la respuesta de servidor. | Integración del juego para multiples usuarios |
+| 5           | Logica de repeticiones, correcciones | Implemetación de la musica, mejoras gráficas y estadísticas. | Golpes especiales, correcciones. |
 
 -----------
 
