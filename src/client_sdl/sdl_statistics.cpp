@@ -11,8 +11,8 @@ activate(false) {}
 
 void sdl_statistics::render(SDL2pp::Renderer &renderer) {
     if (activate){
-        int y0 = renderer.GetOutputHeight()/10;
-        int height = (renderer.GetOutputHeight()-y0)/text.size();
+        int y0 = (renderer.GetOutputHeight()/10)*2;
+        int height = (renderer.GetOutputHeight()-(y0*2))/text.size();
 //        renderer.FillRect(0, y0,
 //                          renderer.GetOutputWidth(),
 //                          renderer.GetOutputHeight());
@@ -26,8 +26,8 @@ void sdl_statistics::render(SDL2pp::Renderer &renderer) {
                                             SDL_Color{0, 0, 0, 255}));
 
             renderer.Copy(text_sprite, SDL2pp::NullOpt,
-                          SDL2pp::Rect(0, y0+(i*height),
-                                       renderer.GetOutputWidth(),
+                          SDL2pp::Rect(renderer.GetOutputWidth()/8, y0+(i*height),
+                                       renderer.GetOutputWidth() - ((renderer.GetOutputWidth()/8)*2),
                                        height));
         }
     }

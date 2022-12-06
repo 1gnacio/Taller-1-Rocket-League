@@ -38,7 +38,7 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
                                 font.RenderText_Blended("Player: " + std::to_string(myID),
                                                         SDL_Color{0, 0, 0, 255}));
     renderer.Copy(texture_text, SDL2pp::NullOpt,
-                  SDL2pp::Rect(0,(renderer.GetOutputHeight()/7)+(turboBar_an.getHeight()/2),
+                  SDL2pp::Rect(0,(renderer.GetOutputHeight()/7)+((renderer.GetOutputHeight()/15)),
                                renderer.GetOutputWidth()/4,
                                renderer.GetOutputHeight()/18));
 }
