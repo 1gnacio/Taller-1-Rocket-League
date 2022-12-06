@@ -57,10 +57,16 @@ void sdl_main::updateScreen(Response& response) {
             bool localTeam = player.localTeam();
             if (id == myID) {
                 turboLeft = player.getRemainingTurbo();
-                mainPlayer = true;
-                myTurbo = player.onTurbo();
-                myJumping = player.flying();
                 myAcceleration = player.accelerating();
+                mainPlayer = true;
+                if (turboLeft != 0){
+                    myTurbo = player.onTurbo();
+                } else {
+                    if (!player.moving()){
+                        myAcceleration = false;
+                    }
+                }
+                myJumping = player.flying();
             }
             int car_w = convert.toPixels(conf.getCarWidth(),
                                          renderer.GetOutputWidth());
@@ -72,10 +78,13 @@ void sdl_main::updateScreen(Response& response) {
             if (it == players.end()) {
                 players.try_emplace(id, renderer, localTeam, mainPlayer);
             }
-
+            bool onTurbo = player.onTurbo();
+            if (player.getRemainingTurbo() == 0){
+                onTurbo = false;
+            }
             players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
                                   conf.getUpdateTime(), player.moving(), player.flying(),
-                                  player.onTurbo(), facingLeft);
+                                  onTurbo, facingLeft);
         }
 
         int ball_x = convert.WtoPixels(
@@ -96,14 +105,12 @@ void sdl_main::updateScreen(Response& response) {
         ball.update(ball_x, ball_y, ball_angle, ball_width, hasBeenPunchedRedShot, hasBeenPunchedGoldShot,
                     hasBeenPunchedFlipShot, hasBeenPunchedPurpleShot);
 
-        if (ballKicked)
-            std::cout << "Ball Kicked" << std::endl;
         sounds.update(goal, myTurbo, myAcceleration, myJumping, ballKicked);
     }
 
     //TODO: sacar ese 0.7
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
-                 waitingForPlayers, replay, turboLeft);
+                 waitingForPlayers, replay, turboLeft, myID);
     bool finishedGame = response.getMatchResponse().isFinished();
     if (finishedGame){
         disableSounds();

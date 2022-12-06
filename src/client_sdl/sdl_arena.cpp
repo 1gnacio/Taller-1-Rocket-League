@@ -5,7 +5,8 @@ sdl_arena::sdl_arena(SDL2pp::Renderer &renderer):
     texture_goal(renderer, DATA_PATH "/goal.png"),
     font(DATA_PATH "/Vera.ttf", 70), goal_w(0),
     waitingForPlayer(false), replay(false),
-    turboBar_an(renderer, 17, DATA_PATH "/turbo_bar/turbo_car"){}
+    turboBar_an(renderer, 17, DATA_PATH "/turbo_bar/turbo_car"),
+    myID(0){}
 
 void sdl_arena::render(SDL2pp::Renderer &renderer) {
     int t_height = renderer.GetOutputHeight();
@@ -13,6 +14,7 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
     int size_h= renderer.GetOutputHeight() /2;
     //Fondo
     renderer.Copy(texture_stadium);
+
     //Arcos
     renderer.Copy(texture_goal, SDL2pp::NullOpt,
                   SDL2pp::Rect(0, t_height-size_h, goal_w,size_h));
@@ -29,15 +31,24 @@ void sdl_arena::render(SDL2pp::Renderer &renderer) {
     //REPLAY
     if (replay) {
         renderText(renderer, "REPLAY",renderer.GetOutputWidth()/2,
-                   renderer.GetOutputHeight()/2);
+                   renderer.GetOutputHeight()/2, true);
     }
+    //ID
+    SDL2pp::Texture texture_text(renderer,
+                                font.RenderText_Blended("Player: " + std::to_string(myID),
+                                                        SDL_Color{0, 0, 0, 255}));
+    renderer.Copy(texture_text, SDL2pp::NullOpt,
+                  SDL2pp::Rect(0,(renderer.GetOutputHeight()/7)+(turboBar_an.getHeight()/2),
+                               renderer.GetOutputWidth()/4,
+                               renderer.GetOutputHeight()/18));
 }
 
 void sdl_arena::update(int _goal_w, bool _waitingForPlayer,
-                       bool _replay, float turboLeft) {
+                       bool _replay, float turboLeft, int _myID) {
     this->goal_w = _goal_w;
     this->waitingForPlayer = _waitingForPlayer;
     this->replay = _replay;
+    this->myID = _myID;
     turboBar_an.updateToFrame(std::fabs(turboLeft*100.0));
 
     if (waitingForPlayer or replay){
@@ -52,15 +63,17 @@ void sdl_arena::update(int _goal_w, bool _waitingForPlayer,
 }
 
 void sdl_arena::renderText(SDL2pp::Renderer &renderer,
-                   const std::string& text, int x, int y) {
+                   const std::string& text, int x, int y, bool background) {
     SDL2pp::Texture texture_text(renderer,
                                  font.RenderText_Blended(text,
                                      SDL_Color{255, 255, 255, 255}));
     int text_width=renderer.GetOutputWidth()/2;
     int text_height=renderer.GetOutputHeight()/10;
 
-    renderer.FillRect(x-(text_width/2), y-(text_height/2),
-                      x+(text_width/2), y+(text_height/2));
+    if (background) {
+        renderer.FillRect(x - (text_width / 2), y - (text_height / 2),
+                          x + (text_width / 2), y + (text_height / 2));
+    }
     renderer.Copy(texture_text, SDL2pp::NullOpt,
                   SDL2pp::Rect(x-(text_width/2), y-(text_height/2),
                                text_width, text_height));

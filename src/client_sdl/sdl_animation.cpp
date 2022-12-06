@@ -12,6 +12,9 @@ sdl_animation::sdl_animation(SDL2pp::Renderer &renderer, int numFrames,
                               //SDL2pp::Surface(surface).SetColorKey(true, 0));
                               SDL2pp::Surface(surface));
     }
+
+    if (textures.empty())
+        throw std::runtime_error("Vector de texturas vacío");
 }
 
 void sdl_animation::update(unsigned int dt) {
@@ -26,9 +29,6 @@ void sdl_animation::update(unsigned int dt) {
 
 void sdl_animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst,
                            double angle, SDL_RendererFlip flipType) {
-    if (textures.empty())
-        throw std::runtime_error("Vector de texturas vacío");
-
     renderer.Copy(
             textures[currentFrame],
             SDL2pp::NullOpt,
@@ -59,4 +59,26 @@ void sdl_animation::disableLoop() {
 void sdl_animation::updateToFrame(int percentage) {
     currentFrame = std::abs((percentage * (numFrames-1))/100);
     //std::cout << "CurrFrame= " << currentFrame << std::endl;
+}
+
+void sdl_animation::render(SDL2pp::Renderer &renderer, SDL2pp::Rect screct,SDL2pp::Rect dst,
+                           double angle, SDL_RendererFlip flipType) {
+    if (textures.empty())
+        throw std::runtime_error("Vector de texturas vacío");
+
+    renderer.Copy(
+            textures[currentFrame],
+            screct,
+            dst,
+            angle,
+            SDL2pp::NullOpt,    // rotation center - not needed
+            flipType);
+}
+
+int sdl_animation::getWidth() {
+    return textures[0].GetWidth();
+}
+
+int sdl_animation::getHeight() {
+    return textures[0].GetHeight();
 }

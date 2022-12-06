@@ -20,12 +20,16 @@ public:
     void updateToFrame(int percentage);
     void render(SDL2pp::Renderer &renderer, SDL2pp::Rect dest,
                 double angle, SDL_RendererFlip flipType);
+    void render(SDL2pp::Renderer &renderer, SDL2pp::Rect screct, SDL2pp::Rect dest,
+                double angle, SDL_RendererFlip flipType);
 
     /*
      * Para cambiar el color de la textura.
      * */
     void setColorMod(Uint8 r, Uint8 g, Uint8 b);
     void disableLoop();
+    int getWidth();
+    int getHeight();
 private:
     void advanceFrame();
     std::vector<SDL2pp::Texture> textures;

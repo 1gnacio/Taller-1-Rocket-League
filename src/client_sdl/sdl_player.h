@@ -21,21 +21,14 @@ private:
 
 public:
     sdl_player(SDL2pp::Renderer &renderer,
-                        bool localTeam, bool mainPlayer);
+               bool localTeam, bool mainPlayer);
+
     void update(int x, int y, int size_w, int size_h, double angle,
                 unsigned int dt, bool isMoving, bool isJumping, bool onTurbo,
                 bool facingLeft);
+
     void render(SDL2pp::Renderer &renderer);
+
     ~sdl_player() = default;
-
-#ifdef SDL_TESTING
-    void moveRight();
-    void moveLeft();
-    void stopMoving();
-    void toggleTurbo();
-    void jump();
-    void stopJump();
-#endif
 };
-
 #endif // __SDL_PLAYER_H__

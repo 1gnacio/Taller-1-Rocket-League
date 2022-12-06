@@ -12,7 +12,6 @@ unit_conversion::unit_conversion(double maxWidthMeters,
 }
 
 double unit_conversion::WtoPixels(double meter, int maxPixels) {
-    //TODO chequear bien
     meter = maxWidthMeters + meter;
     double pixel = meter * maxPixels / (maxWidthMeters*2);
     return pixel;
