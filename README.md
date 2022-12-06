@@ -31,38 +31,56 @@ Listado de dependencias del proyecto
 - [libSDL2pp](https://github.com/libSDL2pp/libSDL2pp)
 - [QT5](https://wiki.qt.io/Install_Qt_5_on_Ubuntu)
 
-### Dependencies
 
-- [cmake](https://cmake.org/)
-- `libyaml-cpp-dev`, `xorg-dev`, `libsdl2-dev`, `libx11-dev`, `libxrandr-dev`, `libxinerama-dev`, `libxcursor-dev`
-  - Debian based distros: `sudo apt install libyaml-cpp-dev xorg-dev libsdl2-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev`
+## Instalacion
 
-
-## Proceso de instalacion
-
-Clonar el repositorio
+Paso 1: Clonar el repositorio
 
 ```console
-https://github.com/1gnacio/Taller-1-Rocket-League.git
+    git clone git@github.com:1gnacio/Taller-1-Rocket-League.git
 ```
 
-Correr los siguientes comandos para compilar tanto el cliente como el servidor
+Paso 2: Correr los siguientes comandos:
 
 ```console
-    mkdir build
-    cd build
-    cmake ..
-    make -j4
+    cd Taller-1-Rocket-League
+    sh installer.sh
 ```
 
-Al correr el comando `make` se generan dos ejecutables en el directorio `/build`, el ejecutable `game_server` es el servidor del juego y el ejecutable `game_client` es el cliente 
+## Desinstalación 
+
+Se deberá correr el siguiente comando en la carpeta del repositorio:
+
+```
+    sh desinstaller.sh <flag>
+```
+Los flags autorizados son:
+
+- `--game`: Eliminación de los archivos del juego.
+
+- `--qt`: Eliminación de las dependencias de qt.
+
+- `--sdl`: Eliminación de las dependencias de sdl.
+
+- `--yaml`: Eliminación de las dependencias de yaml-cpp.
+
+- `--cpp`: Borra dependencias de: clang, cmake, make, build-essential.
+
+- `--repo`: Borra el repositorio
+
+- `--all`: Elimina las dependencias del juego, qt; sdl2; yaml-cpp; clang; cmake; make; build-essential; el propio juego; el repositorio 
 
 ## Inicializar servidor y cliente  
-  
+
+Luego de la instalación, se generarán dos ejecutables: game_server y game_client.
+Al estar localizados en la carpeta /usr/bin podemos acceder a ellos de manera global
+desde cualquier 
+parte de nuestra terminal.
+
 **Correr el servidor**  
 
 ```console
-./game_server <puerto>
+game_server <puerto>
 ```
 
 Al correr este comando se inicia el servidor, dejando la consola en modo de espera hasta que el usuario ingrese la letra `q` y presione enter para cerrar el servidor. Durante este tiempo el servidor se encuentra esperando conexiones de jugadores  
@@ -70,10 +88,10 @@ Al correr este comando se inicia el servidor, dejando la consola en modo de espe
 **Correr el cliente**  
 
 ```console
-./game_client <nombre del servidor> <puerto>`
+game_client <nombre_del_servidor> <puerto>`
 ```
 
-_Para partidas locales recomendamos los puertos `8080` u `8088`_
+Para partidas locales recomendamos los puertos `8080` u `8088`.
 
 ## Ciclo de juego
 
@@ -87,27 +105,52 @@ Al conectarse al servidor, el jugador vera la siguiente interfaz grafica que rep
 
 * **Unirse**: el jugador podra unirse a una partida existente eligiendola desde la lista que se encuentra en la parte inferior de la ventana. Si no encuentra la partida en la interfaz, haciendo click en _Refresh_ se volveran a cargar las partidas disponibles y su estado. Solo podra unirse a aquellas partidas que no se encuentren llenas o terminadas.
 
-* Nota: para la version pre-release se opto por crear una partida default para pruebas de movimiento, a la cual se ingresa apretando el boton _Join_ desde el lobby
 
-Al unirse o crear una partida, el jugador sera llevado al campo de juego, donde podra ver su auto, el marcador de la partida, el tiempo restante y al resto de jugadores. Para mover su auto presione las flechas direccionales, para saltar presione la tecla espacio y para activar turbo presione la letra T.
+
 
 En todo momento el jugador podra salir de la partida haciendo click en la cruz de la ventana de partida, la cual volvera abrir el lobby para unirse a otra partida o crear una nueva. Al cerrar la ventana de lobby el cliente se desconecta del servidor.
 
-## Testing 
-Para correr los test y ver el coverage por archivo  --TODO terminar esta parte--
-  
-```console
-    cmake ..
-    make scrub
-    make gcov
-```
 
 ## Juego
-![juego](data/firstGame.gif)
 
-## Ejemplo integrador
+Al unirse o crear una partida, el jugador será llevado al campo de juego.
 
-![Ejemplo](data/cliente_servidor.gif)
+En este momento, podrá ver que la partida está en espera si es que faltan jugadores, o de lo contrario, empezará a jugar.
+
+En la pantalla, podrá ver la siguiente información:
+
+%IMAGEN ESTANDAR DE LA CANCHA CON ANOTACIONES%
+
+## Modo de juego
+
+El jugador podrá hacer los movimientos estándar de su auto mientras esté en el suelo con las flechas del teclado.
+-  ↤ (flecha lateral izquierda): El auto se moverá hacia la izquierda de la cancha.
+
+
+-  ↦ (flecha lateral derecha): El auto se moverá hacia la derecha de la cancha.
+
+
+- barra espaciadora: El auto saltará por los aires.
+
+
+- tecla T: Se activará el turbo. (Se recomienda mantenerlo presionado para tener un mayor efecto).
+
+Mientras el auto se podrán utilizar teclas para crear movimientos especiales:
+
+- Todas las flechas del teclado: Provocarán un torque al auto. Se debe tener en cuenta que el juego sabe cuál de estas teclas fue la última precionada.
+- Barra espaciadora: Dependiendo la última tecla de flechas presionada durante el aire el auto hará un FLIP en esa dirección. Si no se preciosa ninguna tecla
+El auto no hará un flip, sino que saltará normalmente.
+
+
+Golpes especiales:
+
+Luego del segundo FLIP el auto queda cargado de energía, lo que provoca que, si toca la pelota al instante de realizarlo, esta recibirá
+un impulso de fuerza adicional.
+Estos golpes especiales pueden ser de 4 tipos diferentes:
+1) FLIP SHOT: El auto choca con la parte superior de la pelota luego de hacer el FLIP. (Potencia adicional: 1)
+2) RED SHOT: El auto choca con la parte delantera de la pelota luego de hacer el FLIP. (Potencia adicional: 3)
+3) PURPLE SHOT: El auto choca con la parte inferior de la pelota luego de hacer el FLIP. (Potencia adicional: 5)
+4) GOLD SHOT: El auto choca con la parte trasera de la pelota luego de hacer el FLIP. (Potencia adicional: 10)
 
 
 ## Documentación & Notas
