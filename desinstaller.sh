@@ -23,7 +23,7 @@ do
 
         sudo apt-get remove qtdeclarative5-dev
 
-        echo "${green}Desinstalando 'libqt5multimedia5-plugnins'...${reset}"
+        echo "${green}Desinstalando 'libqt5multimedia5-plugins'...${reset}"
         sudo apt-get remove libqt5multimedia5-plugins -y
         
         ;;
@@ -97,7 +97,7 @@ do
 
 	--game)
         shift
-        echo "${green}${bold}Desinstalando CS2D...${reset}"
+        echo "${green}${bold}Desinstalando ROCKET LEAGUE...${reset}"
 	sudo rm -rf /var/game
 	sudo rm /usr/bin/game_client
 	sudo rm /usr/bin/game_server
@@ -121,7 +121,7 @@ do
 
         sudo apt-get remove qtdeclarative5-dev
 
-        echo "${green}Desinstalando 'libqt5multimedia5-plugnins'...${reset}"
+        echo "${green}Desinstalando 'libqt5multimedia5-plugins'...${reset}"
         sudo apt-get remove libqt5multimedia5-plugins -y
         
         echo "${green}Desinstalando las dependencias de yaml-cpp...${reset}"
@@ -160,7 +160,7 @@ do
         cd ..
         rmdir Taller-1-Rocket-League
 
-        echo "${green}${bold}Desinstalando CS2D...${reset}"
+        echo "${green}${bold}Desinstalando ROCKET_LEAGUE...${reset}"
 	sudo rm -rf /var/game
 	sudo rm /usr/bin/game_client
 	sudo rm /usr/bin/game_server

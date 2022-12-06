@@ -61,14 +61,8 @@ void Server::startHandler(Socket &socket) {
 void Server::lobbyThread() {
     try {
         while(!this->isClosed) {
-            Command command = endpoint.pop(); // Podria ser bloqueante?
+            Command command = endpoint.pop();
             gameModel.applyLogic(command);
-            //int limitCommands = 0;
-            // gameModel.resetDataOfGames();
-
-            // gameModel.updateTime();
-            //std::cout << "Actualizo el tiempo en box2d" << std::endl;
-            // endpoint.push(logic.getResponse());
         }
     } catch (BlockingQueueClosedException &e) {
         this->isClosed = true;
@@ -78,7 +72,6 @@ void Server::lobbyThread() {
 void Server::run() {
     while (!this->isClosed) {
         std::thread accepterThread(&Server::acceptClients, this);
-        //std::thread gameLoopThread(&Server::gameFlow, this);
         std::thread lobbyThread(&Server::lobbyThread, this);
 
         std::string signal;
@@ -90,10 +83,8 @@ void Server::run() {
                 this->accepter.close();
             }
         }
-
         accepterThread.join();
         lobbyThread.join();
-       // gameLoopThread.join();
     }
 }
 
