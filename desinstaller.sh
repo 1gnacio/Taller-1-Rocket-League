@@ -1,5 +1,7 @@
 #!/usr/bash
-
+# Referencia
+# https://github.com/leogm99/7542_TpFinal/blob/main/desinstaller.sh
+#
 green=`tput setaf 2`
 bold=`tput bold`
 reset=`tput sgr0`
@@ -17,11 +19,11 @@ do
         echo "${green}${bold}Desinstalando las dependencias de qt...${reset}"
 
         echo "${green}Desinstalando 'qt5'...${reset}"
-        sudo apt-get remove qt5-default -y
+        sudo apt-get -qq remove qt5-default -y
 
-        sudo apt-get remove qtbase5-dev
+        sudo apt-get -qq remove qtbase5-dev
 
-        sudo apt-get remove qtdeclarative5-dev
+        sudo apt-get -qq remove qtdeclarative5-dev
 
         echo "${green}Desinstalando 'libqt5multimedia5-plugins'...${reset}"
         sudo apt-get remove libqt5multimedia5-plugins -y
@@ -34,7 +36,7 @@ do
         shift
         echo "${green}${bold}Desinstalando las dependencias de yaml-cpp...${reset}"
 
-        sudo apt-get remove libyaml-cpp-dev -y
+        sudo apt-get -qq remove libyaml-cpp-dev -y
 
         ;;
 
@@ -45,25 +47,25 @@ do
         echo "${green}${bold}Desinstalando las dependencias de sdl2...${reset}"
 
         echo "${green}Desinstalando 'libgbm1'...${reset}"
-        sudo apt-get remove libgbm1
+        sudo apt-get -qq remove libgbm1
 
-        echo "${green}Desinstalando 'libegl1-mesa0'...${reset}"
-        sudo apt-get remove libegl1-mesa -y
+        echo "${green}Desinstalando 'libegl1-mesa'...${reset}"
+        sudo apt-get -qq remove libegl1-mesa -y
 
         echo "${green}Desinstalando 'libsdl2-dev'...${reset}"
-        sudo apt-get remove libsdl2-dev -y
+        sudo apt-get -qq remove libsdl2-dev -y
 
         echo "${green}Desinstalando 'libsdl2-image-dev'...${reset}"
-        sudo apt-get remove libsdl2-image-dev -y
+        sudo apt-get -qq remove libsdl2-image-dev -y
 
         echo "${green}Desinstalando 'libsdl2-gfx-dev'...${reset}"
-        sudo apt-get remove libsdl2-gfx-dev -y
+        sudo apt-get -qq remove libsdl2-gfx-dev -y
 
         echo "${green}Desinstalando 'libsdl2-mixer-dev'...${reset}"
-        sudo apt-get remove libsdl2-mixer-dev -y
+        sudo apt-get -qq remove libsdl2-mixer-dev -y
 
-        echo "${green}Desinstalando 'libsdl2-image1.2-dev'...${reset}"
-        sudo apt-get remove libsdl2-image1.2-dev
+        echo "${green}Desinstalando 'libsdl2-image-dev'...${reset}"
+        sudo apt-get -qq remove libsdl2-image-dev
         
         ;;
 
@@ -74,16 +76,16 @@ do
         echo "${green}${bold}Desinstalando las dependencias cpp...${reset}"
 
         echo "${green}Desinstalando 'clang'...${reset}"
-        sudo apt-get remove clang -y 
+        sudo apt-get -qq remove clang -y
 
         echo "${green}Desinstalando 'make'...${reset}"
-        sudo apt-get remove make -y 
+        sudo apt-get -qq remove make -y
 
         echo "${green}Desinstalando 'cmake'...${reset}"
-        sudo apt-get remove cmake -y
+        sudo apt-get -qq remove cmake -y
 
         echo "${green}Desinstalando 'build-essential'...${reset}"
-        sudo apt-get remove build-essential -y
+        sudo apt-get -qq remove build-essential -y
 
         ;;
 
@@ -101,7 +103,6 @@ do
 	sudo rm -rf /var/game
 	sudo rm /usr/bin/game_client
 	sudo rm /usr/bin/game_server
-	sudo rm /usr/bin/lobby
         ;;
 
 	--box2d)
@@ -142,8 +143,8 @@ do
         echo "${green}Desinstalando 'libsdl2-ttf-dev'...${reset}"
         sudo apt-get remove libsdl2-ttf-dev -y
 
-        echo "${green}Desinstalando 'libsdl2-image1.2-dev'...${reset}"
-        sudo apt-get remove libsdl2-image1.2-dev
+        echo "${green}Desinstalando 'libsdl2-image-dev'...${reset}"
+        sudo apt-get -qq remove libsdl2-image-dev
 
         echo "${green}Desinstalando 'clang'...${reset}"
         sudo apt-get remove clang -y 
@@ -164,7 +165,6 @@ do
 	sudo rm -rf /var/game
 	sudo rm /usr/bin/game_client
 	sudo rm /usr/bin/game_server
-	sudo rm /usr/bin/lobby
 
         echo "${green}${bold}Desinstalando BOX2D...${reset}"
 	sudo rm -rf /usr/local/include/box2d

@@ -1,3 +1,8 @@
+#!/usr/bash
+# Referencia:
+# https://github.com/leogm99/7542_TpFinal/blob/main/installer.sh
+#
+
 green=`tput setaf 2`
 bold=`tput bold`
 reset=`tput sgr0`
@@ -8,65 +13,65 @@ echo "${green}${bold}***********************************************************
 
 echo "${green}\n~INSTALACIÓN DE DEPENDENCIAS C++~\n${reset}"
 
-sudo apt-get update
+sudo apt-get -qq update
 
 echo "${green}Instalando 'clang'...${reset}"
-sudo apt-get install clang -y 
+sudo apt-get -qq install clang -y
 
 echo "${green}Instalando 'make'...${reset}"
-sudo apt-get install make -y 
+sudo apt-get -qq install make -y
 
 echo "${green}Instalando 'cmake'...${reset}"
-sudo apt-get install cmake -y
+sudo apt-get -qq install cmake -y
 
 echo "${green}Instalando 'build-essential'...${reset}"
-sudo apt-get install build-essential -y
+sudo apt-get -qq install build-essential -y
 
 echo "${green}\n~INSTALACIÓN DE DEPENDENCIAS: QT5~\n${reset}"
 
 echo "${green}Instalando 'qt5'...${reset}"
-sudo apt-get install qt5-default -y
+sudo apt-get -qq install qt5-default -y
 
-sudo apt-get install qtbase5-dev
+sudo apt-get -qq install qtbase5-dev
 
-sudo apt-get install qtdeclarative5-dev
-
-echo "${green}Instalando 'libqt5multimedia5-plugnins'...${reset}"
-sudo apt-get install libqt5multimedia5-plugins -y
+sudo apt-get -qq install qtdeclarative5-dev
 
 echo "${green}Instalando 'libqt5multimedia5-plugnins'...${reset}"
-sudo apt-get install qtmultimedia5-dev -y
+sudo apt-get -qq install libqt5multimedia5-plugins -y
+
+echo "${green}Instalando 'libqt5multimedia5-plugnins'...${reset}"
+sudo apt-get -qq install qtmultimedia5-dev -y
 
 echo "\n${green}~INSTALACIÓN DE DEPENDENCIAS: YAML-CPP~\n${reset}"
 
-sudo apt-get install libyaml-cpp-dev -y
+sudo apt-get -qq install libyaml-cpp-dev -y
 echo "${green}Instalando 'libyaml-cpp-dev'...${reset}"
 
 echo "${green}\n~INSTALACIÓN DE DEPENDENCIAS: SDL2~\n${reset}"
 
 echo "${green}Instalando 'libgbm1'...${reset}"
-sudo apt-get install libgbm1
+sudo apt-get -qq install libgbm1
 
 echo "${green}Instalando 'libegl1-mesa0'...${reset}"
-sudo apt-get install libegl1-mesa -y
+sudo apt-get -qq install libegl1-mesa -y
 
 echo "${green}Instalando 'libsdl2-dev'...${reset}"
-sudo apt-get install libsdl2-dev -y
+sudo apt-get -qq install libsdl2-dev -y
 
 echo "${green}Instalando 'libsdl2-image-dev'...${reset}"
-sudo apt-get install libsdl2-image-dev -y
+sudo apt-get -qq install libsdl2-image-dev -y
 
 echo "${green}Instalando 'libsdl2-gfx-dev'...${reset}"
-sudo apt-get install libsdl2-gfx-dev -y
+sudo apt-get -qq install libsdl2-gfx-dev -y
 
 echo "${green}Instalando 'libsdl2-mixer-dev'...${reset}"
-sudo apt-get install libsdl2-mixer-dev -y
+sudo apt-get -qq install libsdl2-mixer-dev -y
 
 echo "${green}Instalando 'libsdl2-ttf-dev'...${reset}"
-sudo apt-get install libsdl2-ttf-dev -y
+sudo apt-get -qq install libsdl2-ttf-dev -y
 
-echo "${green}Instalando 'libsdl2-image1.2-dev'...${reset}"
-sudo apt-get install libsdl2-image1.2-dev
+echo "${green}Instalando 'libsdl2-image-dev'...${reset}"
+sudo apt-get -qq install libsdl2-image-dev
 
 
 

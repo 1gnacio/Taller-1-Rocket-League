@@ -4,9 +4,8 @@ project(rocket-league VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Flags TODO: activarlo
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -ggdb -DDEBUG -Wall -fno-inline -pedantic -pedantic-errors -pthread")
+set(CMAKE_MESSAGE_LOG_LEVEL "WARNING")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -ggdb -DDEBUG -Wall -fno-inline -pedantic -pedantic-errors -pthread -fno-sized-deallocation")
 add_definitions(-DDATA_PATH="/var/game/data")
 
 #start YAML
@@ -34,26 +33,9 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-set(CMAKE_PREFIX_PATH $ENV{HOME}/Documents/Qt/5.15.2/gcc_64)
+#set(CMAKE_PREFIX_PATH $ENV{HOME}/Documents/Qt/5.15.2/gcc_64)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 # end QT5
-######################################################################################################################
-add_executable(boxExample testBox.cpp)
-target_link_libraries(boxExample box2d)
-
-######################################################################################################################
-add_executable(exampleMerged exampleMerged.cpp)
-target_link_libraries(exampleMerged box2d ${SDL2PP_LIBRARIES})
-
-######################################################################################################################
-add_executable(game exampleGame.cpp)
-target_link_libraries(game box2d ${SDL2PP_LIBRARIES})
-
-######################################################################################################################
-######################################################################################################################
-add_executable(gameSensors sensors.cpp)
-target_link_libraries(gameSensors box2d ${SDL2PP_LIBRARIES})
-######################################################################################################################
 
 file(GLOB_RECURSE sources "../src/*/*.cpp")
 file(GLOB_RECURSE headers "../src/*/*.h")

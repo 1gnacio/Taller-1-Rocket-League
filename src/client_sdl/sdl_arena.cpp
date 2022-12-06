@@ -1,7 +1,7 @@
 #include "sdl_arena.h"
 
 sdl_arena::sdl_arena(SDL2pp::Renderer &renderer):
-    texture_stadium(renderer, DATA_PATH "/stadium2.png"),
+    texture_stadium(renderer, DATA_PATH "/stadium.png"),
     texture_goal(renderer, DATA_PATH "/goal.png"),
     font(DATA_PATH "/Vera.ttf", 70), goal_w(0),
     waitingForPlayer(false), replay(false),
