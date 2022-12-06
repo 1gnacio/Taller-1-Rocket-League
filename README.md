@@ -97,7 +97,7 @@ Para partidas locales recomendamos los puertos `8080` u `8088`.
 
 Al conectarse al servidor, el jugador vera la siguiente interfaz grafica que representa el lobby del juego, donde se pueden crear, visualizar y unir a partidas
 
-![lobby](https://user-images.githubusercontent.com/23293753/198899200-60d1e4ec-2ea4-4f94-aed7-e51e71dd6912.gif)
+![Screenshot from 2022-12-06 17-22-51](https://user-images.githubusercontent.com/38591482/206015094-1a886fab-bf9b-49d2-86aa-21d00f4e5e9e.png)
 
 ### Acciones desde el lobby
 
