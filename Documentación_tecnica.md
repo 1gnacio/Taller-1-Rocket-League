@@ -10,7 +10,7 @@
 
 * **Ignacio Garcia Segovia** - [1gnacio](https://github.com/1gnacio)
 * **Nahuel Gomez** - [NahuelNGomez](https://github.com/NahuelNGomez)
-* **Iñaki Gonzalez Bigliardi** - [igonzalezb](https://github.com/igonzalezb)
+* **Iñaki González Bigliardi** - [igonzalezb](https://github.com/igonzalezb)
 
 ### Indice:
 
@@ -106,7 +106,46 @@ extra.
 
 
 #### <u>Cliente</u>
+Esta entidad se encarga de:
 
+* La interacción con el usuario a través del teclado y el mouse.
+
+*  Mostrar en pantalla la interfaz gráfica del lobby y el juego principal.
+
+* Conexión con el servidor y recibe las respuestas.
+
+*Clases sobre el juego:*
+
+1) **Client:** esta clase es el loop principal por el cual a partir de una respuesta del servidor de una cola no bloqueante, actualiza los modelos y luego renderiza la pantalla. 
+
+2) **lobby:** clase de qT que muestra una ventana del lobby por el cual los usuarios crean partidas o se unen a alguna ya creada previamente.
+
+3) **sdl_main:** esta clase es la principal de SDL. Posee el resto de los objetos de SDl y la misma tiene dos funciones principales. Una actualiza los datos de todos los modelos de SDl y la otra renderiza los objetos.
+
+4) **unit_conversion:** se encarga de la conversión de unidades entre Box2D y SDl. Ya sea convertir de metros a pixeles o radianes a grados.
+
+5) **sdl_animation:** esta clase genera animaciones a partir de imágenes estáticas al ir cambiando de frames.
+
+6) **sdl_music:** clase que maneja los sonidos del juego.
+
+7) **sld_{objeto}:** cada objeto de SDL tiene su clase, ya sea los *autos*, *arena*, *scoreboard*, etc. Tienen dos funciones principales: *update* y *render*.
+
+*Clases sobre la conexión:*
+
+
+1) ****:
+
+
+2) ****:
+
+
+3) ****:
+
+
+4) ****:
+
+
+5) ****:
 ---------
 
 ### Diagramas:
