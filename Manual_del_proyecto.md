@@ -78,8 +78,8 @@ El encargado de implementar el cliente fue Iñaki González Bigliardi. Se encarg
 | 1           | Armado de protocolo cliente-servidor | Primeros test con Qt y primera version del lobby | Armado de protocolo cliente-servidor |
 | 2           | Protocolo de comunicacion, logica de hilos de la comunicacion cliente-servidor | Primeros test con SDL y creación de algunos objetos | Logica del servidor con Box2d |
 | 3           | Serializacion de mensajes | Merge entre Qt y SDL. Primeras prubas de los movientos por teclado del juego. | Logica del servidor con Box2d |
-| 4           | Serializacion de mensajes y suite de tests | Animaciónes del juego, arena, scoreboard. Update de los modelos con la respuesta de srvidor. | Logica del servidor con Box2d |
-| 5           | Logica de repeticiones, correcciones | Implemetación de la musica, barra del turbo y estadísticas. | Logica del servidor con Box2d |
+| 4           | Serializacion de mensajes y suite de tests | Animaciónes del juego, arena, scoreboard. Update de los modelos con la respuesta de servidor. | Logica del servidor con Box2d |
+| 5           | Logica de repeticiones, correcciones | Implemetación de la musica, mejoras gráficas y estadísticas. | Logica del servidor con Box2d |
 
 -----------
 
