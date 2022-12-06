@@ -58,6 +58,9 @@ public:
 
     const int GOAL_LOCAL = 2;
     const int GOAL_VISITOR = 1;
+
+    const int LIMIT_COMMANDS = 50;
+    const int RESPONSES_PER_SECOND_WAITING = 10;
 };
 
 #endif //LOGIC_VALUES_H

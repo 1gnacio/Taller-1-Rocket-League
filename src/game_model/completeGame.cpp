@@ -86,7 +86,7 @@ void CompleteGame::gameFlow() {
             logic.resetData();
             if (isInGame()) {
                 limitCommands = 0;
-                while ((!commandQueue.isEmpty() && limitCommands <= 50) || (this->replayLogic.isInReplay())) {
+                while ((!commandQueue.isEmpty() && limitCommands <= LogicValues().LIMIT_COMMANDS) || (this->replayLogic.isInReplay())) {
                     logic.updateRoomInfo(this->room, this->replayLogic.isInReplay());
                     logic.resetData();
                     if (this->replayLogic.isInReplay()) {
@@ -118,7 +118,7 @@ void CompleteGame::gameFlow() {
                 }
             } else {
                 sendResponse();
-                float timeStep = 1.0f / 10.0f;
+                float timeStep = 1.0f / LogicValues().RESPONSES_PER_SECOND_WAITING;
                 usleep(timeStep*1000000);
             }
         }
