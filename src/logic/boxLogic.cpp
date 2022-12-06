@@ -161,11 +161,18 @@ void BoxLogic::createCar(int id) {
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, LogicValues().HEAD_SENSOR);
+    if(id%2)
+        cars.back().createFixture(sensorDef, LogicValues().HEAD_SENSOR);
+    else
+        cars.back().createFixture(sensorDef, LogicValues().TAIL_SENSOR);
 
     dynamicCar.SetAsBox(0.1, hCar/2.0f, b2Vec2(-wCar/2, 0), 0);
     sensorDef.shape = &dynamicCar;
-    cars.back().createFixture(sensorDef, LogicValues().TAIL_SENSOR);
+
+    if(id%2)
+        cars.back().createFixture(sensorDef, LogicValues().TAIL_SENSOR);
+    else
+        cars.back().createFixture(sensorDef, LogicValues().HEAD_SENSOR);
 }
 
 void BoxLogic::createWalls() {
