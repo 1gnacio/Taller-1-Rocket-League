@@ -71,6 +71,18 @@ El encargado de implementar el cliente fue Iñaki González Bigliardi. Se encarg
 
 -----------
 
+### Division de tareas por semana
+
+| Semana      | Ignacio Garcia Segovia | Iñaki González Bigliardi | Nahuel Gomez | 
+| ----------- | ---------------------- | ------------------------ | ------------ |
+| 1           | Armado de protocolo cliente-servidor | Armado de protocolo cliente-servidor | Armado de protocolo cliente-servidor |
+| 2           | Protocolo de comunicacion, logica de hilos de la comunicacion cliente-servidor | Lobby del cliente y render con SDL | Logica del servidor con Box2d |
+| 3           | Serializacion de mensajes | Lobby del cliente y render con SDL | Logica del servidor con Box2d |
+| 4           | Serializacion de mensajes y suite de tests | Lobby del cliente y render con SDL | Logica del servidor con Box2d |
+| 5           | Logica de repeticiones, correcciones | Lobby del cliente y render con SDL | Logica del servidor con Box2d |
+
+-----------
+
 ### Inconvenientes encontrados:
 
 Se listarán los inconvenientes encontrados durante la realización del proyecto:
