@@ -21,7 +21,7 @@ El juego consiste en un partido de fútbol, en donde los jugadores son autos que
 
 ### Requerimientos de software
 
-Sistema operativo: Ubuntu --AGREGAR VERSION--  
+Sistema operativo: Ubuntu (testeado en las versiones 22.10 y 22.04)
   
 Listado de dependencias del proyecto
 
