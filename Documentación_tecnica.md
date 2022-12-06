@@ -16,8 +16,8 @@
 
 1) **Composición del protocolo.**
 2) **Archivos.**
-3) **Test unitarios.**
-4) **Diagramas.**
+3) **Diagramas.**
+4) **Test unitarios.**
 -----------
 
 
