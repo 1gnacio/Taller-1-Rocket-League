@@ -88,8 +88,6 @@ void lobby::on_pushButton_refresh_clicked()
 
     model.removeRows(0, model.rowCount());
 
-    std::string name_str, players_str;
-
     for (auto &room : r.getRooms()) {
         QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
         QStandardItem *players = new QStandardItem(QString::fromStdString(room.getPlayers()));

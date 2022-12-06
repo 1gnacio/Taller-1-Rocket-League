@@ -2,7 +2,7 @@
 
 sdl_ball::sdl_ball(SDL2pp::Renderer &renderer):
     texture_ball(renderer, DATA_PATH "/ball.png"),
-    width(0), x(0), y(0), shot(NORMAL) {}
+    width(0), x(0), y(0), angle(0), shot(NORMAL) {}
 
 void sdl_ball::render(SDL2pp::Renderer &renderer) {
     switch (shot) {
