@@ -4,17 +4,17 @@
 sdl_main::sdl_main(ClientConfigurationAttributes& conf):
             conf(conf),
             sdl(SDL_INIT_VIDEO),
-            mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-            AUDIO_CHANNELS, 4096),
             window("Rocket League",
                  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                  conf.getWindowWidth(), conf.getWindowHeight(),
                  SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN),
             renderer(window, -1, SDL_RENDERER_ACCELERATED), ttf(),
+            mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                  AUDIO_CHANNELS, 4096),
             arena(renderer),  ball(renderer), scoreboard(renderer),
             waiting(renderer), statistics(renderer),
             convert(MAX_WIDTH, MAX_HEIGHT),
-            myID(0){
+            myID(0), showStatistics(false) {
     window.SetIcon(SDL2pp::Surface(DATA_PATH "/icon.ico"));
     if (!conf.enableSound()) {
         mixer.SetMusicVolume(0);
@@ -112,6 +112,7 @@ void sdl_main::updateScreen(Response& response) {
     arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
                  waitingForPlayers, replay, turboLeft, myID);
     bool finishedGame = response.getMatchResponse().isFinished();
+    this->showStatistics = finishedGame;
     if (finishedGame){
         disableSounds();
         statistics.update(
@@ -127,7 +128,9 @@ void sdl_main::renderScreen() {
         player.second.render(renderer);
     }
     waiting.render(renderer);
-    statistics.render(renderer);
+    if (showStatistics) {
+        statistics.render(renderer);
+    }
     scoreboard.render(renderer);
     sounds.renderSounds(mixer);
     renderer.Present();
@@ -138,6 +141,7 @@ void sdl_main::showWindow() {
 }
 
 void sdl_main::hideWindow() {
+    this->showStatistics = false;
     window.Hide();
 }
 

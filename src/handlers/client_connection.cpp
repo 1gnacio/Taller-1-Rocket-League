@@ -9,8 +9,8 @@ socket(std::move(socket)),
 idService(SENDER, this->socket, id),
 commandQueue(queue),
 responseQueue(),
-sender(this->socket, idService, responseQueue, SENDER),
-receiver(this->socket, commandQueue, RECEIVER)
+receiver(this->socket, commandQueue, RECEIVER),
+sender(this->socket, idService, responseQueue, SENDER)
 {}
 
 void ClientConnection::push(Response &response) {

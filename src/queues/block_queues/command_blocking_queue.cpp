@@ -17,7 +17,7 @@ Command CommandBlockingQueue::pop() {
     }
     Command element = std::move(this->commands.front());
     this->commands.pop();
-    return std::move(element);
+    return element;
 }
 
 void CommandBlockingQueue::close() {

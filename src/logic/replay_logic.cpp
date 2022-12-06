@@ -4,7 +4,7 @@
 void ReplayLogic::goalScored() {
     this->isActive = true;
     this->elapsedTimeInSec = 0;
-    int replayResponsesAmount = this->replayTimeInSec * this->responsesPerSec;
+    std::size_t replayResponsesAmount = this->replayTimeInSec * this->responsesPerSec;
     if (replayResponsesAmount < this->responses.size()) {
         std::vector replayResponses(this->responses.end() - replayResponsesAmount, this->responses.end());
         this->responses = std::move(replayResponses);
@@ -33,5 +33,5 @@ Response ReplayLogic::getResponse() {
     this->responses.erase(this->responses.begin());
     this->elapsedTimeInSec += 1 / this->responsesPerSec;
     this->isActive = this->elapsedTimeInSec < this->replayTimeInSec;
-    return std::move(response);
+    return response;
 }

@@ -50,7 +50,7 @@ void lobby::on_pushButton_join_clicked()
     this->connection.push(c);
     Response r = this->connection.pop();
 
-    while (!r.isRecipient(this->connection.getId())) {
+    while (!r.isLobbyResponse(this->connection.getId())) {
         r = this->connection.pop();
     }
 
@@ -82,7 +82,7 @@ void lobby::on_pushButton_refresh_clicked()
     this->connection.push(c);
     Response r = this->connection.pop();
 
-    while (!r.isRecipient(this->connection.getId())) {
+    while (!r.isLobbyResponse(this->connection.getId())) {
         r = this->connection.pop();
     }
 
@@ -129,7 +129,7 @@ void lobby::on_pushButton_createGame_clicked()
     this->connection.push(c);
     Response r = this->connection.pop();
 
-    while (!r.isRecipient(this->connection.getId())) {
+    while (!r.isLobbyResponse(this->connection.getId())) {
         r = this->connection.pop();
     }
 

@@ -18,7 +18,7 @@ void sdl_statistics::render(SDL2pp::Renderer &renderer) {
 //                          renderer.GetOutputHeight());
         renderer.Copy(background, SDL2pp::NullOpt, SDL2pp::Rect(
                 0, 0, renderer.GetOutputWidth(), renderer.GetOutputHeight()));
-        for (int i = 0; i < text.size(); ++i) {
+        for (std::size_t i = 0; i < text.size(); ++i) {
             text[i].insert(text[i].end(), 30 - text[i].size(), ' ');
             SDL2pp::Texture text_sprite(
                     renderer,
@@ -34,6 +34,7 @@ void sdl_statistics::render(SDL2pp::Renderer &renderer) {
 }
 
 void sdl_statistics::update(std::vector<PlayerResponse> _players) {
+    text.clear();
     this->activate = true;
     std::string local;
     text.emplace_back("     LOCAL");

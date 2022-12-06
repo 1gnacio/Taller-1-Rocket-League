@@ -24,27 +24,27 @@ std::vector<unsigned char> MatchResponse::serialize() {
     this->serializer.merge(result, this->serializer.serializeInt(size));
     this->serializer.merge(result, serialization);
 
-    return std::move(result);
+    return result;
 
 }
 
-void MatchResponse::setGoals(uint8_t goalsLocal, uint8_t goalsVisitor) {
-    this->goalsLocal = goalsLocal;
-    this->goalsVisitor = goalsVisitor;
+void MatchResponse::setGoals(uint8_t local, uint8_t visitor) {
+    this->goalsLocal = local;
+    this->goalsVisitor = visitor;
 }
 
-void MatchResponse::setPlayers(uint8_t requiredPlayers, uint8_t currentPlayers) {
-    this->requiredPlayers = requiredPlayers;
-    this->currentPlayers = currentPlayers;
+void MatchResponse::setPlayers(uint8_t required, uint8_t current) {
+    this->requiredPlayers = required;
+    this->currentPlayers = current;
 }
 
-void MatchResponse::setStates(bool isWaitingForPlayers, bool hasFinished, bool isGoalLocal, bool isGoalVisitor,
-                              bool activeReplay) {
-    this->isWaitingForPlayers = isWaitingForPlayers;
-    this->hasFinished = hasFinished;
-    this->isGoalLocal = isGoalLocal;
-    this->isGoalVisitor = isGoalVisitor;
-    this->activeReplay = activeReplay;
+void MatchResponse::setStates(bool waitingForPlayers, bool finished, bool goalLocal, bool goalVisitor,
+                              bool replay) {
+    this->isWaitingForPlayers = waitingForPlayers;
+    this->hasFinished = finished;
+    this->isGoalLocal = goalLocal;
+    this->isGoalVisitor = goalVisitor;
+    this->activeReplay = replay;
 }
 
 void MatchResponse::setName(std::string &gameName) {
