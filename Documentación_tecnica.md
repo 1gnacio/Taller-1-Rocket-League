@@ -155,6 +155,10 @@ La respuesta es agregada a una cola bloqueante de respuestas que luego son envia
 
 ![SoWkIImgAStDuGfABIx8pojEzKZCIyb9BLBGjLE02Jdbv2TdP-Qb1vQcbgOgM2aKb1PdQC0aDRcmAWFf3qxDIu59XcGKfIQcW3Jd5o3fnLG2qXXGb5-IdvoVamzKNuoa0acZ0r0Ow6m0](https://user-images.githubusercontent.com/38591482/206007067-c6d99a26-26c1-4336-9fb6-04376f43eb54.png)
 
+<u>***Loop principal de la gui del cliente***</u>
+
+![NSmz2W8n48RXVawHCYcyG0fPS1l1QlS04jmF3Kmc8J-8jtSNZOhDmF0-CqEfBjSMc8XZJEf-yunZcPg8bolHWJsagjrUJIWfIe5LAIPjgEzRUodxCRztytYoggN5LSoN38Zkoloh35cGtwhNx_iDdKUmU-XG3D6gQLX72_m4](https://user-images.githubusercontent.com/23293753/206012975-09ad3489-0fd2-4888-aff7-33b22eaa79fb.png)
+
 -----------
 
 ### Test unitarios:
