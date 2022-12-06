@@ -34,6 +34,6 @@ void sdl_waiting::update(bool _active, int _currPlayers, int _totalPlayers) {
     this->active = _active;
     this->currPlayers = _currPlayers;
     this->totalPlayers = _totalPlayers;
-    waiting_an.update(FRAME_RATE);
+    waiting_an.update();
 }
 

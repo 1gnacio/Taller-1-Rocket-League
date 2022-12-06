@@ -24,7 +24,7 @@ public:
                bool localTeam, bool mainPlayer);
 
     void update(int x, int y, int size_w, int size_h, double angle,
-                unsigned int dt, bool isMoving, bool isJumping, bool onTurbo,
+                bool isMoving, bool isJumping, bool onTurbo,
                 bool facingLeft);
 
     void render(SDL2pp::Renderer &renderer);

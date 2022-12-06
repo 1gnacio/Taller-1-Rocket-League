@@ -12,7 +12,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class lobby; }
 QT_END_NAMESPACE
 
-//TODO: cambiarle el nombre
 
 class lobby : public QMainWindow
 {

@@ -24,7 +24,7 @@ sdl_main::sdl_main(ClientConfigurationAttributes& conf):
     }
 }
 
-//TODO: hacerlo más lindo
+
 void sdl_main::updateScreen(Response& response) {
     if (response.dummy()){
         return;
@@ -82,9 +82,9 @@ void sdl_main::updateScreen(Response& response) {
             if (player.getRemainingTurbo() == 0){
                 onTurbo = false;
             }
-            players.at(id).update(car_x, car_y, car_w, car_h, car_angle,
-                                  conf.getUpdateTime(), player.moving(), player.flying(),
-                                  onTurbo, facingLeft);
+            players.at(id).update(car_x, car_y, car_w, car_h,
+                                  car_angle, player.moving(),
+                                  player.flying(), onTurbo, facingLeft);
         }
 
         int ball_x = convert.WtoPixels(

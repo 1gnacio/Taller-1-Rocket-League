@@ -5,7 +5,7 @@ sdl_scoreboard::sdl_scoreboard(SDL2pp::Renderer &renderer):
     background(renderer, DATA_PATH "/scoreboard.png"){
     update("00:00", 0, 0);
 }
-//TODO: hacerlo más lindo.
+
 
 void sdl_scoreboard::update(const std::string& time,
                             int local_goals, int visitors_goals) {
