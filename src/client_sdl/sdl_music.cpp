@@ -6,8 +6,8 @@
 
 sdl_music::sdl_music(): background_music(DATA_PATH "/sounds/background.ogg"),
                         goal_chunk(DATA_PATH "/sounds/goal.mp3"),
-                        turbo_chunk(DATA_PATH "/sounds/turbo.mp3"),
                         accelerating_chunk(DATA_PATH "/sounds/acceleration.mp3"),
+                        turbo_chunk(DATA_PATH "/sounds/turbo.mp3"),
                         jump_chunk(DATA_PATH "/sounds/jump.mp3"),
                         kick_chunk(DATA_PATH "/sounds/kick.mp3"),
                         goal(false), playing_goal(false),turbo(false),

@@ -82,6 +82,7 @@ LobbyResponse GameModel::leaveRoom(int playerId, const char *name) {
             this->games.erase(std::remove(this->games.begin(),
                                           this->games.end(),
                                           *found), this->games.end());
+
         }
         LobbyResponse lobbyR(actionResult);
         return lobbyR;

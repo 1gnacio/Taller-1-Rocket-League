@@ -45,7 +45,7 @@ public:
 
     void setGoals(uint8_t goalsLocal, uint8_t goalsVisitor);
     void setPlayers(uint8_t requiredPlayers, uint8_t currentPlayers);
-    void setStates(bool isWaitingForPlayers, bool hasFinished, bool isGoalLocal, bool isGoalVisitor, bool activeReplay);
+    void setStates(bool waitingForPlayers, bool finished, bool goalLocal, bool isGoalVisitor, bool activeReplay);
     void setName(std::string &gameName);
     char getSizeGameName();
 

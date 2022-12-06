@@ -17,7 +17,7 @@
 // colas:
 // hay 1 cola de comandos compartida por cada hilo que recibe comandos
 // hay 1 cola de respuestas por cada hilo que recibe respuestas
-Server::Server(const char* servname) : isClosed(false), accepter(servname), endpoint(), gameModel(this->endpoint){}
+Server::Server(const char* servname) : accepter(servname), endpoint(), isClosed(false), gameModel(this->endpoint){}
 
 Socket Server::acceptClient() {
     // lanzo una excepcion custom cuando se cierra el socket

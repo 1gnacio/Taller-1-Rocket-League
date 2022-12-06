@@ -17,7 +17,7 @@ Response ResponseBlockingQueue::pop() {
     }
     Response element = std::move(this->responses.front());
     this->responses.pop();
-    return std::move(element);
+    return element;
 }
 
 void ResponseBlockingQueue::close() {
