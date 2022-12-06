@@ -116,10 +116,21 @@ En todo momento el jugador podra salir de la partida haciendo click en la cruz d
 Al unirse o crear una partida, el jugador será llevado al campo de juego.
 
 En este momento, podrá ver que la partida está en espera si es que faltan jugadores, o de lo contrario, empezará a jugar.
+La imagen a continuación muestra a un jugador esperando a su contrincante:
 
-En la pantalla, podrá ver la siguiente información:
+![espera](data/Espera.png)
 
-%IMAGEN ESTANDAR DE LA CANCHA CON ANOTACIONES%
+En la pantalla, podrá ver:
+
+- Marcador: Contiene los goles anotados por cada equipo y el tiempo transcurrido de la partida.
+- Barra de turbo: Ubicada en la esquina superior izquierda, se encarga de transmitirle al jugador sobre el estado de su
+tanque de nitro.
+- Indicador de ID: Inferior a la barra se encuentra al indicador cuál es su ID.
+- Arcos: A ambos extremos de la cancha se encuentran los dos arcos, donde la pelota debe llega para anotar un gol.
+- Pelota: De manera clásica se encuentra la pelota con la que se jugará la partida.
+- Autos: Cada jugador podrá manejar un solo auto.
+
+![cancha](data/canchaCompleta.png)
 
 ## Modo de juego
 
@@ -138,19 +149,29 @@ El jugador podrá hacer los movimientos estándar de su auto mientras esté en e
 Mientras el auto se podrán utilizar teclas para crear movimientos especiales:
 
 - Todas las flechas del teclado: Provocarán un torque al auto. Se debe tener en cuenta que el juego sabe cuál de estas teclas fue la última precionada.
+
+
 - Barra espaciadora: Dependiendo la última tecla de flechas presionada durante el aire el auto hará un FLIP en esa dirección. Si no se preciosa ninguna tecla
 El auto no hará un flip, sino que saltará normalmente.
 
 
-Golpes especiales:
+**Golpes especiales:**
 
 Luego del segundo FLIP el auto queda cargado de energía, lo que provoca que, si toca la pelota al instante de realizarlo, esta recibirá
 un impulso de fuerza adicional.
 Estos golpes especiales pueden ser de 4 tipos diferentes:
 1) FLIP SHOT: El auto choca con la parte superior de la pelota luego de hacer el FLIP. (Potencia adicional: 1)
+
 2) RED SHOT: El auto choca con la parte delantera de la pelota luego de hacer el FLIP. (Potencia adicional: 3)
+
 3) PURPLE SHOT: El auto choca con la parte inferior de la pelota luego de hacer el FLIP. (Potencia adicional: 5)
+
 4) GOLD SHOT: El auto choca con la parte trasera de la pelota luego de hacer el FLIP. (Potencia adicional: 10)
+
+**Visualización de GOLDSHOT**
+
+![GoldShot](data/GoldShot.png)
+
 
 
 ## Documentación & Notas
@@ -158,8 +179,3 @@ Estos golpes especiales pueden ser de 4 tipos diferentes:
 [Link Google Docs](https://docs.google.com/document/d/1HAAGN4PyoHdXEmL62-MtdpeMkoSojueFdWUvSQ4e9Ag/edit?usp=sharing)
 
 [EverNote](https://www.evernote.com/shard/s392/client/snv?noteGuid=1dd9e1ff-3bbe-c34f-33f0-5545271bdf81&noteKey=8f2645c4fdc094c5fc3e4e4d6d404fc8&sn=https%3A%2F%2Fwww.evernote.com%2Fshard%2Fs392%2Fsh%2F1dd9e1ff-3bbe-c34f-33f0-5545271bdf81%2F8f2645c4fdc094c5fc3e4e4d6d404fc8&title=TP1%2B-%2BAPUNTES)
-
-![Diagram_2](https://user-images.githubusercontent.com/23293753/197909510-b1a9e6c4-802a-4d81-be34-bb86e7162652.png)
-
-![Diagrama_1](https://user-images.githubusercontent.com/23293753/197909532-d5b5c027-a6e9-4891-ab14-f975289d62f8.png)
-
