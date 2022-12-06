@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Flags TODO: activarlo
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -ggdb -DDEBUG -Wall -fno-inline -pedantic -pedantic-errors -pthread")
-add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
+add_definitions(-DDATA_PATH="/var/game/data")
 
 #start YAML
 find_package(yaml-cpp REQUIRED)
