@@ -44,8 +44,8 @@ El encargado de implementar la lógica de juego fue Nahuel Gomez, quien desarrol
 
  * Loop principal del juego.
 
-El encargado de implementar la comunicación fue Ignacio Garcia Segovia. En particular se encargó de desarrolar:
- * El protocolo de comunación.
+El encargado de implementar la comunicación fue Ignacio Garcia Segovia. En particular se encargó de desarrollar:
+ * El protocolo de comunicación.
 
 
  * Perfecta transmisión de datos sobre cliente - servidor.
@@ -57,7 +57,7 @@ El encargado de implementar la comunicación fue Ignacio Garcia Segovia. En part
  * Archivos de configuración YAML.
 
 
-El encargado de implementar el cliente fue Iñaki Gonzalez Bigliardi. Se encargó de las siguientes implementaciones:
+El encargado de implementar el cliente fue Iñaki González Bigliardi. Se encargó de las siguientes implementaciones:
 * Loop principal del cliente.
 
 
@@ -73,10 +73,10 @@ El encargado de implementar el cliente fue Iñaki Gonzalez Bigliardi. Se encarg�
 
 ### Inconvenientes encontrados:
 
-Se listarán los incovenientes encontrados durante la realización del proyecto:
+Se listarán los inconvenientes encontrados durante la realización del proyecto:
 
 1) Uno de los mayores inconvenientes fue la utilización de nuevas herramientas, como box2D y SDL2
-dado que ningún integrante sabía manipularlas, en general llevó bastante tiempo familiarlizarnos con cada libería.
+dado que ningún integrante sabía manipularlas, en general llevó bastante tiempo familiarizarnos con cada librería.
 
 
 2) Otro inconveniente fue el pasaje de posiciones de Box2D a SDL para que el juego sea redimensionable, dado que box2D utiliza una escala en metros y
@@ -94,7 +94,7 @@ YAML para facilitar esta tarea, por ejemplo en el tiempo máximo de juego y toma
 
 ### Puntos pendientes:
 
-El único feature que se llegó a concretar fue sobre el andar sobre las paredes.
+El único feature que no se llegó a concretar fue sobre el andar sobre las paredes.
 
 A continuación, se nombran algunos features sobre el proyecto que son mejorables:
 
@@ -111,7 +111,7 @@ Se realiza una lista de las principales herramientas que se utilizaron durante e
  * QT5: Librería utilizada para la interfaz gráfica del lobby.
 
 
- * SDL2: Libería utilizada para la interfaz gráfica del juego.
+ * SDL2: Librería utilizada para la interfaz gráfica del juego.
 
 
  * Box2D: Librería encargada de manejar las físicas dentro de una partida.
@@ -134,10 +134,7 @@ Se realiza una lista de las principales herramientas que se utilizaron durante e
 
 ### Conclusiones y aprendizaje
 
-Como conclusión, podemos sacar que los tres integrantes aprendimos muchísimo sobre programaciòn, aplicando los conocimientos
-
-que brinda la materia, pero también, considerando que es lo más importante, se aprendió bastante en cómo trabajar en grupo y cómo la comunicación
-
-entre los participantes del proyecto debe ser parte fundamental del mismo.
-
-Esta comunicación falicita de manera inmediata la división de tares y la organización del trabajo.
+Como conclusión, podemos sacar que los tres integrantes aprendimos muchísimo sobre programación, aplicando los conocimientos
+que brinda la materia, pero también, considerando que es lo más importante, se aprendió bastante en cómo trabajar en grupo y
+cómo la comunicación entre los participantes del proyecto debe ser parte fundamental del mismo.
+Esta comunicación facilita de manera inmediata la división de tareas y la organización del trabajo.
