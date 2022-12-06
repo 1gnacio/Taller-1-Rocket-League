@@ -93,7 +93,7 @@ void lobby::on_pushButton_refresh_clicked()
     for (auto &room : r.getRooms()) {
         QStandardItem *name = new QStandardItem(QString::fromStdString(room.getName()));
         QStandardItem *players = new QStandardItem(QString::fromStdString(room.getPlayers()));
-        QStandardItem *status = new QStandardItem("-------");
+        QStandardItem *status = new QStandardItem(QString::fromStdString(room.getStatus()));
         model.appendRow( QList<QStandardItem*>() << name << status << players);
     }
 }
@@ -110,7 +110,7 @@ void lobby::on_gamesListTable_clicked(const QModelIndex &index)
 void lobby::on_pushButton_createGame_clicked()
 {
     if (this->connection.connectionClosed()) {
-        std::cout << "Error de conexion con el servidor." << std::endl;
+        std::cout << "Error de conexión con el servidor." << std::endl;
         this->close();
         return;
     }

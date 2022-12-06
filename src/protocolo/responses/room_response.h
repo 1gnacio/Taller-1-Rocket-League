@@ -30,6 +30,9 @@ public:
     std::string getName();
 
     std::string getPlayers();
+
+    std::string getStatus();
+
 };
 
 

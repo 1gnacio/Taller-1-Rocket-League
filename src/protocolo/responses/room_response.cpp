@@ -58,3 +58,13 @@ std::string RoomResponse::getName() {
 std::string RoomResponse::getPlayers() {
     return std::to_string(this->currentPlayers);
 }
+
+std::string RoomResponse::getStatus() {
+    std::string status = "---";
+    if (isFinished) {
+        status = "Finished";
+    } else if (isStarted) {
+        status = "Started";
+    }
+    return status;
+}
