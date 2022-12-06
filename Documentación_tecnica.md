@@ -1,7 +1,7 @@
 <center>
 
 ![](data/FIUBA.png)
-<h1>MANUAL DEL PROYECTO </h1>
+<h1>DOCUMENTACIÓN TÉCNICA </h1>
 <h3>TALLER DE PROGRAMACIÓN I</h3>
 <h3>2º Cuatrimestre 2022</h3>
 </center>
