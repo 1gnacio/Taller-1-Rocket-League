@@ -7,6 +7,8 @@
 #include "sdl_animation.h"
 #include <string>
 
+#define GOAL_WIDTH 0.7
+
 class sdl_arena {
 private:
     SDL2pp::Texture texture_stadium;

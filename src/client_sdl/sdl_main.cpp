@@ -29,18 +29,24 @@ void sdl_main::updateScreen(Response& response) {
     if (response.dummy()){
         return;
     }
+    float turboLeft = 0;
+
+    //Waiting For Players
     bool replay = response.getMatchResponse().isReplaying();
     bool waitingForPlayers = response.getMatchResponse().waitingForPlayers();
     int currPlayers = response.getMatchResponse().getCurrPlayer();
     int totalPlayers = response.getMatchResponse().getRequiredPlayers();
     waiting.update(waitingForPlayers, currPlayers, totalPlayers);
-    float turboLeft = 0;
+
     if (!waitingForPlayers) {
+        //Scoreboard
         int local_goals = response.getMatchResponse().getLocalGoals();
         int visitors_goals = response.getMatchResponse().getVisitorsGoals();
         scoreboard.update(convert.timeToString((std::chrono::milliseconds)
                        (response.getMatchResponse().getTime() * 1000)),
                           local_goals, visitors_goals);
+
+        //Players
         bool myTurbo = false;
         bool myAcceleration = false;
         bool myJumping = false;
@@ -86,7 +92,7 @@ void sdl_main::updateScreen(Response& response) {
                                   car_angle, player.moving(),
                                   player.flying(), onTurbo, facingLeft);
         }
-
+        //Ball
         int ball_x = convert.WtoPixels(
                 response.getMatchResponse().getBall().getPosX(),
                 renderer.GetOutputWidth());
@@ -95,7 +101,7 @@ void sdl_main::updateScreen(Response& response) {
                 renderer.GetOutputHeight());
         double ball_angle = convert.toDegrees(
                 response.getMatchResponse().getBall().getRotationAngle());
-        int ball_width = 2.0 * convert.toPixels(conf.getBallRadius(),
+        int ball_width = 2 * convert.toPixels(conf.getBallRadius(),
                                                 renderer.GetOutputWidth());
         bool ballKicked = response.getMatchResponse().getBall().getHasBeenPunched();
         bool hasBeenPunchedFlipShot = response.getMatchResponse().getBall().getHasBeenPunchedFlipShot();
@@ -105,15 +111,17 @@ void sdl_main::updateScreen(Response& response) {
         ball.update(ball_x, ball_y, ball_angle, ball_width, hasBeenPunchedRedShot, hasBeenPunchedGoldShot,
                     hasBeenPunchedFlipShot, hasBeenPunchedPurpleShot);
 
+        //Sounds
         sounds.update(goal, myTurbo, myAcceleration, myJumping, ballKicked);
     }
 
-    //TODO: sacar ese 0.7
-    arena.update(convert.toPixels(0.7, renderer.GetOutputWidth()),
+    //Arena
+    arena.update(convert.toPixels(GOAL_WIDTH, renderer.GetOutputWidth()),
                  waitingForPlayers, replay, turboLeft, myID);
-    bool finishedGame = response.getMatchResponse().isFinished();
-    this->showStatistics = finishedGame;
-    if (finishedGame){
+
+    //Statistics
+    this->showStatistics = response.getMatchResponse().isFinished();
+    if (showStatistics){
         disableSounds();
         statistics.update(
                 response.getMatchResponse().getPlayersResponse().getPlayers());
