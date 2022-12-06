@@ -8,6 +8,10 @@
 
 Corrector: Martin
 
+[Documentacion tecnica](https://github.com/1gnacio/Taller-1-Rocket-League/blob/main/Documentaci%C3%B3n_tecnica.md)  
+[Manual del proyecto](https://github.com/1gnacio/Taller-1-Rocket-League/blob/main/Manual_del_proyecto.md)  
+[Lista de requerimientos](https://github.com/1gnacio/Taller-1-Rocket-League/blob/main/TODO.md)
+
 ## Manual de usuario
 
 ### Introduccion
