@@ -4,9 +4,9 @@ ClientConfigurationAttributes::ClientConfigurationAttributes(int windowWidth, in
                                                              float carWidth, float carHeight,
                                                              float ballRadius, int gameTime, bool sound, unsigned int updateTime) :
                                                              windowWidth(windowWidth), windowHeight(windowHeight),
-                                                             carWidth(carWidth), carHeight(carHeight),
-                                                             ballRadius(ballRadius), gameTime(gameTime), sound(sound),
-                                                             updateTime(updateTime){}
+                                                             sound(sound), carWidth(carWidth), carHeight(carHeight),
+                                                             ballRadius(ballRadius), updateTime(updateTime),
+                                                             gameTime(gameTime){}
 
 int ClientConfigurationAttributes::getWindowWidth() const {
     return windowWidth;

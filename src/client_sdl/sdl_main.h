@@ -37,6 +37,7 @@ private:
     unit_conversion convert;
     int myID;
     std::map<int, sdl_player> players;
+    bool showStatistics;
 
 public:
     explicit sdl_main(ClientConfigurationAttributes& conf);

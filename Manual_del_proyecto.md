@@ -98,7 +98,8 @@ El único feature que no se llegó a concretar fue sobre el andar sobre las pare
 
 A continuación, se nombran algunos features sobre el proyecto que son mejorables:
 
-- Un jugador no puede reconectarse a una partida.
+- Aparecen los warnings de la librería box2D en la instalación del proyecto.
+
 
 ---------
 

@@ -9,7 +9,7 @@ PlayerResponse::PlayerResponse(int id, float posX, float posY, float rotationAng
                                  isMoving(isMoving), isFlying(isFlying), isTurboActivated(isTurboActivated),
                                  hasPunchedTheBall(hasPunchedTheBall), isAccelerating(isAccelerating),
                                  isLocalTeam(isLocalTeam), goals(goals), assists(assists), saves(saves),
-                                 facingLeft(facingLeft), remainingTurbo(remainingTurbo) {}
+                                 remainingTurbo(remainingTurbo), facingLeft(facingLeft) {}
 
 PlayerResponse::PlayerResponse(std::vector<unsigned char> &serialized) : serializer() {
     int firstPosition = 0;

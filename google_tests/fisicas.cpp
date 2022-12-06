@@ -195,7 +195,7 @@ TEST(physics, ElAutoTieneAcelearacion) {
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().X_VELOCITY) == 0);
     physics.startMove(PLAYER_ID, LogicValues().LEFT_DIRECTION);
     EXPECT_TRUE(physics.getCarData(PLAYER_ID,LogicValues().ACCELERATING));
-    update(physics,1);
+    update(physics,5);
     EXPECT_FALSE(physics.getCarData(PLAYER_ID,LogicValues().ACCELERATING));
 }
 

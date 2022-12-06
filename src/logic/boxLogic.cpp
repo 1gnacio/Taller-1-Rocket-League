@@ -144,7 +144,7 @@ void BoxLogic::createCar(int id) {
     cars.back().createFixture(fixtureDef, 0);
     cars.back().setTurboForce(configuration.getTurboForce());
 
-    // Create 4 sensors
+    // Creación 4 sensores
     b2FixtureDef sensorDef;
     dynamicCar.SetAsBox(wCar/2.0f, 0.1, b2Vec2(0, -hCar/2), 0);
     sensorDef.shape = &dynamicCar;

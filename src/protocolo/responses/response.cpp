@@ -57,11 +57,15 @@ float Response::getBallPositionY() {
     return this->matchResponse.getBall().getPosY();
 }
 
-Response::Response(LobbyResponse &lobby) : matchResponse(), lobbyResponse(lobby) {}
+Response::Response(LobbyResponse &lobby) : lobbyResponse(lobby), matchResponse(), isDummy(false) {}
 
 bool Response::isRecipient(int id) {
 
     return this->lobbyResponse.isRecipient(id) || this->matchResponse.hasPlayer(id);
+}
+
+bool Response::isLobbyResponse(int id) {
+    return this->lobbyResponse.isRecipient(id);
 }
 
 MatchResponse Response::getMatchResponse() {

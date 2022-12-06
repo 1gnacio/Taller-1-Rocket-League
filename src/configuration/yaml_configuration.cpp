@@ -5,7 +5,8 @@
 YamlConfiguration::YamlConfiguration() {}
 
 ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
-    YAML::Node config = YAML::LoadFile(DATA_PATH + ConfigurationPaths().SERVER_CONFIG);
+    YAML::Node config = YAML::LoadFile(ConfigurationPaths().SERVER_CONFIG_INSTALLED);
+
     return {config["car_width"].as<float>(), config["car_height"].as<float>(), config["car_density"].as<float>(),
             config["car_friction"].as<float>(), config["car_restitution"].as<float>(), config["ball_density"].as<float>(),
             config["ball_friction"].as<float>(), config["ball_restitution"].as<float>(), config["ball_radius"].as<float>(),
@@ -16,8 +17,8 @@ ServerConfigurationAttributes YamlConfiguration::ReadServerConfiguration() {
 }
 
 ClientConfigurationAttributes YamlConfiguration::ReadClientConfiguration() {
-    YAML::Node configServer = YAML::LoadFile(DATA_PATH + ConfigurationPaths().SERVER_CONFIG);
-    YAML::Node configClient = YAML::LoadFile(DATA_PATH + ConfigurationPaths().CLIENT_CONFIG);
+    YAML::Node configServer = YAML::LoadFile(ConfigurationPaths().SERVER_CONFIG_INSTALLED);
+    YAML::Node configClient = YAML::LoadFile(ConfigurationPaths().CLIENT_CONFIG_INSTALLED);
     return {configClient["width"].as<int>(), configClient["height"].as<int>(),
             configServer["car_width"].as<float>(), configServer["car_height"].as<float>(),
             configServer["ball_radius"].as<float>(), configServer["game_time"].as<int>(),

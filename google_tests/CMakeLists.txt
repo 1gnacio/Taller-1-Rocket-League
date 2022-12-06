@@ -11,7 +11,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -fprofile-arcs -ftest-coverage")
 set (CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
 # Create OBJECT_DIR variable
-set(OBJECT_DIR ${CMAKE_BINARY_DIR}/google_tests/CMakeFiles/Google_Tests_run.dir/__/src)
+set(OBJECT_DIR ${CMAKE_BINARY_DIR}/google_tests/CMakeFiles/Google_Tests_run.dir)
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/google_tests)
 message("-- Object files will be output to: ${OBJECT_DIR}")
 
 # 'Google_Tests_run' is the target name
@@ -36,7 +37,7 @@ add_custom_target(gcov
         )
 add_custom_command(TARGET gcov
         COMMAND echo "=================== GCOV ===================="
-        COMMAND gcov ${OBJECT_DIR}/protocolo/protocolo.cpp ${OBJECT_DIR}/logic/boxLogic.cpp
+        COMMAND gcov -b ${TEST_DIR}/*.cpp -o ${OBJECT_DIR}
         COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage
         )
@@ -48,6 +49,12 @@ add_custom_target(scrub
         COMMAND ${CMAKE_MAKE_PROGRAM} clean
         COMMAND rm -f ${OBJECT_DIR}/*.gcno
         COMMAND rm -f ${OBJECT_DIR}/*.gcda
+        COMMAND rm -f ${OBJECT_DIR}/*/*.gcno
+        COMMAND rm -f ${OBJECT_DIR}/*/*.gcda
+        COMMAND rm -f ${OBJECT_DIR}/__/src/*/*.gcno
+        COMMAND rm -f ${OBJECT_DIR}/__/src/*/*.gcda
+        COMMAND rm -f ${OBJECT_DIR}/__/src/*/*/*.gcno
+        COMMAND rm -f ${OBJECT_DIR}/__/src/*/*/*.gcda
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
 
