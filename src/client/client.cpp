@@ -19,7 +19,6 @@ Client::Client(ServerConnection& connection) :
 void Client::readStandardInput() {
     SDL_Event event;
     while (this->isRunning){
-        //Ver que convine después. ¿waitEvent y pollEvent?
         SDL_WaitEvent(&event);
         switch (event.type) {
             case SDL_KEYDOWN: {
