@@ -62,7 +62,7 @@ TEST(Serialize, seSeteanLosEstadosDeLaPelota) {
 
     EXPECT_EQ(deserializada.getMatchResponse().getBall().getIsMoving(), false);
     EXPECT_EQ(deserializada.getMatchResponse().getBall().getIsFlying(), true);
-    EXPECT_EQ(deserializada.getMatchResponse().getBall().getHasBeenPunched(), false);
+    EXPECT_EQ(deserializada.getMatchResponse().getBall().getHasBeenPunched(), true);
 }
 
 TEST(Serialize, seSeteanTodosLosDatos) {
@@ -119,7 +119,7 @@ TEST(Serializacion, SerializeBallResponse) {
     EXPECT_EQ(0, responseDeserialized.getPosX());
     EXPECT_EQ(0, responseDeserialized.getRotationAngle());
     EXPECT_EQ(false, responseDeserialized.getIsFlying());
-    EXPECT_EQ(false, responseDeserialized.getHasBeenPunched());
+    EXPECT_EQ(true, responseDeserialized.getHasBeenPunched());
     EXPECT_EQ(false, responseDeserialized.getIsMoving());
 }
 
