@@ -11,7 +11,7 @@ sdl_waiting::sdl_waiting(SDL2pp::Renderer &renderer):
 void sdl_waiting::render(SDL2pp::Renderer &renderer) {
     if (active) {
         int size= renderer.GetOutputHeight()/6;
-        std::string text = "Waiting for Players: " + std::to_string(currPlayers) + "/" + std::to_string(totalPlayers);
+        std::string text = "Waiting for Players: " + std::to_string(totalPlayers);
         SDL2pp::Texture texture_text(renderer,
                                      font.RenderText_Blended(text,
                                      SDL_Color{255, 255, 255, 255}));

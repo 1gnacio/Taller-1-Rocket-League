@@ -10,9 +10,9 @@ sdl_player::sdl_player(SDL2pp::Renderer &renderer,
     if (mainPlayer) {
         car_an.setColorMod(255,255,255);
     } else if (localTeam) {
-        car_an.setColorMod(255,80,80);
+        car_an.setColorMod(255,60,60);
     } else {
-        car_an.setColorMod(100,80,80);
+        car_an.setColorMod(60,60,255);
     }
 }
 
