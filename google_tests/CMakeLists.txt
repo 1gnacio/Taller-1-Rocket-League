@@ -49,6 +49,8 @@ add_custom_target(scrub
         COMMAND ${CMAKE_MAKE_PROGRAM} clean
         COMMAND rm -f ${OBJECT_DIR}/*.gcno
         COMMAND rm -f ${OBJECT_DIR}/*.gcda
+        COMMAND rm -f ${OBJECT_DIR}/*/*.gcno
+        COMMAND rm -f ${OBJECT_DIR}/*/*.gcda
         COMMAND rm -f ${OBJECT_DIR}/__/src/*/*.gcno
         COMMAND rm -f ${OBJECT_DIR}/__/src/*/*.gcda
         COMMAND rm -f ${OBJECT_DIR}/__/src/*/*/*.gcno

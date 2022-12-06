@@ -79,8 +79,6 @@ add_executable(game_client
         src/handlers/command_handler.h
         src/handlers/response_handler.cpp
         src/handlers/response_handler.h
-        src/protocolo/commands/strategies/create_parameter_strategy.cpp
-        src/protocolo/commands/strategies/create_parameter_strategy.h
         src/protocolo/commands/command.cpp
         src/protocolo/commands/command.h
         src/sockets/resolver.cpp
@@ -104,7 +102,6 @@ add_executable(game_client
         src/queues/command_queue.cpp src/queues/command_queue.h
         src/handlers/command_handler.cpp src/handlers/command_handler.h
         src/handlers/response_handler.cpp src/handlers/response_handler.h
-        src/protocolo/commands/strategies/create_parameter_strategy.cpp src/protocolo/commands/strategies/create_parameter_strategy.h
         src/protocolo/commands/command.cpp src/protocolo/commands/command.h
         src/sockets/resolver.cpp src/sockets/resolver.h
         src/sockets/liberror.cpp src/sockets/liberror.h
@@ -194,8 +191,6 @@ add_executable(game_server
         src/handlers/command_handler.h
         src/handlers/response_handler.cpp
         src/handlers/response_handler.h
-        src/protocolo/commands/strategies/create_parameter_strategy.cpp
-        src/protocolo/commands/strategies/create_parameter_strategy.h
         src/protocolo/commands/command.cpp
         src/protocolo/commands/command.h
         src/sockets/resolver.cpp

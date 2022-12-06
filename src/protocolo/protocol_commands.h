@@ -1,9 +1,5 @@
-//
-// Created by ignacio on 30/10/22.
-//
-
-#ifndef TALLER_1_ROCKET_LEAGUE_PROTOCOL_COMMANDS_H
-#define TALLER_1_ROCKET_LEAGUE_PROTOCOL_COMMANDS_H
+#ifndef PROTOCOL_COMMANDS_H
+#define PROTOCOL_COMMANDS_H
 
 #include <map>
 #include <string>
@@ -30,4 +26,4 @@ public:
 };
 
 
-#endif //TALLER_1_ROCKET_LEAGUE_PROTOCOL_COMMANDS_H
+#endif // PROTOCOL_COMMANDS_H

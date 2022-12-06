@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include "protocol_commands.h"
-#include "../protocolo/commands/strategies/create_parameter_strategy.h"
 
 ProtocolCommands::ProtocolCommands() : values(),
         deserializedCommands({
